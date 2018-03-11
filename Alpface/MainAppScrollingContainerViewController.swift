@@ -61,7 +61,7 @@ class MainAppScrollingContainerViewController: UIViewController {
                 let tabBarVc = MainTabBarController()
                 let homeVc = HomeViewController()
                 homeVc.title = "home"
-                let searchVc = SearchViewController()
+                let searchVc = ExploreViewController()
                 searchVc.title = "search"
                 let messageVc = MessageViewController()
                 messageVc.title = "message"

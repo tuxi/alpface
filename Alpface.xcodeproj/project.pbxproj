@@ -15,7 +15,7 @@
 		D2264192205521530001D758 /* StoryCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264191205521530001D758 /* StoryCreationViewController.swift */; };
 		D2264194205521C50001D758 /* StoryCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264193205521C50001D758 /* StoryCameraViewController.swift */; };
 		D2264196205525740001D758 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264195205525740001D758 /* HomeViewController.swift */; };
-		D22641982055259C0001D758 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641972055259C0001D758 /* SearchViewController.swift */; };
+		D22641982055259C0001D758 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641972055259C0001D758 /* ExploreViewController.swift */; };
 		D226419A205525A90001D758 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264199205525A90001D758 /* MessageViewController.swift */; };
 		D226419C205525F40001D758 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419B205525F40001D758 /* UserProfileViewController.swift */; };
 		D226419E20552E230001D758 /* ListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419D20552E230001D758 /* ListCollectionView.swift */; };
@@ -38,7 +38,7 @@
 		D2264191205521530001D758 /* StoryCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCreationViewController.swift; sourceTree = "<group>"; };
 		D2264193205521C50001D758 /* StoryCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCameraViewController.swift; sourceTree = "<group>"; };
 		D2264195205525740001D758 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		D22641972055259C0001D758 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		D22641972055259C0001D758 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		D2264199205525A90001D758 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		D226419B205525F40001D758 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		D226419D20552E230001D758 /* ListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCollectionView.swift; sourceTree = "<group>"; };
@@ -101,7 +101,7 @@
 				D2264191205521530001D758 /* StoryCreationViewController.swift */,
 				D2264193205521C50001D758 /* StoryCameraViewController.swift */,
 				D2264195205525740001D758 /* HomeViewController.swift */,
-				D22641972055259C0001D758 /* SearchViewController.swift */,
+				D22641972055259C0001D758 /* ExploreViewController.swift */,
 				D2264199205525A90001D758 /* MessageViewController.swift */,
 				D226419B205525F40001D758 /* UserProfileViewController.swift */,
 				D226419D20552E230001D758 /* ListCollectionView.swift */,
@@ -180,7 +180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D22641982055259C0001D758 /* SearchViewController.swift in Sources */,
+				D22641982055259C0001D758 /* ExploreViewController.swift in Sources */,
 				D251884F2054D3C8000147CC /* AppDelegate.swift in Sources */,
 				D2D692D12054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D226418E205520C50001D758 /* MainTabBarController.swift in Sources */,
@@ -329,7 +329,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NKW67GFDHM;
 				INFOPLIST_FILE = Alpface/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alpface.Alpface;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -345,7 +345,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NKW67GFDHM;
 				INFOPLIST_FILE = Alpface/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alpface.Alpface;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -1,5 +1,5 @@
 //
-//  SearchViewController.swift
+//  ExploreViewController.swift
 //  Alpface
 //
 //  Created by swae on 2018/3/11.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class ExploreViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -9,7 +9,13 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
+    fileprivate lazy var refreshControl: UIRefreshControl = {
+        let refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(afterRefresher), for: .valueChanged)
+        return refresher
+    }()
+    
     fileprivate lazy var collectionView: GestureCoordinatingCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0.0
@@ -23,6 +29,7 @@ class HomeViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "HomeViewController")
+        collectionView.backgroundColor = UIColor.white
         return collectionView
     }()
     
@@ -33,29 +40,25 @@ class HomeViewController: UIViewController {
         setupUI()
     }
     
-    private func setupUI() {
+    fileprivate func setupUI() {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        collectionView.refreshControl = refreshControl
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @objc fileprivate func afterRefresher(){
+        
+        loadPosts()
     }
-    */
-
+    
+    fileprivate func loadPosts(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            self.refreshControl.endRefreshing()
+        }
+    }
 }
 
 extension HomeViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
