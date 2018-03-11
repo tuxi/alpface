@@ -58,5 +58,9 @@ class StoryCreationViewController: UIViewController {
     @objc private func rightBarButtonClick(_ button: UIButton) {
         
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
 }

@@ -32,6 +32,14 @@ class MainAppScrollingContainerViewController: UIViewController {
     
     private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
     
+    private var displayViewController: UIViewController? {
+        get {
+            let indexPath = collectionView.indexPathsForVisibleItems.first
+            guard let ip = indexPath else { return nil }
+            let vc = collectionViewItems[ip.section].items[ip.row].model as? UIViewController
+            return vc
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +47,11 @@ class MainAppScrollingContainerViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         setupCollectionViewItems()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     private func setupUI() {
@@ -91,6 +104,12 @@ class MainAppScrollingContainerViewController: UIViewController {
         
         collectionView.reloadData()
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+//        guard let displayVc = displayViewController else { return .default }
+//        return displayVc.preferredStatusBarStyle
+        return .lightContent
+    }
 
 }
 
@@ -107,14 +126,10 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ScrollingContainerCell", for: indexPath) as! ScrollingContainerCell
-//        let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
-//        let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
-//        let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         
         let sec = collectionViewItems[indexPath.section]
         cell.model = sec.items[indexPath.row] as? MainAppScrollingContainerItem
-        
-//        cell.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
+
         
         return cell
     }
@@ -142,6 +157,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
 //    }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        setNeedsStatusBarAppearanceUpdate()
         
     }
     
