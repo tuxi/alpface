@@ -11,7 +11,6 @@ import UIKit
 @objc(ALPCollectionViewSection)
 public class CollectionViewSection: NSObject {
     
-    // MARK: - 只读
     public var items: [BaseCellModel] = [BaseCellModel]()
     public var section: Int = 0
     public var indexPtahs: [IndexPath] {

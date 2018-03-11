@@ -70,7 +70,7 @@ class StoryCreationContentView: UIView {
         describeTextLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         cameraAuthorButton.setContentCompressionResistancePriority(.required, for: .vertical)
         microAuthorButton.setContentCompressionResistancePriority(.required, for: .vertical)
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(5.0)-[titleLabel]-(8.0)-[describeTextLabel]-(50.0)-[cameraAuthorButton]-(30.0)-[microAuthorButton]-(5.0)-|", options:.alignAllCenterX, metrics: nil, views: ["titleLabel": titleLabel, "describeTextLabel": describeTextLabel, "cameraAuthorButton": cameraAuthorButton, "microAuthorButton": microAuthorButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(5.0)-[titleLabel]-(8.0)-[describeTextLabel]-(50.0)-[cameraAuthorButton]-(25.0)-[microAuthorButton]-(5.0)-|", options:.alignAllCenterX, metrics: nil, views: ["titleLabel": titleLabel, "describeTextLabel": describeTextLabel, "cameraAuthorButton": cameraAuthorButton, "microAuthorButton": microAuthorButton]))
         self.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         self.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
     }

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//use hex value to set color
 
 extension UIColor {
     
