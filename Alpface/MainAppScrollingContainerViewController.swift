@@ -48,14 +48,46 @@ class MainAppScrollingContainerViewController: UIViewController {
     private func setupCollectionViewItems() {
         let section = CollectionViewSection()
         collectionViewItems.append(section)
-        for _ in 0...2 {
+        for i in 0...2 {
             let item = MainAppScrollingContainerItem()
-            item.height = view.frame.size.height
+            switch i {
+            case 0:
+                // 创建故事
+                let createVc = StoryCreationViewController()
+                item.model = createVc
+                break
+            case 1:
+                // 主页
+                let tabBarVc = MainTabBarController()
+                let homeVc = HomeViewController()
+                homeVc.title = "home"
+                let searchVc = SearchViewController()
+                searchVc.title = "search"
+                let messageVc = MessageViewController()
+                messageVc.title = "message"
+                let userProfileVc = UserProfileViewController()
+                userProfileVc.title = "user"
+                let nav1 = MainNavigationController.init(rootViewController: homeVc)
+                let nav2 = MainNavigationController(rootViewController: searchVc)
+                let nav3 = MainNavigationController(rootViewController: messageVc)
+                let nav4 = MainNavigationController(rootViewController: userProfileVc)
+                tabBarVc.setViewControllers([nav1, nav2, nav3, nav4], animated: true)
+                item.model = tabBarVc
+                break
+            case 2:
+                let vc = UIViewController()
+                item.model = vc
+                break
+            default:
+                break
+            }
+            item.size = view.frame.size
             section.items.append(item)
         }
         
         collectionView.reloadData()
     }
+
 }
 
 extension MainAppScrollingContainerViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -70,10 +102,13 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ScrollingContainerCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ScrollingContainerCell", for: indexPath) as! ScrollingContainerCell
         let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
+        
+        let sec = collectionViewItems[indexPath.section]
+        cell.model = sec.items[indexPath.row] as? MainAppScrollingContainerItem
         
         cell.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
         
@@ -82,6 +117,6 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return collectionView.frame.size
+        return collectionViewItems[indexPath.section].items[indexPath.row].size
     }
 }

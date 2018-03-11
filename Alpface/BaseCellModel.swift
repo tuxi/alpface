@@ -10,7 +10,7 @@ import UIKit
 
 protocol CellModelProtocol: NSObjectProtocol {
     var model: AnyObject? { set get }
-    var height: CGFloat? { set get }
+    var size: CGSize { set get }
     var indexPath: IndexPath? { set get }
 }
 
@@ -18,7 +18,7 @@ protocol CellModelProtocol: NSObjectProtocol {
 public class BaseCellModel: NSObject, CellModelProtocol {
     var model: AnyObject?
     
-    var height: CGFloat?
+    var size: CGSize = .zero
     
     var indexPath: IndexPath?
     
