@@ -47,6 +47,9 @@ class HomeViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
         
         collectionView.refreshControl = refreshControl
+        
+        let font = UIFont(name: "MedulaOne-Regular", size: 30.0)
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 30.0)]
     }
     
     @objc fileprivate func afterRefresher(){
@@ -58,6 +61,10 @@ class HomeViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             self.refreshControl.endRefreshing()
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+        return .lightContent
     }
 }
 

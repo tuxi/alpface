@@ -115,6 +115,33 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         return cell
     }
     
+//    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        let cellModel = collectionViewItems[indexPath.section].items[indexPath.row]
+//        guard let vc = cellModel.model else {
+//            collectionView.isScrollEnabled = true
+//            return
+//        }
+//        if indexPath.row == 1 && vc.classForCoder == UITabBarController.self{
+//            let tabBarController = vc as! UITabBarController
+//
+//            if tabBarController.selectedIndex == 0 && tabBarController.selectedViewController?.classForCoder == HomeViewController.self {
+//                collectionView.isScrollEnabled = true
+//            }
+//            else {
+//                collectionView.isScrollEnabled = false
+//            }
+//        }
+//        else {
+//            collectionView.isScrollEnabled = true
+//        }
+//
+//    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+    }
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         return collectionViewItems[indexPath.section].items[indexPath.row].size

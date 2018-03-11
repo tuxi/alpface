@@ -19,6 +19,9 @@
 		D226419A205525A90001D758 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264199205525A90001D758 /* MessageViewController.swift */; };
 		D226419C205525F40001D758 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419B205525F40001D758 /* UserProfileViewController.swift */; };
 		D226419E20552E230001D758 /* ListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419D20552E230001D758 /* ListCollectionView.swift */; };
+		D22641A0205550220001D758 /* UINavigationBar+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419F205550220001D758 /* UINavigationBar+Attributes.swift */; };
+		D22641A2205550B50001D758 /* UIColor+HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641A1205550B50001D758 /* UIColor+HexColor.swift */; };
+		D22641A6205555DC0001D758 /* MedulaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D22641A5205555DC0001D758 /* MedulaOne-Regular.ttf */; };
 		D251884F2054D3C8000147CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D251884E2054D3C8000147CC /* AppDelegate.swift */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
@@ -42,6 +45,9 @@
 		D2264199205525A90001D758 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		D226419B205525F40001D758 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		D226419D20552E230001D758 /* ListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCollectionView.swift; sourceTree = "<group>"; };
+		D226419F205550220001D758 /* UINavigationBar+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Attributes.swift"; sourceTree = "<group>"; };
+		D22641A1205550B50001D758 /* UIColor+HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColor.swift"; sourceTree = "<group>"; };
+		D22641A5205555DC0001D758 /* MedulaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MedulaOne-Regular.ttf"; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D251884E2054D3C8000147CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D25188552054D3C8000147CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -65,6 +71,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D22641A3205555C70001D758 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				D22641A4205555C70001D758 /* font */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		D22641A4205555C70001D758 /* font */ = {
+			isa = PBXGroup;
+			children = (
+				D22641A5205555DC0001D758 /* MedulaOne-Regular.ttf */,
+			);
+			path = font;
+			sourceTree = "<group>";
+		};
 		D25188422054D3C8000147CC = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +106,7 @@
 		D251884D2054D3C8000147CC /* Alpface */ = {
 			isa = PBXGroup;
 			children = (
+				D22641A3205555C70001D758 /* Resource */,
 				D251884E2054D3C8000147CC /* AppDelegate.swift */,
 				D25188552054D3C8000147CC /* Assets.xcassets */,
 				D25188572054D3C8000147CC /* LaunchScreen.storyboard */,
@@ -105,6 +128,8 @@
 				D2264199205525A90001D758 /* MessageViewController.swift */,
 				D226419B205525F40001D758 /* UserProfileViewController.swift */,
 				D226419D20552E230001D758 /* ListCollectionView.swift */,
+				D226419F205550220001D758 /* UINavigationBar+Attributes.swift */,
+				D22641A1205550B50001D758 /* UIColor+HexColor.swift */,
 			);
 			path = Alpface;
 			sourceTree = "<group>";
@@ -168,6 +193,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D22641A6205555DC0001D758 /* MedulaOne-Regular.ttf in Resources */,
 				D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */,
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
 			);
@@ -185,6 +211,7 @@
 				D2D692D12054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D226418E205520C50001D758 /* MainTabBarController.swift in Sources */,
 				D2264192205521530001D758 /* StoryCreationViewController.swift in Sources */,
+				D22641A0205550220001D758 /* UINavigationBar+Attributes.swift in Sources */,
 				D226419C205525F40001D758 /* UserProfileViewController.swift in Sources */,
 				D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */,
 				D2264196205525740001D758 /* HomeViewController.swift in Sources */,
@@ -192,6 +219,7 @@
 				D226418C20551C260001D758 /* MainAppScrollingContainerItem.swift in Sources */,
 				D2264194205521C50001D758 /* StoryCameraViewController.swift in Sources */,
 				D226419A205525A90001D758 /* MessageViewController.swift in Sources */,
+				D22641A2205550B50001D758 /* UIColor+HexColor.swift in Sources */,
 				D2D692D520550227005C6E42 /* ScrollingContainerCell.swift in Sources */,
 				D2D692D32054FECA005C6E42 /* GestureCoordinatingCollectionView.swift in Sources */,
 				D226419E20552E230001D758 /* ListCollectionView.swift in Sources */,

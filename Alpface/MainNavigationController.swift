@@ -10,15 +10,22 @@ import UIKit
 
 class MainNavigationController: UINavigationController {
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setNavBarAtrributes()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
 
@@ -32,4 +39,15 @@ class MainNavigationController: UINavigationController {
     }
     */
 
+}
+
+extension MainNavigationController{
+    
+    fileprivate func setNavBarAtrributes(){
+        
+        navigationBar.setGradientBackground(colors: [UIColor(hex: "833AB4"), UIColor(hex: "FD1D1D"), UIColor(hex: "FCB045")])
+        
+        navigationBar.isTranslucent = false
+    }
+    
 }
