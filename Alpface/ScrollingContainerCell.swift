@@ -11,6 +11,7 @@ import UIKit
 @objc(ALPScrollingContainerCell)
 class ScrollingContainerCell: UICollectionViewCell {
     
-    
+    public var viewController: UIViewController?
+    public var containerScrollView: UIScrollView?
     
 }

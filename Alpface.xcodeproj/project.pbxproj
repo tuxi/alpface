@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D2264186205513710001D758 /* CollectionViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264185205513710001D758 /* CollectionViewSection.swift */; };
+		D226418A205514360001D758 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264189205514360001D758 /* BaseCellModel.swift */; };
+		D226418C20551C260001D758 /* MainAppScrollingContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226418B20551C260001D758 /* MainAppScrollingContainerItem.swift */; };
+		D226418E205520C50001D758 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226418D205520C50001D758 /* MainTabBarController.swift */; };
+		D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226418F205520DC0001D758 /* MainNavigationController.swift */; };
 		D251884F2054D3C8000147CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D251884E2054D3C8000147CC /* AppDelegate.swift */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
@@ -18,6 +23,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D2264185205513710001D758 /* CollectionViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewSection.swift; sourceTree = "<group>"; };
+		D2264189205514360001D758 /* BaseCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellModel.swift; sourceTree = "<group>"; };
+		D226418B20551C260001D758 /* MainAppScrollingContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppScrollingContainerItem.swift; sourceTree = "<group>"; };
+		D226418D205520C50001D758 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		D226418F205520DC0001D758 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D251884E2054D3C8000147CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D25188552054D3C8000147CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -69,6 +79,11 @@
 				D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */,
 				D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */,
 				D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */,
+				D2264185205513710001D758 /* CollectionViewSection.swift */,
+				D2264189205514360001D758 /* BaseCellModel.swift */,
+				D226418B20551C260001D758 /* MainAppScrollingContainerItem.swift */,
+				D226418D205520C50001D758 /* MainTabBarController.swift */,
+				D226418F205520DC0001D758 /* MainNavigationController.swift */,
 			);
 			path = Alpface;
 			sourceTree = "<group>";
@@ -146,10 +161,15 @@
 			files = (
 				D251884F2054D3C8000147CC /* AppDelegate.swift in Sources */,
 				D2D692D12054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift in Sources */,
+				D226418E205520C50001D758 /* MainTabBarController.swift in Sources */,
+				D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */,
+				D226418A205514360001D758 /* BaseCellModel.swift in Sources */,
+				D226418C20551C260001D758 /* MainAppScrollingContainerItem.swift in Sources */,
 				D2D692D520550227005C6E42 /* ScrollingContainerCell.swift in Sources */,
 				D2D692D32054FECA005C6E42 /* GestureCoordinatingCollectionView.swift in Sources */,
 				D2D692CD2054EA17005C6E42 /* RootViewController.swift in Sources */,
 				D2D692CF2054EE81005C6E42 /* MainAppViewController.swift in Sources */,
+				D2264186205513710001D758 /* CollectionViewSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,11 +21,13 @@ class MainAppScrollingContainerViewController: UIViewController {
         collectionView.delegate = self
         collectionView.isPagingEnabled = true
         collectionView.bounces = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.register(ScrollingContainerCell.classForCoder(), forCellWithReuseIdentifier: "ScrollingContainerCell")
         return collectionView
     }()
     
-    private lazy var collectionViewItems: [Any] = [Any]()
+    private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
     
     
     override func viewDidLoad() {
@@ -33,6 +35,7 @@ class MainAppScrollingContainerViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         setupUI()
+        setupCollectionViewItems()
     }
     
     private func setupUI() {
@@ -43,20 +46,26 @@ class MainAppScrollingContainerViewController: UIViewController {
     }
     
     private func setupCollectionViewItems() {
+        let section = CollectionViewSection()
+        collectionViewItems.append(section)
+        for _ in 0...2 {
+            let item = MainAppScrollingContainerItem()
+            item.height = view.frame.size.height
+            section.items.append(item)
+        }
         
+        collectionView.reloadData()
     }
-
-
 }
 
 extension MainAppScrollingContainerViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return collectionViewItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return collectionViewItems[section].items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
