@@ -20,6 +20,8 @@ class GestureCoordinatingCollectionView: UICollectionView, UIGestureRecognizerDe
         // Drawing code
     }
     */
-    
+    override func touchesShouldCancel(in view: UIView) -> Bool {
+        return true
+    }
 
 }

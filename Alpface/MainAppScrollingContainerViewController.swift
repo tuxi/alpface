@@ -24,6 +24,8 @@ class MainAppScrollingContainerViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(ScrollingContainerCell.classForCoder(), forCellWithReuseIdentifier: "ScrollingContainerCell")
+        // 设置delaysContentTouches为false目的是为了防止UIButton快速按不产生高亮效果
+        collectionView.delaysContentTouches = false
         return collectionView
     }()
     
@@ -54,7 +56,8 @@ class MainAppScrollingContainerViewController: UIViewController {
             case 0:
                 // 创建故事
                 let createVc = StoryCreationViewController()
-                item.model = createVc
+                let nav = MainNavigationController(rootViewController: createVc)
+                item.model = nav
                 break
             case 1:
                 // 主页
@@ -75,7 +78,7 @@ class MainAppScrollingContainerViewController: UIViewController {
                 item.model = tabBarVc
                 break
             case 2:
-                let vc = UIViewController()
+                let vc = UserProfileViewController()
                 item.model = vc
                 break
             default:
@@ -103,14 +106,14 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ScrollingContainerCell", for: indexPath) as! ScrollingContainerCell
-        let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
-        let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
-        let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
+//        let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
+//        let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
+//        let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         
         let sec = collectionViewItems[indexPath.section]
         cell.model = sec.items[indexPath.row] as? MainAppScrollingContainerItem
         
-        cell.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
+//        cell.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
         
         return cell
     }
