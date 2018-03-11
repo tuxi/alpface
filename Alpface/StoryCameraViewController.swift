@@ -34,17 +34,16 @@ class StoryCreationContentView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.green, for: .normal)
-        button.setTitleColor(UIColor.lightGray, for: .selected)
+        button.setTitleColor(UIColor.lightGray, for: .highlighted)
         button.setTitle("启用相机访问权限", for: .normal)
-        button.showsTouchWhenHighlighted = true
         return button
     }()
     
     lazy var microAuthorButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.green, for: .normal)
-        button.setTitleColor(UIColor.lightGray, for: .selected)
+        button.setTitleColor(UIColor.lightGray, for: .highlighted)
         button.setTitle("启用麦克风访问权限", for: .normal)
         return button
     }()
