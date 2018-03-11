@@ -8,21 +8,24 @@
 
 import UIKit
 
+@objc(ALPMainAppScrollingContainerViewController)
 class MainAppScrollingContainerViewController: UIViewController {
 
-    fileprivate lazy var collectionView: UICollectionView = {
+    fileprivate lazy var collectionView: GestureCoordinatingCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0.0
         layout.minimumInteritemSpacing = 0.0
         layout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = GestureCoordinatingCollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isPagingEnabled = true
         collectionView.bounces = false
-        collectionView.register(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "AppScrollingContainerCollectionViewCell")
+        collectionView.register(ScrollingContainerCell.classForCoder(), forCellWithReuseIdentifier: "ScrollingContainerCell")
         return collectionView
     }()
+    
+    private lazy var collectionViewItems: [Any] = [Any]()
     
     
     override func viewDidLoad() {
@@ -38,11 +41,11 @@ class MainAppScrollingContainerViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    private func setupCollectionViewItems() {
+        
     }
+
 
 }
 
@@ -58,7 +61,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AppScrollingContainerCollectionViewCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ScrollingContainerCell", for: indexPath)
         let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0

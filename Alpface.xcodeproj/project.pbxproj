@@ -13,6 +13,8 @@
 		D2D692CD2054EA17005C6E42 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692CC2054EA17005C6E42 /* RootViewController.swift */; };
 		D2D692CF2054EE81005C6E42 /* MainAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692CE2054EE81005C6E42 /* MainAppViewController.swift */; };
 		D2D692D12054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */; };
+		D2D692D32054FECA005C6E42 /* GestureCoordinatingCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */; };
+		D2D692D520550227005C6E42 /* ScrollingContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		D2D692CC2054EA17005C6E42 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		D2D692CE2054EE81005C6E42 /* MainAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppViewController.swift; sourceTree = "<group>"; };
 		D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppScrollingContainerViewController.swift; sourceTree = "<group>"; };
+		D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureCoordinatingCollectionView.swift; sourceTree = "<group>"; };
+		D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingContainerCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				D2D692CC2054EA17005C6E42 /* RootViewController.swift */,
 				D2D692CE2054EE81005C6E42 /* MainAppViewController.swift */,
 				D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */,
+				D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */,
+				D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */,
 			);
 			path = Alpface;
 			sourceTree = "<group>";
@@ -140,6 +146,8 @@
 			files = (
 				D251884F2054D3C8000147CC /* AppDelegate.swift in Sources */,
 				D2D692D12054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift in Sources */,
+				D2D692D520550227005C6E42 /* ScrollingContainerCell.swift in Sources */,
+				D2D692D32054FECA005C6E42 /* GestureCoordinatingCollectionView.swift in Sources */,
 				D2D692CD2054EA17005C6E42 /* RootViewController.swift in Sources */,
 				D2D692CF2054EE81005C6E42 /* MainAppViewController.swift in Sources */,
 			);

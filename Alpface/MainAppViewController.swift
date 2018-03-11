@@ -8,9 +8,10 @@
 
 import UIKit
 
+@objc(ALPMainAppViewController)
 class MainAppViewController: UIViewController {
 
-    private lazy var scrollingContainerController: MainAppScrollingContainerViewController = {
+    private lazy var scrollingContainer: MainAppScrollingContainerViewController = {
         let controller = MainAppScrollingContainerViewController()
         return controller
         
@@ -26,10 +27,10 @@ class MainAppViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.addSubview(scrollingContainerController.view)
-        scrollingContainerController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[view]|", options: [], metrics: nil, views: ["view": scrollingContainerController.view]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: ["view": scrollingContainerController.view]))
+        view.addSubview(scrollingContainer.view)
+        scrollingContainer.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[view]|", options: [], metrics: nil, views: ["view": scrollingContainer.view]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: ["view": scrollingContainer.view]))
     }
 
     override func didReceiveMemoryWarning() {

@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objc(ALPAppDelegate)
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

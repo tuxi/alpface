@@ -8,12 +8,15 @@
 
 import UIKit
 
+@objc(ALPRootViewController)
 class RootViewController: UIViewController {
 
     private lazy var appViewController: MainAppViewController = {
        let controller = MainAppViewController()
         return controller
     }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
