@@ -41,6 +41,13 @@ class MainAppScrollingContainerViewController: UIViewController {
         }
     }
     
+    public func show(page index: NSInteger, animated: Bool) {
+        if collectionView.indexPathsForVisibleItems.first?.row == index {
+            return
+        }
+        collectionView .scrollToItem(at: IndexPath.init(row: index, section: 0), at: .centeredHorizontally, animated: animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,6 +77,7 @@ class MainAppScrollingContainerViewController: UIViewController {
             case 0:
                 // 创建故事
                 let createVc = StoryCreationViewController()
+                createVc.delegate = self as StoryCreationViewControllerDelegate
                 let nav = MainNavigationController(rootViewController: createVc)
                 item.model = nav
                 break
@@ -78,6 +86,7 @@ class MainAppScrollingContainerViewController: UIViewController {
                 let tabBarVc = MainTabBarController()
                 let homeVc = HomeViewController()
                 homeVc.title = "home"
+                homeVc.navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "potd-mini"), style: .plain, target: self, action: #selector(openStoryCreationPage))
                 let searchVc = ExploreViewController()
                 searchVc.title = "search"
                 let messageVc = MessageViewController()
@@ -109,6 +118,11 @@ class MainAppScrollingContainerViewController: UIViewController {
 //        guard let displayVc = displayViewController else { return .default }
 //        return displayVc.preferredStatusBarStyle
         return .lightContent
+    }
+    
+    // MARK: - Actions
+    @objc private func openStoryCreationPage() {
+        show(page: 0, animated: true)
     }
 
 }
@@ -165,5 +179,11 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         return collectionViewItems[indexPath.section].items[indexPath.row].size
+    }
+}
+
+extension MainAppScrollingContainerViewController: StoryCreationViewControllerDelegate {
+    func storyCreationViewController(didClickBackButton button: UIButton) {
+        show(page: 1, animated: true)
     }
 }
