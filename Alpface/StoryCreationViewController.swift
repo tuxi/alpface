@@ -74,7 +74,10 @@ class StoryCreationViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        return .lightContent
     }
-
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }

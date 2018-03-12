@@ -33,6 +33,11 @@ class MainNavigationController: UINavigationController {
         guard let topVc = topViewController else { return nil }
         return topVc
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        guard let topVc = topViewController else { return false }
+        return topVc.prefersStatusBarHidden
+    }
 
 }
 

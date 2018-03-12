@@ -26,5 +26,10 @@ class MainTabBarController: UITabBarController {
         guard let selectedViewController = selectedViewController else { return .default }
         return selectedViewController.preferredStatusBarStyle
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        guard let selectedViewController = selectedViewController else { return false }
+        return selectedViewController.prefersStatusBarHidden
+    }
 
 }

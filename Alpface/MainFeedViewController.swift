@@ -102,6 +102,10 @@ class MainFeedViewController: UIViewController {
         return .lightContent
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
+    
     override var childViewControllerForStatusBarStyle: UIViewController? {
         return nil
     }

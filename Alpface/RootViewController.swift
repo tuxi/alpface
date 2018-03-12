@@ -46,6 +46,10 @@ class RootViewController: UIViewController {
         return .fade
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return appViewController.prefersStatusBarHidden
+    }
+    
     override var childViewControllerForStatusBarStyle: UIViewController? {
         return appViewController.childViewControllerForStatusBarStyle
     }

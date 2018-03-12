@@ -116,6 +116,11 @@ class MainAppScrollingContainerViewController: UIViewController {
         return displayVc.preferredStatusBarStyle
     }
     
+    override var prefersStatusBarHidden: Bool {
+        guard let displayVc = displayViewController else { return false }
+        return displayVc.prefersStatusBarHidden
+    }
+    
     // MARK: - Actions
     @objc private func openStoryCreationPage() {
         show(page: 0, animated: true)
