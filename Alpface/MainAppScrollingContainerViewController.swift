@@ -84,6 +84,7 @@ class MainAppScrollingContainerViewController: UIViewController {
             case 1:
                 // 主页
                 let tabBarVc = MainTabBarController()
+                tabBarVc.delegate = self
                 let homeVc = HomeViewController()
                 homeVc.title = "home"
                 homeVc.navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "potd-mini"), style: .plain, target: self, action: #selector(openStoryCreationPage))
@@ -185,5 +186,17 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
 extension MainAppScrollingContainerViewController: StoryCreationViewControllerDelegate {
     func storyCreationViewController(didClickBackButton button: UIButton) {
         show(page: 1, animated: true)
+    }
+}
+
+
+extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if tabBarController.selectedIndex == 0 {
+            collectionView.isScrollEnabled = true
+        }
+        else {
+            collectionView.isScrollEnabled = false
+        }
     }
 }
