@@ -29,6 +29,11 @@ class StoryCreationViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     private func setupUI() {
         view.addSubview(cameraVc.view)
         cameraVc.view.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +74,7 @@ class StoryCreationViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
 
 }

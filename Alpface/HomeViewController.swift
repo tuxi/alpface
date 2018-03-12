@@ -40,6 +40,10 @@ class HomeViewController: UIViewController {
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     fileprivate func setupUI() {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,6 +69,10 @@ class HomeViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent
+    }
+    
+    override var childViewControllerForStatusBarStyle: UIViewController? {
+        return nil
     }
 }
 

@@ -46,6 +46,10 @@ class RootViewController: UIViewController {
         return .fade
     }
     
+    override var childViewControllerForStatusBarStyle: UIViewController? {
+        return appViewController.childViewControllerForStatusBarStyle
+    }
+    
 
     /*
     // MARK: - Navigation

@@ -31,7 +31,7 @@ class MainAppScrollingContainerViewController: UIViewController {
     }()
     
     private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
-    
+    public var initialPage = 0
     private var displayViewController: UIViewController? {
         get {
             let indexPath = collectionView.indexPathsForVisibleItems.first
@@ -56,10 +56,6 @@ class MainAppScrollingContainerViewController: UIViewController {
         setupCollectionViewItems()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setNeedsStatusBarAppearanceUpdate()
-    }
     
     private func setupUI() {
         view.addSubview(collectionView)
@@ -116,14 +112,32 @@ class MainAppScrollingContainerViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-//        guard let displayVc = displayViewController else { return .default }
-//        return displayVc.preferredStatusBarStyle
-        return .lightContent
+        guard let displayVc = displayViewController else { return .default }
+        return displayVc.preferredStatusBarStyle
     }
     
     // MARK: - Actions
     @objc private func openStoryCreationPage() {
         show(page: 0, animated: true)
+    }
+
+}
+
+extension MainAppScrollingContainerViewController {
+    override func beginAppearanceTransition(_ isAppearing: Bool, animated: Bool) {
+        super.beginAppearanceTransition(isAppearing, animated: animated)
+        guard let displayVc = displayViewController else {
+            return
+        }
+        displayVc .beginAppearanceTransition(isAppearing, animated: animated)
+    }
+    
+    override func endAppearanceTransition() {
+        super.endAppearanceTransition()
+        guard let displayVc = displayViewController else {
+            return
+        }
+        displayVc.endAppearanceTransition()
     }
 
 }
@@ -149,31 +163,26 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        let cellModel = collectionViewItems[indexPath.section].items[indexPath.row]
-//        guard let vc = cellModel.model else {
-//            collectionView.isScrollEnabled = true
-//            return
-//        }
-//        if indexPath.row == 1 && vc.classForCoder == UITabBarController.self{
-//            let tabBarController = vc as! UITabBarController
-//
-//            if tabBarController.selectedIndex == 0 && tabBarController.selectedViewController?.classForCoder == HomeViewController.self {
-//                collectionView.isScrollEnabled = true
-//            }
-//            else {
-//                collectionView.isScrollEnabled = false
-//            }
-//        }
-//        else {
-//            collectionView.isScrollEnabled = true
-//        }
-//
-//    }
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
+    }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        setNeedsStatusBarAppearanceUpdate()
-        
+        if initialPage > 0 {
+            show(page: initialPage, animated: false)
+            initialPage = 0
+        }
+//        guard let fromVC = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
+//        fromVC.beginAppearanceTransition(false, animated: true)
+//
+//        // 获取即将显示的控制器
+//        let targetRow = Int(max(collectionView.contentOffset.x / collectionView.frame.size.width, 0))
+//        if targetRow == indexPath.row {
+//            return
+//        }
+//        guard let targetVc = collectionViewItems[0].items[targetRow].model as? UIViewController else {return}
+//        targetVc.beginAppearanceTransition(true, animated: true)
+//        targetVc.endAppearanceTransition()
     }
     
     
@@ -192,6 +201,7 @@ extension MainAppScrollingContainerViewController: StoryCreationViewControllerDe
 
 extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        /// 只有首页才支持左右滑动切换控制器，向左滑动到创建故事页面，向右滑动到我的个人主页
         if tabBarController.selectedIndex == 0 {
             collectionView.isScrollEnabled = true
         }

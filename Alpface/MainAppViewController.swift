@@ -13,6 +13,7 @@ class MainAppViewController: UIViewController {
 
     private lazy var scrollingContainer: MainAppScrollingContainerViewController = {
         let controller = MainAppScrollingContainerViewController()
+        controller.initialPage = 1
         return controller
         
     }()
@@ -40,6 +41,10 @@ class MainAppViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return scrollingContainer.preferredStatusBarStyle
+    }
+    
+    override var childViewControllerForStatusBarStyle: UIViewController? {
+        return scrollingContainer.childViewControllerForStatusBarStyle
     }
 
 }

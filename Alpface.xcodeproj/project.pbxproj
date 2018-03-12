@@ -22,6 +22,7 @@
 		D22641A0205550220001D758 /* UINavigationBar+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419F205550220001D758 /* UINavigationBar+Attributes.swift */; };
 		D22641A2205550B50001D758 /* UIColor+HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641A1205550B50001D758 /* UIColor+HexColor.swift */; };
 		D22641A6205555DC0001D758 /* MedulaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D22641A5205555DC0001D758 /* MedulaOne-Regular.ttf */; };
+		D22641CC2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641CB2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift */; };
 		D251884F2054D3C8000147CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D251884E2054D3C8000147CC /* AppDelegate.swift */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
@@ -48,6 +49,7 @@
 		D226419F205550220001D758 /* UINavigationBar+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Attributes.swift"; sourceTree = "<group>"; };
 		D22641A1205550B50001D758 /* UIColor+HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColor.swift"; sourceTree = "<group>"; };
 		D22641A5205555DC0001D758 /* MedulaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MedulaOne-Regular.ttf"; sourceTree = "<group>"; };
+		D22641CB2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+StatusBarAppearanceUpdate.swift"; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D251884E2054D3C8000147CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D25188552054D3C8000147CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				D226419D20552E230001D758 /* ListCollectionView.swift */,
 				D226419F205550220001D758 /* UINavigationBar+Attributes.swift */,
 				D22641A1205550B50001D758 /* UIColor+HexColor.swift */,
+				D22641CB2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift */,
 			);
 			path = Alpface;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 				D226418E205520C50001D758 /* MainTabBarController.swift in Sources */,
 				D2264192205521530001D758 /* StoryCreationViewController.swift in Sources */,
 				D22641A0205550220001D758 /* UINavigationBar+Attributes.swift in Sources */,
+				D22641CC2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
 				D226419C205525F40001D758 /* UserProfileViewController.swift in Sources */,
 				D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */,
 				D2264196205525740001D758 /* HomeViewController.swift in Sources */,
