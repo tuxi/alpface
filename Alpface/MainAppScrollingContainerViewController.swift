@@ -81,7 +81,7 @@ class MainAppScrollingContainerViewController: UIViewController {
                 // 主页
                 let tabBarVc = MainTabBarController()
                 tabBarVc.delegate = self
-                let homeVc = HomeViewController()
+                let homeVc = MainFeedViewController()
                 homeVc.title = "home"
                 homeVc.navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "potd-mini"), style: .plain, target: self, action: #selector(openStoryCreationPage))
                 let searchVc = ExploreViewController()

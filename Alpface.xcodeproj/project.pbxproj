@@ -14,7 +14,7 @@
 		D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226418F205520DC0001D758 /* MainNavigationController.swift */; };
 		D2264192205521530001D758 /* StoryCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264191205521530001D758 /* StoryCreationViewController.swift */; };
 		D2264194205521C50001D758 /* StoryCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264193205521C50001D758 /* StoryCameraViewController.swift */; };
-		D2264196205525740001D758 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264195205525740001D758 /* HomeViewController.swift */; };
+		D2264196205525740001D758 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264195205525740001D758 /* MainFeedViewController.swift */; };
 		D22641982055259C0001D758 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641972055259C0001D758 /* ExploreViewController.swift */; };
 		D226419A205525A90001D758 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264199205525A90001D758 /* MessageViewController.swift */; };
 		D226419C205525F40001D758 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419B205525F40001D758 /* UserProfileViewController.swift */; };
@@ -31,6 +31,10 @@
 		D2D692D12054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */; };
 		D2D692D32054FECA005C6E42 /* GestureCoordinatingCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */; };
 		D2D692D520550227005C6E42 /* ScrollingContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */; };
+		D2E3E1282056D068003CCEEC /* MainFeedViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E1272056D068003CCEEC /* MainFeedViewCell.swift */; };
+		D2E3E12A2056D188003CCEEC /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */; };
+		D2E3E12C2056D206003CCEEC /* PlayInteractionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */; };
+		D2E3E12E2056D312003CCEEC /* FeedCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +45,7 @@
 		D226418F205520DC0001D758 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		D2264191205521530001D758 /* StoryCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCreationViewController.swift; sourceTree = "<group>"; };
 		D2264193205521C50001D758 /* StoryCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCameraViewController.swift; sourceTree = "<group>"; };
-		D2264195205525740001D758 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D2264195205525740001D758 /* MainFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
 		D22641972055259C0001D758 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		D2264199205525A90001D758 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		D226419B205525F40001D758 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +64,10 @@
 		D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppScrollingContainerViewController.swift; sourceTree = "<group>"; };
 		D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureCoordinatingCollectionView.swift; sourceTree = "<group>"; };
 		D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingContainerCell.swift; sourceTree = "<group>"; };
+		D2E3E1272056D068003CCEEC /* MainFeedViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedViewCell.swift; sourceTree = "<group>"; };
+		D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
+		D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayInteractionViewController.swift; sourceTree = "<group>"; };
+		D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +133,8 @@
 				D226418F205520DC0001D758 /* MainNavigationController.swift */,
 				D2264191205521530001D758 /* StoryCreationViewController.swift */,
 				D2264193205521C50001D758 /* StoryCameraViewController.swift */,
-				D2264195205525740001D758 /* HomeViewController.swift */,
+				D2264195205525740001D758 /* MainFeedViewController.swift */,
+				D2E3E1272056D068003CCEEC /* MainFeedViewCell.swift */,
 				D22641972055259C0001D758 /* ExploreViewController.swift */,
 				D2264199205525A90001D758 /* MessageViewController.swift */,
 				D226419B205525F40001D758 /* UserProfileViewController.swift */,
@@ -133,6 +142,9 @@
 				D226419F205550220001D758 /* UINavigationBar+Attributes.swift */,
 				D22641A1205550B50001D758 /* UIColor+HexColor.swift */,
 				D22641CB2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift */,
+				D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */,
+				D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */,
+				D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */,
 			);
 			path = Alpface;
 			sourceTree = "<group>";
@@ -218,11 +230,15 @@
 				D22641CC2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
 				D226419C205525F40001D758 /* UserProfileViewController.swift in Sources */,
 				D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */,
-				D2264196205525740001D758 /* HomeViewController.swift in Sources */,
+				D2264196205525740001D758 /* MainFeedViewController.swift in Sources */,
 				D226418A205514360001D758 /* BaseCellModel.swift in Sources */,
+				D2E3E12C2056D206003CCEEC /* PlayInteractionViewController.swift in Sources */,
 				D226418C20551C260001D758 /* MainAppScrollingContainerItem.swift in Sources */,
 				D2264194205521C50001D758 /* StoryCameraViewController.swift in Sources */,
+				D2E3E1282056D068003CCEEC /* MainFeedViewCell.swift in Sources */,
+				D2E3E12E2056D312003CCEEC /* FeedCellViewController.swift in Sources */,
 				D226419A205525A90001D758 /* MessageViewController.swift in Sources */,
+				D2E3E12A2056D188003CCEEC /* PlayVideoViewController.swift in Sources */,
 				D22641A2205550B50001D758 /* UIColor+HexColor.swift in Sources */,
 				D2D692D520550227005C6E42 /* ScrollingContainerCell.swift in Sources */,
 				D2D692D32054FECA005C6E42 /* GestureCoordinatingCollectionView.swift in Sources */,

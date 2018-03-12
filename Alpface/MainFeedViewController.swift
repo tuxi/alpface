@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class MainFeedViewController: UIViewController {
     
     fileprivate lazy var refreshControl: UIRefreshControl = {
         let refresher = UIRefreshControl()
@@ -24,11 +24,11 @@ class HomeViewController: UIViewController {
         let collectionView = GestureCoordinatingCollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
-//        collectionView.isPagingEnabled = true
-//        collectionView.bounces = false
+        collectionView.isPagingEnabled = true
+        collectionView.bounces = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.register(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "HomeViewController")
+        collectionView.register(MainFeedViewCell.classForCoder(), forCellWithReuseIdentifier: "MainFeedViewCell")
         collectionView.backgroundColor = UIColor.white
         return collectionView
     }()
@@ -45,6 +45,10 @@ class HomeViewController: UIViewController {
     }
     
     fileprivate func setupUI() {
+        automaticallyAdjustsScrollViewInsets = false
+        if #available(iOS 11.0, *) {
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
@@ -52,8 +56,35 @@ class HomeViewController: UIViewController {
         
         collectionView.refreshControl = refreshControl
         
+        // 设置导航栏标题属性：设置标题字体
         let font = UIFont(name: "MedulaOne-Regular", size: 30.0)
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 30.0)]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 30.0), NSAttributedStringKey.foregroundColor: UIColor.white]
+        
+        // 设置导航栏前景色：设置item指示色
+        navigationController?.navigationBar.tintColor = UIColor.white
+        
+        // 设置导航栏半透明
+        navigationController?.navigationBar.isTranslucent = true
+        
+        // 设置导航栏背景图片
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        
+        // 设置导航栏阴影图片
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        // 在设置tabBar为透明色前,保存所有属性设置:
+//        let originalBackgroundImage = tabBarController?.tabBar.backgroundImage
+//        let originalshadowImage = tabBarController?.tabBar.shadowImage
+//        let originalbackgroundColor = tabBarController?.tabBar.backgroundColor
+        // 然后设置为透明色:
+        tabBarController?.tabBar.backgroundColor = .clear
+        tabBarController?.tabBar.backgroundImage = UIImage()
+        tabBarController?.tabBar.shadowImage = UIImage()
+        tabBarController?.tabBar.isTranslucent = true
+        // 接着就可以把它改回默认样式了
+//        tabBarController?.tabBar.backgroundColor = originalbackgroundColor
+//        tabBarController?.tabBar.backgroundImage = originalBackgroundImage
+//        tabBarController?.tabBar.shadowImage = originalshadowImage
     }
     
     @objc fileprivate func afterRefresher(){
@@ -76,7 +107,7 @@ class HomeViewController: UIViewController {
     }
 }
 
-extension HomeViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -88,7 +119,7 @@ extension HomeViewController : UICollectionViewDataSource, UICollectionViewDeleg
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeViewController", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainFeedViewCell", for: indexPath)
         let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
@@ -101,6 +132,6 @@ extension HomeViewController : UICollectionViewDataSource, UICollectionViewDeleg
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: collectionView.frame.size.width, height: 200.0)
+        return collectionView.frame.size
     }
 }
