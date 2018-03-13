@@ -28,6 +28,7 @@ class MainAppViewController: UIViewController {
     }
     
     private func setupUI() {
+        view.backgroundColor = UIColor.clear
         view.addSubview(scrollingContainer.view)
         scrollingContainer.view.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[view]|", options: [], metrics: nil, views: ["view": scrollingContainer.view]))

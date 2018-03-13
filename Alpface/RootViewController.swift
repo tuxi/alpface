@@ -31,6 +31,7 @@ class RootViewController: UIViewController {
     }
     
     private func setupUI() {
+        view.backgroundColor = UIColor.clear
         view.addSubview(appViewController.view)
         appViewController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[appView]|", options: [], metrics: nil, views: ["appView": appViewController.view]))

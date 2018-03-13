@@ -58,6 +58,9 @@ class MainAppScrollingContainerViewController: UIViewController {
     
     
     private func setupUI() {
+        view.backgroundColor = UIColor.clear
+        collectionView.layer.cornerRadius = 3.0
+        collectionView.layer.masksToBounds = true
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
@@ -96,6 +99,11 @@ class MainAppScrollingContainerViewController: UIViewController {
                 let nav4 = MainNavigationController(rootViewController: userProfileVc)
                 tabBarVc.setViewControllers([nav1, nav2, nav3, nav4], animated: true)
                 item.model = tabBarVc
+                tabBarVc.tabBar.backgroundColor = .clear
+                tabBarVc.tabBar.backgroundImage = UIImage()
+                tabBarVc.tabBar.shadowImage = UIImage()
+                tabBarVc.tabBar.isTranslucent = true
+
                 break
             case 2:
                 let vc = UserProfileViewController()
@@ -213,5 +221,6 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         else {
             collectionView.isScrollEnabled = false
         }
+        
     }
 }

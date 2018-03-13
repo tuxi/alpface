@@ -71,20 +71,7 @@ class MainFeedViewController: UIViewController {
         
         // 设置导航栏阴影图片
         navigationController?.navigationBar.shadowImage = UIImage()
-        
-        // 在设置tabBar为透明色前,保存所有属性设置:
-//        let originalBackgroundImage = tabBarController?.tabBar.backgroundImage
-//        let originalshadowImage = tabBarController?.tabBar.shadowImage
-//        let originalbackgroundColor = tabBarController?.tabBar.backgroundColor
-        // 然后设置为透明色:
-        tabBarController?.tabBar.backgroundColor = .clear
-        tabBarController?.tabBar.backgroundImage = UIImage()
-        tabBarController?.tabBar.shadowImage = UIImage()
-        tabBarController?.tabBar.isTranslucent = true
-        // 接着就可以把它改回默认样式了
-//        tabBarController?.tabBar.backgroundColor = originalbackgroundColor
-//        tabBarController?.tabBar.backgroundImage = originalBackgroundImage
-//        tabBarController?.tabBar.shadowImage = originalshadowImage
+    
     }
     
     @objc fileprivate func afterRefresher(){
