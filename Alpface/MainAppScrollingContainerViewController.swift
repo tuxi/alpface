@@ -103,6 +103,12 @@ class MainAppScrollingContainerViewController: UIViewController {
                 tabBarVc.tabBar.backgroundImage = UIImage()
                 tabBarVc.tabBar.shadowImage = UIImage()
                 tabBarVc.tabBar.isTranslucent = true
+                // 设置tabbarItem的文本向上便宜10.0，因为无图片，所以尽量居中显示
+                let offSet = UIOffsetMake(0.0, -10.0)
+                nav1.tabBarItem.titlePositionAdjustment = offSet
+                nav2.tabBarItem.titlePositionAdjustment = offSet
+                nav3.tabBarItem.titlePositionAdjustment = offSet
+                nav4.tabBarItem.titlePositionAdjustment = offSet
 
                 break
             case 2:
