@@ -10,10 +10,35 @@ import UIKit
 
 class MainFeedViewCell: UICollectionViewCell {
     
-    public var viewController: FeedCellViewController? {
+    public var url: URL? {
         didSet(newValue) {
             
+            viewController.url = url
         }
     }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    private func setup() {
+        contentView.addSubview(viewController.view)
+        viewController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        viewController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        viewController.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        viewController.view.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+    }
+    
+    private var viewController: FeedCellViewController = {
+       let vc = FeedCellViewController()
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        return vc
+    }()
     
 }

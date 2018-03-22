@@ -11,20 +11,34 @@ import UIKit
 @objc(ALPFeedCellViewController)
 class FeedCellViewController: UIViewController {
     
+    public var url: URL? {
+        didSet {
+            guard let url = self.url else { return }
+            playVideoVc?.playerBack(url: url)
+        }
+    }
     /// 播放视频控制器
-    public var videoController: PlayVideoViewController?
+    private var playVideoVc: PlayVideoViewController?
     /// 处理及展示视频的描述、字幕、点赞数、作者信息的控制器
     public var interactionController: PlayInteractionViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        playVideoVc = PlayVideoViewController()
+        view.addSubview((playVideoVc?.view)!)
+        playVideoVc?.view.translatesAutoresizingMaskIntoConstraints = false
+        playVideoVc?.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        playVideoVc?.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        playVideoVc?.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        playVideoVc?.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+       
     }
     
 

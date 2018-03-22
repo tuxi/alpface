@@ -110,12 +110,13 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainFeedViewCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainFeedViewCell", for: indexPath) as! MainFeedViewCell
         let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         
-        
+        let url = URL.init(string: "http://10.211.55.3:8889/media/media_itemsqbh3SumU_QkNFk97.mp4")
+        cell.url = url
         cell.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
         
         return cell

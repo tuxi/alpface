@@ -35,6 +35,7 @@
 		D2E3E12A2056D188003CCEEC /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */; };
 		D2E3E12C2056D206003CCEEC /* PlayInteractionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */; };
 		D2E3E12E2056D312003CCEEC /* FeedCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */; };
+		D2E5A6E6205C197A00FAF8D1 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5A6E5205C197A00FAF8D1 /* VideoPlayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
 		D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayInteractionViewController.swift; sourceTree = "<group>"; };
 		D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellViewController.swift; sourceTree = "<group>"; };
+		D2E5A6E5205C197A00FAF8D1 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 				D22641A1205550B50001D758 /* UIColor+HexColor.swift */,
 				D22641CB2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift */,
 				D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */,
+				D2E5A6E5205C197A00FAF8D1 /* VideoPlayerView.swift */,
 				D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */,
 				D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */,
 			);
@@ -232,6 +235,7 @@
 				D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */,
 				D2264196205525740001D758 /* MainFeedViewController.swift in Sources */,
 				D226418A205514360001D758 /* BaseCellModel.swift in Sources */,
+				D2E5A6E6205C197A00FAF8D1 /* VideoPlayerView.swift in Sources */,
 				D2E3E12C2056D206003CCEEC /* PlayInteractionViewController.swift in Sources */,
 				D226418C20551C260001D758 /* MainAppScrollingContainerItem.swift in Sources */,
 				D2264194205521C50001D758 /* StoryCameraViewController.swift in Sources */,

@@ -9,6 +9,46 @@
 import UIKit
 
 class PlayInteractionViewController: UIViewController {
+    
+    fileprivate lazy var progressView: UIProgressView = {
+        let progressView = UIProgressView.init(progressViewStyle: .default)
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        return progressView
+    }()
+    
+    fileprivate lazy var slider: UISlider = {
+        let slider = UISlider.init()
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        return slider
+    }()
+    
+    fileprivate lazy var playButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button .setTitle("播放", for: .normal)
+        return button
+    }()
+    
+    fileprivate lazy var fullButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("全屏", for: .normal)
+        return button
+    }()
+    
+    fileprivate lazy var totalDurationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "00:00"
+        return label
+    }()
+    
+    fileprivate lazy var currentDurationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "00:00"
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
