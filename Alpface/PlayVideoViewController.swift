@@ -14,9 +14,11 @@ class PlayVideoViewController: UIViewController {
     
     //播放器容器
     var containerView: VideoPlayerView = {
-       let  containerView = VideoPlayerView(frame: .zero)
+        let  containerView = VideoPlayerView(frame: .zero)
         containerView.backgroundColor = UIColor.gray
         containerView.translatesAutoresizingMaskIntoConstraints = false
+        let playerLayer = containerView.layer as! AVPlayerLayer
+        playerLayer.videoGravity = .resizeAspect //视频填充模式
         return containerView
     }()
     //播放/暂停按钮
@@ -25,12 +27,12 @@ class PlayVideoViewController: UIViewController {
         playOrPauseButton.translatesAutoresizingMaskIntoConstraints = false
         return playOrPauseButton
     }()
-    //播放进度
+    // 播放进度
     var progress: UIProgressView = {
         let progress = UIProgressView(frame: .zero)
         progress.translatesAutoresizingMaskIntoConstraints = false
         progress.progressTintColor = UIColor.blue
-        progress.trackTintColor = UIColor.gray
+        progress.trackTintColor = UIColor.red
         return progress
     }()
     //显示播放时间
@@ -67,7 +69,7 @@ class PlayVideoViewController: UIViewController {
         isViewDidLoad = true
         createUI()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -82,7 +84,7 @@ class PlayVideoViewController: UIViewController {
         containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         containerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         
-        view.addSubview(playOrPauseButton)
+        containerView.addSubview(playOrPauseButton)
         playOrPauseButton.widthAnchor.constraint(equalToConstant: 50.0).isActive = true
         playOrPauseButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
         playOrPauseButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
@@ -94,7 +96,7 @@ class PlayVideoViewController: UIViewController {
         
         view.addSubview(progress)
         progress.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10.0).isActive = true
-         progress.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10.0).isActive = true
+        progress.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10.0).isActive = true
         progress.heightAnchor.constraint(equalToConstant: 3.0).isActive = true
         progress.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 10.0).isActive = true
         
@@ -103,26 +105,24 @@ class PlayVideoViewController: UIViewController {
         timeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20.0).isActive = true
         timeLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20.0).isActive = true
         
-        addObserver()
-        addProgressObserver()
-        
         if (playInViewDidLoad == true) {
             playInViewDidLoad = false
             playerBack(url: self.url!)
         }
+        
     }
-
-   /// 获取本地资源，并添加观察者，等资源准备完毕，开始播放
+    
+    /// 获取本地资源，并添加观察者，等资源准备完毕，开始播放
     public func playerBack(url: URL) {
-      
+        removeObserver()
         //获取本地视频资源
-//        guard let path = Bundle.main.path(forResource: "1", ofType: ".mp4") else {
-//            return
-//        }
-//        //播放本地视频
-//        let url = NSURL(fileURLWithPath: path)
+        guard let path = Bundle.main.path(forResource: "test", ofType: "mov") else {
+            return
+        }
+        //播放本地视频
+        let url = NSURL(fileURLWithPath: path)
         //播放网络视频
-//        let url = NSURL(string: "http://10.211.55.3:8889/media/media_itemsqbh3SumU_QkNFk97.mp4")!
+        //        let url = NSURL(string: "http://10.211.55.3:8889/media/media_itemsqbh3SumU_QkNFk97.mp4")!
         playerItem = AVPlayerItem(url: url as URL)
         if isViewDidLoad == false {
             playInViewDidLoad = true
@@ -141,9 +141,10 @@ class PlayVideoViewController: UIViewController {
             player = AVPlayer(playerItem: playerItem)
             playerLayer.player = player
         }
+        player?.play()
         
-        playerLayer.videoGravity = .resizeAspect //视频填充模式
-        playerLayer.player = player
+        addObserver()
+        addProgressObserver()
     }
     
     //给播放器添加进度更新
@@ -168,7 +169,8 @@ class PlayVideoViewController: UIViewController {
         playerItem?.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidReachEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
     }
-
+    
+    
     ///  通过KVO监控播放器状态
     ///
     /// - parameter keyPath: 监控属性
@@ -179,13 +181,18 @@ class PlayVideoViewController: UIViewController {
         guard let object = object as? AVPlayerItem  else { return }
         guard let keyPath = keyPath else { return }
         if keyPath == "status"{
-            if object.status == .readyToPlay{ //当资源准备好播放，那么开始播放视频
+            if object.status == .readyToPlay { //当资源准备好播放，那么开始播放视频
                 player?.play()
                 print("正在播放...，视频总长度:\(formatPlayTime(seconds: CMTimeGetSeconds(object.duration)))")
-            }else if object.status == .failed || object.status == .unknown{
-                print("播放出错")
+                playOrPauseButton.isHidden = true
+                playOrPauseButton.setImage(UIImage(named:"play"), for: .normal)
             }
-        }else if keyPath == "loadedTimeRanges"{
+            else if object.status == .failed || object.status == .unknown {
+                playOrPauseButton.isHidden = false
+                print("播放出错")
+                playOrPauseButton.setImage(UIImage(named:"pause"), for: .normal)
+            }
+        } else if keyPath == "loadedTimeRanges" {
             let loadedTime = avalableDurationWithplayerItem()
             print("当前加载进度\(loadedTime)")
         }
@@ -198,10 +205,10 @@ class PlayVideoViewController: UIViewController {
         return String(format: "%02d:%02d", Min, Sec)
     }
     
-    //计算当前的缓冲进度
+    // 计算当前的缓冲进度
     func avalableDurationWithplayerItem()->TimeInterval{
         guard let loadedTimeRanges = player?.currentItem?.loadedTimeRanges,let first = loadedTimeRanges.first else {fatalError()}
-        //本次缓冲时间范围
+        // 本次缓冲时间范围
         let timeRange = first.timeRangeValue
         let startSeconds = CMTimeGetSeconds(timeRange.start)//本次缓冲起始时间
         let durationSecound = CMTimeGetSeconds(timeRange.duration)//缓冲时间
@@ -214,34 +221,37 @@ class PlayVideoViewController: UIViewController {
         player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
         progress.progress = 0.0
         playOrPauseButton.setImage(UIImage(named:"play"), for: .normal)
+        playOrPauseButton.isHidden = false
     }
-
+    
     //点击播放/暂停按钮
     @objc private func playOrPauseButtonClicked(button: UIButton){
-        if let player = player{
+        if let player = player {
             // 没有专门的pause或者playing状态，可以利用rate属性:
             // rate的值为0.0表示暂停视频
-            if player.rate == 0{//点击时已暂停
-                button.setImage(UIImage(named:"player_pause"), for: .normal)
+            if player.rate == 0 {//点击时已暂停
+                button.setImage(UIImage(named:"pause"), for: .normal)
                 player.play()
             }
             else if player.rate == 1 {//点击时正在播放
                 player.pause()
-                button.setImage(UIImage(named:"player_play"), for: .normal)
+                button.setImage(UIImage(named:"play"), for: .normal)
             }
         }
     }
-
+    
     //去除观察者
-    func removeObserver(){
+    func removeObserver() {
         playerItem?.removeObserver(self, forKeyPath: "status")
         playerItem?.removeObserver(self, forKeyPath: "loadedTimeRanges")
-        player?.removeTimeObserver(timeObserver)
+        if let timeObserver = timeObserver {
+            player?.removeTimeObserver(timeObserver)
+        }
         NotificationCenter.default.removeObserver(self, name:  Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
     }
     
     deinit {
         removeObserver()
     }
-
+    
 }

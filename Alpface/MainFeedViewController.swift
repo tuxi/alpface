@@ -115,7 +115,7 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         
-        let url = URL.init(string: "http://10.211.55.3:8889/media/media_itemsqbh3SumU_QkNFk97.mp4")
+        let url = URL.init(string: "http://10.211.55.3:8888/media/media_itemstest_6yHn4hk.mov")
         cell.url = url
         cell.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
         
