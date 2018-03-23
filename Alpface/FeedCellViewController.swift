@@ -14,24 +14,39 @@ class FeedCellViewController: UIViewController {
     public var url: URL? {
         didSet {
             guard let url = self.url else { return }
-            playVideoVc?.playerBack(url: url)
+            playVideoVc.playerBack(url: url)
         }
     }
     /// 播放视频控制器
-    private var playVideoVc: PlayVideoViewController?
+    public lazy var playVideoVc: PlayVideoViewController = {
+        let playVideoVc = PlayVideoViewController()
+        playVideoVc.view.translatesAutoresizingMaskIntoConstraints = false
+        return playVideoVc
+    }()
     /// 处理及展示视频的描述、字幕、点赞数、作者信息的控制器
-    public var interactionController: PlayInteractionViewController?
+    public lazy var interactionController: PlayInteractionViewController = {
+        let interactionController = PlayInteractionViewController(playerController: self.playVideoVc)
+        interactionController.view.translatesAutoresizingMaskIntoConstraints = false
+        return interactionController
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+    }
+    
+    fileprivate func setup() {
+        view.addSubview((playVideoVc.view)!)
+        playVideoVc.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        playVideoVc.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        playVideoVc.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        playVideoVc.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         
-        playVideoVc = PlayVideoViewController()
-        view.addSubview((playVideoVc?.view)!)
-        playVideoVc?.view.translatesAutoresizingMaskIntoConstraints = false
-        playVideoVc?.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        playVideoVc?.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        playVideoVc?.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        playVideoVc?.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        view.addSubview(interactionController.view)
+        interactionController.view.leadingAnchor.constraint(equalTo: playVideoVc.view.leadingAnchor).isActive = true
+        interactionController.view.trailingAnchor.constraint(equalTo: playVideoVc.view.trailingAnchor).isActive = true
+        interactionController.view.bottomAnchor.constraint(equalTo: playVideoVc.view.bottomAnchor).isActive = true
+        interactionController.view.topAnchor.constraint(equalTo: playVideoVc.view.topAnchor).isActive = true
         
     }
 
