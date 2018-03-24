@@ -17,8 +17,8 @@ class PlayInteractionViewController: UIViewController {
     var playOrPauseButton: UIButton = {
         let playOrPauseButton = UIButton(type: .custom)
         playOrPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        playOrPauseButton.setImage(UIImage(named:"pause"), for: .selected)
-        playOrPauseButton.setImage(UIImage(named:"play"), for: .normal)
+        playOrPauseButton.setImage(UIImage(named:"icon_pausemusic"), for: .selected)
+        playOrPauseButton.setImage(UIImage(named:"icon_playmusic"), for: .normal)
         return playOrPauseButton
     }()
     /// 播放进度
@@ -53,12 +53,11 @@ class PlayInteractionViewController: UIViewController {
     
     fileprivate func setupUI() {
         view.addSubview(playOrPauseButton)
-        playOrPauseButton.widthAnchor.constraint(equalToConstant: 50.0).isActive = true
-        playOrPauseButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        playOrPauseButton.widthAnchor.constraint(equalToConstant: 80.0).isActive = true
+        playOrPauseButton.heightAnchor.constraint(equalToConstant: 80.0).isActive = true
         playOrPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         playOrPauseButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
-        playOrPauseButton.setImage(UIImage(named:"play"), for: .normal)
         playOrPauseButton.addTarget(self, action: #selector(PlayInteractionViewController.playOrPauseButtonClicked(button:)), for: .touchUpInside)
         
         
@@ -79,11 +78,11 @@ class PlayInteractionViewController: UIViewController {
         guard let playerController = playerController else { return }
         if playerController.state == .playing {
             button.isSelected = false
-            playerController.pauseToPlay()
+            playerController.pause()
         }
         else {
             button.isSelected = true
-            playerController.startToPlay()
+            playerController.play()
         }
     }
     
@@ -101,13 +100,18 @@ extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
     }
     /// 播放状态改变时调用
     func playVideoViewController(didChangePlayerState player:PlayVideoViewController, state: PlayerState) -> Void {
-        if state == .failure || state == .stopped || state == .paused {
+        if  state == .paused {
             playOrPauseButton.isSelected = false
             playOrPauseButton.isHidden = false
         }
         else if state == .playing {
             playOrPauseButton.isHidden = true
             playOrPauseButton.isSelected = true
+        }
+        else if state == .failure || state == .stopped {
+            playOrPauseButton.isSelected = true
+            playOrPauseButton.isHidden = false
+            
         }
     }
     /// 播放完毕时调用

@@ -50,6 +50,8 @@ class PlayVideoViewController: UIViewController {
             }
         }
     }
+    /// 是否播放完成后继续播放
+    open var shouldAutoPlay = true
     
     /// 播放的url
     fileprivate var url : URL?
@@ -59,8 +61,10 @@ class PlayVideoViewController: UIViewController {
     open var playerProgress : Float = 0.0
     /// 视频总时长
     open var totalDuration : Float = 0.0
+    /// 是否是用户暂停播放
+    fileprivate var isPauseByUser   = false
     /// 播放器容器视图
-    lazy var containerView: VideoPlayerView = {
+    fileprivate lazy var containerView: VideoPlayerView = {
         let  containerView = VideoPlayerView(frame: .zero)
         containerView.backgroundColor = UIColor.gray
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +74,7 @@ class PlayVideoViewController: UIViewController {
     }()
     
     /// 加载指示器
-    lazy var indicator : UIActivityIndicatorView = {
+    fileprivate lazy var indicator : UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
@@ -79,12 +83,20 @@ class PlayVideoViewController: UIViewController {
     /// 播放器对象
     var player: AVPlayer?
     /// 播放资源对象
-    var playerItem: AVPlayerItem?
+    var playerItem: AVPlayerItem? {
+        didSet {
+            /// playerItem 发生改变时，重置observer
+            if oldValue == playerItem  {
+                return
+            }
+            
+            removeObserver(playerItem: oldValue)
+        }
+    }
     /// 播放时间观察者
-    var timeObserver: Any?
-    
-    var isViewDidLoad: Bool = false
-    var playInViewDidLoad: Bool = false
+    fileprivate var timeObserver: Any?
+    fileprivate var isViewDidLoad: Bool = false
+    fileprivate var playInViewDidLoad: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,16 +106,26 @@ class PlayVideoViewController: UIViewController {
             playInViewDidLoad = false
             playerBack(url: self.url!)
         }
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationDidEnterBackground),
+                                               name: NSNotification.Name.UIApplicationDidEnterBackground,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationWillEnterForeground),
+                                               name: NSNotification.Name.UIApplicationWillEnterForeground,
+                                               object: nil)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        pauseToPlay()
+        pause()
     }
     
     
-    private func setupUI(){
+    fileprivate func setupUI(){
         
         view.addSubview(containerView)
         containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -117,9 +139,127 @@ class PlayVideoViewController: UIViewController {
         
     }
     
+    // MARK: - Observer
+    
+    @objc func applicationWillEnterForeground() {
+        autoPlay()
+    }
+    
+    @objc func applicationDidEnterBackground() {
+        pause(autoPlay: true)
+    }
+    
+    
+    /// 给播放器添加播放进度更新
+    func addPlayProgressObserver(){
+        if let timeObserver = timeObserver {
+            player?.removeTimeObserver(timeObserver)
+        }
+        // 这里设置每秒执行一次.
+        timeObserver =  player?.addPeriodicTimeObserver(forInterval: CMTimeMake(Int64(1.0), Int32(1.0)), queue: DispatchQueue.main) { [weak self](time: CMTime) in
+            //CMTimeGetSeconds函数是将CMTime转换为秒，如果CMTime无效，将返回NaN
+            let currentTime = CMTimeGetSeconds(time)
+            let totalTime = CMTimeGetSeconds(self!.playerItem!.duration)
+            // 更新显示的时间和进度条
+            let timeStr = self!.formatPlayTime(seconds: CMTimeGetSeconds(time))
+            let playProgress = Float(currentTime/totalTime)
+            if let delegate = self?.delegate {
+                if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didChangePlayerProgress:time:progress:))) {
+                    delegate.playVideoViewController!(didChangePlayerProgress: self!, time: timeStr, progress: playProgress)
+                }
+            }
+            
+            print("当前已经播放\(self!.formatPlayTime(seconds: CMTimeGetSeconds(time)))")
+        }
+    }
+    
+    /// 给AVPlayerItem、AVPlayer添加监控
+    func addObserver(){
+        // 为AVPlayerItem添加status属性观察，得到资源准备好，开始播放视频
+        playerItem?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+        // 监听AVPlayerItem的loadedTimeRanges属性来监听缓冲进度更新
+        playerItem?.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
+        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+    }
+    
+    
+    /// 通过KVO监控播放器状态
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let playerItem = object as? AVPlayerItem  else { return }
+        guard let keyPath = keyPath else { return }
+        if keyPath == "status"{
+            if playerItem.status == .readyToPlay { //当资源准备好播放，那么开始播放视频
+                preparePlayback()
+                print("正在播放...，视频总长度:\(formatPlayTime(seconds: CMTimeGetSeconds(playerItem.duration)))")
+            }
+            else if playerItem.status == .failed || playerItem.status == .unknown {
+                state = .failure
+            }
+        }
+        else if keyPath == "loadedTimeRanges" {
+            let loadedTime = avalableDurationWithplayerItem(playerItem)
+            print("当前加载进度\(loadedTime)")
+        }
+        else if keyPath == "playbackBufferEmpty" && playerItem.isPlaybackBufferEmpty {    //监听播放器在缓冲数据的状态
+            state = .buffering
+            indicator.startAnimating()
+            indicator.isHidden = false
+            pause()
+        } else if keyPath == "playbackLikelyToKeepUp" {
+            // 缓存足够了，可以播放
+            indicator.stopAnimating()
+            indicator.isHidden = true
+        }
+    }
+    
+    /// 将秒转成时间字符串的方法，因为我们将得到秒。
+    func formatPlayTime(seconds: Float64)->String{
+        let min = Int(seconds / 60)
+        let sec = Int(seconds.truncatingRemainder(dividingBy: 60))
+        return String(format: "%02d:%02d", min, sec)
+    }
+    
+    /// 计算当前的缓冲进度
+    func avalableDurationWithplayerItem(_ playerItem: AVPlayerItem?)->TimeInterval{
+        guard let loadedTimeRanges = playerItem?.loadedTimeRanges, let first = loadedTimeRanges.first else {fatalError()}
+        // 本次缓冲时间范围
+        let timeRange = first.timeRangeValue
+        let startSeconds = CMTimeGetSeconds(timeRange.start)//本次缓冲起始时间
+        let durationSecound = CMTimeGetSeconds(timeRange.duration)//缓冲时间
+        let timeInterval = startSeconds + durationSecound//缓冲总长度
+        let duration = playerItem!.duration
+        let totalDuration = CMTimeGetSeconds(duration)
+        bufferedProgress = Float(timeInterval)/Float(totalDuration)
+        if let delegate = delegate {
+            if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didChangebufferedProgress:loadedTime:bufferedProgress:))) {
+                delegate.playVideoViewController!(didChangebufferedProgress: self, loadedTime: timeInterval, bufferedProgress: bufferedProgress)
+            }
+        }
+        return timeInterval
+    }
+    
+    /// 播放结束，回到最开始位置，播放按钮显示带播放图标
+    @objc func playerItemDidPlayToEnd(notification: Notification){
+        player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        if let delegate = delegate {
+            if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didPlayToEnd:))) {
+                delegate.playVideoViewController!(didPlayToEnd: self)
+            }
+        }
+        if shouldAutoPlay {
+            autoPlay()
+        }
+        else {
+            releasePlayer()
+        }
+    }
+    
+    // MARK: - Play Control
+    
     /// 播放一个url
     open func playerBack(url: URL) {
-//        removeObserver()
         //获取本地视频资源
         guard let path = Bundle.main.path(forResource: "test", ofType: "mov") else {
             return
@@ -127,8 +267,8 @@ class PlayVideoViewController: UIViewController {
         //播放本地视频
         let url = NSURL(fileURLWithPath: path)
         //播放网络视频
-//        let url = URL(string: "https://d1.xia12345.com/down/201708/08/pt029.mp4")!
-//        self.url = url
+        //        let url = URL(string: "https://d1.xia12345.com/down/201708/08/pt029.mp4")!
+        //        self.url = url
         let playerItem = AVPlayerItem(url: url as URL)
         playerBack(playerItem: playerItem)
     }
@@ -157,122 +297,21 @@ class PlayVideoViewController: UIViewController {
         addObserver()
     }
     
-    // 给播放器添加播放进度更新
-    func addPlayProgressObserver(){
-        if let timeObserver = timeObserver {
-            player?.removeTimeObserver(timeObserver)
-        }
-        //这里设置每秒执行一次.
-        timeObserver =  player?.addPeriodicTimeObserver(forInterval: CMTimeMake(Int64(1.0), Int32(1.0)), queue: DispatchQueue.main) { [weak self](time: CMTime) in
-            //CMTimeGetSeconds函数是将CMTime转换为秒，如果CMTime无效，将返回NaN
-            let currentTime = CMTimeGetSeconds(time)
-            let totalTime = CMTimeGetSeconds(self!.playerItem!.duration)
-            // 更新显示的时间和进度条
-            let timeStr = self!.formatPlayTime(seconds: CMTimeGetSeconds(time))
-            let playProgress = Float(currentTime/totalTime)
-            if let delegate = self?.delegate {
-                if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didChangePlayerProgress:time:progress:))) {
-                    delegate.playVideoViewController!(didChangePlayerProgress: self!, time: timeStr, progress: playProgress)
-                }
-            }
-            
-            print("当前已经播放\(self!.formatPlayTime(seconds: CMTimeGetSeconds(time)))")
-        }
-    }
-    
-    //给AVPlayerItem、AVPlayer添加监控
-    func addObserver(){
-        //为AVPlayerItem添加status属性观察，得到资源准备好，开始播放视频
-        playerItem?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-        //监听AVPlayerItem的loadedTimeRanges属性来监听缓冲进度更新
-        playerItem?.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
-    }
-    
-    
-    ///  通过KVO监控播放器状态
-    ///
-    /// - parameter keyPath: 监控属性
-    /// - parameter object:  监视器
-    /// - parameter change:  状态改变
-    /// - parameter context: 上下文
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard let playerItem = object as? AVPlayerItem  else { return }
-        guard let keyPath = keyPath else { return }
-        if keyPath == "status"{
-            if playerItem.status == .readyToPlay { //当资源准备好播放，那么开始播放视频
-                monitoringPlayback()
-                print("正在播放...，视频总长度:\(formatPlayTime(seconds: CMTimeGetSeconds(playerItem.duration)))")
-            }
-            else if playerItem.status == .failed || playerItem.status == .unknown {
-                state = .failure
-            }
-        }
-        else if keyPath == "loadedTimeRanges" {
-            let loadedTime = avalableDurationWithplayerItem(playerItem)
-            print("当前加载进度\(loadedTime)")
-        }
-        else if keyPath == "playbackBufferEmpty" && playerItem.isPlaybackBufferEmpty {    //监听播放器在缓冲数据的状态
-            state = .buffering
-            indicator.startAnimating()
-            indicator.isHidden = false
-            pauseToPlay()
-        } else if keyPath == "playbackLikelyToKeepUp" {
-            // 缓存足够了，可以播放
-            indicator.stopAnimating()
-            indicator.isHidden = true
-        }
-    }
-    
-    //将秒转成时间字符串的方法，因为我们将得到秒。
-    func formatPlayTime(seconds: Float64)->String{
-        let min = Int(seconds / 60)
-        let sec = Int(seconds.truncatingRemainder(dividingBy: 60))
-        return String(format: "%02d:%02d", min, sec)
-    }
-    
-    // 计算当前的缓冲进度
-    func avalableDurationWithplayerItem(_ playerItem: AVPlayerItem?)->TimeInterval{
-        guard let loadedTimeRanges = playerItem?.loadedTimeRanges, let first = loadedTimeRanges.first else {fatalError()}
-        // 本次缓冲时间范围
-        let timeRange = first.timeRangeValue
-        let startSeconds = CMTimeGetSeconds(timeRange.start)//本次缓冲起始时间
-        let durationSecound = CMTimeGetSeconds(timeRange.duration)//缓冲时间
-        let timeInterval = startSeconds + durationSecound//缓冲总长度
-        let duration = playerItem!.duration
-        let totalDuration = CMTimeGetSeconds(duration)
-        bufferedProgress = Float(timeInterval)/Float(totalDuration)
-        if let delegate = delegate {
-            if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didChangebufferedProgress:loadedTime:bufferedProgress:))) {
-                delegate.playVideoViewController!(didChangebufferedProgress: self, loadedTime: timeInterval, bufferedProgress: bufferedProgress)
-            }
-        }
-        return timeInterval
-    }
-    
-    // 播放结束，回到最开始位置，播放按钮显示带播放图标
-    @objc func playerItemDidPlayToEnd(notification: Notification){
-        player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
-        releasePlayer()
-        if let delegate = delegate {
-            if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didPlayToEnd:))) {
-                delegate.playVideoViewController!(didPlayToEnd: self)
-            }
-        }
-    }
-    
-    /// 即将播放
-    fileprivate func monitoringPlayback() {
+    /// 准备播放
+    fileprivate func preparePlayback() {
         // 视频总时间
         totalDuration = Float(Float64(playerItem!.duration.value) / Float64(playerItem!.duration.timescale))
 //        let totalDurationString = formatPlayTime(seconds: totalDuration)
-        startToPlay()
+        play()
+    }
+    open func autoPlay() {
+        if !isPauseByUser && url != nil {
+            play()
+        }
     }
     
     /// 开始播放
-    open func startToPlay() {
+    open func play() {
         if player == nil {
             indicator.startAnimating()
             indicator.isHidden = false
@@ -282,24 +321,31 @@ class PlayVideoViewController: UIViewController {
         addPlayProgressObserver()
         state = .playing
         player?.play()
+        isPauseByUser = false
     }
     
     /// 暂停播放
-    open func pauseToPlay() {
-        removeObserver()
+    open func pause() {
+        pause(autoPlay: false)
+    }
+    
+    /// 暂停播放
+    open func pause(autoPlay auto: Bool = false) {
+        removeObserver(playerItem: playerItem)
         indicator.stopAnimating()
         indicator.isHidden = true
         player?.pause()
         state = .paused
+        isPauseByUser = !auto
     }
     /// 播放某个时间点
-    open func seekToTime(seconds : Float) {
+    open func seek(toTime seconds : Float) {
         guard state != .stopped else { return }
         var second = max(0, seconds)
         second = min(seconds, totalDuration)
-        pauseToPlay()
+        pause()
         player?.seek(to: CMTimeMakeWithSeconds(Float64(second), Int32(NSEC_PER_SEC)) , completionHandler: { [weak self](_) in
-            self?.startToPlay()
+            self?.play()
             if !self!.playerItem!.isPlaybackLikelyToKeepUp {
                 self?.state = .buffering
             }
@@ -309,18 +355,17 @@ class PlayVideoViewController: UIViewController {
     /// 重置播放器
     open func releasePlayer() {
         guard playerItem != nil else { return }
-        removeObserver()
-//        player?.replaceCurrentItem(with: nil)
-//        player = nil
-//        playerItem = nil
+        removeObserver(playerItem: playerItem)
         state = .stopped
     }
     
     /// 移除观察者
-    func removeObserver() {
-        playerItem?.removeObserver(self, forKeyPath: "loadedTimeRanges")
-        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
-        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+    func removeObserver(playerItem item: AVPlayerItem?) {
+        guard let playerItem = item else { return }
+        playerItem.removeObserver(self, forKeyPath: "loadedTimeRanges")
+        playerItem.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+        playerItem.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+        playerItem.removeObserver(self, forKeyPath: "status")
         if let timeObserver = timeObserver {
             player?.removeTimeObserver(timeObserver)
         }
@@ -330,6 +375,9 @@ class PlayVideoViewController: UIViewController {
     
     deinit {
         releasePlayer()
+        player?.replaceCurrentItem(with: nil)
+        player = nil
+        playerItem = nil
     }
     
 }
