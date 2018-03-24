@@ -21,7 +21,12 @@ class ExploreViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
     /*
     // MARK: - Navigation
 

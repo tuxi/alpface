@@ -35,6 +35,7 @@ class MainTabBarController: UITabBarController {
         // Do any additional setup after loading the view.
         UITabBarItem.appearance(whenContainedInInstancesOf: [MainTabBarController.self]).setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22.0)], for:.normal)
         UITabBarItem.appearance(whenContainedInInstancesOf: [MainTabBarController.self]).setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.orange, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22.0)], for:.selected)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,3 +78,5 @@ class MainTabBarController: UITabBarController {
     }
 
 }
+
+

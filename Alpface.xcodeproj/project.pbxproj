@@ -13,7 +13,6 @@
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
 		D26AD42620668F140047DC15 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40320668F130047DC15 /* BaseCellModel.swift */; };
 		D26AD42720668F140047DC15 /* CollectionViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40420668F130047DC15 /* CollectionViewSection.swift */; };
-		D26AD42820668F140047DC15 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40520668F130047DC15 /* ExploreViewController.swift */; };
 		D26AD42920668F140047DC15 /* FeedCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40620668F130047DC15 /* FeedCellViewController.swift */; };
 		D26AD42A20668F140047DC15 /* GestureCoordinatingCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40720668F130047DC15 /* GestureCoordinatingCollectionView.swift */; };
 		D26AD42B20668F140047DC15 /* ListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40820668F130047DC15 /* ListCollectionView.swift */; };
@@ -47,6 +46,7 @@
 		D26AD455206690E60047DC15 /* PastelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44D206690E60047DC15 /* PastelView.swift */; };
 		D26AD456206690E60047DC15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D26AD44E206690E60047DC15 /* Info.plist */; };
 		D26AD459206693150047DC15 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD457206693150047DC15 /* LoginViewController.swift */; };
+		D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD45C2066A9C30047DC15 /* ExploreViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,7 +58,6 @@
 		D251885A2054D3C8000147CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D26AD40320668F130047DC15 /* BaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCellModel.swift; sourceTree = "<group>"; };
 		D26AD40420668F130047DC15 /* CollectionViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewSection.swift; sourceTree = "<group>"; };
-		D26AD40520668F130047DC15 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		D26AD40620668F130047DC15 /* FeedCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCellViewController.swift; sourceTree = "<group>"; };
 		D26AD40720668F130047DC15 /* GestureCoordinatingCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureCoordinatingCollectionView.swift; sourceTree = "<group>"; };
 		D26AD40820668F130047DC15 /* ListCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCollectionView.swift; sourceTree = "<group>"; };
@@ -93,6 +92,7 @@
 		D26AD44E206690E60047DC15 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D26AD44F206690E60047DC15 /* Pastel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pastel.h; sourceTree = "<group>"; };
 		D26AD457206693150047DC15 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		D26AD45C2066A9C30047DC15 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +150,7 @@
 				D26AD41220668F130047DC15 /* Resource */,
 				D26AD40F20668F130047DC15 /* Story */,
 				D26AD40220668F130047DC15 /* Video */,
+				D26AD45B2066A9C30047DC15 /* Discover */,
 				D26AD44220668F350047DC15 /* Networking */,
 				D26AD444206690B40047DC15 /* ThirdParty */,
 				D25188552054D3C8000147CC /* Assets.xcassets */,
@@ -164,7 +165,6 @@
 			children = (
 				D26AD40320668F130047DC15 /* BaseCellModel.swift */,
 				D26AD40420668F130047DC15 /* CollectionViewSection.swift */,
-				D26AD40520668F130047DC15 /* ExploreViewController.swift */,
 				D26AD40620668F130047DC15 /* FeedCellViewController.swift */,
 				D26AD40720668F130047DC15 /* GestureCoordinatingCollectionView.swift */,
 				D26AD40820668F130047DC15 /* ListCollectionView.swift */,
@@ -291,6 +291,14 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		D26AD45B2066A9C30047DC15 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD45C2066A9C30047DC15 /* ExploreViewController.swift */,
+			);
+			path = Discover;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -388,6 +396,7 @@
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D26AD42A20668F140047DC15 /* GestureCoordinatingCollectionView.swift in Sources */,
 				D26AD42C20668F140047DC15 /* MainFeedViewCell.swift in Sources */,
+				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,
 				D26AD42E20668F140047DC15 /* PlayInteractionViewController.swift in Sources */,
 				D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D26AD43020668F140047DC15 /* ScrollingContainerCell.swift in Sources */,
@@ -395,7 +404,6 @@
 				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,
 				D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */,
 				D26AD42920668F140047DC15 /* FeedCellViewController.swift in Sources */,
-				D26AD42820668F140047DC15 /* ExploreViewController.swift in Sources */,
 				D26AD42F20668F140047DC15 /* PlayVideoViewController.swift in Sources */,
 				D26AD42D20668F140047DC15 /* MainFeedViewController.swift in Sources */,
 				D26AD43120668F140047DC15 /* VideoPlayerView.swift in Sources */,
