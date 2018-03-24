@@ -39,6 +39,14 @@
 		D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42320668F140047DC15 /* MainNavigationController.swift */; };
 		D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42420668F140047DC15 /* MainTabBarController.swift */; };
 		D26AD44120668F140047DC15 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42520668F140047DC15 /* RootViewController.swift */; };
+		D26AD450206690E60047DC15 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D26AD447206690E60047DC15 /* .gitkeep */; };
+		D26AD451206690E60047DC15 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D26AD449206690E60047DC15 /* .gitkeep */; };
+		D26AD452206690E60047DC15 /* PastelGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44A206690E60047DC15 /* PastelGradient.swift */; };
+		D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44B206690E60047DC15 /* PastelLabel.swift */; };
+		D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44C206690E60047DC15 /* PastelPoint.swift */; };
+		D26AD455206690E60047DC15 /* PastelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44D206690E60047DC15 /* PastelView.swift */; };
+		D26AD456206690E60047DC15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D26AD44E206690E60047DC15 /* Info.plist */; };
+		D26AD459206693150047DC15 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD457206693150047DC15 /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +84,15 @@
 		D26AD42320668F140047DC15 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		D26AD42420668F140047DC15 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		D26AD42520668F140047DC15 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		D26AD447206690E60047DC15 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		D26AD449206690E60047DC15 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		D26AD44A206690E60047DC15 /* PastelGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastelGradient.swift; sourceTree = "<group>"; };
+		D26AD44B206690E60047DC15 /* PastelLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastelLabel.swift; sourceTree = "<group>"; };
+		D26AD44C206690E60047DC15 /* PastelPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastelPoint.swift; sourceTree = "<group>"; };
+		D26AD44D206690E60047DC15 /* PastelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastelView.swift; sourceTree = "<group>"; };
+		D26AD44E206690E60047DC15 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D26AD44F206690E60047DC15 /* Pastel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pastel.h; sourceTree = "<group>"; };
+		D26AD457206693150047DC15 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +151,7 @@
 				D26AD40F20668F130047DC15 /* Story */,
 				D26AD40220668F130047DC15 /* Video */,
 				D26AD44220668F350047DC15 /* Networking */,
+				D26AD444206690B40047DC15 /* ThirdParty */,
 				D25188552054D3C8000147CC /* Assets.xcassets */,
 				D25188572054D3C8000147CC /* LaunchScreen.storyboard */,
 				D251885A2054D3C8000147CC /* Info.plist */,
@@ -190,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				D26AD41720668F130047DC15 /* UserProfileViewController.swift */,
+				D26AD457206693150047DC15 /* LoginViewController.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -231,6 +250,45 @@
 			children = (
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		D26AD444206690B40047DC15 /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD445206690E60047DC15 /* Pastel */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		D26AD445206690E60047DC15 /* Pastel */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD446206690E60047DC15 /* Assets */,
+				D26AD448206690E60047DC15 /* Classes */,
+				D26AD44E206690E60047DC15 /* Info.plist */,
+				D26AD44F206690E60047DC15 /* Pastel.h */,
+			);
+			path = Pastel;
+			sourceTree = "<group>";
+		};
+		D26AD446206690E60047DC15 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD447206690E60047DC15 /* .gitkeep */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		D26AD448206690E60047DC15 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD449206690E60047DC15 /* .gitkeep */,
+				D26AD44A206690E60047DC15 /* PastelGradient.swift */,
+				D26AD44B206690E60047DC15 /* PastelLabel.swift */,
+				D26AD44C206690E60047DC15 /* PastelPoint.swift */,
+				D26AD44D206690E60047DC15 /* PastelView.swift */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,10 +352,13 @@
 			files = (
 				D26AD43520668F140047DC15 /* test.mov in Resources */,
 				D0C734462064CF2D00BD6541 /* test.mov in Resources */,
+				D26AD456206690E60047DC15 /* Info.plist in Resources */,
 				D22641A6205555DC0001D758 /* MedulaOne-Regular.ttf in Resources */,
 				D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */,
 				D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */,
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
+				D26AD450206690E60047DC15 /* .gitkeep in Resources */,
+				D26AD451206690E60047DC15 /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,10 +378,14 @@
 				D26AD42620668F140047DC15 /* BaseCellModel.swift in Sources */,
 				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
 				D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
+				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
 				D26AD42B20668F140047DC15 /* ListCollectionView.swift in Sources */,
+				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
+				D26AD459206693150047DC15 /* LoginViewController.swift in Sources */,
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
+				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D26AD42A20668F140047DC15 /* GestureCoordinatingCollectionView.swift in Sources */,
 				D26AD42C20668F140047DC15 /* MainFeedViewCell.swift in Sources */,
 				D26AD42E20668F140047DC15 /* PlayInteractionViewController.swift in Sources */,
@@ -334,6 +399,7 @@
 				D26AD42F20668F140047DC15 /* PlayVideoViewController.swift in Sources */,
 				D26AD42D20668F140047DC15 /* MainFeedViewController.swift in Sources */,
 				D26AD43120668F140047DC15 /* VideoPlayerView.swift in Sources */,
+				D26AD452206690E60047DC15 /* PastelGradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

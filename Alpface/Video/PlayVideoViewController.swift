@@ -66,7 +66,7 @@ class PlayVideoViewController: UIViewController {
     /// 播放器容器视图
     fileprivate lazy var containerView: VideoPlayerView = {
         let  containerView = VideoPlayerView(frame: .zero)
-        containerView.backgroundColor = UIColor.gray
+        containerView.backgroundColor = UIColor.black
         containerView.translatesAutoresizingMaskIntoConstraints = false
         let playerLayer = containerView.layer as! AVPlayerLayer
         playerLayer.videoGravity = .resizeAspect //视频填充模式
