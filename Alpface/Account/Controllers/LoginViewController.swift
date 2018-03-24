@@ -46,6 +46,8 @@ class LoginViewController: UIViewController {
         return tf
     }()
     
+    fileprivate var contentViewCenterYConstraint : NSLayoutConstraint?
+    
     fileprivate lazy var loginButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -144,11 +146,13 @@ class LoginViewController: UIViewController {
         loginProblemButton.setTitle("登錄遇到問題", for: .normal)
         
         setupNavigationBar()
+        addObserver()
     }
     
     fileprivate func setupConstraints() {
         contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        contentViewCenterYConstraint = contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        contentViewCenterYConstraint?.isActive = true
         contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
@@ -214,17 +218,57 @@ class LoginViewController: UIViewController {
     
     }
     
-    @objc private func backBarButtonClick(_ button: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         pastelView.startAnimation()
     }
     
+    fileprivate func addObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow(notification:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide(notification:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    // MARK: - Actions
+    @objc private func keyboardWillShow(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        // 获取键盘frame
+        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        // 键盘弹出的时间
+        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        
+        if contentView.frame.maxY > keyboardRect.origin.y {
+            // 键盘遮住文本了，就把contentView往上移
+            let offset = contentView.frame.maxY - keyboardRect.origin.y
+            contentViewCenterYConstraint?.constant -= offset
+            UIView.animate(withDuration: duration, animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        
+        // 键盘弹出的时间
+        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        
+        // 键盘遮住文本了，就把contentView往上移
+        contentViewCenterYConstraint?.constant = 0
+        UIView.animate(withDuration: duration, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    
+    @objc private func backBarButtonClick(_ button: UIButton) {
+        view.endEditing(true)
+        dismiss(animated: true, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -261,6 +305,7 @@ class LoginViewController: UIViewController {
     
     deinit {
         loginButton.removeObserver(self, forKeyPath: "highlighted")
+        NotificationCenter.default.removeObserver(self)
     }
 
 }
