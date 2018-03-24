@@ -9,5 +9,13 @@
 import UIKit
 
 class User: NSObject {
-
+    public var username : String?
+    public var nickname : String?
+    public var avatar : String?
+    public var phone : String?
+    public var birday : Date?
+    public var gender : String?
+    public var address : String?
+    public var id : Int = -1
+    
 }

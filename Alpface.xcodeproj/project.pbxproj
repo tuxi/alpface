@@ -26,7 +26,6 @@
 		D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41120668F130047DC15 /* StoryCreationViewController.swift */; };
 		D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */; };
 		D26AD43520668F140047DC15 /* test.mov in Resources */ = {isa = PBXBuildFile; fileRef = D26AD41520668F130047DC15 /* test.mov */; };
-		D26AD43620668F140047DC15 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41720668F130047DC15 /* UserProfileViewController.swift */; };
 		D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41920668F140047DC15 /* MessageViewController.swift */; };
 		D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41B20668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift */; };
 		D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41C20668F140047DC15 /* UIColor+HexColor.swift */; };
@@ -45,8 +44,10 @@
 		D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44C206690E60047DC15 /* PastelPoint.swift */; };
 		D26AD455206690E60047DC15 /* PastelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44D206690E60047DC15 /* PastelView.swift */; };
 		D26AD456206690E60047DC15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D26AD44E206690E60047DC15 /* Info.plist */; };
-		D26AD459206693150047DC15 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD457206693150047DC15 /* LoginViewController.swift */; };
 		D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD45C2066A9C30047DC15 /* ExploreViewController.swift */; };
+		D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD45F2066BAF40047DC15 /* LoginViewController.swift */; };
+		D26AD4632066BAF40047DC15 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */; };
+		D26AD4652066BB180047DC15 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4642066BB180047DC15 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,7 +72,6 @@
 		D26AD41120668F130047DC15 /* StoryCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCreationViewController.swift; sourceTree = "<group>"; };
 		D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MedulaOne-Regular.ttf"; sourceTree = "<group>"; };
 		D26AD41520668F130047DC15 /* test.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = test.mov; sourceTree = "<group>"; };
-		D26AD41720668F130047DC15 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		D26AD41920668F140047DC15 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		D26AD41B20668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+StatusBarAppearanceUpdate.swift"; sourceTree = "<group>"; };
 		D26AD41C20668F140047DC15 /* UIColor+HexColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColor.swift"; sourceTree = "<group>"; };
@@ -91,8 +91,10 @@
 		D26AD44D206690E60047DC15 /* PastelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastelView.swift; sourceTree = "<group>"; };
 		D26AD44E206690E60047DC15 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D26AD44F206690E60047DC15 /* Pastel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pastel.h; sourceTree = "<group>"; };
-		D26AD457206693150047DC15 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D26AD45C2066A9C30047DC15 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
+		D26AD45F2066BAF40047DC15 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		D26AD4642066BB180047DC15 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,8 +209,8 @@
 		D26AD41620668F130047DC15 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				D26AD41720668F130047DC15 /* UserProfileViewController.swift */,
-				D26AD457206693150047DC15 /* LoginViewController.swift */,
+				D26AD45E2066BAF40047DC15 /* Controllers */,
+				D26AD4612066BAF40047DC15 /* Modles */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -299,6 +301,23 @@
 			path = Discover;
 			sourceTree = "<group>";
 		};
+		D26AD45E2066BAF40047DC15 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD45F2066BAF40047DC15 /* LoginViewController.swift */,
+				D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D26AD4612066BAF40047DC15 /* Modles */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD4642066BB180047DC15 /* User.swift */,
+			);
+			path = Modles;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -380,8 +399,8 @@
 				D26AD42720668F140047DC15 /* CollectionViewSection.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
 				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
-				D26AD43620668F140047DC15 /* UserProfileViewController.swift in Sources */,
 				D26AD44120668F140047DC15 /* RootViewController.swift in Sources */,
+				D26AD4652066BB180047DC15 /* User.swift in Sources */,
 				D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */,
 				D26AD42620668F140047DC15 /* BaseCellModel.swift in Sources */,
 				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
@@ -390,16 +409,17 @@
 				D26AD42B20668F140047DC15 /* ListCollectionView.swift in Sources */,
 				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
-				D26AD459206693150047DC15 /* LoginViewController.swift in Sources */,
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D26AD42A20668F140047DC15 /* GestureCoordinatingCollectionView.swift in Sources */,
 				D26AD42C20668F140047DC15 /* MainFeedViewCell.swift in Sources */,
 				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,
+				D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */,
 				D26AD42E20668F140047DC15 /* PlayInteractionViewController.swift in Sources */,
 				D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D26AD43020668F140047DC15 /* ScrollingContainerCell.swift in Sources */,
+				D26AD4632066BAF40047DC15 /* UserProfileViewController.swift in Sources */,
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,
 				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,
 				D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */,
