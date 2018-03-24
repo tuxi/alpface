@@ -8,70 +8,74 @@
 
 /* Begin PBXBuildFile section */
 		D0C734462064CF2D00BD6541 /* test.mov in Resources */ = {isa = PBXBuildFile; fileRef = D0C734452064CF2C00BD6541 /* test.mov */; };
-		D2264186205513710001D758 /* CollectionViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264185205513710001D758 /* CollectionViewSection.swift */; };
-		D226418A205514360001D758 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264189205514360001D758 /* BaseCellModel.swift */; };
-		D226418C20551C260001D758 /* MainAppScrollingContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226418B20551C260001D758 /* MainAppScrollingContainerItem.swift */; };
-		D226418E205520C50001D758 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226418D205520C50001D758 /* MainTabBarController.swift */; };
-		D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226418F205520DC0001D758 /* MainNavigationController.swift */; };
-		D2264192205521530001D758 /* StoryCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264191205521530001D758 /* StoryCreationViewController.swift */; };
-		D2264194205521C50001D758 /* StoryCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264193205521C50001D758 /* StoryCameraViewController.swift */; };
-		D2264196205525740001D758 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264195205525740001D758 /* MainFeedViewController.swift */; };
-		D22641982055259C0001D758 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641972055259C0001D758 /* ExploreViewController.swift */; };
-		D226419A205525A90001D758 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2264199205525A90001D758 /* MessageViewController.swift */; };
-		D226419C205525F40001D758 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419B205525F40001D758 /* UserProfileViewController.swift */; };
-		D226419E20552E230001D758 /* ListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419D20552E230001D758 /* ListCollectionView.swift */; };
-		D22641A0205550220001D758 /* UINavigationBar+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D226419F205550220001D758 /* UINavigationBar+Attributes.swift */; };
-		D22641A2205550B50001D758 /* UIColor+HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641A1205550B50001D758 /* UIColor+HexColor.swift */; };
 		D22641A6205555DC0001D758 /* MedulaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D22641A5205555DC0001D758 /* MedulaOne-Regular.ttf */; };
-		D22641CC2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22641CB2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift */; };
-		D251884F2054D3C8000147CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D251884E2054D3C8000147CC /* AppDelegate.swift */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
-		D2D692CD2054EA17005C6E42 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692CC2054EA17005C6E42 /* RootViewController.swift */; };
-		D2D692CF2054EE81005C6E42 /* MainAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692CE2054EE81005C6E42 /* MainAppViewController.swift */; };
-		D2D692D12054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */; };
-		D2D692D32054FECA005C6E42 /* GestureCoordinatingCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */; };
-		D2D692D520550227005C6E42 /* ScrollingContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */; };
-		D2E3E1282056D068003CCEEC /* MainFeedViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E1272056D068003CCEEC /* MainFeedViewCell.swift */; };
-		D2E3E12A2056D188003CCEEC /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */; };
-		D2E3E12C2056D206003CCEEC /* PlayInteractionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */; };
-		D2E3E12E2056D312003CCEEC /* FeedCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */; };
-		D2E5A6E6205C197A00FAF8D1 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5A6E5205C197A00FAF8D1 /* VideoPlayerView.swift */; };
+		D26AD42620668F140047DC15 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40320668F130047DC15 /* BaseCellModel.swift */; };
+		D26AD42720668F140047DC15 /* CollectionViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40420668F130047DC15 /* CollectionViewSection.swift */; };
+		D26AD42820668F140047DC15 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40520668F130047DC15 /* ExploreViewController.swift */; };
+		D26AD42920668F140047DC15 /* FeedCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40620668F130047DC15 /* FeedCellViewController.swift */; };
+		D26AD42A20668F140047DC15 /* GestureCoordinatingCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40720668F130047DC15 /* GestureCoordinatingCollectionView.swift */; };
+		D26AD42B20668F140047DC15 /* ListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40820668F130047DC15 /* ListCollectionView.swift */; };
+		D26AD42C20668F140047DC15 /* MainFeedViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40920668F130047DC15 /* MainFeedViewCell.swift */; };
+		D26AD42D20668F140047DC15 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40A20668F130047DC15 /* MainFeedViewController.swift */; };
+		D26AD42E20668F140047DC15 /* PlayInteractionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40B20668F130047DC15 /* PlayInteractionViewController.swift */; };
+		D26AD42F20668F140047DC15 /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40C20668F130047DC15 /* PlayVideoViewController.swift */; };
+		D26AD43020668F140047DC15 /* ScrollingContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40D20668F130047DC15 /* ScrollingContainerCell.swift */; };
+		D26AD43120668F140047DC15 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD40E20668F130047DC15 /* VideoPlayerView.swift */; };
+		D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41020668F130047DC15 /* StoryCameraViewController.swift */; };
+		D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41120668F130047DC15 /* StoryCreationViewController.swift */; };
+		D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */; };
+		D26AD43520668F140047DC15 /* test.mov in Resources */ = {isa = PBXBuildFile; fileRef = D26AD41520668F130047DC15 /* test.mov */; };
+		D26AD43620668F140047DC15 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41720668F130047DC15 /* UserProfileViewController.swift */; };
+		D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41920668F140047DC15 /* MessageViewController.swift */; };
+		D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41B20668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift */; };
+		D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41C20668F140047DC15 /* UIColor+HexColor.swift */; };
+		D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41D20668F140047DC15 /* UINavigationBar+Attributes.swift */; };
+		D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41F20668F140047DC15 /* AppDelegate.swift */; };
+		D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42020668F140047DC15 /* MainAppScrollingContainerItem.swift */; };
+		D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42120668F140047DC15 /* MainAppScrollingContainerViewController.swift */; };
+		D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42220668F140047DC15 /* MainAppViewController.swift */; };
+		D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42320668F140047DC15 /* MainNavigationController.swift */; };
+		D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42420668F140047DC15 /* MainTabBarController.swift */; };
+		D26AD44120668F140047DC15 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42520668F140047DC15 /* RootViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D0C734452064CF2C00BD6541 /* test.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = test.mov; sourceTree = "<group>"; };
-		D2264185205513710001D758 /* CollectionViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewSection.swift; sourceTree = "<group>"; };
-		D2264189205514360001D758 /* BaseCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellModel.swift; sourceTree = "<group>"; };
-		D226418B20551C260001D758 /* MainAppScrollingContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppScrollingContainerItem.swift; sourceTree = "<group>"; };
-		D226418D205520C50001D758 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		D226418F205520DC0001D758 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
-		D2264191205521530001D758 /* StoryCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCreationViewController.swift; sourceTree = "<group>"; };
-		D2264193205521C50001D758 /* StoryCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCameraViewController.swift; sourceTree = "<group>"; };
-		D2264195205525740001D758 /* MainFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
-		D22641972055259C0001D758 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
-		D2264199205525A90001D758 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
-		D226419B205525F40001D758 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
-		D226419D20552E230001D758 /* ListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCollectionView.swift; sourceTree = "<group>"; };
-		D226419F205550220001D758 /* UINavigationBar+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Attributes.swift"; sourceTree = "<group>"; };
-		D22641A1205550B50001D758 /* UIColor+HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColor.swift"; sourceTree = "<group>"; };
 		D22641A5205555DC0001D758 /* MedulaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MedulaOne-Regular.ttf"; sourceTree = "<group>"; };
-		D22641CB2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+StatusBarAppearanceUpdate.swift"; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D251884E2054D3C8000147CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D25188552054D3C8000147CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D25188582054D3C8000147CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D251885A2054D3C8000147CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D2D692CC2054EA17005C6E42 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		D2D692CE2054EE81005C6E42 /* MainAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppViewController.swift; sourceTree = "<group>"; };
-		D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppScrollingContainerViewController.swift; sourceTree = "<group>"; };
-		D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureCoordinatingCollectionView.swift; sourceTree = "<group>"; };
-		D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingContainerCell.swift; sourceTree = "<group>"; };
-		D2E3E1272056D068003CCEEC /* MainFeedViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedViewCell.swift; sourceTree = "<group>"; };
-		D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
-		D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayInteractionViewController.swift; sourceTree = "<group>"; };
-		D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellViewController.swift; sourceTree = "<group>"; };
-		D2E5A6E5205C197A00FAF8D1 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		D26AD40320668F130047DC15 /* BaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCellModel.swift; sourceTree = "<group>"; };
+		D26AD40420668F130047DC15 /* CollectionViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewSection.swift; sourceTree = "<group>"; };
+		D26AD40520668F130047DC15 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
+		D26AD40620668F130047DC15 /* FeedCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCellViewController.swift; sourceTree = "<group>"; };
+		D26AD40720668F130047DC15 /* GestureCoordinatingCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureCoordinatingCollectionView.swift; sourceTree = "<group>"; };
+		D26AD40820668F130047DC15 /* ListCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCollectionView.swift; sourceTree = "<group>"; };
+		D26AD40920668F130047DC15 /* MainFeedViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainFeedViewCell.swift; sourceTree = "<group>"; };
+		D26AD40A20668F130047DC15 /* MainFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
+		D26AD40B20668F130047DC15 /* PlayInteractionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayInteractionViewController.swift; sourceTree = "<group>"; };
+		D26AD40C20668F130047DC15 /* PlayVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
+		D26AD40D20668F130047DC15 /* ScrollingContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingContainerCell.swift; sourceTree = "<group>"; };
+		D26AD40E20668F130047DC15 /* VideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		D26AD41020668F130047DC15 /* StoryCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCameraViewController.swift; sourceTree = "<group>"; };
+		D26AD41120668F130047DC15 /* StoryCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCreationViewController.swift; sourceTree = "<group>"; };
+		D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MedulaOne-Regular.ttf"; sourceTree = "<group>"; };
+		D26AD41520668F130047DC15 /* test.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = test.mov; sourceTree = "<group>"; };
+		D26AD41720668F130047DC15 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		D26AD41920668F140047DC15 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		D26AD41B20668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+StatusBarAppearanceUpdate.swift"; sourceTree = "<group>"; };
+		D26AD41C20668F140047DC15 /* UIColor+HexColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColor.swift"; sourceTree = "<group>"; };
+		D26AD41D20668F140047DC15 /* UINavigationBar+Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Attributes.swift"; sourceTree = "<group>"; };
+		D26AD41F20668F140047DC15 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D26AD42020668F140047DC15 /* MainAppScrollingContainerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainAppScrollingContainerItem.swift; sourceTree = "<group>"; };
+		D26AD42120668F140047DC15 /* MainAppScrollingContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainAppScrollingContainerViewController.swift; sourceTree = "<group>"; };
+		D26AD42220668F140047DC15 /* MainAppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainAppViewController.swift; sourceTree = "<group>"; };
+		D26AD42320668F140047DC15 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
+		D26AD42420668F140047DC15 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		D26AD42520668F140047DC15 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,38 +125,112 @@
 		D251884D2054D3C8000147CC /* Alpface */ = {
 			isa = PBXGroup;
 			children = (
+				D26AD41620668F130047DC15 /* Account */,
+				D26AD41E20668F140047DC15 /* App */,
+				D26AD41A20668F140047DC15 /* Category */,
+				D26AD41820668F140047DC15 /* Message */,
 				D22641A3205555C70001D758 /* Resource */,
-				D251884E2054D3C8000147CC /* AppDelegate.swift */,
+				D26AD41220668F130047DC15 /* Resource */,
+				D26AD40F20668F130047DC15 /* Story */,
+				D26AD40220668F130047DC15 /* Video */,
+				D26AD44220668F350047DC15 /* Networking */,
 				D25188552054D3C8000147CC /* Assets.xcassets */,
 				D25188572054D3C8000147CC /* LaunchScreen.storyboard */,
 				D251885A2054D3C8000147CC /* Info.plist */,
-				D2D692CC2054EA17005C6E42 /* RootViewController.swift */,
-				D2D692CE2054EE81005C6E42 /* MainAppViewController.swift */,
-				D2D692D02054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift */,
-				D2D692D22054FECA005C6E42 /* GestureCoordinatingCollectionView.swift */,
-				D2D692D420550227005C6E42 /* ScrollingContainerCell.swift */,
-				D2264185205513710001D758 /* CollectionViewSection.swift */,
-				D2264189205514360001D758 /* BaseCellModel.swift */,
-				D226418B20551C260001D758 /* MainAppScrollingContainerItem.swift */,
-				D226418D205520C50001D758 /* MainTabBarController.swift */,
-				D226418F205520DC0001D758 /* MainNavigationController.swift */,
-				D2264191205521530001D758 /* StoryCreationViewController.swift */,
-				D2264193205521C50001D758 /* StoryCameraViewController.swift */,
-				D2264195205525740001D758 /* MainFeedViewController.swift */,
-				D2E3E1272056D068003CCEEC /* MainFeedViewCell.swift */,
-				D22641972055259C0001D758 /* ExploreViewController.swift */,
-				D2264199205525A90001D758 /* MessageViewController.swift */,
-				D226419B205525F40001D758 /* UserProfileViewController.swift */,
-				D226419D20552E230001D758 /* ListCollectionView.swift */,
-				D226419F205550220001D758 /* UINavigationBar+Attributes.swift */,
-				D22641A1205550B50001D758 /* UIColor+HexColor.swift */,
-				D22641CB2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift */,
-				D2E3E1292056D188003CCEEC /* PlayVideoViewController.swift */,
-				D2E5A6E5205C197A00FAF8D1 /* VideoPlayerView.swift */,
-				D2E3E12B2056D206003CCEEC /* PlayInteractionViewController.swift */,
-				D2E3E12D2056D312003CCEEC /* FeedCellViewController.swift */,
 			);
 			path = Alpface;
+			sourceTree = "<group>";
+		};
+		D26AD40220668F130047DC15 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD40320668F130047DC15 /* BaseCellModel.swift */,
+				D26AD40420668F130047DC15 /* CollectionViewSection.swift */,
+				D26AD40520668F130047DC15 /* ExploreViewController.swift */,
+				D26AD40620668F130047DC15 /* FeedCellViewController.swift */,
+				D26AD40720668F130047DC15 /* GestureCoordinatingCollectionView.swift */,
+				D26AD40820668F130047DC15 /* ListCollectionView.swift */,
+				D26AD40920668F130047DC15 /* MainFeedViewCell.swift */,
+				D26AD40A20668F130047DC15 /* MainFeedViewController.swift */,
+				D26AD40B20668F130047DC15 /* PlayInteractionViewController.swift */,
+				D26AD40C20668F130047DC15 /* PlayVideoViewController.swift */,
+				D26AD40D20668F130047DC15 /* ScrollingContainerCell.swift */,
+				D26AD40E20668F130047DC15 /* VideoPlayerView.swift */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		D26AD40F20668F130047DC15 /* Story */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD41020668F130047DC15 /* StoryCameraViewController.swift */,
+				D26AD41120668F130047DC15 /* StoryCreationViewController.swift */,
+			);
+			path = Story;
+			sourceTree = "<group>";
+		};
+		D26AD41220668F130047DC15 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD41320668F130047DC15 /* font */,
+				D26AD41520668F130047DC15 /* test.mov */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		D26AD41320668F130047DC15 /* font */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */,
+			);
+			path = font;
+			sourceTree = "<group>";
+		};
+		D26AD41620668F130047DC15 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD41720668F130047DC15 /* UserProfileViewController.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		D26AD41820668F140047DC15 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD41920668F140047DC15 /* MessageViewController.swift */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
+		D26AD41A20668F140047DC15 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD41B20668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift */,
+				D26AD41C20668F140047DC15 /* UIColor+HexColor.swift */,
+				D26AD41D20668F140047DC15 /* UINavigationBar+Attributes.swift */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		D26AD41E20668F140047DC15 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD41F20668F140047DC15 /* AppDelegate.swift */,
+				D26AD42020668F140047DC15 /* MainAppScrollingContainerItem.swift */,
+				D26AD42120668F140047DC15 /* MainAppScrollingContainerViewController.swift */,
+				D26AD42220668F140047DC15 /* MainAppViewController.swift */,
+				D26AD42320668F140047DC15 /* MainNavigationController.swift */,
+				D26AD42420668F140047DC15 /* MainTabBarController.swift */,
+				D26AD42520668F140047DC15 /* RootViewController.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D26AD44220668F350047DC15 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,9 +292,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26AD43520668F140047DC15 /* test.mov in Resources */,
 				D0C734462064CF2D00BD6541 /* test.mov in Resources */,
 				D22641A6205555DC0001D758 /* MedulaOne-Regular.ttf in Resources */,
 				D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */,
+				D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */,
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,32 +308,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D22641982055259C0001D758 /* ExploreViewController.swift in Sources */,
-				D251884F2054D3C8000147CC /* AppDelegate.swift in Sources */,
-				D2D692D12054EF1A005C6E42 /* MainAppScrollingContainerViewController.swift in Sources */,
-				D226418E205520C50001D758 /* MainTabBarController.swift in Sources */,
-				D2264192205521530001D758 /* StoryCreationViewController.swift in Sources */,
-				D22641A0205550220001D758 /* UINavigationBar+Attributes.swift in Sources */,
-				D22641CC2056B9C70001D758 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
-				D226419C205525F40001D758 /* UserProfileViewController.swift in Sources */,
-				D2264190205520DC0001D758 /* MainNavigationController.swift in Sources */,
-				D2264196205525740001D758 /* MainFeedViewController.swift in Sources */,
-				D226418A205514360001D758 /* BaseCellModel.swift in Sources */,
-				D2E5A6E6205C197A00FAF8D1 /* VideoPlayerView.swift in Sources */,
-				D2E3E12C2056D206003CCEEC /* PlayInteractionViewController.swift in Sources */,
-				D226418C20551C260001D758 /* MainAppScrollingContainerItem.swift in Sources */,
-				D2264194205521C50001D758 /* StoryCameraViewController.swift in Sources */,
-				D2E3E1282056D068003CCEEC /* MainFeedViewCell.swift in Sources */,
-				D2E3E12E2056D312003CCEEC /* FeedCellViewController.swift in Sources */,
-				D226419A205525A90001D758 /* MessageViewController.swift in Sources */,
-				D2E3E12A2056D188003CCEEC /* PlayVideoViewController.swift in Sources */,
-				D22641A2205550B50001D758 /* UIColor+HexColor.swift in Sources */,
-				D2D692D520550227005C6E42 /* ScrollingContainerCell.swift in Sources */,
-				D2D692D32054FECA005C6E42 /* GestureCoordinatingCollectionView.swift in Sources */,
-				D226419E20552E230001D758 /* ListCollectionView.swift in Sources */,
-				D2D692CD2054EA17005C6E42 /* RootViewController.swift in Sources */,
-				D2D692CF2054EE81005C6E42 /* MainAppViewController.swift in Sources */,
-				D2264186205513710001D758 /* CollectionViewSection.swift in Sources */,
+				D26AD42720668F140047DC15 /* CollectionViewSection.swift in Sources */,
+				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
+				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
+				D26AD43620668F140047DC15 /* UserProfileViewController.swift in Sources */,
+				D26AD44120668F140047DC15 /* RootViewController.swift in Sources */,
+				D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */,
+				D26AD42620668F140047DC15 /* BaseCellModel.swift in Sources */,
+				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
+				D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
+				D26AD42B20668F140047DC15 /* ListCollectionView.swift in Sources */,
+				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
+				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
+				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
+				D26AD42A20668F140047DC15 /* GestureCoordinatingCollectionView.swift in Sources */,
+				D26AD42C20668F140047DC15 /* MainFeedViewCell.swift in Sources */,
+				D26AD42E20668F140047DC15 /* PlayInteractionViewController.swift in Sources */,
+				D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */,
+				D26AD43020668F140047DC15 /* ScrollingContainerCell.swift in Sources */,
+				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,
+				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,
+				D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */,
+				D26AD42920668F140047DC15 /* FeedCellViewController.swift in Sources */,
+				D26AD42820668F140047DC15 /* ExploreViewController.swift in Sources */,
+				D26AD42F20668F140047DC15 /* PlayVideoViewController.swift in Sources */,
+				D26AD42D20668F140047DC15 /* MainFeedViewController.swift in Sources */,
+				D26AD43120668F140047DC15 /* VideoPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

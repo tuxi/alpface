@@ -14,7 +14,7 @@ class PlayInteractionViewController: UIViewController {
     open var playerController: PlayVideoViewController?
     
     /// 播放/暂停按钮
-    var playOrPauseButton: UIButton = {
+    fileprivate var playOrPauseButton: UIButton = {
         let playOrPauseButton = UIButton(type: .custom)
         playOrPauseButton.translatesAutoresizingMaskIntoConstraints = false
         playOrPauseButton.setImage(UIImage(named:"icon_pausemusic"), for: .selected)
@@ -22,7 +22,7 @@ class PlayInteractionViewController: UIViewController {
         return playOrPauseButton
     }()
     /// 播放进度
-    var progress: UIProgressView = {
+    fileprivate var progress: UIProgressView = {
         let progress = UIProgressView(frame: .zero)
         progress.translatesAutoresizingMaskIntoConstraints = false
         progress.progressTintColor = UIColor.blue
@@ -30,7 +30,7 @@ class PlayInteractionViewController: UIViewController {
         return progress
     }()
     /// 显示播放时间
-    var timeLabel: UILabel = {
+    fileprivate var timeLabel: UILabel = {
         let timeLabel = UILabel(frame: .zero)
         timeLabel.font = UIFont.systemFont(ofSize: 12.0)
         timeLabel.textColor = UIColor.red
@@ -74,7 +74,7 @@ class PlayInteractionViewController: UIViewController {
     }
 
     /// 点击播放/暂停按钮
-    @objc private func playOrPauseButtonClicked(button: UIButton) {
+    @objc fileprivate func playOrPauseButtonClicked(button: UIButton) {
         guard let playerController = playerController else { return }
         if playerController.state == .playing {
             button.isSelected = false
