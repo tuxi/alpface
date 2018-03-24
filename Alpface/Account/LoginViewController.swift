@@ -51,9 +51,11 @@ class LoginViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.white.withAlphaComponent(0.03)
         button.setTitleColor(UIColor.white.withAlphaComponent(0.55), for: .normal)
+        button.setTitleColor(UIColor.white, for: .highlighted)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight(rawValue: 1.0))
         button.layer.cornerRadius = 3.0
         button.layer.masksToBounds = true
+        button.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
         return button
     }()
     
@@ -85,6 +87,8 @@ class LoginViewController: UIViewController {
     fileprivate lazy var loginProblemButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(UIColor.lightGray, for: .highlighted)
         return button
     }()
     
@@ -159,7 +163,7 @@ class LoginViewController: UIViewController {
         
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[logoLabel]-(35.0)-[usernameContentView(==62.0)]-(15.0)-[passwordContentView(==62.0)]-(15.0)-[loginButton(==50.0)]-(15.0)-[loginProblemButton]|", options: .alignAllCenterX, metrics: nil, views: ["logoLabel": logoLabel, "usernameContentView": usernameContentView, "passwordContentView": passwordContentView, "loginButton": loginButton, "loginProblemButton": loginProblemButton]))
         
-        loginButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.3).isActive = true
+        loginButton.widthAnchor.constraint(equalTo: usernameContentView.widthAnchor, multiplier: 1.0).isActive = true
         
         usernameLabel.setContentHuggingPriority(.required, for: .horizontal)
         usernameLabel.leadingAnchor.constraint(equalTo: usernameContentView.leadingAnchor, constant: 20.0).isActive = true
@@ -234,6 +238,29 @@ class LoginViewController: UIViewController {
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let obj = object else { return }
+        guard let keyPath = keyPath else { return }
+        if keyPath == "highlighted" {
+            let button = obj as! UIButton
+            if button == loginButton {
+                if button.isHighlighted {
+                    button.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+                }
+                else {
+                    button.backgroundColor = UIColor.white.withAlphaComponent(0.03)
+                }
+            }
+        }
+        else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
+    
+    deinit {
+        loginButton.removeObserver(self, forKeyPath: "highlighted")
     }
 
 }
