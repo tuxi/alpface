@@ -37,9 +37,12 @@ class UserProfileViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        return .lightContent
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
     /*
     // MARK: - Navigation
 

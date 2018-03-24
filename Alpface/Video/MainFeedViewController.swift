@@ -90,7 +90,7 @@ class MainFeedViewController: UIViewController {
     }
     
     override var prefersStatusBarHidden: Bool {
-        return false
+        return true
     }
     
     override var childViewControllerForStatusBarStyle: UIViewController? {

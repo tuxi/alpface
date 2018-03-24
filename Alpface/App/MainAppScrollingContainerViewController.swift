@@ -227,6 +227,7 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         else {
             collectionView.isScrollEnabled = false
         }
+        UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         
     }
 }
