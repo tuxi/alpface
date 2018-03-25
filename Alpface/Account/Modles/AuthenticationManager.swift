@@ -11,9 +11,40 @@ import UIKit
 
 @objc(ALPAuthenticationManager)
 final class AuthenticationManager: NSObject {
-    static let shared = AuthenticationManager()
-    private override init() {
-       super.init()
+    static public let shared = AuthenticationManager()
+    public let accountLogin = AccountLogin()
+    
+    public var csrftoken : String? {
+        get {
+            return UserDefaults.standard.object(forKey: ALPCsrftokenKey) as? String
+        }
+        
+        set {
+            UserDefaults.standard .set(newValue, forKey: ALPCsrftokenKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    private override init() { super.init() }
+    
+    public var loginUser: User? {
+        set {
+            
+            let data = NSKeyedArchiver.archivedData(withRootObject: newValue as Any)
+            UserDefaults.standard.setValue(data, forKey: ALPLoginUserInfoKey)
+            UserDefaults.standard.synchronize()
+        }
+        get {
+            guard let data = UserDefaults.standard.value(forKey: ALPLoginUserInfoKey) as? Data else {
+                return nil
+            }
+            
+            guard let user = NSKeyedUnarchiver.unarchiveObject(with: data) as? User else {
+                return nil
+            }
+            
+            return user
+        }
     }
     
 }

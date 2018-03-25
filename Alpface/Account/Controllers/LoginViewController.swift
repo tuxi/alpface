@@ -72,11 +72,39 @@ class LoginViewController: UIViewController {
         
         usernameTf.isEnabled = false
         passwordTf.isEnabled = false
+        loginProblemButton.isEnabled = false
         registerButton.isEnabled = false
         
         sender.startAnimation()
         
-        
+        guard let username = usernameTf.text else { return }
+        guard let password = passwordTf.text else { return }
+        AuthenticationManager.shared.accountLogin.login(username: username, password: password, success: { (result) in
+            
+            if result.status == "success" {
+                // 登录成功
+                sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: {
+                    //                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    //                appDelegate.login()
+                })
+            }
+           
+        }) { (error) in
+            // 登录失败
+            sender.stopAnimation(animationStyle: .shake, revertAfterDelay: 1, completion: {
+                [unowned self] in
+                
+                //another case
+                let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(ok)
+                self.present(alert, animated: true, completion: nil)
+                self.usernameTf.isEnabled = true
+                self.passwordTf.isEnabled = true
+                self.loginProblemButton.isEnabled = true
+                self.registerButton.isEnabled = true
+            })
+        }
     }
     
     fileprivate lazy var registerButton : UIButton = {
@@ -180,6 +208,8 @@ class LoginViewController: UIViewController {
         loginButton.setTitle("登錄", for: .normal)
         loginProblemButton.setTitle("登錄遇到問題", for: .normal)
         registerButton.setTitle("需要一個新的賬戶", for: .normal)
+        usernameTf.text = "alpface"
+        passwordTf.text = "Sey308719*"
         setupNavigationBar()
         updateLoginButtonLayout(animated: false)
     }
