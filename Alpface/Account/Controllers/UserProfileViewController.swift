@@ -10,7 +10,15 @@ import UIKit
 
 class UserProfileViewController: UIViewController {
     
-    var isLogin : Bool = false
+    var isLogin : Bool  {
+        get {
+            let loginUser = AuthenticationManager.shared.loginUser
+            if loginUser?.username?.isEmpty == false {
+                return true
+            }
+            return false
+        }
+    }
     
 
     override func viewDidLoad() {
@@ -18,18 +26,23 @@ class UserProfileViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         view.backgroundColor = UIColor.white
-        
+        showLoginViewController()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+    }
+    
+    public func showLoginViewController() {
         if isLogin == false {
             let loginVc = LoginViewController()
             let nav = MainNavigationController(rootViewController: loginVc)
             showDetailViewController(nav, sender: self)
         }
+        else {
+            
+        }
     }
-    
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
