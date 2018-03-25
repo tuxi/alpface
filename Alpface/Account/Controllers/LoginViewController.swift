@@ -37,18 +37,49 @@ class LoginViewController: UIViewController {
     fileprivate lazy var usernameTf : UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
         return tf
     }()
     
     fileprivate lazy var passwordTf : UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
         return tf
     }()
     
     fileprivate var contentViewCenterYConstraint : NSLayoutConstraint?
+    fileprivate var keyboardIsVisibleNotification : Notification?
     
-    fileprivate lazy var loginButton : UIButton = {
+    fileprivate lazy var loginButton : TransitionButton = {
+        let button = TransitionButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.white.withAlphaComponent(0.03)
+        button.setTitleColor(UIColor.white.withAlphaComponent(0.55), for: .normal)
+        button.setTitleColor(UIColor.white, for: .highlighted)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight(rawValue: 1.0))
+        button.spinnerColor = UIColor.white
+        button.cornerRadius = 25.0
+        button.layer.cornerRadius = 3.0
+        button.layer.masksToBounds = true
+        button.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
+        button.addTarget(self, action: #selector(loginButtonClick(_:)), for: .touchUpInside)
+        button.applyGradient(gradient: CAGradientLayer(), colours:[UIColor(hex:"00C3FF"), UIColor(hex:"FFFF1C")], locations:[0.0,1.0], stP:CGPoint(x:0.0,y:0.0), edP:CGPoint(x:1.0,y:0.0), gradientAnimation: CABasicAnimation())
+        return button
+    }()
+    
+    @objc func loginButtonClick(_ sender: TransitionButton) {
+        
+        usernameTf.isEnabled = false
+        passwordTf.isEnabled = false
+        registerButton.isEnabled = false
+        
+        sender.startAnimation()
+        
+        
+    }
+    
+    fileprivate lazy var registerButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.white.withAlphaComponent(0.03)
@@ -114,12 +145,15 @@ class LoginViewController: UIViewController {
         
         return pastelView
     }()
+    
+    fileprivate var loginButtonHeightConstraint: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         setupUI()
+        createObserver()
     }
     
     fileprivate func setupUI() {
@@ -137,6 +171,7 @@ class LoginViewController: UIViewController {
         passwordContentView.addSubview(passwordTf)
         contentView.addSubview(loginButton)
         contentView.addSubview(loginProblemButton)
+        contentView.addSubview(registerButton)
         setupConstraints()
         
         logoLabel.text = "Alpface"
@@ -144,9 +179,9 @@ class LoginViewController: UIViewController {
         passwordLabel.text = "密碼"
         loginButton.setTitle("登錄", for: .normal)
         loginProblemButton.setTitle("登錄遇到問題", for: .normal)
-        
+        registerButton.setTitle("需要一個新的賬戶", for: .normal)
         setupNavigationBar()
-        addObserver()
+        updateLoginButtonLayout(animated: false)
     }
     
     fileprivate func setupConstraints() {
@@ -165,9 +200,12 @@ class LoginViewController: UIViewController {
         passwordContentView.trailingAnchor.constraint(equalTo: usernameContentView.trailingAnchor).isActive = true
         
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[logoLabel]-(35.0)-[usernameContentView(==62.0)]-(15.0)-[passwordContentView(==62.0)]-(15.0)-[loginButton(==50.0)]-(15.0)-[loginProblemButton]|", options: .alignAllCenterX, metrics: nil, views: ["logoLabel": logoLabel, "usernameContentView": usernameContentView, "passwordContentView": passwordContentView, "loginButton": loginButton, "loginProblemButton": loginProblemButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[logoLabel]-(35.0)-[usernameContentView(==62.0)]-(15.0)-[passwordContentView(==62.0)]-(15.0)-[loginButton]-(15.0)-[loginProblemButton]-(15.0)-[registerButton(==50.0)]|", options: .alignAllCenterX, metrics: nil, views: ["logoLabel": logoLabel, "usernameContentView": usernameContentView, "passwordContentView": passwordContentView, "loginButton": loginButton, "loginProblemButton": loginProblemButton, "registerButton": registerButton]))
         
+        loginButtonHeightConstraint = loginButton.heightAnchor.constraint(equalToConstant: 0.0)
+        loginButtonHeightConstraint?.isActive = true
         loginButton.widthAnchor.constraint(equalTo: usernameContentView.widthAnchor, multiplier: 1.0).isActive = true
+        registerButton.widthAnchor.constraint(equalTo: usernameContentView.widthAnchor, multiplier: 1.0).isActive = true
         
         usernameLabel.setContentHuggingPriority(.required, for: .horizontal)
         usernameLabel.leadingAnchor.constraint(equalTo: usernameContentView.leadingAnchor, constant: 20.0).isActive = true
@@ -224,45 +262,8 @@ class LoginViewController: UIViewController {
         pastelView.startAnimation()
     }
     
-    fileprivate func addObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow(notification:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide(notification:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-    }
-    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
-    
-    // MARK: - Actions
-    @objc private func keyboardWillShow(notification: Notification) {
-        guard let userInfo = notification.userInfo else { return }
-        // 获取键盘frame
-        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        
-        // 键盘弹出的时间
-        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
-        
-        if contentView.frame.maxY > keyboardRect.origin.y {
-            // 键盘遮住文本了，就把contentView往上移
-            let offset = contentView.frame.maxY - keyboardRect.origin.y
-            contentViewCenterYConstraint?.constant -= offset
-            UIView.animate(withDuration: duration, animations: {
-                self.view.layoutIfNeeded()
-            })
-        }
-    }
-    
-    @objc private func keyboardWillHide(notification: Notification) {
-        guard let userInfo = notification.userInfo else { return }
-        
-        // 键盘弹出的时间
-        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
-        
-        // 键盘遮住文本了，就把contentView往上移
-        contentViewCenterYConstraint?.constant = 0
-        UIView.animate(withDuration: duration, animations: {
-            self.view.layoutIfNeeded()
-        })
+        dismissKeyboard()
     }
     
     
@@ -305,7 +306,111 @@ class LoginViewController: UIViewController {
     
     deinit {
         loginButton.removeObserver(self, forKeyPath: "highlighted")
-        NotificationCenter.default.removeObserver(self)
+        registerButton.removeObserver(self, forKeyPath: "highlighted")
+        releaseObservers()
     }
 
 }
+
+extension  LoginViewController {
+    
+    // 监听键盘
+    fileprivate  func createObserver(){
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow(notification:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide(notification:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    
+    fileprivate func releaseObservers(){
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+extension LoginViewController {
+    
+    @objc fileprivate func dismissKeyboard(){
+        view.endEditing(true)
+    }
+    
+    // 如果用户未输入账户和密码，隐藏登录按钮
+    @objc fileprivate func textFieldsEditingChanged(sender: UITextField) {
+        updateLoginButtonLayout()
+    }
+    
+    fileprivate func updateLoginButtonLayout(animated : Bool = true) {
+        loginButton.isHidden = (usernameTf.text?.isEmpty)! || (passwordTf.text?.isEmpty)!
+        
+        if loginButton.isHidden {
+            loginButtonHeightConstraint?.constant = 0.0
+        }
+        else {
+            loginButtonHeightConstraint?.constant = 50.0
+        }
+        let duration : Double = 0.35
+        // 此处更新是为了获取contentView.frame真实的值
+        UIView.animate(withDuration: (animated ? duration : 0.0)) {
+            self.view.layoutIfNeeded()
+        }
+        if let notification = keyboardIsVisibleNotification {
+            guard let userInfo = notification.userInfo else { return }
+            // 获取键盘frame
+            let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            
+            // 键盘遮住文本了，就把contentView往上移
+            let offset = contentView.frame.maxY - keyboardRect.origin.y
+            contentViewCenterYConstraint?.constant -= offset
+            UIView.animate(withDuration: (animated ? duration : 0.0)) {
+                self.view.layoutIfNeeded()
+            }
+        }
+        
+    }
+    
+    // MARK: - Actions
+    @objc private func keyboardWillShow(notification: Notification) {
+        keyboardIsVisibleNotification = notification
+        guard let userInfo = notification.userInfo else { return }
+        // 获取键盘frame
+        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        // 键盘弹出的时间
+        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        
+        if contentView.frame.maxY > keyboardRect.origin.y {
+            // 键盘遮住文本了，就把contentView往上移
+            let offset = contentView.frame.maxY - keyboardRect.origin.y
+            contentViewCenterYConstraint?.constant -= offset
+            UIView.animate(withDuration: duration, animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: Notification) {
+        keyboardIsVisibleNotification = nil
+        guard let userInfo = notification.userInfo else { return }
+        
+        // 键盘弹出的时间
+        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        
+        // 键盘遮住文本了，就把contentView往上移
+        contentViewCenterYConstraint?.constant = 0
+        UIView.animate(withDuration: duration, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        usernameTf.resignFirstResponder()
+        passwordTf.resignFirstResponder()
+        return true
+    }
+    
+}
+
+
+

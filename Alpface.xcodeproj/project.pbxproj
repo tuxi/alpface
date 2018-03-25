@@ -48,6 +48,15 @@
 		D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD45F2066BAF40047DC15 /* LoginViewController.swift */; };
 		D26AD4632066BAF40047DC15 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */; };
 		D26AD4652066BB180047DC15 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4642066BB180047DC15 /* User.swift */; };
+		D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD466206729D60047DC15 /* AuthenticationManager.swift */; };
+		D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD47A20672E120047DC15 /* CustomTransitionViewController.swift */; };
+		D26AD47F20672E120047DC15 /* FadeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD47B20672E120047DC15 /* FadeTransition.swift */; };
+		D26AD48020672E120047DC15 /* SpinerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD47C20672E120047DC15 /* SpinerLayer.swift */; };
+		D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD47D20672E120047DC15 /* TransitionButton.swift */; };
+		D26AD483206731000047DC15 /* AccountLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD482206731000047DC15 /* AccountLogin.swift */; };
+		D26AD485206733030047DC15 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD484206733030047DC15 /* UIImage+Extension.swift */; };
+		D26AD4872067334E0047DC15 /* UIButton+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4862067334E0047DC15 /* UIButton+Attributes.swift */; };
+		D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD488206735CD0047DC15 /* UIView+Attributes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +104,15 @@
 		D26AD45F2066BAF40047DC15 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		D26AD4642066BB180047DC15 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D26AD466206729D60047DC15 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		D26AD47A20672E120047DC15 /* CustomTransitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTransitionViewController.swift; sourceTree = "<group>"; };
+		D26AD47B20672E120047DC15 /* FadeTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FadeTransition.swift; sourceTree = "<group>"; };
+		D26AD47C20672E120047DC15 /* SpinerLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinerLayer.swift; sourceTree = "<group>"; };
+		D26AD47D20672E120047DC15 /* TransitionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionButton.swift; sourceTree = "<group>"; };
+		D26AD482206731000047DC15 /* AccountLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountLogin.swift; sourceTree = "<group>"; };
+		D26AD484206733030047DC15 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		D26AD4862067334E0047DC15 /* UIButton+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Attributes.swift"; sourceTree = "<group>"; };
+		D26AD488206735CD0047DC15 /* UIView+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Attributes.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,7 +246,10 @@
 			children = (
 				D26AD41B20668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift */,
 				D26AD41C20668F140047DC15 /* UIColor+HexColor.swift */,
+				D26AD484206733030047DC15 /* UIImage+Extension.swift */,
 				D26AD41D20668F140047DC15 /* UINavigationBar+Attributes.swift */,
+				D26AD4862067334E0047DC15 /* UIButton+Attributes.swift */,
+				D26AD488206735CD0047DC15 /* UIView+Attributes.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -257,6 +278,7 @@
 		D26AD444206690B40047DC15 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				D26AD47920672E120047DC15 /* TransitionButton */,
 				D26AD445206690E60047DC15 /* Pastel */,
 			);
 			path = ThirdParty;
@@ -314,8 +336,21 @@
 			isa = PBXGroup;
 			children = (
 				D26AD4642066BB180047DC15 /* User.swift */,
+				D26AD466206729D60047DC15 /* AuthenticationManager.swift */,
+				D26AD482206731000047DC15 /* AccountLogin.swift */,
 			);
 			path = Modles;
+			sourceTree = "<group>";
+		};
+		D26AD47920672E120047DC15 /* TransitionButton */ = {
+			isa = PBXGroup;
+			children = (
+				D26AD47A20672E120047DC15 /* CustomTransitionViewController.swift */,
+				D26AD47B20672E120047DC15 /* FadeTransition.swift */,
+				D26AD47C20672E120047DC15 /* SpinerLayer.swift */,
+				D26AD47D20672E120047DC15 /* TransitionButton.swift */,
+			);
+			path = TransitionButton;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -396,7 +431,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */,
+				D26AD485206733030047DC15 /* UIImage+Extension.swift in Sources */,
 				D26AD42720668F140047DC15 /* CollectionViewSection.swift in Sources */,
+				D26AD47F20672E120047DC15 /* FadeTransition.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
 				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
 				D26AD44120668F140047DC15 /* RootViewController.swift in Sources */,
@@ -408,6 +446,7 @@
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
 				D26AD42B20668F140047DC15 /* ListCollectionView.swift in Sources */,
 				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
+				D26AD483206731000047DC15 /* AccountLogin.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
@@ -417,8 +456,12 @@
 				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,
 				D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */,
 				D26AD42E20668F140047DC15 /* PlayInteractionViewController.swift in Sources */,
+				D26AD4872067334E0047DC15 /* UIButton+Attributes.swift in Sources */,
 				D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D26AD43020668F140047DC15 /* ScrollingContainerCell.swift in Sources */,
+				D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */,
+				D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */,
+				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
 				D26AD4632066BAF40047DC15 /* UserProfileViewController.swift in Sources */,
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,
 				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,
@@ -427,6 +470,7 @@
 				D26AD42F20668F140047DC15 /* PlayVideoViewController.swift in Sources */,
 				D26AD42D20668F140047DC15 /* MainFeedViewController.swift in Sources */,
 				D26AD43120668F140047DC15 /* VideoPlayerView.swift in Sources */,
+				D26AD48020672E120047DC15 /* SpinerLayer.swift in Sources */,
 				D26AD452206690E60047DC15 /* PastelGradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
