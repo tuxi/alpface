@@ -25,6 +25,15 @@ final class AuthenticationManager: NSObject {
         }
     }
     
+    var isLogin : Bool  {
+        get {
+            if loginUser?.username?.isEmpty == false {
+                return true
+            }
+            return false
+        }
+    }
+    
     private override init() { super.init() }
     
     public var loginUser: User? {
