@@ -60,6 +60,13 @@
 		D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD488206735CD0047DC15 /* UIView+Attributes.swift */; };
 		D26AD4952067779F0047DC15 /* HttpRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */; };
 		D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD49820677C5C0047DC15 /* ALPConstans.swift */; };
+		D2A2C75720693521003CEB97 /* UserProfileContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C75620693521003CEB97 /* UserProfileContentCell.swift */; };
+		D2A2C7722069553E003CEB97 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C7712069553E003CEB97 /* ProfileViewController.swift */; };
+		D2A2C7742069556A003CEB97 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C7732069556A003CEB97 /* ProfileHeaderView.swift */; };
+		D2A2C776206955AC003CEB97 /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2A2C775206955AC003CEB97 /* ProfileHeaderView.xib */; };
+		D2A2C778206955C9003CEB97 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C777206955C9003CEB97 /* RoundButton.swift */; };
+		D2A2C77A206955E3003CEB97 /* ProfileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C779206955E3003CEB97 /* ProfileIconView.swift */; };
+		D2A2C77C206955FE003CEB97 /* TouchRespondScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C77B206955FE003CEB97 /* TouchRespondScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +127,13 @@
 		D26AD488206735CD0047DC15 /* UIView+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Attributes.swift"; sourceTree = "<group>"; };
 		D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpRequestHelper.swift; sourceTree = "<group>"; };
 		D26AD49820677C5C0047DC15 /* ALPConstans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALPConstans.swift; sourceTree = "<group>"; };
+		D2A2C75620693521003CEB97 /* UserProfileContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileContentCell.swift; sourceTree = "<group>"; };
+		D2A2C7712069553E003CEB97 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		D2A2C7732069556A003CEB97 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		D2A2C775206955AC003CEB97 /* ProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
+		D2A2C777206955C9003CEB97 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		D2A2C779206955E3003CEB97 /* ProfileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIconView.swift; sourceTree = "<group>"; };
+		D2A2C77B206955FE003CEB97 /* TouchRespondScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchRespondScrollView.swift; sourceTree = "<group>"; };
 		FB768995D8F6D8FF332CFBDB /* Pods-Alpface.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpface.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Alpface/Pods-Alpface.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -249,6 +263,7 @@
 		D26AD41620668F130047DC15 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				D2A2C753206932AE003CEB97 /* Views */,
 				D26AD45E2066BAF40047DC15 /* Controllers */,
 				D26AD4612066BAF40047DC15 /* Modles */,
 			);
@@ -343,6 +358,7 @@
 			children = (
 				D26AD45F2066BAF40047DC15 /* LoginViewController.swift */,
 				D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */,
+				D2A2C7712069553E003CEB97 /* ProfileViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -389,6 +405,19 @@
 				D26AD49820677C5C0047DC15 /* ALPConstans.swift */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		D2A2C753206932AE003CEB97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D2A2C775206955AC003CEB97 /* ProfileHeaderView.xib */,
+				D2A2C75620693521003CEB97 /* UserProfileContentCell.swift */,
+				D2A2C7732069556A003CEB97 /* ProfileHeaderView.swift */,
+				D2A2C777206955C9003CEB97 /* RoundButton.swift */,
+				D2A2C779206955E3003CEB97 /* ProfileIconView.swift */,
+				D2A2C77B206955FE003CEB97 /* TouchRespondScrollView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		EEFF066B39BFCC38E75500C8 /* Frameworks */ = {
@@ -470,6 +499,7 @@
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
 				D26AD450206690E60047DC15 /* .gitkeep in Resources */,
 				D26AD451206690E60047DC15 /* .gitkeep in Resources */,
+				D2A2C776206955AC003CEB97 /* ProfileHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +521,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3C1A8B2334B0CBF06F9952B3 /* [CP] Copy Pods Resources */ = {
@@ -517,10 +547,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/GraphicsRenderer/GraphicsRenderer.framework",
+				"${BUILT_PRODUCTS_DIR}/Peek/Peek.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GraphicsRenderer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Peek.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -539,6 +573,7 @@
 				D26AD42720668F140047DC15 /* CollectionViewSection.swift in Sources */,
 				D26AD47F20672E120047DC15 /* FadeTransition.swift in Sources */,
 				D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */,
+				D2A2C77A206955E3003CEB97 /* ProfileIconView.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
 				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
 				D26AD44120668F140047DC15 /* RootViewController.swift in Sources */,
@@ -553,6 +588,7 @@
 				D26AD483206731000047DC15 /* AccountLogin.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
+				D2A2C7722069553E003CEB97 /* ProfileViewController.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
 				D26AD4952067779F0047DC15 /* HttpRequestHelper.swift in Sources */,
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
@@ -567,7 +603,10 @@
 				D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */,
 				D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */,
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
+				D2A2C77C206955FE003CEB97 /* TouchRespondScrollView.swift in Sources */,
 				D26AD4632066BAF40047DC15 /* UserProfileViewController.swift in Sources */,
+				D2A2C778206955C9003CEB97 /* RoundButton.swift in Sources */,
+				D2A2C7742069556A003CEB97 /* ProfileHeaderView.swift in Sources */,
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,
 				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,
 				D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */,
@@ -576,6 +615,7 @@
 				D26AD42D20668F140047DC15 /* MainFeedViewController.swift in Sources */,
 				D26AD43120668F140047DC15 /* VideoPlayerView.swift in Sources */,
 				D26AD48020672E120047DC15 /* SpinerLayer.swift in Sources */,
+				D2A2C75720693521003CEB97 /* UserProfileContentCell.swift in Sources */,
 				D26AD452206690E60047DC15 /* PastelGradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
