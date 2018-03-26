@@ -62,8 +62,6 @@ class LoginViewController: UIViewController {
         button.cornerRadius = 25.0
         button.layer.cornerRadius = 3.0
         button.layer.masksToBounds = true
-        button.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
-        button.addTarget(self, action: #selector(loginButtonClick(_:)), for: .touchUpInside)
         button.applyGradient(gradient: CAGradientLayer(), colours:[UIColor(hex:"00C3FF"), UIColor(hex:"FFFF1C")], locations:[0.0,1.0], stP:CGPoint(x:0.0,y:0.0), edP:CGPoint(x:1.0,y:0.0), gradientAnimation: CABasicAnimation())
         return button
     }()
@@ -116,7 +114,7 @@ class LoginViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight(rawValue: 1.0))
         button.layer.cornerRadius = 3.0
         button.layer.masksToBounds = true
-        button.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
+        
         return button
     }()
     
@@ -182,6 +180,9 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         createObserver()
+        loginButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
+        loginButton.addTarget(self, action: #selector(loginButtonClick(_:)), for: .touchUpInside)
+        registerButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
     }
     
     fileprivate func setupUI() {
