@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Peek
 
 @objc(ALPAppDelegate)
 @UIApplicationMain
@@ -22,6 +23,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rootVC = RootViewController()
         window?.rootViewController = rootVC
         window?.makeKeyAndVisible()
+        
+        
+        window?.peek.enableWithOptions { options in
+            options.theme = .dark
+            options.activationMode = .auto
+            options.ignoresContainerViews = false
+            
+            /*
+             Configure the metadata asscociated with this app.
+             */
+            options.metadata = [
+                "Environment": "UAT"
+            ]
+        }
         
         return true
     }
