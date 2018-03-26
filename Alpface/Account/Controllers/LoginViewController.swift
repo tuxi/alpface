@@ -161,14 +161,13 @@ class LoginViewController: UIViewController {
         pastelView.animationDuration = 3.0
         
         //MARK: -  Custom Color
-        pastelView.setColors([UIColor(red: 156/255, green: 39/255, blue: 176/255, alpha: 1.0),
-                              UIColor(red: 255/255, green: 64/255, blue: 129/255, alpha: 1.0),
-                              UIColor(red: 123/255, green: 31/255, blue: 162/255, alpha: 1.0),
-                              UIColor(red: 32/255, green: 76/255, blue: 255/255, alpha: 1.0),
-                              UIColor(red: 32/255, green: 158/255, blue: 255/255, alpha: 1.0),
-                              UIColor(red: 90/255, green: 120/255, blue: 127/255, alpha: 1.0),
-                              UIColor(red: 58/255, green: 255/255, blue: 217/255, alpha: 1.0)])
-        
+        pastelView.setColors([UIColor(red: 156/255, green: 39/255, blue: 176/255, alpha: 0.95),
+                              UIColor(red: 255/255, green: 64/255, blue: 129/255, alpha: 0.95),
+                              UIColor(red: 123/255, green: 31/255, blue: 162/255, alpha: 0.95),
+                              UIColor(red: 32/255, green: 76/255, blue: 255/255, alpha: 0.95),
+                              UIColor(red: 32/255, green: 158/255, blue: 255/255, alpha: 0.95),
+                              UIColor(red: 90/255, green: 120/255, blue: 127/255, alpha: 0.95),
+                              UIColor(red: 58/255, green: 255/255, blue: 217/255, alpha: 0.95)])
         return pastelView
     }()
     
@@ -183,10 +182,11 @@ class LoginViewController: UIViewController {
         loginButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
         loginButton.addTarget(self, action: #selector(loginButtonClick(_:)), for: .touchUpInside)
         registerButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
+        usernameTf.becomeFirstResponder()
     }
     
     fileprivate func setupUI() {
-        view.backgroundColor = UIColor.lightGray
+        view.backgroundColor = UIColor.clear
         
         view.addSubview(pastelView)
         view.insertSubview(pastelView, at: 0)

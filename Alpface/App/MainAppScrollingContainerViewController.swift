@@ -230,4 +230,30 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         
     }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if viewController.title != "home" {
+            /// 用户点击的只要不是首页，当前如果未登录则弹出登录页面
+            if AuthenticationManager.shared.isLogin == false {
+                let loginVc = LoginViewController()
+                let nav = MainNavigationController(rootViewController: loginVc)
+                /// 模态出来的控制器半透明
+                nav.modalPresentationStyle = .overCurrentContext
+                showDetailViewController(nav, sender: self)
+                return false
+            }
+        }
+        return true
+    }
+    
+    public func showLoginViewController() {
+        if AuthenticationManager.shared.isLogin == false {
+            let loginVc = LoginViewController()
+            let nav = MainNavigationController(rootViewController: loginVc)
+            showDetailViewController(nav, sender: self)
+        }
+        else {
+            
+        }
+    }
 }

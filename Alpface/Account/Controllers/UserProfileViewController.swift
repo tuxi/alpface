@@ -10,16 +10,6 @@ import UIKit
 
 class UserProfileViewController: UIViewController {
     
-    var isLogin : Bool  {
-        get {
-            let loginUser = AuthenticationManager.shared.loginUser
-            if loginUser?.username?.isEmpty == false {
-                return true
-            }
-            return false
-        }
-    }
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,20 +23,6 @@ class UserProfileViewController: UIViewController {
         
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        showLoginViewController()
-    }
-    
-    public func showLoginViewController() {
-        if isLogin == false {
-            let loginVc = LoginViewController()
-            let nav = MainNavigationController(rootViewController: loginVc)
-            showDetailViewController(nav, sender: self)
-        }
-        else {
-            
-        }
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
