@@ -8,7 +8,16 @@
 
 import UIKit
 
+@objc(ALPLoginViewControllerDelegate)
+protocol LoginViewControllerDelegate : NSObjectProtocol {
+    @objc optional func loginViewController(loginSuccess user: User) -> Void
+    @objc optional func loginViewController(loginFailure error: Error) -> Void
+}
+
+@objc(ALPLoginViewController)
 class LoginViewController: UIViewController {
+    
+    open weak var delegate: LoginViewControllerDelegate?
     
     fileprivate lazy var logoLabel : UILabel = {
         let label = UILabel()
@@ -77,17 +86,30 @@ class LoginViewController: UIViewController {
         
         guard let username = usernameTf.text else { return }
         guard let password = passwordTf.text else { return }
-        AuthenticationManager.shared.accountLogin.login(username: username, password: password, success: { (result) in
+        AuthenticationManager.shared.accountLogin.login(username: username, password: password, success: { [unowned self] (result) in
             
             if result.status == "success" {
+                guard let user = AuthenticationManager.shared.loginUser else { return }
+                NotificationCenter.default.post(name: NSNotification.Name.init(ALPLoginSuccessNotification), object: nil, userInfo: [ALPAuthenticationUserKey: user])
                 // 登录成功
                 sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: {
-                    //                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    //                appDelegate.login()
+                    self.dismiss(animated: true, completion: {
+                        
+                    })
+                    guard let delegate = self.delegate else {
+                        return
+                    }
+                    if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(loginSuccess:))) {
+                        delegate.loginViewController!(loginSuccess: user)
+                    }
+                    
                 })
+                
             }
            
         }) { (error) in
+            NotificationCenter.default.post(name: NSNotification.Name.init(ALPLoginFailureNotification), object: nil)
+            
             // 登录失败
             sender.stopAnimation(animationStyle: .shake, revertAfterDelay: 1, completion: {
                 [unowned self] in
@@ -101,6 +123,14 @@ class LoginViewController: UIViewController {
                 self.passwordTf.isEnabled = true
                 self.loginProblemButton.isEnabled = true
                 self.registerButton.isEnabled = true
+                guard let delegate = self.delegate else {
+                    return
+                }
+                if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(loginFailure:))) {
+                    if let error = error {
+                        delegate.loginViewController!(loginFailure: error)
+                    }
+                }
             })
         }
     }

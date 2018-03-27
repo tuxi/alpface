@@ -236,6 +236,7 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
             /// 用户点击的只要不是首页，当前如果未登录则弹出登录页面
             if AuthenticationManager.shared.isLogin == false {
                 let loginVc = LoginViewController()
+                loginVc.delegate = self
                 let nav = MainNavigationController(rootViewController: loginVc)
                 /// 模态出来的控制器半透明
                 nav.modalPresentationStyle = .overCurrentContext
@@ -255,5 +256,15 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         else {
             
         }
+    }
+}
+
+extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
+    func loginViewController(loginSuccess user: User) {
+      
+    }
+    
+    func loginViewController(loginFailure error: Error) {
+        
     }
 }
