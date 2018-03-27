@@ -14,7 +14,9 @@ let ALPLoginUserInfoKey = "LoginUserInfoKey"
 let ALPSiteURLString = "http://www.alpface.com:8889"
 let ALPCsrfmiddlewaretokenKey = "csrfmiddlewaretoken"
 let ALPCsrftokenKey = "csrftoken"
-
+let ALPAuthenticationUserKey = "ALPAuthenticationUserKey"
+let ALPLoginSuccessNotification = "ALPLoginSuccessNotification"
+let ALPLoginFailureNotification = "ALPLoginFailureNotification"
 
 struct ALPConstans {
     static var animationDuration: Double {

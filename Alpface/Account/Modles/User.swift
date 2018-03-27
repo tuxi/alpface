@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(ALPUser)
 class User: NSObject, NSCoding {
     public var username : String?
     public var nickname : String?
@@ -15,10 +16,10 @@ class User: NSObject, NSCoding {
     public var phone : String?
     public var gender : String?
     public var address : String?
-    public var userId : String?
+    public var userid : String?
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(userId, forKey: "userId")
+        aCoder.encode(userid, forKey: "userid")
         aCoder.encode(username, forKey: "username")
         aCoder.encode(avatar, forKey: "avatar")
         aCoder.encode(phone, forKey: "phone")
@@ -28,7 +29,7 @@ class User: NSObject, NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
         super.init()
-        userId = aDecoder.decodeObject(forKey: "userId") as? String
+        userid = aDecoder.decodeObject(forKey: "userid") as? String
         username = aDecoder.decodeObject(forKey: "username") as? String
         nickname = aDecoder.decodeObject(forKey: "nickname") as? String
         avatar = aDecoder.decodeObject(forKey: "avatar") as? String
@@ -37,7 +38,7 @@ class User: NSObject, NSCoding {
         address = aDecoder.decodeObject(forKey: "address") as? String
     }
     
-    convenience init(userId: String? = "",
+    convenience init(userid: String? = "",
                      username: String?  = "",
                      nickname: String?  = "",
                      avatar: String?  = "",
@@ -45,7 +46,7 @@ class User: NSObject, NSCoding {
                      gender: String?  = "",
                      address: String?  = "" ) {
         self.init()
-        self.userId = userId
+        self.userid = userid
         self.username = username
         self.nickname = nickname
         self.avatar = avatar
