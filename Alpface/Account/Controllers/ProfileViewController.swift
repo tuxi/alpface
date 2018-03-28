@@ -10,23 +10,26 @@ import UIKit
 
 open class ProfileViewController: UIViewController {
     
+    // MARK: Public methods
     open func numberOfSegments() -> Int {
+        /* 需要子类重写 */
         return 0
     }
     
     open func segmentTitle(forSegment index: Int) -> String {
+        /* 需要子类重写 */
         return ""
     }
     
     open func prepareForLayout() {
-        /* to be override */
+        /* 需要子类重写 */
     }
     
     open func scrollView(forSegment index: Int) -> UIScrollView {
         return UITableView.init(frame: CGRect.zero, style: .grouped)
     }
     
-    // Global tint
+    // 全局tint color
     open static var globalTint: UIColor = UIColor(red: 42.0/255.0, green: 163.0/255.0, blue: 239.0/255.0, alpha: 1)
     
     
@@ -39,18 +42,13 @@ open class ProfileViewController: UIViewController {
     
     open var navigationDetailLabelBottomConstraint : NSLayoutConstraint?
     
-    open var profileHeaderViewHeight: CGFloat = 160 {
-        didSet {
-//            self.view.setNeedsLayout()
-//            self.view.layoutIfNeeded()
-        }
-    }
+    open var profileHeaderViewHeight: CGFloat = 160
     
     open let segmentedControlContainerHeight: CGFloat = 46
     
     open var username: String? {
         didSet {
-            self.profileHeaderView?.titleLabel?.text = username
+            self.profileHeaderView.titleLabel?.text = username
             
             self.navigationTitleLabel.text = username
         }
@@ -58,19 +56,19 @@ open class ProfileViewController: UIViewController {
     
     open var profileImage: UIImage? {
         didSet {
-            self.profileHeaderView?.iconImageView?.image = profileImage
+            self.profileHeaderView.iconImageView?.image = profileImage
         }
     }
     
     open var locationString: String? {
         didSet {
-            self.profileHeaderView?.locationLabel?.text = locationString
+            self.profileHeaderView.locationLabel?.text = locationString
         }
     }
     
     open var descriptionString: String? {
         didSet {
-            self.profileHeaderView?.descriptionLabel?.text = descriptionString
+            self.profileHeaderView.descriptionLabel?.text = descriptionString
         }
     }
     
@@ -80,8 +78,7 @@ open class ProfileViewController: UIViewController {
         }
     }
     
-    // Properties
-    
+    // MARK: Properties
     var currentIndex: Int = 0 {
         didSet {
             self.updateTableViewContent()
@@ -107,7 +104,7 @@ open class ProfileViewController: UIViewController {
         return _mainScrollView
     }()
     
-    lazy var headerCoverView: UIImageView = {
+    fileprivate lazy var headerCoverView: UIImageView = {
         let coverImageView = UIImageView()
         coverImageView.clipsToBounds = true
         coverImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -116,22 +113,28 @@ open class ProfileViewController: UIViewController {
         return coverImageView
     }()
     
-    var profileHeaderView: ProfileHeaderView!
+    fileprivate lazy var profileHeaderView: ProfileHeaderView = {
+        let _profileHeaderView = Bundle.main.loadNibNamed("ProfileHeaderView", owner: self, options: nil)?.first as! ProfileHeaderView
+        _profileHeaderView.usernameLabel.text = self.username
+        _profileHeaderView.locationLabel.text = self.locationString
+        _profileHeaderView.iconImageView.image = self.profileImage
+        return _profileHeaderView
+    }()
     
-    lazy var stickyHeaderContainerView: UIView = {
+    fileprivate lazy var stickyHeaderContainerView: UIView = {
         let _stickyHeaderContainer = UIView()
         _stickyHeaderContainer.clipsToBounds = true
         return _stickyHeaderContainer
     }()
     
-    lazy var blurEffectView: UIVisualEffectView = {
+    fileprivate lazy var blurEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
         let _blurEffectView = UIVisualEffectView(effect: blurEffect)
         _blurEffectView.alpha = 0
         return _blurEffectView
     }()
     
-    lazy var segmentedControl: UISegmentedControl = {
+    fileprivate lazy var segmentedControl: UISegmentedControl = {
         let _segmentedControl = UISegmentedControl()
         _segmentedControl.addTarget(self, action: #selector(self.segmentedControlValueDidChange(sender:)), for: .valueChanged)
         _segmentedControl.backgroundColor = UIColor.white
@@ -144,13 +147,13 @@ open class ProfileViewController: UIViewController {
         return _segmentedControl
     }()
     
-    lazy var segmentedControlContainer: UIView = {
+    fileprivate lazy var segmentedControlContainer: UIView = {
         let _segmentedControlContainer = UIView.init(frame: CGRect.init(x: 0, y: 0, width: mainScrollView.bounds.width, height: 100))
         _segmentedControlContainer.backgroundColor = UIColor.white
         return _segmentedControlContainer
     }()
     
-    lazy var navigationTitleLabel: UILabel = {
+    fileprivate lazy var navigationTitleLabel: UILabel = {
         let _navigationTitleLabel = UILabel()
         _navigationTitleLabel.text = self.username ?? "{username}"
         _navigationTitleLabel.textColor = UIColor.white
@@ -158,7 +161,7 @@ open class ProfileViewController: UIViewController {
         
         return _navigationTitleLabel
     }()
-    lazy var navigationDetailLabel: UILabel = {
+    fileprivate lazy var navigationDetailLabel: UILabel = {
         let _navigationDetailLabel = UILabel()
         _navigationDetailLabel.text = "121 Tweets"
         _navigationDetailLabel.textColor = UIColor.white
@@ -166,9 +169,9 @@ open class ProfileViewController: UIViewController {
         return _navigationDetailLabel
     }()
     
-    var debugTextView: UILabel!
+    fileprivate var debugTextView: UILabel!
     
-    var shouldUpdateScrollViewContentFrame = false
+    fileprivate var shouldUpdateScrollViewContentFrame = false
     
     deinit {
         self.scrollViews.forEach { (scrollView) in
@@ -201,7 +204,7 @@ open class ProfileViewController: UIViewController {
             
             // configure layout frames
             self.stickyHeaderContainerView.frame = self.computeStickyHeaderContainerViewFrame()
-            
+
             self.profileHeaderView.frame = self.computeProfileHeaderViewFrame()
             
             self.segmentedControlContainer.frame = self.computeSegmentedControlContainerFrame()
@@ -264,11 +267,9 @@ extension ProfileViewController {
         navigationDetailLabelBottomConstraint = navigationDetailLabel.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor, constant: 8.0)
         navigationDetailLabelBottomConstraint?.isActive = true
         
-        // Navigation Title
+        // 当行标题
         stickyHeaderContainerView.addSubview(navigationTitleLabel)
-        
         navigationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         navigationTitleLabel.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
         navigationTitleLabel.bottomAnchor.constraint(equalTo: navigationDetailLabel.topAnchor, constant: 4.0).isActive = true
         
@@ -277,15 +278,7 @@ extension ProfileViewController {
         animateNaivationTitleAt(progress: 0)
         
         // 头部视图
-        if let _profileHeaderView = Bundle.main.loadNibNamed("ProfileHeaderView", owner: self, options: nil)?.first as? ProfileHeaderView {
-            mainScrollView.addSubview(_profileHeaderView)
-            self.profileHeaderView = _profileHeaderView
-            
-            self.profileHeaderView.usernameLabel.text = self.username
-            self.profileHeaderView.locationLabel.text = self.locationString
-            self.profileHeaderView.iconImageView.image = self.profileImage
-        }
-        
+        mainScrollView.addSubview(profileHeaderView)
         
         // 分段控制视图的容器视图
         mainScrollView.addSubview(segmentedControlContainer)
@@ -512,10 +505,5 @@ extension CGRect {
     var alp_originBottom: CGFloat {
         return self.origin.y + self.height
     }
-}
-
-// MARK: Public interfaces
-extension ProfileViewController {
-    
 }
 
