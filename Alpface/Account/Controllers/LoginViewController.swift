@@ -86,17 +86,17 @@ class LoginViewController: UIViewController {
         
         guard let username = usernameTf.text else { return }
         guard let password = passwordTf.text else { return }
-        AuthenticationManager.shared.accountLogin.login(username: username, password: password, success: { [unowned self] (result) in
+        AuthenticationManager.shared.accountLogin.login(username: username, password: password, success: { [weak self] (result) in
             
             if result.status == "success" {
                 guard let user = AuthenticationManager.shared.loginUser else { return }
                 NotificationCenter.default.post(name: NSNotification.Name.init(ALPLoginSuccessNotification), object: nil, userInfo: [ALPAuthenticationUserKey: user])
                 // 登录成功
                 sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: {
-                    self.dismiss(animated: true, completion: {
+                    self?.dismiss(animated: true, completion: {
                         
                     })
-                    guard let delegate = self.delegate else {
+                    guard let delegate = self?.delegate else {
                         return
                     }
                     if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(loginSuccess:))) {
@@ -112,18 +112,18 @@ class LoginViewController: UIViewController {
             
             // 登录失败
             sender.stopAnimation(animationStyle: .shake, revertAfterDelay: 1, completion: {
-                [unowned self] in
+                [weak self] in
                 
                 //another case
                 let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
                 let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alert.addAction(ok)
-                self.present(alert, animated: true, completion: nil)
-                self.usernameTf.isEnabled = true
-                self.passwordTf.isEnabled = true
-                self.loginProblemButton.isEnabled = true
-                self.registerButton.isEnabled = true
-                guard let delegate = self.delegate else {
+                self?.present(alert, animated: true, completion: nil)
+                self?.usernameTf.isEnabled = true
+                self?.passwordTf.isEnabled = true
+                self?.loginProblemButton.isEnabled = true
+                self?.registerButton.isEnabled = true
+                guard let delegate = self?.delegate else {
                     return
                 }
                 if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(loginFailure:))) {
