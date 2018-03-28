@@ -1,5 +1,5 @@
 //
-//  TouchRespondScrollView.swift
+//  HitTestScrollView.swift
 //  Alpface
 //
 //  Created by swae on 2018/3/27.
@@ -8,7 +8,8 @@
 
 import UIKit
 
-internal class TouchRespondScrollView: UIScrollView {
+@objc(ALPHitTestScrollView)
+internal class HitTestScrollView: UIScrollView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

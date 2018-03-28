@@ -93,7 +93,7 @@ open class ProfileViewController: UIViewController {
     
     
     fileprivate lazy var mainScrollView: UIScrollView = {
-        let _mainScrollView = TouchRespondScrollView(frame: self.view.bounds)
+        let _mainScrollView = HitTestScrollView(frame: self.view.bounds)
         _mainScrollView.delegate = self
         _mainScrollView.showsHorizontalScrollIndicator = false
         if #available(iOS 11.0, *) {
@@ -163,7 +163,7 @@ open class ProfileViewController: UIViewController {
     }()
     fileprivate lazy var navigationDetailLabel: UILabel = {
         let _navigationDetailLabel = UILabel()
-        _navigationDetailLabel.text = "121 Tweets"
+        _navigationDetailLabel.text = "xiaoyuan"
         _navigationDetailLabel.textColor = UIColor.white
         _navigationDetailLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
         return _navigationDetailLabel
@@ -267,7 +267,7 @@ extension ProfileViewController {
         navigationDetailLabelBottomConstraint = navigationDetailLabel.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor, constant: 8.0)
         navigationDetailLabelBottomConstraint?.isActive = true
         
-        // 当行标题
+        // 导航标题
         stickyHeaderContainerView.addSubview(navigationTitleLabel)
         navigationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         navigationTitleLabel.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true

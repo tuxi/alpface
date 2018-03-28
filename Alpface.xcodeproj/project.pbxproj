@@ -66,7 +66,7 @@
 		D2A2C776206955AC003CEB97 /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2A2C775206955AC003CEB97 /* ProfileHeaderView.xib */; };
 		D2A2C778206955C9003CEB97 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C777206955C9003CEB97 /* RoundButton.swift */; };
 		D2A2C77A206955E3003CEB97 /* ProfileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C779206955E3003CEB97 /* ProfileIconView.swift */; };
-		D2A2C77C206955FE003CEB97 /* TouchRespondScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C77B206955FE003CEB97 /* TouchRespondScrollView.swift */; };
+		D2A2C77C206955FE003CEB97 /* HitTestScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C77B206955FE003CEB97 /* HitTestScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,7 +133,7 @@
 		D2A2C775206955AC003CEB97 /* ProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
 		D2A2C777206955C9003CEB97 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		D2A2C779206955E3003CEB97 /* ProfileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIconView.swift; sourceTree = "<group>"; };
-		D2A2C77B206955FE003CEB97 /* TouchRespondScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchRespondScrollView.swift; sourceTree = "<group>"; };
+		D2A2C77B206955FE003CEB97 /* HitTestScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTestScrollView.swift; sourceTree = "<group>"; };
 		FB768995D8F6D8FF332CFBDB /* Pods-Alpface.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpface.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Alpface/Pods-Alpface.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -415,7 +415,7 @@
 				D2A2C7732069556A003CEB97 /* ProfileHeaderView.swift */,
 				D2A2C777206955C9003CEB97 /* RoundButton.swift */,
 				D2A2C779206955E3003CEB97 /* ProfileIconView.swift */,
-				D2A2C77B206955FE003CEB97 /* TouchRespondScrollView.swift */,
+				D2A2C77B206955FE003CEB97 /* HitTestScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -603,7 +603,7 @@
 				D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */,
 				D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */,
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
-				D2A2C77C206955FE003CEB97 /* TouchRespondScrollView.swift in Sources */,
+				D2A2C77C206955FE003CEB97 /* HitTestScrollView.swift in Sources */,
 				D26AD4632066BAF40047DC15 /* UserProfileViewController.swift in Sources */,
 				D2A2C778206955C9003CEB97 /* RoundButton.swift in Sources */,
 				D2A2C7742069556A003CEB97 /* ProfileHeaderView.swift in Sources */,
