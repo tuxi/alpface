@@ -52,9 +52,15 @@ open class ProfileViewController: UIViewController {
     
     open var username: String? {
         didSet {
-            self.profileHeaderView.titleLabel?.text = username
+            self.profileHeaderView.usernameLabel?.text = username
             
             self.navigationTitleLabel.text = username
+        }
+    }
+    
+    open var nickname : String? {
+        didSet {
+            self.profileHeaderView.titleLabel.text = nickname;
         }
     }
     
@@ -123,6 +129,7 @@ open class ProfileViewController: UIViewController {
         _profileHeaderView.usernameLabel.text = self.username
         _profileHeaderView.locationLabel.text = self.locationString
         _profileHeaderView.iconImageView.image = self.profileImage
+        _profileHeaderView.titleLabel.text = self.nickname
         return _profileHeaderView
     }()
     
@@ -410,7 +417,7 @@ extension ProfileViewController: UIScrollViewDelegate {
             }
             
             // Override
-            // When scroll View reached the top edge of Title label
+            // 当滚动视图到达标题标签的顶部边缘时
             if let titleLabel = profileHeaderView.titleLabel, let usernameLabel = profileHeaderView.usernameLabel  {
                 
                 // titleLabel location relative to self.view
@@ -484,7 +491,7 @@ extension ProfileViewController {
 extension ProfileViewController {
     
     var debugMode: Bool {
-        return true
+        return false
     }
     
     func showDebugInfo() {

@@ -16,7 +16,9 @@ class User: NSObject, NSCoding {
     public var phone : String?
     public var gender : String?
     public var address : String?
-    public var userid : String?
+    public var userid : Int = 0
+    public var following : Int = 0
+    public var followers : Int = 0
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(userid, forKey: "userid")
@@ -29,7 +31,7 @@ class User: NSObject, NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
         super.init()
-        userid = aDecoder.decodeObject(forKey: "userid") as? String
+        userid = aDecoder.decodeInteger(forKey: "userid")
         username = aDecoder.decodeObject(forKey: "username") as? String
         nickname = aDecoder.decodeObject(forKey: "nickname") as? String
         avatar = aDecoder.decodeObject(forKey: "avatar") as? String
@@ -38,7 +40,7 @@ class User: NSObject, NSCoding {
         address = aDecoder.decodeObject(forKey: "address") as? String
     }
     
-    convenience init(userid: String? = "",
+    convenience init(userid: Int,
                      username: String?  = "",
                      nickname: String?  = "",
                      avatar: String?  = "",

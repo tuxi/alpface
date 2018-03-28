@@ -87,7 +87,8 @@ public class AccountLogin: NSObject {
                 let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
                 if let userDict = jsonDict["user"] as? [String : Any] {
                     guard let succ = success else { return }
-                    let user = User(userid: userDict["userid"] as? String, username: userDict["username"] as? String, nickname: userDict["nickname"] as? String, avatar: userDict["avatar"] as? String, phone: userDict["phone"] as? String, gender: userDict["gender"]  as? String, address: userDict["address"]  as? String)
+                    let userid = userDict["userid"] as! NSNumber
+                    let user = User(userid: userid.intValue, username: userDict["username"] as? String, nickname: userDict["nickname"] as? String, avatar: userDict["avatar"] as? String, phone: userDict["phone"] as? String, gender: userDict["gender"]  as? String, address: userDict["address"]  as? String)
                     if let username = user.username {
                         let result = AccountLoginResult(status: jsonDict["status"] as! String, username:username, message: "")
                         
