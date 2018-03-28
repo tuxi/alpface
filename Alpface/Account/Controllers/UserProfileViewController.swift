@@ -15,15 +15,24 @@ let ALPStatusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.height
 @objc(ALPProfileViewController)
 class UserProfileViewController: ProfileViewController {
     
-    var tweetTableView: UITableView!
-    var photosTableView: UITableView!
-    var favoritesTableView: UITableView!
+    fileprivate lazy var videosTableView: UITableView = {
+        let tableView = UITableView(frame: CGRect.zero, style: .plain)
+        return tableView
+    }()
+    fileprivate lazy var favoritesTableView: UITableView = {
+        let tableView = UITableView(frame: CGRect.zero, style: .plain)
+        return tableView
+    }()
+    fileprivate lazy var storysTableView: UITableView = {
+        let tableView = UITableView(frame: CGRect.zero, style: .plain)
+        return tableView
+    }()
     
     var custom: UIView!
     var label: UILabel!
 
     override func numberOfSegments() -> Int {
-        return 2
+        return 3
     }
     
     override func segmentTitle(forSegment index: Int) -> String {
@@ -31,27 +40,27 @@ class UserProfileViewController: ProfileViewController {
     }
     
     override func prepareForLayout() {
-        // TableViews
-        let _tweetTableView = UITableView(frame: CGRect.zero, style: .plain)
-        self.tweetTableView = _tweetTableView
-        
-        
-        let _photosTableView = UITableView(frame: CGRect.zero, style: .plain)
-        self.photosTableView = _photosTableView
-        
-        let _favoritesTableView = UITableView(frame: CGRect.zero, style: .plain)
-        self.favoritesTableView = _favoritesTableView
         
         self.automaticallyAdjustsScrollViewInsets = false
         if #available(iOS 11.0, *) {
-            _tweetTableView.contentInsetAdjustmentBehavior = .never
-            _photosTableView.contentInsetAdjustmentBehavior = .never
-            _favoritesTableView.contentInsetAdjustmentBehavior = .never
+            videosTableView.contentInsetAdjustmentBehavior = .never
+            favoritesTableView.contentInsetAdjustmentBehavior = .never
+            storysTableView.contentInsetAdjustmentBehavior = .never
         } else {
             // Fallback on earlier versions
         }
         
-        self.setupTables()
+        videosTableView.delegate = self
+        videosTableView.dataSource = self
+        videosTableView.register(UITableViewCell.self, forCellReuseIdentifier: "tweetCell")
+        
+        favoritesTableView.delegate = self
+        favoritesTableView.dataSource = self
+        favoritesTableView.register(UITableViewCell.self, forCellReuseIdentifier: "photoCell")
+        
+        storysTableView.delegate = self
+        storysTableView.dataSource = self
+        storysTableView.register(UITableViewCell.self, forCellReuseIdentifier: "favCell")
     }
     
     override func viewDidLoad() {
@@ -76,13 +85,13 @@ class UserProfileViewController: ProfileViewController {
     override func scrollView(forSegment index: Int) -> UIScrollView {
         switch index {
         case 0:
-            return tweetTableView
+            return videosTableView
         case 1:
-            return photosTableView
-        case 2:
             return favoritesTableView
+        case 2:
+            return storysTableView
         default:
-            return tweetTableView
+            return videosTableView
         }
     }
 }
@@ -92,29 +101,13 @@ class UserProfileViewController: ProfileViewController {
 // MARK: UITableViewDelegates & DataSources
 extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
-    fileprivate func setupTables() {
-//        self.tweetTableView.delegate = self
-        self.tweetTableView.dataSource = self
-        self.tweetTableView.register(UITableViewCell.self, forCellReuseIdentifier: "tweetCell")
-        
-//        self.photosTableView.delegate = self
-        self.photosTableView.dataSource = self
-        //self.photosTableView.isHidden = true
-        self.photosTableView.register(UITableViewCell.self, forCellReuseIdentifier: "photoCell")
-        
-//        self.favoritesTableView.delegate = self
-        self.favoritesTableView.dataSource = self
-        //self.favoritesTableView.isHidden = true
-        self.favoritesTableView.register(UITableViewCell.self, forCellReuseIdentifier: "favCell")
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
-        case self.tweetTableView:
+        case videosTableView:
             return 30
-        case self.photosTableView:
+        case favoritesTableView:
             return 10
-        case self.favoritesTableView:
+        case storysTableView:
             return 0
         default:
             return 10
@@ -123,17 +116,17 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch tableView {
-        case self.tweetTableView:
+        case videosTableView:
             let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath)
             cell.textLabel?.text = "Row \(indexPath.row)"
             return cell
             
-        case self.photosTableView:
+        case favoritesTableView:
             let cell = tableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath)
             cell.textLabel?.text = "Photo \(indexPath.row)"
             return cell
             
-        case self.favoritesTableView:
+        case storysTableView:
             let cell = tableView.dequeueReusableCell(withIdentifier: "favCell", for: indexPath)
             cell.textLabel?.text = "Fav \(indexPath.row)"
             return cell
@@ -142,13 +135,6 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
             return UITableViewCell()
         }
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    override var prefersStatusBarHidden: Bool {
-        return false
-    }
+
 }
 

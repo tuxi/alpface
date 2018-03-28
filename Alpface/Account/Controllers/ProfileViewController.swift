@@ -9,7 +9,7 @@
 import UIKit
 
 let HitTestScrollViewCellIdentifier = "HitTestScrollViewCellIdentifier"
-
+let ALPNavigationTitleLabelBottomPadding : CGFloat = 15.0;
 
 open class ProfileViewController: UIViewController {
     
@@ -29,6 +29,7 @@ open class ProfileViewController: UIViewController {
     }
     
     open func scrollView(forSegment index: Int) -> UIScrollView {
+        /* 需要子类重写 */
         return UITableView.init(frame: CGRect.zero, style: .grouped)
     }
     
@@ -43,7 +44,7 @@ open class ProfileViewController: UIViewController {
     
     open let scrollToScaleDownProfileIconDistance: CGFloat = 60
     
-    open var navigationDetailLabelBottomConstraint : NSLayoutConstraint?
+    open var navigationTitleLabelBottomConstraint : NSLayoutConstraint?
     
     open var profileHeaderViewHeight: CGFloat = 160
     
@@ -98,9 +99,8 @@ open class ProfileViewController: UIViewController {
     fileprivate lazy var mainScrollView: UIScrollView = {
         let _mainScrollView = HitTestScrollView(frame: self.view.bounds)
         _mainScrollView.delegate = self
-//        _mainScrollView.dataSource = self
-//        _mainScrollView.register(HitTestScrollViewCell.classForCoder(), forCellReuseIdentifier: HitTestScrollViewCellIdentifier)
         _mainScrollView.showsHorizontalScrollIndicator = false
+        _mainScrollView.backgroundColor = UIColor.white
         if #available(iOS 11.0, *) {
             _mainScrollView.contentInsetAdjustmentBehavior = .never
         } else {
@@ -166,13 +166,6 @@ open class ProfileViewController: UIViewController {
         
         return _navigationTitleLabel
     }()
-    fileprivate lazy var navigationDetailLabel: UILabel = {
-        let _navigationDetailLabel = UILabel()
-        _navigationDetailLabel.text = "xiaoyuan"
-        _navigationDetailLabel.textColor = UIColor.white
-        _navigationDetailLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
-        return _navigationDetailLabel
-    }()
     
     fileprivate var debugTextView: UILabel!
     
@@ -226,6 +219,7 @@ open class ProfileViewController: UIViewController {
         /// 更新 子 scrollView的frame
         self.scrollViews.forEach({ (scrollView) in
             scrollView.frame = self.computeTableViewFrame(tableView: scrollView)
+            scrollView.isScrollEnabled = false
         })
         
         self.updateMainScrollViewFrame()
@@ -271,18 +265,12 @@ extension ProfileViewController {
         blurEffectView.topAnchor.constraint(equalTo: stickyHeaderContainerView.topAnchor).isActive = true
         blurEffectView.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor).isActive = true
         
-        // 导航详情视图
-        stickyHeaderContainerView.addSubview(navigationDetailLabel)
-        navigationDetailLabel.translatesAutoresizingMaskIntoConstraints = false
-        navigationDetailLabel.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
-        navigationDetailLabelBottomConstraint = navigationDetailLabel.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor, constant: -8.0)
-        navigationDetailLabelBottomConstraint?.isActive = true
-        
         // 导航标题
         stickyHeaderContainerView.addSubview(navigationTitleLabel)
         navigationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         navigationTitleLabel.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
-        navigationTitleLabel.bottomAnchor.constraint(equalTo: navigationDetailLabel.topAnchor, constant: 4.0).isActive = true
+        navigationTitleLabelBottomConstraint = navigationTitleLabel.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor, constant: -ALPNavigationTitleLabelBottomPadding)
+        navigationTitleLabelBottomConstraint?.isActive = true
         
         
         // 设置进度为0时的导航条标题和导航条详情label的位置 (此时标题和详情label 在headerView的最下面隐藏)
@@ -441,22 +429,26 @@ extension ProfileViewController: UIScrollViewDelegate {
 
 // MARK: Animators
 extension ProfileViewController {
+    /// 更新导航条上面titleLabel的位置
     func animateNaivationTitleAt(progress: CGFloat) {
         
-        
-        let totalDistance: CGFloat = 75
+        let totalDistance: CGFloat = self.navigationTitleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height + ALPNavigationTitleLabelBottomPadding
 
         if progress >= 0 {
             let distance = (1 - progress) * totalDistance
-            navigationDetailLabelBottomConstraint?.constant = -8 + distance
+            navigationTitleLabelBottomConstraint?.constant = -ALPNavigationTitleLabelBottomPadding + distance
         }
     }
 }
 
-// status bar style override
+/// status bar
 extension ProfileViewController {
     override open var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    override open var prefersStatusBarHidden: Bool {
+        return false
     }
 }
 
