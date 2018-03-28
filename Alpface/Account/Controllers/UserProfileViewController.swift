@@ -67,7 +67,10 @@ class UserProfileViewController: ProfileViewController {
         super.viewDidLoad()
         
         self.locationString = "Beijing"
-        self.username = "alpface"
+        self.username = AuthenticationManager.shared.loginUser?.username
+        if let userid = AuthenticationManager.shared.loginUser?.userid {
+            self.nickname = "用户号" + ":\(userid)"
+        }
         
         self.profileImage = UIImage.init(named: "icon.png")
     }
