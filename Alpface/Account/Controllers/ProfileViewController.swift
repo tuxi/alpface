@@ -41,8 +41,8 @@ open class ProfileViewController: UIViewController {
     
     open var profileHeaderViewHeight: CGFloat = 160 {
         didSet {
-            //self.view.setNeedsLayout()
-            //self.view.layoutIfNeeded()
+//            self.view.setNeedsLayout()
+//            self.view.layoutIfNeeded()
         }
     }
     
@@ -52,7 +52,7 @@ open class ProfileViewController: UIViewController {
         didSet {
             self.profileHeaderView?.titleLabel?.text = username
             
-            self.navigationTitleLabel?.text = username
+            self.navigationTitleLabel.text = username
         }
     }
     
@@ -76,7 +76,7 @@ open class ProfileViewController: UIViewController {
     
     open var coverImage: UIImage? {
         didSet {
-            self.headerCoverView?.image = coverImage
+            self.headerCoverView.image = coverImage
         }
     }
     
@@ -95,22 +95,76 @@ open class ProfileViewController: UIViewController {
     }
     
     
-    fileprivate var mainScrollView: UIScrollView!
+    fileprivate lazy var mainScrollView: UIScrollView = {
+        let _mainScrollView = TouchRespondScrollView(frame: self.view.bounds)
+        _mainScrollView.delegate = self
+        _mainScrollView.showsHorizontalScrollIndicator = false
+        if #available(iOS 11.0, *) {
+            _mainScrollView.contentInsetAdjustmentBehavior = .never
+        } else {
+            self.automaticallyAdjustsScrollViewInsets = false
+        }
+        return _mainScrollView
+    }()
     
-    var headerCoverView: UIImageView!
+    lazy var headerCoverView: UIImageView = {
+        let coverImageView = UIImageView()
+        coverImageView.clipsToBounds = true
+        coverImageView.translatesAutoresizingMaskIntoConstraints = false
+        coverImageView.image = UIImage(named: "Firewatch.png")
+        coverImageView.contentMode = .scaleAspectFill
+        return coverImageView
+    }()
     
     var profileHeaderView: ProfileHeaderView!
     
-    var stickyHeaderContainerView: UIView!
+    lazy var stickyHeaderContainerView: UIView = {
+        let _stickyHeaderContainer = UIView()
+        _stickyHeaderContainer.clipsToBounds = true
+        return _stickyHeaderContainer
+    }()
     
-    var blurEffectView: UIVisualEffectView!
+    lazy var blurEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let _blurEffectView = UIVisualEffectView(effect: blurEffect)
+        _blurEffectView.alpha = 0
+        return _blurEffectView
+    }()
     
-    var segmentedControl: UISegmentedControl!
+    lazy var segmentedControl: UISegmentedControl = {
+        let _segmentedControl = UISegmentedControl()
+        _segmentedControl.addTarget(self, action: #selector(self.segmentedControlValueDidChange(sender:)), for: .valueChanged)
+        _segmentedControl.backgroundColor = UIColor.white
+        
+        for index in 0..<numberOfSegments() {
+            let segmentTitle = self.segmentTitle(forSegment: index)
+            _segmentedControl.insertSegment(withTitle: segmentTitle, at: index, animated: false)
+        }
+        _segmentedControl.selectedSegmentIndex = 0
+        return _segmentedControl
+    }()
     
-    var segmentedControlContainer: UIView!
+    lazy var segmentedControlContainer: UIView = {
+        let _segmentedControlContainer = UIView.init(frame: CGRect.init(x: 0, y: 0, width: mainScrollView.bounds.width, height: 100))
+        _segmentedControlContainer.backgroundColor = UIColor.white
+        return _segmentedControlContainer
+    }()
     
-    var navigationTitleLabel: UILabel!
-    var navigationDetailLabel: UILabel!
+    lazy var navigationTitleLabel: UILabel = {
+        let _navigationTitleLabel = UILabel()
+        _navigationTitleLabel.text = self.username ?? "{username}"
+        _navigationTitleLabel.textColor = UIColor.white
+        _navigationTitleLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
+        
+        return _navigationTitleLabel
+    }()
+    lazy var navigationDetailLabel: UILabel = {
+        let _navigationDetailLabel = UILabel()
+        _navigationDetailLabel.text = "121 Tweets"
+        _navigationDetailLabel.textColor = UIColor.white
+        _navigationDetailLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
+        return _navigationDetailLabel
+    }()
     
     var debugTextView: UILabel!
     
@@ -174,89 +228,57 @@ open class ProfileViewController: UIViewController {
 extension ProfileViewController {
     
     func prepareViews() {
-        let _mainScrollView = TouchRespondScrollView(frame: self.view.bounds)
-        _mainScrollView.delegate = self
-        _mainScrollView.showsHorizontalScrollIndicator = false
         
-        self.mainScrollView  = _mainScrollView
+        self.view.addSubview(mainScrollView)
         
-        self.view.addSubview(_mainScrollView)
-        
-        _mainScrollView.translatesAutoresizingMaskIntoConstraints = false
-        _mainScrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        _mainScrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        _mainScrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        _mainScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        mainScrollView.translatesAutoresizingMaskIntoConstraints = false
+        mainScrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        mainScrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        mainScrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        mainScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         // sticker header Container view
-        let _stickyHeaderContainer = UIView()
-        _stickyHeaderContainer.clipsToBounds = true
-        _mainScrollView.addSubview(_stickyHeaderContainer)
-        self.stickyHeaderContainerView = _stickyHeaderContainer
+        mainScrollView.addSubview(stickyHeaderContainerView)
         
         // Cover Image View
-        let coverImageView = UIImageView()
-        coverImageView.clipsToBounds = true
-        _stickyHeaderContainer.addSubview(coverImageView)
-        coverImageView.translatesAutoresizingMaskIntoConstraints = false
-        coverImageView.leadingAnchor.constraint(equalTo: _stickyHeaderContainer.leadingAnchor).isActive = true
-        coverImageView.trailingAnchor.constraint(equalTo: _stickyHeaderContainer.trailingAnchor).isActive = true
-        coverImageView.topAnchor.constraint(equalTo: _stickyHeaderContainer.topAnchor).isActive = true
-        coverImageView.bottomAnchor.constraint(equalTo: _stickyHeaderContainer.bottomAnchor).isActive = true
-        
-        coverImageView.image = UIImage(named: "Firewatch.png")
-        coverImageView.contentMode = .scaleAspectFill
-        coverImageView.clipsToBounds = true
-        self.headerCoverView = coverImageView
+        stickyHeaderContainerView.addSubview(headerCoverView)
+        headerCoverView.translatesAutoresizingMaskIntoConstraints = false
+        headerCoverView.leadingAnchor.constraint(equalTo: stickyHeaderContainerView.leadingAnchor).isActive = true
+        headerCoverView.trailingAnchor.constraint(equalTo: stickyHeaderContainerView.trailingAnchor).isActive = true
+        headerCoverView.topAnchor.constraint(equalTo: stickyHeaderContainerView.topAnchor).isActive = true
+        headerCoverView.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor).isActive = true
+
         
         // blur effect on top of coverImageView
-        let blurEffect = UIBlurEffect(style: .dark)
-        let _blurEffectView = UIVisualEffectView(effect: blurEffect)
-        _blurEffectView.alpha = 0
-        self.blurEffectView = _blurEffectView
-        
-        _stickyHeaderContainer.addSubview(_blurEffectView)
-        _blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        _blurEffectView.leadingAnchor.constraint(equalTo: _stickyHeaderContainer.leadingAnchor).isActive = true
-        _blurEffectView.trailingAnchor.constraint(equalTo: _stickyHeaderContainer.trailingAnchor).isActive = true
-        _blurEffectView.topAnchor.constraint(equalTo: _stickyHeaderContainer.topAnchor).isActive = true
-        _blurEffectView.bottomAnchor.constraint(equalTo: _stickyHeaderContainer.bottomAnchor).isActive = true
+        stickyHeaderContainerView.addSubview(blurEffectView)
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        blurEffectView.leadingAnchor.constraint(equalTo: stickyHeaderContainerView.leadingAnchor).isActive = true
+        blurEffectView.trailingAnchor.constraint(equalTo: stickyHeaderContainerView.trailingAnchor).isActive = true
+        blurEffectView.topAnchor.constraint(equalTo: stickyHeaderContainerView.topAnchor).isActive = true
+        blurEffectView.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor).isActive = true
         
         // Detail Title
-        let _navigationDetailLabel = UILabel()
-        _navigationDetailLabel.text = "121 Tweets"
-        _navigationDetailLabel.textColor = UIColor.white
-        _navigationDetailLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
-        _stickyHeaderContainer.addSubview(_navigationDetailLabel)
-        _navigationDetailLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        _navigationDetailLabel.centerXAnchor.constraint(equalTo: _stickyHeaderContainer.centerXAnchor).isActive = true
-        navigationDetailLabelBottomConstraint = _navigationDetailLabel.bottomAnchor.constraint(equalTo: _stickyHeaderContainer.bottomAnchor, constant: 8.0)
+        stickyHeaderContainerView.addSubview(navigationDetailLabel)
+        navigationDetailLabel.translatesAutoresizingMaskIntoConstraints = false
+        navigationDetailLabel.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
+        navigationDetailLabelBottomConstraint = navigationDetailLabel.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor, constant: 8.0)
         navigationDetailLabelBottomConstraint?.isActive = true
         
-        self.navigationDetailLabel = _navigationDetailLabel
-        
         // Navigation Title
-        let _navigationTitleLabel = UILabel()
-        _navigationTitleLabel.text = self.username ?? "{username}"
-        _navigationTitleLabel.textColor = UIColor.white
-        _navigationTitleLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
-        _stickyHeaderContainer.addSubview(_navigationTitleLabel)
+        stickyHeaderContainerView.addSubview(navigationTitleLabel)
         
-        _navigationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        navigationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        _navigationTitleLabel.centerXAnchor.constraint(equalTo: _stickyHeaderContainer.centerXAnchor).isActive = true
-        _navigationTitleLabel.bottomAnchor.constraint(equalTo: _navigationDetailLabel.topAnchor, constant: 4.0).isActive = true
+        navigationTitleLabel.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
+        navigationTitleLabel.bottomAnchor.constraint(equalTo: navigationDetailLabel.topAnchor, constant: 4.0).isActive = true
         
-        self.navigationTitleLabel = _navigationTitleLabel
         
-        // preset the navigation title and detail at progress=0 position
+        // 设置进度为0时的导航条标题和导航条详情label的位置
         animateNaivationTitleAt(progress: 0)
         
-        // ProfileHeaderView
-        
+        // 头部视图
         if let _profileHeaderView = Bundle.main.loadNibNamed("ProfileHeaderView", owner: self, options: nil)?.first as? ProfileHeaderView {
-            _mainScrollView.addSubview(_profileHeaderView)
+            mainScrollView.addSubview(_profileHeaderView)
             self.profileHeaderView = _profileHeaderView
             
             self.profileHeaderView.usernameLabel.text = self.username
@@ -265,37 +287,22 @@ extension ProfileViewController {
         }
         
         
-        // Segmented Control Container
-        let _segmentedControlContainer = UIView.init(frame: CGRect.init(x: 0, y: 0, width: mainScrollView.bounds.width, height: 100))
-        _segmentedControlContainer.backgroundColor = UIColor.white
-        _mainScrollView.addSubview(_segmentedControlContainer)
-        self.segmentedControlContainer = _segmentedControlContainer
+        // 分段控制视图的容器视图
+        mainScrollView.addSubview(segmentedControlContainer)
         
-        // Segmented Control
-        let _segmentedControl = UISegmentedControl()
-        _segmentedControl.addTarget(self, action: #selector(self.segmentedControlValueDidChange(sender:)), for: .valueChanged)
-        _segmentedControl.backgroundColor = UIColor.white
-        
-        for index in 0..<numberOfSegments() {
-            let segmentTitle = self.segmentTitle(forSegment: index)
-            _segmentedControl.insertSegment(withTitle: segmentTitle, at: index, animated: false)
-        }
-        _segmentedControl.selectedSegmentIndex = 0
-        _segmentedControlContainer.addSubview(_segmentedControl)
-        
-        self.segmentedControl = _segmentedControl
-        
-        _segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        _segmentedControl.widthAnchor.constraint(equalTo: (_segmentedControl.superview?.widthAnchor)!, constant: -16.0).isActive = true
-        _segmentedControl.centerXAnchor.constraint(equalTo: (_segmentedControl.superview?.centerXAnchor)!).isActive = true
-        _segmentedControl.centerYAnchor.constraint(equalTo: _segmentedControlContainer.centerYAnchor).isActive = true
+        // 分段控制视图
+        segmentedControlContainer.addSubview(segmentedControl)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.widthAnchor.constraint(equalTo: segmentedControlContainer.widthAnchor, constant: -16.0).isActive = true
+        segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainer.centerXAnchor).isActive = true
+        segmentedControl.centerYAnchor.constraint(equalTo: segmentedControlContainer.centerYAnchor).isActive = true
         
         self.scrollViews = []
         for index in 0..<numberOfSegments() {
             let scrollView = self.scrollView(forSegment: index)
             self.scrollViews.append(scrollView)
             scrollView.isHidden = (index > 0)
-            _mainScrollView.addSubview(scrollView)
+            mainScrollView.addSubview(scrollView)
         }
         
         self.showDebugInfo()
@@ -315,7 +322,7 @@ extension ProfileViewController {
     }
     
     func computeMainScrollViewIndicatorInsets() -> UIEdgeInsets {
-        return UIEdgeInsetsMake(self.computeSegmentedControlContainerFrame().lf_originBottom, 0, 0, 0)
+        return UIEdgeInsetsMake(self.computeSegmentedControlContainerFrame().alp_originBottom, 0, 0, 0)
     }
     
     func computeNavigationFrame() -> CGRect {
@@ -468,7 +475,7 @@ extension ProfileViewController {
         
         // auto scroll to top if mainScrollView.contentOffset > navigationHeight + segmentedControl.height
         let navigationHeight = self.scrollToScaleDownProfileIconDistance
-        let threshold = self.computeProfileHeaderViewFrame().lf_originBottom - navigationHeight
+        let threshold = self.computeProfileHeaderViewFrame().alp_originBottom - navigationHeight
         
         if mainScrollView.contentOffset.y > threshold {
             self.mainScrollView.setContentOffset(CGPoint(x: 0, y: threshold), animated: false)
@@ -479,7 +486,7 @@ extension ProfileViewController {
 extension ProfileViewController {
     
     var debugMode: Bool {
-        return false
+        return true
     }
     
     func showDebugInfo() {
@@ -502,7 +509,7 @@ extension ProfileViewController {
 }
 
 extension CGRect {
-    var lf_originBottom: CGFloat {
+    var alp_originBottom: CGFloat {
         return self.origin.y + self.height
     }
 }
