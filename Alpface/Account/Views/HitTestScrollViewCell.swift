@@ -1,5 +1,5 @@
 //
-//  UserProfileContentCell.swift
+//  HitTestScrollViewCell.swift
 //  Alpface
 //
 //  Created by swae on 2018/3/26.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserProfileContentCell: UITableViewCell {
+class HitTestScrollViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
