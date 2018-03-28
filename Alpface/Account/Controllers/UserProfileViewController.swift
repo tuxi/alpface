@@ -93,16 +93,16 @@ class UserProfileViewController: ProfileViewController {
 extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     fileprivate func setupTables() {
-        self.tweetTableView.delegate = self
+//        self.tweetTableView.delegate = self
         self.tweetTableView.dataSource = self
         self.tweetTableView.register(UITableViewCell.self, forCellReuseIdentifier: "tweetCell")
         
-        self.photosTableView.delegate = self
+//        self.photosTableView.delegate = self
         self.photosTableView.dataSource = self
         //self.photosTableView.isHidden = true
         self.photosTableView.register(UITableViewCell.self, forCellReuseIdentifier: "photoCell")
         
-        self.favoritesTableView.delegate = self
+//        self.favoritesTableView.delegate = self
         self.favoritesTableView.dataSource = self
         //self.favoritesTableView.isHidden = true
         self.favoritesTableView.register(UITableViewCell.self, forCellReuseIdentifier: "favCell")

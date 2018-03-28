@@ -8,6 +8,9 @@
 
 import UIKit
 
+let HitTestScrollViewCellIdentifier = "HitTestScrollViewCellIdentifier"
+
+
 open class ProfileViewController: UIViewController {
     
     // MARK: Public methods
@@ -95,6 +98,8 @@ open class ProfileViewController: UIViewController {
     fileprivate lazy var mainScrollView: UIScrollView = {
         let _mainScrollView = HitTestScrollView(frame: self.view.bounds)
         _mainScrollView.delegate = self
+//        _mainScrollView.dataSource = self
+//        _mainScrollView.register(HitTestScrollViewCell.classForCoder(), forCellReuseIdentifier: HitTestScrollViewCellIdentifier)
         _mainScrollView.showsHorizontalScrollIndicator = false
         if #available(iOS 11.0, *) {
             _mainScrollView.contentInsetAdjustmentBehavior = .never
@@ -148,7 +153,7 @@ open class ProfileViewController: UIViewController {
     }()
     
     fileprivate lazy var segmentedControlContainer: UIView = {
-        let _segmentedControlContainer = UIView.init(frame: CGRect.init(x: 0, y: 0, width: mainScrollView.bounds.width, height: 100))
+        let _segmentedControlContainer = UIView.init(frame: CGRect.init(x: 0, y: 0, width: mainScrollView.bounds.width, height: segmentedControlContainerHeight))
         _segmentedControlContainer.backgroundColor = UIColor.white
         return _segmentedControlContainer
     }()
@@ -201,25 +206,31 @@ open class ProfileViewController: UIViewController {
         self.profileHeaderViewHeight = profileHeaderView.sizeThatFits(self.mainScrollView.bounds.size).height
         
         if self.shouldUpdateScrollViewContentFrame {
-            
-            // configure layout frames
+            /// 只要第一次view布局完成时，再调整下stickyHeaderContainerView的frame，剩余的情况会在scrollViewDidScrollView:时调整
             self.stickyHeaderContainerView.frame = self.computeStickyHeaderContainerViewFrame()
-
-            self.profileHeaderView.frame = self.computeProfileHeaderViewFrame()
-            
-            self.segmentedControlContainer.frame = self.computeSegmentedControlContainerFrame()
-            
-            self.scrollViews.forEach({ (scrollView) in
-                scrollView.frame = self.computeTableViewFrame(tableView: scrollView)
-            })
-            
-            self.updateMainScrollViewFrame()
-            
-            self.mainScrollView.scrollIndicatorInsets = computeMainScrollViewIndicatorInsets()
-            
-            
             self.shouldUpdateScrollViewContentFrame = false
         }
+        
+        /// 更新profileHeaderView和segmentedControlContainer的frame
+        self.profileHeaderView.frame = self.computeProfileHeaderViewFrame()
+        let contentOffset = self.mainScrollView.contentOffset
+        let navigationLocation = CGRect(x: 0, y: 0, width: stickyHeaderContainerView.bounds.width, height: stickyHeaderContainerView.frame.origin.y - contentOffset.y + stickyHeaderContainerView.bounds.height)
+        let navigationHeight = navigationLocation.height - abs(navigationLocation.origin.y)
+        let segmentedControlContainerLocationY = stickyheaderContainerViewHeight + profileHeaderViewHeight - navigationHeight
+        if contentOffset.y > 0 && contentOffset.y >= segmentedControlContainerLocationY {
+            segmentedControlContainer.frame = CGRect(x: 0, y: contentOffset.y + navigationHeight, width: segmentedControlContainer.bounds.width, height: segmentedControlContainer.bounds.height)
+        } else {
+            segmentedControlContainer.frame = computeSegmentedControlContainerFrame()
+        }
+        
+        /// 更新 子 scrollView的frame
+        self.scrollViews.forEach({ (scrollView) in
+            scrollView.frame = self.computeTableViewFrame(tableView: scrollView)
+        })
+        
+        self.updateMainScrollViewFrame()
+        
+        self.mainScrollView.scrollIndicatorInsets = computeMainScrollViewIndicatorInsets()
     }
     
     override open func didReceiveMemoryWarning() {
@@ -260,11 +271,11 @@ extension ProfileViewController {
         blurEffectView.topAnchor.constraint(equalTo: stickyHeaderContainerView.topAnchor).isActive = true
         blurEffectView.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor).isActive = true
         
-        // Detail Title
+        // 导航详情视图
         stickyHeaderContainerView.addSubview(navigationDetailLabel)
         navigationDetailLabel.translatesAutoresizingMaskIntoConstraints = false
         navigationDetailLabel.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
-        navigationDetailLabelBottomConstraint = navigationDetailLabel.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor, constant: 8.0)
+        navigationDetailLabelBottomConstraint = navigationDetailLabel.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor, constant: -8.0)
         navigationDetailLabelBottomConstraint?.isActive = true
         
         // 导航标题
@@ -274,8 +285,8 @@ extension ProfileViewController {
         navigationTitleLabel.bottomAnchor.constraint(equalTo: navigationDetailLabel.topAnchor, constant: 4.0).isActive = true
         
         
-        // 设置进度为0时的导航条标题和导航条详情label的位置
-        animateNaivationTitleAt(progress: 0)
+        // 设置进度为0时的导航条标题和导航条详情label的位置 (此时标题和详情label 在headerView的最下面隐藏)
+        animateNaivationTitleAt(progress: 0.0)
         
         // 头部视图
         mainScrollView.addSubview(profileHeaderView)
@@ -323,8 +334,9 @@ extension ProfileViewController {
     }
     
     func computeSegmentedControlContainerFrame() -> CGRect {
-        let rect = computeProfileHeaderViewFrame()
-        return CGRect(x: 0, y: rect.origin.y + rect.height, width: mainScrollView.bounds.width, height: segmentedControlContainerHeight)
+//        let rect = computeProfileHeaderViewFrame()
+//        return CGRect(x: 0, y: rect.origin.y + rect.height, width: mainScrollView.bounds.width, height: segmentedControlContainerHeight)
+        return CGRect(x: 0, y: profileHeaderView.frame.maxY, width: mainScrollView.bounds.width, height: segmentedControlContainerHeight)
         
     }
     
@@ -340,7 +352,9 @@ extension ProfileViewController {
 
 extension ProfileViewController: UIScrollViewDelegate {
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+        if scrollView.isEqual(self.mainScrollView) == false {
+            return
+        }
         let contentOffset = scrollView.contentOffset
         self.debugContentOffset(contentOffset: contentOffset)
         
@@ -402,7 +416,6 @@ extension ProfileViewController: UIScrollViewDelegate {
             let segmentedControlContainerLocationY = stickyheaderContainerViewHeight + profileHeaderViewHeight - navigationHeight
             
             if contentOffset.y > 0 && contentOffset.y >= segmentedControlContainerLocationY {
-                //    if segmentedControlLocation.origin.y <= navigationHeight {
                 segmentedControlContainer.frame = CGRect(x: 0, y: contentOffset.y + navigationHeight, width: segmentedControlContainer.bounds.width, height: segmentedControlContainer.bounds.height)
             } else {
                 segmentedControlContainer.frame = computeSegmentedControlContainerFrame()
@@ -421,7 +434,7 @@ extension ProfileViewController: UIScrollViewDelegate {
                 animateNaivationTitleAt(progress: detailProgress)
             }
         }
-        // Segmented control is always on top in any situations
+        //  在任何情况下 Segmented control 总是显示在最上面
         self.mainScrollView.bringSubview(toFront: segmentedControlContainer)
     }
 }
@@ -432,10 +445,10 @@ extension ProfileViewController {
         
         
         let totalDistance: CGFloat = 75
-        
+
         if progress >= 0 {
             let distance = (1 - progress) * totalDistance
-            navigationDetailLabelBottomConstraint?.constant = 8 - distance
+            navigationDetailLabelBottomConstraint?.constant = -8 + distance
         }
     }
 }
