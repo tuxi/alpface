@@ -57,8 +57,8 @@ class UserProfileViewController: ProfileViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.locationString = "Hong Kong"
-        self.username = "memem"
+        self.locationString = "Beijing"
+        self.username = "alpface"
         
         self.profileImage = UIImage.init(named: "icon.png")
     }
