@@ -32,13 +32,11 @@ class MainAppScrollingContainerViewController: UIViewController {
     
     private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
     public var initialPage = 0
-    private var displayViewController: UIViewController? {
-        get {
-            let indexPath = collectionView.indexPathsForVisibleItems.first
-            guard let ip = indexPath else { return nil }
-            let vc = collectionViewItems[ip.section].items[ip.row].model as? UIViewController
-            return vc
-        }
+    private func displayViewController() -> UIViewController? {
+        let indexPath = collectionView.indexPathsForVisibleItems.first
+        guard let ip = indexPath else { return nil }
+        let vc = collectionViewItems[ip.section].items[ip.row].model as? UIViewController
+        return vc
     }
     
     public func show(page index: NSInteger, animated: Bool) {
@@ -126,12 +124,12 @@ class MainAppScrollingContainerViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        guard let displayVc = displayViewController else { return .default }
+        guard let displayVc = displayViewController() else { return .default }
         return displayVc.preferredStatusBarStyle
     }
     
     override var prefersStatusBarHidden: Bool {
-        guard let displayVc = displayViewController else { return false }
+        guard let displayVc = displayViewController() else { return false }
         return displayVc.prefersStatusBarHidden
     }
     
@@ -142,24 +140,6 @@ class MainAppScrollingContainerViewController: UIViewController {
 
 }
 
-extension MainAppScrollingContainerViewController {
-    override func beginAppearanceTransition(_ isAppearing: Bool, animated: Bool) {
-        super.beginAppearanceTransition(isAppearing, animated: animated)
-        guard let displayVc = displayViewController else {
-            return
-        }
-        displayVc .beginAppearanceTransition(isAppearing, animated: animated)
-    }
-    
-    override func endAppearanceTransition() {
-        super.endAppearanceTransition()
-        guard let displayVc = displayViewController else {
-            return
-        }
-        displayVc.endAppearanceTransition()
-    }
-
-}
 
 extension MainAppScrollingContainerViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     

@@ -33,6 +33,13 @@ class MainFeedViewController: UIViewController {
         return collectionView
     }()
     
+    public func displayViewController() -> UIViewController? {
+        if let cell = collectionView.visibleCells.first as? MainFeedViewCell {
+            return cell.viewController
+        }
+        return nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,6 +49,21 @@ class MainFeedViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        displayViewController()?.beginAppearanceTransition(true, animated: animated)
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        displayViewController()?.endAppearanceTransition()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        displayViewController()?.beginAppearanceTransition(false, animated: true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+       super.viewDidDisappear(animated)
+        displayViewController()?.endAppearanceTransition()
     }
     
     fileprivate func setupUI() {
@@ -126,4 +148,14 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         
         return collectionView.frame.size
     }
+}
+
+extension MainFeedViewController {
+    
+    /// 关闭appearance callbacks的自动传递的特性呢
+    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
+        return false
+    }
+    
+    
 }

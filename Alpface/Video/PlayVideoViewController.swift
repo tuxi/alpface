@@ -124,6 +124,17 @@ class PlayVideoViewController: UIViewController {
                                                name: NSNotification.Name.UIApplicationWillEnterForeground,
                                                object: nil)
     }
+    override func viewDidAppear(_ animated: Bool) {
+         super.viewDidAppear(animated)
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        autoPlay()
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        pause(autoPlay: true)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -288,7 +299,8 @@ class PlayVideoViewController: UIViewController {
             return
         }
         //播放本地视频
-        let url = NSURL(fileURLWithPath: path)
+        let url = URL(fileURLWithPath: path)
+        self.url = url
         //播放网络视频
         //        let url = URL(string: "https://d1.xia12345.com/down/201708/08/pt029.mp4")!
         //        self.url = url
@@ -329,6 +341,9 @@ class PlayVideoViewController: UIViewController {
     }
     open func autoPlay() {
         if !isPauseByUser && url != nil {
+            if self.state == .buffering || self.state == .playing {
+                return
+            }
             play()
         }
     }

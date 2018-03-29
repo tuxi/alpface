@@ -35,6 +35,29 @@ class FeedCellViewController: UIViewController {
         setup()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        playVideoVc.beginAppearanceTransition(true, animated: animated)
+        interactionController.beginAppearanceTransition(true, animated: animated)
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        playVideoVc.endAppearanceTransition()
+        interactionController.endAppearanceTransition()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        playVideoVc.beginAppearanceTransition(false, animated: animated)
+        interactionController.beginAppearanceTransition(false, animated: animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        playVideoVc.endAppearanceTransition()
+        interactionController.endAppearanceTransition()
+    }
+    
     fileprivate func setup() {
         view.addSubview((playVideoVc.view)!)
         playVideoVc.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
