@@ -127,8 +127,8 @@
                 <outlet property="iconHeightConstraint" destination="Z4O-AZ-Jhy" id="yKw-en-mam"/>
                 <outlet property="iconImageView" destination="gkt-aO-Ke3" id="N4n-1o-fdq"/>
                 <outlet property="locationLabel" destination="ssS-jj-WGA" id="c84-bo-pX8"/>
-                <outlet property="titleLabel" destination="g72-U6-3c5" id="ZVA-PE-Rcm"/>
-                <outlet property="usernameLabel" destination="jYc-yg-iqa" id="Ir8-JZ-45w"/>
+                <outlet property="nicknameLabel" destination="jYc-yg-iqa" id="YVs-Ga-xyF"/>
+                <outlet property="usernameLabel" destination="g72-U6-3c5" id="QsW-Jr-bNx"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="54"/>
         </view>

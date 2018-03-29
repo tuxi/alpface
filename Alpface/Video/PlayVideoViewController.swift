@@ -9,6 +9,11 @@
 import UIKit
 import AVFoundation
 
+let ALPStatusKeyPath = "status"
+let ALPLoadedTimeRangesKeyPath = "loadedTimeRanges"
+let ALPPlaybackBufferEmptyKeyPath = "playbackBufferEmpty"
+let ALPPlaybackLikelyToKeepUpKeyPath = "playbackLikelyToKeepUp"
+
 //播放器的几种状态
 @objc(ALPPlayerState)
 enum PlayerState : Int {
@@ -98,6 +103,8 @@ class PlayVideoViewController: UIViewController {
     fileprivate var isViewDidLoad: Bool = false
     fileprivate var playInViewDidLoad: Bool = false
     
+    fileprivate var observerSet: Set<String> = Set()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         isViewDidLoad = true
@@ -175,13 +182,29 @@ class PlayVideoViewController: UIViewController {
     
     /// 给AVPlayerItem、AVPlayer添加监控
     func addObserver(){
-        // 为AVPlayerItem添加status属性观察，得到资源准备好，开始播放视频
-        playerItem?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-        // 监听AVPlayerItem的loadedTimeRanges属性来监听缓冲进度更新
-        playerItem?.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+        guard let playerItem = playerItem else {
+            return
+        }
+        if observerSet.contains(ALPStatusKeyPath) == false {
+            // 为AVPlayerItem添加status属性观察，得到资源准备好，开始播放视频
+            playerItem.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+            observerSet.insert(ALPStatusKeyPath)
+        }
+        if observerSet.contains(ALPLoadedTimeRangesKeyPath) == false  {
+            // 监听AVPlayerItem的loadedTimeRanges属性来监听缓冲进度更新
+            playerItem.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
+            observerSet.insert(ALPLoadedTimeRangesKeyPath)
+        }
+        if observerSet.contains(ALPPlaybackBufferEmptyKeyPath) == false {
+            playerItem.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+            observerSet.insert(ALPPlaybackBufferEmptyKeyPath)
+        }
+        if observerSet.contains(ALPPlaybackLikelyToKeepUpKeyPath) == false {
+            playerItem.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+            observerSet.insert(ALPPlaybackLikelyToKeepUpKeyPath)
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        
     }
     
     
@@ -362,10 +385,22 @@ class PlayVideoViewController: UIViewController {
     /// 移除观察者
     func removeObserver(playerItem item: AVPlayerItem?) {
         guard let playerItem = item else { return }
-        playerItem.removeObserver(self, forKeyPath: "loadedTimeRanges")
-        playerItem.removeObserver(self, forKeyPath: "playbackBufferEmpty")
-        playerItem.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
-        playerItem.removeObserver(self, forKeyPath: "status")
+        if observerSet.contains(ALPLoadedTimeRangesKeyPath) == true {
+            playerItem.removeObserver(self, forKeyPath: "loadedTimeRanges")
+            observerSet.remove(ALPLoadedTimeRangesKeyPath)
+        }
+        if observerSet.contains(ALPPlaybackBufferEmptyKeyPath) == true {
+            playerItem.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+            observerSet.remove(ALPPlaybackBufferEmptyKeyPath)
+        }
+        if observerSet.contains(ALPPlaybackLikelyToKeepUpKeyPath) == true {
+            playerItem.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+            observerSet.remove(ALPPlaybackLikelyToKeepUpKeyPath)
+        }
+        if observerSet.contains(ALPStatusKeyPath) == true {
+            playerItem.removeObserver(self, forKeyPath: "status")
+            observerSet.remove(ALPStatusKeyPath)
+        }
         if let timeObserver = timeObserver {
             player?.removeTimeObserver(timeObserver)
         }
