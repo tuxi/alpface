@@ -10,12 +10,14 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     @IBOutlet weak var iconHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var usernameLabel:
+    UILabel!
+    @IBOutlet weak var nicknameLabel:
+    UILabel!
     
     let maxHeight: CGFloat = 80
     let minHeight: CGFloat = 50

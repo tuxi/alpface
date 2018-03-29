@@ -60,7 +60,7 @@ open class ProfileViewController: UIViewController {
     
     open var nickname : String? {
         didSet {
-            self.profileHeaderView.titleLabel.text = nickname;
+            self.profileHeaderView.nicknameLabel.text = nickname;
         }
     }
     
@@ -129,7 +129,7 @@ open class ProfileViewController: UIViewController {
         _profileHeaderView.usernameLabel.text = self.username
         _profileHeaderView.locationLabel.text = self.locationString
         _profileHeaderView.iconImageView.image = self.profileImage
-        _profileHeaderView.titleLabel.text = self.nickname
+        _profileHeaderView.nicknameLabel.text = self.nickname
         return _profileHeaderView
     }()
     
@@ -418,7 +418,7 @@ extension ProfileViewController: UIScrollViewDelegate {
             
             // Override
             // 当滚动视图到达标题标签的顶部边缘时
-            if let titleLabel = profileHeaderView.titleLabel, let usernameLabel = profileHeaderView.usernameLabel  {
+            if let titleLabel = profileHeaderView.nicknameLabel, let usernameLabel = profileHeaderView.usernameLabel  {
                 
                 // titleLabel location relative to self.view
                 let titleLabelLocationY = stickyheaderContainerViewHeight - 35
