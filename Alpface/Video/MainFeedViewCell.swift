@@ -35,7 +35,7 @@ class MainFeedViewCell: UICollectionViewCell {
         viewController.view.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
     }
     
-    private var viewController: FeedCellViewController = {
+    public var viewController: FeedCellViewController = {
        let vc = FeedCellViewController()
         vc.view.translatesAutoresizingMaskIntoConstraints = false
         return vc

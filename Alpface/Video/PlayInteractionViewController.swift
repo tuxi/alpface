@@ -60,12 +60,10 @@ class PlayInteractionViewController: UIViewController {
         
         playOrPauseButton.addTarget(self, action: #selector(PlayInteractionViewController.playOrPauseButtonClicked(button:)), for: .touchUpInside)
         
-        
         view.addSubview(progress)
         progress.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10.0).isActive = true
         progress.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10.0).isActive = true
-        progress.heightAnchor.constraint(equalToConstant: 3.0).isActive = true
-        progress.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 10.0).isActive = true
+        progress.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0).isActive = true
         
         
         view.addSubview(timeLabel)
@@ -92,7 +90,7 @@ class PlayInteractionViewController: UIViewController {
 extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
     /// 播放进度改变时调用
     func playVideoViewController(didChangePlayerProgress player:PlayVideoViewController, time: String, progress: Float) -> Void {
-        
+        self.progress.progress = progress
     }
     /// 缓冲进度改变时调用
     func playVideoViewController(didChangebufferedProgress player:PlayVideoViewController, loadedTime: Double, bufferedProgress: Float) -> Void {
