@@ -4,7 +4,7 @@
 //
 //  Created by swae on 2018/3/12.
 //  Copyright © 2018年 alpface. All rights reserved.
-//  用于播放视频的控制器，纯净的，不包含任何其他字幕
+//  处理播放器的播放控制，不含UI
 
 import UIKit
 import AVFoundation
@@ -55,8 +55,8 @@ class PlayVideoViewController: UIViewController {
             }
         }
     }
-    /// 是否播放完成后继续播放
-    open var shouldAutoPlay = true
+    /// 是否在播放完成后自动播放
+    open var shouldAutoPlayWhenPlaybackFinished = true
     
     /// 播放的url
     fileprivate var url : URL?
@@ -103,6 +103,7 @@ class PlayVideoViewController: UIViewController {
     fileprivate var isViewDidLoad: Bool = false
     fileprivate var playInViewDidLoad: Bool = false
     
+    /// 添加AVPlayerItem的监听集合，防止KVO crash
     fileprivate var observerSet: Set<String> = Set()
     
     override func viewDidLoad() {
@@ -282,7 +283,7 @@ class PlayVideoViewController: UIViewController {
                 delegate.playVideoViewController!(didPlayToEnd: self)
             }
         }
-        if shouldAutoPlay {
+        if shouldAutoPlayWhenPlaybackFinished {
             autoPlay()
         }
         else {
@@ -301,9 +302,6 @@ class PlayVideoViewController: UIViewController {
         //播放本地视频
         let url = URL(fileURLWithPath: path)
         self.url = url
-        //播放网络视频
-        //        let url = URL(string: "https://d1.xia12345.com/down/201708/08/pt029.mp4")!
-        //        self.url = url
         let playerItem = AVPlayerItem(url: url as URL)
         playerBack(playerItem: playerItem)
     }
@@ -339,9 +337,11 @@ class PlayVideoViewController: UIViewController {
 //        let totalDurationString = formatPlayTime(seconds: totalDuration)
         play()
     }
+    
+    /// 自动播放, 当非用户暂停时，或者播放完成后的自动播放
     open func autoPlay() {
         if !isPauseByUser && url != nil {
-            if self.state == .buffering || self.state == .playing {
+            if (state == .buffering || state == .playing) && shouldAutoPlayWhenPlaybackFinished == false {
                 return
             }
             play()

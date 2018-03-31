@@ -4,22 +4,24 @@
 //
 //  Created by swae on 2018/3/12.
 //  Copyright © 2018年 alpface. All rights reserved.
-//  和PlayVideoViewController配合使用，用于处理及展示视频的描述、字幕、点赞数、作者信息等等
+//  和PlayVideoViewController配合使用，处理播放器的UI
 
 import UIKit
 
 @objc(ALPPlayInteractionViewController)
 class PlayInteractionViewController: UIViewController {
     
+    /// 播放控制器
     open var playerController: PlayVideoViewController?
     
-    /// 播放/暂停按钮
-    fileprivate var playOrPauseButton: UIButton = {
-        let playOrPauseButton = UIButton(type: .custom)
-        playOrPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        playOrPauseButton.setImage(UIImage(named:"icon_pausemusic"), for: .selected)
-        playOrPauseButton.setImage(UIImage(named:"icon_playmusic"), for: .normal)
-        return playOrPauseButton
+    /// 播放/暂停状态按钮
+    fileprivate var playStatusButton: UIButton = {
+        let playStatusButton = UIButton(type: .custom)
+        playStatusButton.translatesAutoresizingMaskIntoConstraints = false
+        playStatusButton.setImage(UIImage(named:"icon_pausemusic"), for: .selected)
+        playStatusButton.setImage(UIImage(named:"icon_playmusic"), for: .normal)
+        playStatusButton.isUserInteractionEnabled = false
+        return playStatusButton
     }()
     /// 播放进度
     fileprivate var progress: UIProgressView = {
@@ -40,8 +42,8 @@ class PlayInteractionViewController: UIViewController {
     
     convenience init(playerController: PlayVideoViewController) {
         self.init()
-        playerController.delegate = self
         self.playerController = playerController
+        playerController.delegate = self
     }
 
     override func viewDidLoad() {
@@ -49,44 +51,47 @@ class PlayInteractionViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         setupUI()
+        
+        // 添加单击轻怕手势
+        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(tap:)))
+        singleTapGesture.numberOfTapsRequired = 1
+        singleTapGesture.numberOfTouchesRequired  = 1
+        view.addGestureRecognizer(singleTapGesture)
+        
+        // 添加双击轻拍手势
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(tap:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        doubleTapGesture.numberOfTouchesRequired = 1
+        view.addGestureRecognizer(doubleTapGesture)
+        
+        // 解决单击和双击手势冲突，设置只有双击手势失败时才触发单击手势
+        singleTapGesture.require(toFail: doubleTapGesture)
+        
     }
-    
-    fileprivate func setupUI() {
-        view.addSubview(playOrPauseButton)
-        playOrPauseButton.widthAnchor.constraint(equalToConstant: 80.0).isActive = true
-        playOrPauseButton.heightAnchor.constraint(equalToConstant: 80.0).isActive = true
-        playOrPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        playOrPauseButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        playOrPauseButton.addTarget(self, action: #selector(PlayInteractionViewController.playOrPauseButtonClicked(button:)), for: .touchUpInside)
-        
-        view.addSubview(progress)
-        progress.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10.0).isActive = true
-        progress.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10.0).isActive = true
-        progress.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0).isActive = true
-        
-        
-        view.addSubview(timeLabel)
-        timeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20.0).isActive = true
-        timeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0).isActive = true
-    }
-
-    /// 点击播放/暂停按钮
-    @objc fileprivate func playOrPauseButtonClicked(button: UIButton) {
-        guard let playerController = playerController else { return }
-        if playerController.state == .playing {
-            button.isSelected = false
-            playerController.pause()
-        }
-        else {
-            button.isSelected = true
-            playerController.play()
-        }
-    }
-    
-
 }
 
+// MARK: - Actions
+extension PlayInteractionViewController {
+    /// 单击 播放/暂停
+    @objc fileprivate func handleSingleTap(tap: UITapGestureRecognizer) {
+        if tap.state == .ended {
+            guard let playerController = playerController else { return }
+            if playerController.state == .playing {
+                playerController.pause()
+            }
+            else {
+                playerController.play()
+            }
+        }
+    }
+    
+    /// 双击 点赞
+    @objc fileprivate func handleDoubleTap(tap: UITapGestureRecognizer) {
+        
+    }
+}
+
+// MARK: - PlayVideoViewControllerDelegate
 extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
     /// 播放进度改变时调用
     func playVideoViewController(didChangePlayerProgress player:PlayVideoViewController, time: String, progress: Float) -> Void {
@@ -99,24 +104,43 @@ extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
     /// 播放状态改变时调用
     func playVideoViewController(didChangePlayerState player:PlayVideoViewController, state: PlayerState) -> Void {
         if  state == .paused {
-            playOrPauseButton.isSelected = false
-            playOrPauseButton.isHidden = false
+            playStatusButton.isSelected = false
+            playStatusButton.isHidden = false
         }
         else if state == .playing {
-            playOrPauseButton.isHidden = true
-            playOrPauseButton.isSelected = true
+            playStatusButton.isHidden = true
+            playStatusButton.isSelected = true
         }
         else if state == .failure || state == .stopped {
-            playOrPauseButton.isSelected = true
-            playOrPauseButton.isHidden = false
+            playStatusButton.isSelected = true
+            playStatusButton.isHidden = false
             
         }
     }
     /// 播放完毕时调用
     func playVideoViewController(didPlayToEnd player: PlayVideoViewController) -> Void {
-        
+        // 播放完毕，重置进度
         progress.progress = 0.0
-        playOrPauseButton.isSelected = false
-        playOrPauseButton.isHidden = false
+    }
+}
+
+// MARK: - UI
+extension PlayInteractionViewController {
+    fileprivate func setupUI() {
+        view.addSubview(playStatusButton)
+        playStatusButton.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
+        playStatusButton.heightAnchor.constraint(equalToConstant: 120.0).isActive = true
+        playStatusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        playStatusButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        view.addSubview(progress)
+        progress.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10.0).isActive = true
+        progress.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10.0).isActive = true
+        progress.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0).isActive = true
+        
+        
+        view.addSubview(timeLabel)
+        timeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20.0).isActive = true
+        timeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0).isActive = true
     }
 }
