@@ -16,6 +16,11 @@ class MainFeedViewController: UIViewController {
         return refresher
     }()
     
+    fileprivate lazy var videoItems: [VideoItem] = {
+        let items = [VideoItem]()
+        return items
+    }()
+    
     fileprivate lazy var collectionView: GestureCoordinatingCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0.0
@@ -45,6 +50,7 @@ class MainFeedViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         setupUI()
+        requestRandomVideos()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,6 +113,25 @@ class MainFeedViewController: UIViewController {
         }
     }
     
+}
+
+extension MainFeedViewController {
+    
+    fileprivate func requestRandomVideos() -> Void {
+        VideoRequest.shared.getRadomVideos(success: {[weak self] (response) in
+            guard let list = response as? [VideoItem] else {
+                return
+            }
+            self?.videoItems.removeAll()
+            self?.videoItems += list
+            self?.collectionView.reloadData()
+        }) { (error) in
+            print(error?.localizedDescription ?? "请求随机视频失败!")
+        }
+    }
+}
+
+extension MainFeedViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent
     }
@@ -127,7 +152,7 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return videoItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -137,8 +162,10 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         
-        let url = URL.init(string: "http://10.211.55.3:8888/media/media_itemstest_6yHn4hk.mov")
-        cell.url = url
+        let video = videoItems[indexPath.row]
+//        let url = URL.init(string: "http://10.211.55.3:8888/media/media_itemstest_6yHn4hk.mov")
+//        cell.url = url
+        cell.videoItem = video
         cell.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
         
         return cell
@@ -148,6 +175,26 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         
         return collectionView.frame.size
     }
+    
+    /// cell 完全离开屏幕后调用
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let didEndDisplayingCell = cell as? MainFeedViewCell else {
+            return
+        }
+        /// 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
+        didEndDisplayingCell.viewController.beginAppearanceTransition(false, animated: true)
+        didEndDisplayingCell.viewController.endAppearanceTransition()
+    }
+    
+    /// cell 即将显示在屏幕时调用
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let didEndDisplayingCell = cell as? MainFeedViewCell else {
+            return
+        }
+        didEndDisplayingCell.viewController.beginAppearanceTransition(true, animated: true)
+        didEndDisplayingCell.viewController.endAppearanceTransition()
+    }
+    
 }
 
 extension MainFeedViewController {

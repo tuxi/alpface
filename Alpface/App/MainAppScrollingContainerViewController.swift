@@ -233,9 +233,6 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
             let nav = MainNavigationController(rootViewController: loginVc)
             showDetailViewController(nav, sender: self)
         }
-        else {
-            
-        }
     }
 }
 
