@@ -11,6 +11,11 @@ import UIKit
 @objc(ALPPlayInteractionViewController)
 class PlayInteractionViewController: UIViewController {
     
+    public var videoItem: VideoItem? {
+        didSet {
+        }
+    }
+    
     /// 播放控制器
     open var playerController: PlayVideoViewController?
     

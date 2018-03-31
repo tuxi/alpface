@@ -40,49 +40,58 @@ class User: NSObject, NSCoding {
         address = aDecoder.decodeObject(forKey: "address") as? String
     }
     
-    convenience init(userid: Int,
-                     username: String?  = "",
-                     nickname: String?  = "",
-                     avatar: String?  = "",
-                     phone: String?  = "",
-                     gender: String?  = "",
-                     address: String?  = "" ) {
-        self.init()
-        self.userid = userid
-        self.username = username
-        self.nickname = nickname
-        self.avatar = avatar
-        self.phone = phone
-        self.gender = gender
-        self.address = address
-    }
+//    convenience init(userid: Int,
+//                     username: String?  = "",
+//                     nickname: String?  = "",
+//                     avatar: String?  = "",
+//                     phone: String?  = "",
+//                     gender: String?  = "",
+//                     address: String?  = "" ) {
+//        self.init()
+//        self.userid = userid
+//        self.username = username
+//        self.nickname = nickname
+//        self.avatar = avatar
+//        self.phone = phone
+//        self.gender = gender
+//        self.address = address
+//    }
     override init() {
         super.init()
     }
-//    convenience init(dict: [String: Any]) {
-//        self.init()
-//       if let id = dict["userid"] as? String {
-//            self.userId = id
-//        }
-//        if let username = dict["username"] as? String {
-//            self.username = username
-//        }
-//        if let nickname = dict["nickname"] as? String {
-//            self.nickname = nickname
-//        }
-//        if let avatar = dict["avatar"] as? String {
-//            self.avatar = avatar
-//        }
-//        if let phone = dict["phone"] as? String {
-//            self.phone = phone
-//        }
-//        if let gender = dict["gender"] as? String {
-//            self.gender = gender
-//        }
-//        if let address = dict["address"] as? String {
-//            self.address = address
-//        }
-//        
-//    }
+    convenience init(dict: [String: Any]) {
+        self.init()
+        /// id和userid返回的都是用户唯一标示符，有些接口字段没统一，我现在这里处理了
+       if let id = dict["userid"] as? NSNumber {
+            self.userid = id.intValue
+        }
+        if let id = dict["id"] as? NSNumber {
+            self.userid = id.intValue
+        }
+        if let username = dict["username"] as? String {
+            self.username = username
+        }
+        if let nickname = dict["nickname"] as? String {
+            self.nickname = nickname
+        }
+        
+        /// avatar和image返回的都是头像，有些接口字段没统一，我现在这里处理了
+        if let avatar = dict["avatar"] as? String {
+            self.avatar = avatar
+        }
+        if let image = dict["image"] as? String {
+            self.avatar = image
+        }
+        if let phone = dict["phone"] as? String {
+            self.phone = phone
+        }
+        if let gender = dict["gender"] as? String {
+            self.gender = gender
+        }
+        if let address = dict["address"] as? String {
+            self.address = address
+        }
+        
+    }
     
 }

@@ -10,8 +10,14 @@ import UIKit
 
 class MainFeedViewCell: UICollectionViewCell {
     
+    public var videoItem: VideoItem? {
+        didSet {
+            viewController.videoItem = videoItem
+        }
+    }
+    
     public var url: URL? {
-        didSet(newValue) {
+        didSet {
             
             viewController.url = url
         }

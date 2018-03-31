@@ -11,6 +11,14 @@ import UIKit
 @objc(ALPFeedCellViewController)
 class FeedCellViewController: UIViewController {
     
+    public var videoItem: VideoItem? {
+        didSet {
+            guard let url = videoItem?.getVideoURL() else { return }
+            playVideoVc.playerBack(url: url)
+            interactionController.videoItem = videoItem
+        }
+    }
+    
     public var url: URL? {
         didSet {
             guard let url = self.url else { return }

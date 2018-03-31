@@ -73,38 +73,50 @@ public class AccountLogin: NSObject {
                 
                 if let error = error {
                     guard let fail = failure else { return }
-                    fail(error)
+                    DispatchQueue.main.async {
+                        fail(error)
+                    }
                     return
                 }
                 
                 
                 guard let userInfo = response as? String else {
                     guard let fail = failure else { return }
-                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    DispatchQueue.main.async {
+                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    }
+                   
                     return
                 }
                 
                 let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
                 if let userDict = jsonDict["user"] as? [String : Any] {
                     guard let succ = success else { return }
-                    let userid = userDict["userid"] as! NSNumber
-                    let user = User(userid: userid.intValue, username: userDict["username"] as? String, nickname: userDict["nickname"] as? String, avatar: userDict["avatar"] as? String, phone: userDict["phone"] as? String, gender: userDict["gender"]  as? String, address: userDict["address"]  as? String)
+                    let user = User(dict: userDict)
                     if let username = user.username {
                         let result = AccountLoginResult(status: jsonDict["status"] as! String, username:username, message: "")
                         
                         // 记录当前登录的用户
                         AuthenticationManager.shared.loginUser = user
-                        succ(result)
+                        DispatchQueue.main.async {
+                            succ(result)
+                        }
                     }
                 }
                 else {
                     guard let fail = failure else { return }
-                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    DispatchQueue.main.async {
+                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    }
                 }
                 
                
             }
         }) { (error) in
+            guard let fail = failure else { return }
+            DispatchQueue.main.async {
+                fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+            }
             print(error ?? "")
         }
         
