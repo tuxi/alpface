@@ -162,26 +162,26 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         return cell
     }
     
+    /// cell 完全离开屏幕后调用
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        /// 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
+        guard let endDisplayingViewController = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
+        endDisplayingViewController.beginAppearanceTransition(false, animated: true)
+        endDisplayingViewController.endAppearanceTransition()
         UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
     }
     
+    /// cell 即将显示在屏幕时调用
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if initialPage > 0 {
             show(page: initialPage, animated: false)
             initialPage = 0
         }
-//        guard let fromVC = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
-//        fromVC.beginAppearanceTransition(false, animated: true)
-//
-//        // 获取即将显示的控制器
-//        let targetRow = Int(max(collectionView.contentOffset.x / collectionView.frame.size.width, 0))
-//        if targetRow == indexPath.row {
-//            return
-//        }
-//        guard let targetVc = collectionViewItems[0].items[targetRow].model as? UIViewController else {return}
-//        targetVc.beginAppearanceTransition(true, animated: true)
-//        targetVc.endAppearanceTransition()
+
+        /// 获取即将显示的cell上的控制器，执行其view显示的生命周期方法
+        guard let targetVc = collectionViewItems[0].items[indexPath.row].model as? UIViewController else {return}
+        targetVc.beginAppearanceTransition(true, animated: true)
+        targetVc.endAppearanceTransition()
     }
     
     
