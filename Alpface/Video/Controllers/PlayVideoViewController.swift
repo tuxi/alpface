@@ -192,33 +192,6 @@ class PlayVideoViewController: UIViewController {
         }
     }
     
-    /// 给AVPlayerItem、AVPlayer添加监控
-    func addObserver(){
-        guard let playerItem = playerItem else {
-            return
-        }
-        if observerSet.contains(ALPStatusKeyPath) == false {
-            // 为AVPlayerItem添加status属性观察，得到资源准备好，开始播放视频
-            playerItem.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-            observerSet.insert(ALPStatusKeyPath)
-        }
-        if observerSet.contains(ALPLoadedTimeRangesKeyPath) == false  {
-            // 监听AVPlayerItem的loadedTimeRanges属性来监听缓冲进度更新
-            playerItem.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
-            observerSet.insert(ALPLoadedTimeRangesKeyPath)
-        }
-        if observerSet.contains(ALPPlaybackBufferEmptyKeyPath) == false {
-            playerItem.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
-            observerSet.insert(ALPPlaybackBufferEmptyKeyPath)
-        }
-        if observerSet.contains(ALPPlaybackLikelyToKeepUpKeyPath) == false {
-            playerItem.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
-            observerSet.insert(ALPPlaybackLikelyToKeepUpKeyPath)
-        }
-        NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
-        
-    }
-    
     
     /// 通过KVO监控播放器状态
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -296,11 +269,9 @@ class PlayVideoViewController: UIViewController {
     /// 播放一个url
     open func playerBack(url: URL) {
         //获取本地视频资源
-        guard let path = Bundle.main.path(forResource: "test", ofType: "mov") else {
-            return
-        }
-        //播放本地视频
-        let url = URL(fileURLWithPath: path)
+//        guard let path = Bundle.main.path(forResource: "test", ofType: "mov") else {
+//            return
+//        }
         self.url = url
         let playerItem = AVPlayerItem(url: url as URL)
         playerBack(playerItem: playerItem)
@@ -325,9 +296,7 @@ class PlayVideoViewController: UIViewController {
             player = AVPlayer(playerItem: playerItem)
             playerLayer.player = player
         }
-        player?.play()
-        
-        addObserver()
+        self.play()
     }
     
     /// 准备播放
@@ -356,6 +325,8 @@ class PlayVideoViewController: UIViewController {
             guard let url = url else { return }
             playerBack(url: url)
         }
+        removeObserver(playerItem: playerItem)
+        addObserver()
         addPlayProgressObserver()
         state = .playing
         player?.play()
@@ -423,6 +394,32 @@ class PlayVideoViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name:  Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
     }
     
+    /// 给AVPlayerItem、AVPlayer添加监控
+    func addObserver(){
+        guard let playerItem = playerItem else {
+            return
+        }
+        if observerSet.contains(ALPStatusKeyPath) == false {
+            // 为AVPlayerItem添加status属性观察，得到资源准备好，开始播放视频
+            playerItem.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+            observerSet.insert(ALPStatusKeyPath)
+        }
+        if observerSet.contains(ALPLoadedTimeRangesKeyPath) == false  {
+            // 监听AVPlayerItem的loadedTimeRanges属性来监听缓冲进度更新
+            playerItem.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
+            observerSet.insert(ALPLoadedTimeRangesKeyPath)
+        }
+        if observerSet.contains(ALPPlaybackBufferEmptyKeyPath) == false {
+            playerItem.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+            observerSet.insert(ALPPlaybackBufferEmptyKeyPath)
+        }
+        if observerSet.contains(ALPPlaybackLikelyToKeepUpKeyPath) == false {
+            playerItem.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+            observerSet.insert(ALPPlaybackLikelyToKeepUpKeyPath)
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        
+    }
     deinit {
         releasePlayer()
         player?.replaceCurrentItem(with: nil)

@@ -91,7 +91,11 @@ class VideoItem: NSObject {
     
     open func getVideoURL() -> URL? {
         guard let video = self.video else {
-            return nil
+            #if DEBUG
+                return URL.init(string: "http://alpface.com:8889/media/media_itemsIMG_1229.mov")
+            #else
+                return nil
+            #endif
         }
         return URL.init(string: ALPSiteURLString + video)
     }
