@@ -120,6 +120,12 @@ extension MainFeedViewController {
     fileprivate func requestRandomVideos() -> Void {
         VideoRequest.shared.getRadomVideos(success: {[weak self] (response) in
             guard let list = response as? [VideoItem] else {
+                #if DEBUG
+                    self?.videoItems.removeAll()
+                    let videoItem = VideoItem()
+                    self?.videoItems.append(videoItem)
+                    self?.collectionView.reloadData()
+                #endif
                 return
             }
             self?.videoItems.removeAll()
