@@ -100,7 +100,7 @@ extension PlayInteractionViewController {
     
     /// 双击 点赞
     @objc fileprivate func handleDoubleTap(tap: UITapGestureRecognizer) {
-        
+        HeartAnimation.animation(tapGesture: tap)
     }
 }
 

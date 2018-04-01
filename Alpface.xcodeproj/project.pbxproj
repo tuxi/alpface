@@ -69,6 +69,7 @@
 		D2DC5748206FB1F300458F54 /* VideoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC5747206FB1F300458F54 /* VideoRequest.swift */; };
 		D2DC574A206FB7EA00458F54 /* AccountLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC5749206FB7EA00458F54 /* AccountLogin.swift */; };
 		D2DC574C20706D7C00458F54 /* PlayVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC574B20706D7C00458F54 /* PlayVideoModel.swift */; };
+		D2DC57552070D64C00458F54 /* HeartAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC57542070D64C00458F54 /* HeartAnimation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -138,6 +139,7 @@
 		D2DC5747206FB1F300458F54 /* VideoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRequest.swift; sourceTree = "<group>"; };
 		D2DC5749206FB7EA00458F54 /* AccountLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountLogin.swift; sourceTree = "<group>"; };
 		D2DC574B20706D7C00458F54 /* PlayVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayVideoModel.swift; sourceTree = "<group>"; };
+		D2DC57542070D64C00458F54 /* HeartAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartAnimation.swift; sourceTree = "<group>"; };
 		FB768995D8F6D8FF332CFBDB /* Pods-Alpface.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpface.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Alpface/Pods-Alpface.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -381,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */,
+				D2DC57542070D64C00458F54 /* HeartAnimation.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 				D26AD47F20672E120047DC15 /* FadeTransition.swift in Sources */,
 				D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */,
 				D2A2C77A206955E3003CEB97 /* ProfileIconView.swift in Sources */,
+				D2DC57552070D64C00458F54 /* HeartAnimation.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
 				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
 				D2BCBA49206F33F2008409B3 /* GestureCoordinatingCollectionView.swift in Sources */,
