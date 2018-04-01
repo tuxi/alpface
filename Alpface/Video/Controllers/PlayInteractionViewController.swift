@@ -8,6 +8,9 @@
 
 import UIKit
 
+let ALPplayStatusButtonAlpha: CGFloat = 0.5
+
+
 @objc(ALPPlayInteractionViewController)
 class PlayInteractionViewController: UIViewController {
     
@@ -23,9 +26,10 @@ class PlayInteractionViewController: UIViewController {
     fileprivate var playStatusButton: UIButton = {
         let playStatusButton = UIButton(type: .custom)
         playStatusButton.translatesAutoresizingMaskIntoConstraints = false
-        playStatusButton.setImage(UIImage(named:"icon_pausemusic"), for: .selected)
-        playStatusButton.setImage(UIImage(named:"icon_playmusic"), for: .normal)
+        playStatusButton.setBackgroundImage(UIImage(named:"icon_pausemusic"), for: .selected)
+        playStatusButton.setBackgroundImage(UIImage(named:"icon_playmusic"), for: .normal)
         playStatusButton.isUserInteractionEnabled = false
+        playStatusButton.alpha = ALPplayStatusButtonAlpha
         return playStatusButton
     }()
     /// 播放进度
@@ -95,6 +99,24 @@ extension PlayInteractionViewController {
             else {
                 playerController.play()
             }
+            // 播放按钮出现时回弹下
+            UIView.animate(withDuration: 0.1, animations: {
+                self.playStatusButton.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+                self.playStatusButton.alpha = ALPplayStatusButtonAlpha - 0.3
+            }) { (finished) in
+                self.playStatusButton.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
+                self.playStatusButton.alpha = ALPplayStatusButtonAlpha - 0.2
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.playStatusButton.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
+                    self.playStatusButton.alpha = ALPplayStatusButtonAlpha
+                    UIView.animate(withDuration: 0.1, animations: {
+                        self.playStatusButton.layoutIfNeeded()
+                        
+                    })
+                }, completion: { (isFinished) in
+                    
+                })
+            }
         }
     }
     
@@ -151,8 +173,8 @@ extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
 extension PlayInteractionViewController {
     fileprivate func setupUI() {
         view.addSubview(playStatusButton)
-        playStatusButton.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
-        playStatusButton.heightAnchor.constraint(equalToConstant: 120.0).isActive = true
+        playStatusButton.widthAnchor.constraint(equalToConstant: 66).isActive = true
+        playStatusButton.heightAnchor.constraint(equalToConstant: 66).isActive = true
         playStatusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         playStatusButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
