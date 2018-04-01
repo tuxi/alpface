@@ -55,6 +55,7 @@ class MainFeedViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         displayViewController()?.beginAppearanceTransition(true, animated: animated)
         // 所有model停止播放
         for videoItem in videoItems {
@@ -71,6 +72,7 @@ class MainFeedViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayViewController()?.endAppearanceTransition()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -170,7 +172,7 @@ extension MainFeedViewController {
 }
 
 extension MainFeedViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle{
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
