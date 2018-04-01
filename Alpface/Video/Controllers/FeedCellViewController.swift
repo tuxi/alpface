@@ -13,7 +13,7 @@ class FeedCellViewController: UIViewController {
     
     fileprivate var observerSet: Set<String> = Set()
     
-    public var model: PlayVideoCellModel? {
+    public var model: PlayVideoModel? {
         didSet {
             guard let m = model else {
                 return
@@ -21,7 +21,7 @@ class FeedCellViewController: UIViewController {
             if let videoItem = m.model as? VideoItem {
                 guard let url = videoItem.getVideoURL() else { return }
                 interactionController.videoItem = videoItem
-                playVideoVc.playerBack(url: url)
+                playVideoVc.preparePlayback(url: url)
             }
             m.playCallBack = { [weak self] (isPlay: Bool) in
                 if isPlay {

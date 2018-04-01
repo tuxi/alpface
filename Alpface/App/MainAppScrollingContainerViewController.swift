@@ -164,10 +164,17 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     
     /// cell 完全离开屏幕后调用
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        /// 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
+        // 获取当前显示已经显示的控制器
+        guard let displayIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
+        guard let displayIndexPathController = collectionViewItems[0].items[displayIndexPath.row].model as? UIViewController else {return}
+        displayIndexPathController.endAppearanceTransition()
+        
+        // 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
         guard let endDisplayingViewController = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
-        endDisplayingViewController.beginAppearanceTransition(false, animated: true)
-        endDisplayingViewController.endAppearanceTransition()
+        if displayIndexPathController != endDisplayingViewController {
+            // 如果完全显示的控制器和已经离开屏幕的控制器是同一个就return，防止初始化完成后是同一个
+            endDisplayingViewController.endAppearanceTransition()
+        }
         UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
     }
     
@@ -179,9 +186,16 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         }
 
         /// 获取即将显示的cell上的控制器，执行其view显示的生命周期方法
-        guard let targetVc = collectionViewItems[0].items[indexPath.row].model as? UIViewController else {return}
-        targetVc.beginAppearanceTransition(true, animated: true)
-        targetVc.endAppearanceTransition()
+        guard let willDisplayController = collectionViewItems[0].items[indexPath.row].model as? UIViewController else {return}
+        willDisplayController.beginAppearanceTransition(true, animated: true)
+        
+        /// 获取即将消失的控制器（当前collectionView显示的cell就是即将要离开屏幕的cell）
+        guard let willEndDisplayingIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
+        guard let willEndDisplayingController = collectionViewItems[0].items[willEndDisplayingIndexPath.row].model as? UIViewController else {return}
+        if willEndDisplayingController != willDisplayController {
+            // 如果是同一个控制器return，防止初始化完成后是同一个
+            willEndDisplayingController.beginAppearanceTransition(false, animated: true)
+        }
     }
     
     
@@ -189,6 +203,36 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         
         return collectionViewItems[indexPath.section].items[indexPath.row].size
     }
+    
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        if scrollView != collectionView {
+//            return
+//        }
+//        self.collectionView(didEndScroll: scrollView as! UICollectionView)
+//    }
+//
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        if decelerate == false {
+//            if scrollView != collectionView {
+//                return
+//            }
+//            self.collectionView(didEndScroll: scrollView as! UICollectionView)
+//        }
+//    }
+//
+//    fileprivate func collectionView(didEndScroll collectionView: UICollectionView) {
+//
+//        let row = Int(ceil(collectionView.contentOffset.y / collectionView.frame.height))
+//        let indexPath = IndexPath(item: row, section: 0)
+//        let cell = self.collectionView.cellForItem(at: indexPath) as? ScrollingContainerCell
+//        self.collectionView(self.collectionView, didDisplay: cell, forItemAt: indexPath)
+//    }
+//
+//    /// collectionView cell 完全显示后回调
+//    fileprivate func collectionView(_ collectionView: UICollectionView, didDisplay cell: ScrollingContainerCell?, forItemAt indexPath: IndexPath) {
+//        // 对于willDisplay 时的 beginAppearanceTransition(true)
+//        displayViewController()?.endAppearanceTransition()
+//    }
 }
 
 extension MainAppScrollingContainerViewController: StoryCreationViewControllerDelegate {

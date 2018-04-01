@@ -36,6 +36,14 @@ class PlayInteractionViewController: UIViewController {
         progress.trackTintColor = UIColor.red
         return progress
     }()
+    
+    /// 加载指示器
+    fileprivate lazy var indicator : UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     /// 显示播放时间
     fileprivate var timeLabel: UILabel = {
         let timeLabel = UILabel(frame: .zero)
@@ -112,14 +120,24 @@ extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
             playStatusButton.isSelected = false
             playStatusButton.isHidden = false
         }
-        else if state == .playing {
+        else if state == .playing || state == .buffering {
             playStatusButton.isHidden = true
             playStatusButton.isSelected = true
+            
         }
         else if state == .failure || state == .stopped {
             playStatusButton.isSelected = true
             playStatusButton.isHidden = false
             
+        }
+        
+        if state != .buffering {
+            indicator.stopAnimating()
+            indicator.isHidden = true
+        }
+        else {
+            indicator.startAnimating()
+            indicator.isHidden = false
         }
     }
     /// 播放完毕时调用
@@ -147,5 +165,9 @@ extension PlayInteractionViewController {
         view.addSubview(timeLabel)
         timeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20.0).isActive = true
         timeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0).isActive = true
+        
+        view.addSubview(indicator)
+        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 }
