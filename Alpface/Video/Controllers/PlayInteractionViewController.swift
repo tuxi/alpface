@@ -49,12 +49,19 @@ class PlayInteractionViewController: UIViewController {
     }()
     
     /// 显示播放时间
-    fileprivate var timeLabel: UILabel = {
+    fileprivate lazy var timeLabel: UILabel = {
         let timeLabel = UILabel(frame: .zero)
         timeLabel.font = UIFont.systemFont(ofSize: 12.0)
         timeLabel.textColor = UIColor.red
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         return timeLabel
+    }()
+    
+    /// 显示视频详细信息的视图
+    fileprivate lazy var detailView: FeedVideoDetailView = {
+        let view = FeedVideoDetailView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     convenience init(playerController: PlayVideoViewController) {
@@ -179,9 +186,9 @@ extension PlayInteractionViewController {
         playStatusButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
         view.addSubview(progressView)
-        progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10.0).isActive = true
-        progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10.0).isActive = true
-        progressView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0).isActive = true
+        progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        progressView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -49.0).isActive = true
         progressView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         view.addSubview(timeLabel)
@@ -191,5 +198,11 @@ extension PlayInteractionViewController {
         view.addSubview(indicator)
         indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        view.addSubview(detailView)
+        detailView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -50.0).isActive = true
+        detailView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
+        detailView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
+         detailView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.6, constant: 0.0).isActive = true
     }
 }
