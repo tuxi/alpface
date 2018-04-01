@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objc(ALPCellModelProtocol)
 protocol CellModelProtocol: NSObjectProtocol {
     var model: AnyObject? { set get }
     var size: CGSize { set get }
@@ -16,11 +17,10 @@ protocol CellModelProtocol: NSObjectProtocol {
 
 @objc(ALPBaseCellModel)
 public class BaseCellModel: NSObject, CellModelProtocol {
-    var model: AnyObject?
+    open var model: AnyObject?
     
-    var size: CGSize = .zero
+    open var size: CGSize = .zero
     
-    var indexPath: IndexPath?
-    
+    open var indexPath: IndexPath?
 
 }

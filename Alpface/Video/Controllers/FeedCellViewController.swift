@@ -11,20 +11,29 @@ import UIKit
 @objc(ALPFeedCellViewController)
 class FeedCellViewController: UIViewController {
     
-    public var videoItem: VideoItem? {
+    fileprivate var observerSet: Set<String> = Set()
+    
+    public var model: PlayVideoCellModel? {
         didSet {
-            guard let url = videoItem?.getVideoURL() else { return }
-            playVideoVc.playerBack(url: url)
-            interactionController.videoItem = videoItem
+            guard let m = model else {
+                return
+            }
+            if let videoItem = m.model as? VideoItem {
+                guard let url = videoItem.getVideoURL() else { return }
+                interactionController.videoItem = videoItem
+                playVideoVc.playerBack(url: url)
+            }
+            m.playCallBack = { [weak self] (isPlay: Bool) in
+                if isPlay {
+                    self?.playVideoVc.autoPlay()
+                }
+                else {
+                    self?.playVideoVc.pause(autoPlay: true)
+                }
+            }
         }
     }
     
-    public var url: URL? {
-        didSet {
-            guard let url = self.url else { return }
-            playVideoVc.playerBack(url: url)
-        }
-    }
     /// 播放视频控制器
     public lazy var playVideoVc: PlayVideoViewController = {
         let playVideoVc = PlayVideoViewController()
@@ -80,22 +89,7 @@ class FeedCellViewController: UIViewController {
         interactionController.view.topAnchor.constraint(equalTo: playVideoVc.view.topAnchor).isActive = true
         
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-       
-    }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+
+
