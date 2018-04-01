@@ -244,6 +244,7 @@ class PlayVideoViewController: UIViewController {
     
     /// 暂停播放
     open func pause(autoPlay auto: Bool = false) {
+        // 防止用户触发暂停后，又因不符合播放而暂停，导致无法区分真正暂停的原因
         if self.state == .paused {
             return
         }

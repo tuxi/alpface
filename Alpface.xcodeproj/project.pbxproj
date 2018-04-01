@@ -55,6 +55,9 @@
 		D2A2C77C206955FE003CEB97 /* HitTestScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C77B206955FE003CEB97 /* HitTestScrollView.swift */; };
 		D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BC720710F6200CB0DC2 /* OSProgressView.swift */; };
 		D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BC820710F6200CB0DC2 /* UINavigationController+OSProgressBar.swift */; };
+		D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */; };
+		D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */; };
+		D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */; };
 		D2BCBA43206F33F2008409B3 /* FeedCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA36206F33F1008409B3 /* FeedCellViewController.swift */; };
 		D2BCBA44206F33F2008409B3 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA37206F33F1008409B3 /* MainFeedViewController.swift */; };
 		D2BCBA45206F33F2008409B3 /* PlayInteractionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA38206F33F1008409B3 /* PlayInteractionViewController.swift */; };
@@ -127,6 +130,9 @@
 		D2A2C77B206955FE003CEB97 /* HitTestScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTestScrollView.swift; sourceTree = "<group>"; };
 		D2A59BC720710F6200CB0DC2 /* OSProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSProgressView.swift; sourceTree = "<group>"; };
 		D2A59BC820710F6200CB0DC2 /* UINavigationController+OSProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+OSProgressBar.swift"; sourceTree = "<group>"; };
+		D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoDetailView.swift; sourceTree = "<group>"; };
+		D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoButton.swift; sourceTree = "<group>"; };
+		D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DOFavoriteButton.swift; sourceTree = "<group>"; };
 		D2BCBA36206F33F1008409B3 /* FeedCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCellViewController.swift; sourceTree = "<group>"; };
 		D2BCBA37206F33F1008409B3 /* MainFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
 		D2BCBA38206F33F1008409B3 /* PlayInteractionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayInteractionViewController.swift; sourceTree = "<group>"; };
@@ -308,6 +314,7 @@
 		D26AD444206690B40047DC15 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				D2A59BCF207125AE00CB0DC2 /* DOFavoriteButton */,
 				D2A59BC620710F6200CB0DC2 /* ProgreeBar */,
 				D26AD47920672E120047DC15 /* TransitionButton */,
 				D26AD445206690E60047DC15 /* Pastel */,
@@ -432,6 +439,14 @@
 			path = ProgreeBar;
 			sourceTree = "<group>";
 		};
+		D2A59BCF207125AE00CB0DC2 /* DOFavoriteButton */ = {
+			isa = PBXGroup;
+			children = (
+				D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */,
+			);
+			path = DOFavoriteButton;
+			sourceTree = "<group>";
+		};
 		D2BCBA35206F33F1008409B3 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -463,6 +478,8 @@
 				D2BCBA40206F33F1008409B3 /* MainFeedViewCell.swift */,
 				D2BCBA41206F33F1008409B3 /* ScrollingContainerCell.swift */,
 				D2BCBA42206F33F1008409B3 /* VideoPlayerView.swift */,
+				D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */,
+				D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -614,6 +631,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */,
+				D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */,
 				D26AD485206733030047DC15 /* UIImage+Extension.swift in Sources */,
 				D26AD47F20672E120047DC15 /* FadeTransition.swift in Sources */,
 				D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */,
@@ -636,6 +654,7 @@
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
 				D2A2C7722069553E003CEB97 /* ProfileViewController.swift in Sources */,
+				D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */,
 				D2BCBA47206F33F2008409B3 /* BaseCellModel.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
 				D2BCBA53206FA737008409B3 /* VideoRatingItem.swift in Sources */,
@@ -649,6 +668,7 @@
 				D26AD4872067334E0047DC15 /* UIButton+Attributes.swift in Sources */,
 				D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D2BCBA46206F33F2008409B3 /* PlayVideoViewController.swift in Sources */,
+				D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */,
 				D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */,
 				D2BCBA4A206F33F2008409B3 /* ListCollectionView.swift in Sources */,
 				D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */,
