@@ -32,13 +32,13 @@ class PlayInteractionViewController: UIViewController {
         playStatusButton.alpha = ALPplayStatusButtonAlpha
         return playStatusButton
     }()
-    /// 播放进度
-    fileprivate var progress: UIProgressView = {
-        let progress = UIProgressView(frame: .zero)
-        progress.translatesAutoresizingMaskIntoConstraints = false
-        progress.progressTintColor = UIColor.blue
-        progress.trackTintColor = UIColor.red
-        return progress
+    /// 播放进度: 当视频超过3分钟时才显示进度条，如果视频太短，进度条显示效果不是很好
+    fileprivate var progressView: OSProgressView = {
+        let progressView = OSProgressView(frame: .zero)
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.progressTintColor = UIColor.white
+        progressView.trackTintColor = UIColor.lightGray.withAlphaComponent(0.6)
+        return progressView
     }()
     
     /// 加载指示器
@@ -130,7 +130,7 @@ extension PlayInteractionViewController {
 extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
     /// 播放进度改变时调用
     func playVideoViewController(didChangePlayerProgress player:PlayVideoViewController, time: String, progress: Float) -> Void {
-        self.progress.progress = progress
+        self.progressView.progress = CGFloat(progress)
     }
     /// 缓冲进度改变时调用
     func playVideoViewController(didChangebufferedProgress player:PlayVideoViewController, loadedTime: Double, bufferedProgress: Float) -> Void {
@@ -165,7 +165,7 @@ extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
     /// 播放完毕时调用
     func playVideoViewController(didPlayToEnd player: PlayVideoViewController) -> Void {
         // 播放完毕，重置进度
-        progress.progress = 0.0
+        progressView.progress = 0.0
     }
 }
 
@@ -178,11 +178,11 @@ extension PlayInteractionViewController {
         playStatusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         playStatusButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
-        view.addSubview(progress)
-        progress.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10.0).isActive = true
-        progress.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10.0).isActive = true
-        progress.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0).isActive = true
-        
+        view.addSubview(progressView)
+        progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10.0).isActive = true
+        progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10.0).isActive = true
+        progressView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0).isActive = true
+        progressView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         view.addSubview(timeLabel)
         timeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20.0).isActive = true

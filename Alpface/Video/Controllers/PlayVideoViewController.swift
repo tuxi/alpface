@@ -244,6 +244,9 @@ class PlayVideoViewController: UIViewController {
     
     /// 暂停播放
     open func pause(autoPlay auto: Bool = false) {
+        if self.state == .paused {
+            return
+        }
         removeObserver(playerItem: playerItem)
         player?.pause()
         state = .paused
