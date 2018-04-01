@@ -10,7 +10,7 @@ import UIKit
 
 class MainFeedViewCell: UICollectionViewCell {
     
-    public var model: PlayVideoCellModel? {
+    public var model: PlayVideoModel? {
         didSet {
             viewController.model = model
         }

@@ -16,8 +16,8 @@ class MainFeedViewController: UIViewController {
         return refresher
     }()
     
-    fileprivate lazy var videoItems: [PlayVideoCellModel] = {
-        let items = [PlayVideoCellModel]()
+    fileprivate lazy var videoItems: [PlayVideoModel] = {
+        let items = [PlayVideoModel]()
         return items
     }()
     
@@ -45,9 +45,9 @@ class MainFeedViewController: UIViewController {
         return nil
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         setupUI()
         requestRandomVideos()
@@ -56,6 +56,17 @@ class MainFeedViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         displayViewController()?.beginAppearanceTransition(true, animated: animated)
+        // 所有model停止播放
+        for videoItem in videoItems {
+            videoItem.isAllowPlay = false
+        }
+        guard let vidbleIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
+        if vidbleIndexPath.row >= videoItems.count {
+            return
+        }
+        // 取出当前显示的model,继续播放
+        let model = videoItems[vidbleIndexPath.row]
+        model.isAllowPlay = true
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -65,11 +76,20 @@ class MainFeedViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         displayViewController()?.beginAppearanceTransition(false, animated: true)
+        // 所有model停止播放
+        for videoItem in videoItems {
+            videoItem.isAllowPlay = false
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
        super.viewDidDisappear(animated)
         displayViewController()?.endAppearanceTransition()
+        // 所有model停止播放
+        for videoItem in videoItems {
+            videoItem.isAllowPlay = false
+        }
+        
     }
     
     fileprivate func setupUI() {
@@ -123,20 +143,26 @@ extension MainFeedViewController {
                 #if DEBUG
                     self?.videoItems.removeAll()
                     let videoItem = VideoItem()
-                    let cellModel = PlayVideoCellModel(videoItem: videoItem)
+                    let cellModel = PlayVideoModel(videoItem: videoItem)
                     self?.videoItems.append(cellModel)
                     self?.collectionView.reloadData()
+                    DispatchQueue.main.async {
+                        self?.collectionView(didEndScroll: (self?.collectionView)!)
+                    }
                 #endif
                 return
             }
             self?.videoItems.removeAll()
-            var array : [PlayVideoCellModel] = [PlayVideoCellModel]()
+            var array : [PlayVideoModel] = [PlayVideoModel]()
             for video in list {
-                let cellModel = PlayVideoCellModel(videoItem: video)
+                let cellModel = PlayVideoModel(videoItem: video)
                 array.append(cellModel)
             }
             self?.videoItems += array
             self?.collectionView.reloadData()
+            DispatchQueue.main.async {
+                self?.collectionView(didEndScroll: (self?.collectionView)!)
+            }
         }) { (error) in
             print(error?.localizedDescription ?? "请求随机视频失败!")
         }
@@ -188,39 +214,64 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
     
     /// cell 完全离开屏幕后调用
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let didEndDisplayingCell = cell as? MainFeedViewCell else {
-            return
-        }
-        /// 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
-        didEndDisplayingCell.viewController.beginAppearanceTransition(false, animated: true)
-        didEndDisplayingCell.viewController.endAppearanceTransition()
+       
         
         // 暂停播放
         let model = videoItems[indexPath.row]
-        model.isPlay = false
+        model.isAllowPlay = false
     }
     
     /// cell 即将显示在屏幕时调用
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let didEndDisplayingCell = cell as? MainFeedViewCell else {
-            return
-        }
-        didEndDisplayingCell.viewController.beginAppearanceTransition(true, animated: true)
-        didEndDisplayingCell.viewController.endAppearanceTransition()
-        
-        // 继续播放
-        let model = videoItems[indexPath.row]
-        model.isPlay = true
+       
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView != collectionView {
+            return
+        }
+        self.collectionView(didEndScroll: scrollView as! UICollectionView)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate == false {
+            if scrollView != collectionView {
+                return
+            }
+            self.collectionView(didEndScroll: scrollView as! UICollectionView)
+        }
+    }
+    
+    fileprivate func collectionView(didEndScroll collectionView: UICollectionView) {
+        
+        let row = Int(ceil(collectionView.contentOffset.y / collectionView.frame.height))
+        let indexPath = IndexPath(item: row, section: 0)
+        let cell = self.collectionView.cellForItem(at: indexPath) as? MainFeedViewCell
+        self.collectionView(self.collectionView, didDisplay: cell, forItemAt: indexPath)
+    }
+    
+    /// collectionView cell 完全显示后回调
+    fileprivate func collectionView(_ collectionView: UICollectionView, didDisplay cell: MainFeedViewCell?, forItemAt indexPath: IndexPath) {
+        if indexPath.row >= videoItems.count {
+            return
+        }
+        
+        // 所有model停止播放
+        for videoItem in videoItems {
+            videoItem.isAllowPlay = false
+        }
+        
+        // 取出当前显示的model,继续播放
+        let model = videoItems[indexPath.row]
+        model.isAllowPlay = true
+    }
 }
 
 extension MainFeedViewController {
     
     /// 关闭appearance callbacks的自动传递的特性呢
-    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
-        return false
-    }
-    
+//    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
+//        return false
+//    }
     
 }

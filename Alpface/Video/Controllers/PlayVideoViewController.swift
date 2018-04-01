@@ -58,6 +58,12 @@ class PlayVideoViewController: UIViewController {
     /// 是否在播放完成后自动播放
     open var shouldAutoPlayWhenPlaybackFinished = true
     
+//    fileprivate var videoModel: PlayVideoModel? {
+//        didSet {
+//            self.playerBack(url: <#T##URL#>)
+//        }
+//    }
+    
     /// 播放的url
     fileprivate var url : URL?
     /// 视频缓冲的进度
@@ -78,13 +84,6 @@ class PlayVideoViewController: UIViewController {
         return containerView
     }()
     
-    /// 加载指示器
-    fileprivate lazy var indicator : UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        return indicator
-    }()
-    
     /// 播放器对象
     var player: AVPlayer?
     /// 播放资源对象
@@ -102,7 +101,6 @@ class PlayVideoViewController: UIViewController {
     fileprivate var timeObserver: Any?
     fileprivate var isViewDidLoad: Bool = false
     fileprivate var playInViewDidLoad: Bool = false
-    fileprivate var isViewDisappear: Bool = true
     
     /// 添加AVPlayerItem的监听集合，防止KVO crash
     fileprivate var observerSet: Set<String> = Set()
@@ -111,35 +109,22 @@ class PlayVideoViewController: UIViewController {
         super.viewDidLoad()
         isViewDidLoad = true
         setupUI()
-        if (playInViewDidLoad == true) {
-            playInViewDidLoad = false
-            playerBack(url: self.url!)
-        }
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(applicationDidEnterBackground),
-                                               name: NSNotification.Name.UIApplicationDidEnterBackground,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(applicationWillEnterForeground),
-                                               name: NSNotification.Name.UIApplicationWillEnterForeground,
-                                               object: nil)
     }
-    override func viewDidAppear(_ animated: Bool) {
-         super.viewDidAppear(animated)
-        isViewDisappear = false
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        autoPlay()
-    }
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        isViewDisappear = true
-        pause(autoPlay: true)
-    }
-    
+//    override func viewDidAppear(_ animated: Bool) {
+//         super.viewDidAppear(animated)
+//        autoPlay()
+//    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        isViewDisappear = true
+//        pause(autoPlay: true)
+//    }
+//
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -154,51 +139,7 @@ class PlayVideoViewController: UIViewController {
         containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         containerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        
-        containerView.addSubview(indicator)
-        indicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        indicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        
-    }
-    
-    // MARK: - Observer
-    
-    @objc func applicationWillEnterForeground() {
-        autoPlay()
-    }
-    
-    @objc func applicationDidEnterBackground() {
-        pause(autoPlay: true)
-    }
-    
-    
-    /// 通过KVO监控播放器状态
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard let playerItem = object as? AVPlayerItem  else { return }
-        guard let keyPath = keyPath else { return }
-        if keyPath == "status" {
-            if playerItem.status == .readyToPlay { //当资源准备好播放，那么开始播放视频
-                preparePlayback()
-                print("即将开始播放...，视频总长度:\(formatPlayTime(seconds: CMTimeGetSeconds(playerItem.duration)))")
-            }
-            else if playerItem.status == .failed || playerItem.status == .unknown {
-                state = .failure
-            }
-        }
-        else if keyPath == "loadedTimeRanges" {
-            let loadedTime = avalableDurationWithplayerItem(playerItem)
-            print("当前加载进度\(loadedTime)")
-        }
-        else if keyPath == "playbackBufferEmpty" && playerItem.isPlaybackBufferEmpty {    //监听播放器在缓冲数据的状态
-            state = .buffering
-            indicator.startAnimating()
-            indicator.isHidden = false
-            pause()
-        } else if keyPath == "playbackLikelyToKeepUp" {
-            // 缓存足够了，可以播放
-            indicator.stopAnimating()
-            indicator.isHidden = true
-        }
+
     }
     
     /// 将秒转成时间字符串的方法，因为我们将得到秒。
@@ -209,7 +150,7 @@ class PlayVideoViewController: UIViewController {
     }
     
     /// 计算当前的缓冲进度
-    fileprivate func avalableDurationWithplayerItem(_ playerItem: AVPlayerItem?)->TimeInterval{
+    fileprivate func calculateDownloadProgress(_ playerItem: AVPlayerItem?)-> Float {
         guard let loadedTimeRanges = playerItem?.loadedTimeRanges, let first = loadedTimeRanges.first else {fatalError()}
         // 本次缓冲时间范围
         let timeRange = first.timeRangeValue
@@ -224,7 +165,7 @@ class PlayVideoViewController: UIViewController {
                 delegate.playVideoViewController!(didChangebufferedProgress: self, loadedTime: timeInterval, bufferedProgress: bufferedProgress)
             }
         }
-        return timeInterval
+        return bufferedProgress
     }
     
     /// 播放结束，回到最开始位置，播放按钮显示带播放图标
@@ -244,16 +185,15 @@ class PlayVideoViewController: UIViewController {
     }
     
     // MARK: - Play Control
-    
-    /// 播放一个url
-    open func playerBack(url: URL) {
+    /// 准备播放一个资源，会请求此资源，但不会立即播放，如要播放需执行play()
+    open func preparePlayback(url: URL) {
         self.url = url
         let playerItem = AVPlayerItem(url: url as URL)
-        playerBack(playerItem: playerItem)
+        preparePlayback(playerItem: playerItem)
     }
     
-    /// 播放一个AVPlayerItem对象
-    open func playerBack(playerItem: AVPlayerItem) {
+    /// 准备播放一个AVPlayerItem资源
+    open func preparePlayback(playerItem: AVPlayerItem) {
         self.playerItem = playerItem
         if isViewDidLoad == false {
             playInViewDidLoad = true
@@ -271,21 +211,13 @@ class PlayVideoViewController: UIViewController {
             player = AVPlayer(playerItem: playerItem)
             playerLayer.player = player
         }
-        self.play()
-    }
-    
-    /// 准备播放
-    fileprivate func preparePlayback() {
-        // 视频总时间
-        totalDuration = Float(Float64(playerItem!.duration.value) / Float64(playerItem!.duration.timescale))
-//        let totalDurationString = formatPlayTime(seconds: totalDuration)
-        play()
+        state = .buffering
     }
     
     /// 自动播放, 当非用户暂停时，或者播放完成后的自动播放
     open func autoPlay() {
         if !isPauseByUser && url != nil {
-            if (state == .buffering || state == .playing) && (shouldAutoPlayWhenPlaybackFinished == false || isViewDisappear == true) {
+            if (state == .buffering || state == .playing) && (shouldAutoPlayWhenPlaybackFinished == false) {
                 return
             }
             play()
@@ -295,14 +227,11 @@ class PlayVideoViewController: UIViewController {
     /// 开始播放
     open func play() {
         if player == nil {
-            indicator.startAnimating()
-            indicator.isHidden = false
             guard let url = url else { return }
-            playerBack(url: url)
+            preparePlayback(url: url)
         }
         removeObserver(playerItem: playerItem)
         addObserver()
-        addPlayProgressObserver()
         state = .playing
         player?.play()
         isPauseByUser = false
@@ -316,8 +245,6 @@ class PlayVideoViewController: UIViewController {
     /// 暂停播放
     open func pause(autoPlay auto: Bool = false) {
         removeObserver(playerItem: playerItem)
-        indicator.stopAnimating()
-        indicator.isHidden = true
         player?.pause()
         state = .paused
         isPauseByUser = !auto
@@ -357,19 +284,19 @@ extension PlayVideoViewController {
     fileprivate func removeObserver(playerItem item: AVPlayerItem?) {
         guard let playerItem = item else { return }
         if observerSet.contains(ALPLoadedTimeRangesKeyPath) == true {
-            playerItem.removeObserver(self, forKeyPath: "loadedTimeRanges")
+            playerItem.removeObserver(self, forKeyPath: ALPLoadedTimeRangesKeyPath)
             observerSet.remove(ALPLoadedTimeRangesKeyPath)
         }
         if observerSet.contains(ALPPlaybackBufferEmptyKeyPath) == true {
-            playerItem.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+            playerItem.removeObserver(self, forKeyPath: ALPPlaybackBufferEmptyKeyPath)
             observerSet.remove(ALPPlaybackBufferEmptyKeyPath)
         }
         if observerSet.contains(ALPPlaybackLikelyToKeepUpKeyPath) == true {
-            playerItem.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+            playerItem.removeObserver(self, forKeyPath: ALPPlaybackLikelyToKeepUpKeyPath)
             observerSet.remove(ALPPlaybackLikelyToKeepUpKeyPath)
         }
         if observerSet.contains(ALPStatusKeyPath) == true {
-            playerItem.removeObserver(self, forKeyPath: "status")
+            playerItem.removeObserver(self, forKeyPath: ALPStatusKeyPath)
             observerSet.remove(ALPStatusKeyPath)
         }
         if let timeObserver = timeObserver {
@@ -377,6 +304,9 @@ extension PlayVideoViewController {
         }
         timeObserver = nil
         NotificationCenter.default.removeObserver(self, name:  Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemPlaybackStalled, object: nil)
     }
     
     /// 给AVPlayerItem、AVPlayer添加监控
@@ -386,23 +316,37 @@ extension PlayVideoViewController {
         }
         if observerSet.contains(ALPStatusKeyPath) == false {
             // 为AVPlayerItem添加status属性观察，得到资源准备好，开始播放视频
-            playerItem.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+            playerItem.addObserver(self, forKeyPath: ALPStatusKeyPath, options: .new, context: nil)
             observerSet.insert(ALPStatusKeyPath)
         }
         if observerSet.contains(ALPLoadedTimeRangesKeyPath) == false  {
             // 监听AVPlayerItem的loadedTimeRanges属性来监听缓冲进度更新
-            playerItem.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
+            playerItem.addObserver(self, forKeyPath: ALPLoadedTimeRangesKeyPath, options: .new, context: nil)
             observerSet.insert(ALPLoadedTimeRangesKeyPath)
         }
         if observerSet.contains(ALPPlaybackBufferEmptyKeyPath) == false {
-            playerItem.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+            playerItem.addObserver(self, forKeyPath: ALPPlaybackBufferEmptyKeyPath, options: .new, context: nil)
             observerSet.insert(ALPPlaybackBufferEmptyKeyPath)
         }
         if observerSet.contains(ALPPlaybackLikelyToKeepUpKeyPath) == false {
-            playerItem.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+            playerItem.addObserver(self, forKeyPath: ALPPlaybackLikelyToKeepUpKeyPath, options: .new, context: nil)
             observerSet.insert(ALPPlaybackLikelyToKeepUpKeyPath)
         }
+        addPlayProgressObserver()
         NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationDidEnterBackground),
+                                               name: NSNotification.Name.UIApplicationDidEnterBackground,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationWillEnterForeground),
+                                               name: NSNotification.Name.UIApplicationWillEnterForeground,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(playerItemPlaybackStalled(notification:)),
+                                               name: NSNotification.Name.AVPlayerItemPlaybackStalled,
+                                               object: nil)
         
     }
     
@@ -416,6 +360,9 @@ extension PlayVideoViewController {
             //CMTimeGetSeconds函数是将CMTime转换为秒，如果CMTime无效，将返回NaN
             let currentTime = CMTimeGetSeconds(time)
             let totalTime = CMTimeGetSeconds(self!.playerItem!.duration)
+            if (self?.isPauseByUser == false) {
+                self?.state = .playing;
+            }
             // 更新显示的时间和进度条
             let timeStr = self!.formatPlayTime(seconds: CMTimeGetSeconds(time))
             let playProgress = Float(currentTime/totalTime)
@@ -425,7 +372,56 @@ extension PlayVideoViewController {
                 }
             }
             
-            print("当前已经播放\(self!.formatPlayTime(seconds: CMTimeGetSeconds(time)))")
+            print("当前播放进度\(self!.formatPlayTime(seconds: CMTimeGetSeconds(time)))")
         }
     }
+    
+    
+    // MARK: - Observer
+    
+    @objc fileprivate func applicationWillEnterForeground() {
+        autoPlay()
+    }
+    
+    @objc fileprivate func applicationDidEnterBackground() {
+        pause(autoPlay: true)
+    }
+    
+    @objc fileprivate func playerItemPlaybackStalled(notification: Notification) {
+        // 这里网络不好的时候，就会进入，不做处理，会在playbackBufferEmpty里面缓存之后重新播放
+    
+    }
+    
+    /// 通过KVO监控播放器状态
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let playerItem = object as? AVPlayerItem  else { return }
+        guard let keyPath = keyPath else { return }
+        if keyPath == "status" {
+            if playerItem.status == .readyToPlay { //当资源准备好播放，那么开始播放视频
+                // 视频总时间
+                totalDuration = Float(Float64(playerItem.duration.value) / Float64(playerItem.duration.timescale))
+                //        let totalDurationString = formatPlayTime(seconds: totalDuration)
+                print("准备播放中...，视频总长度:\(formatPlayTime(seconds: CMTimeGetSeconds(playerItem.duration)))")
+            }
+            else if playerItem.status == .failed || playerItem.status == .unknown {
+                state = .failure
+            }
+        }
+        else if keyPath == "loadedTimeRanges" {
+            _  = calculateDownloadProgress(playerItem)
+            print("当前加载进度\(bufferedProgress)")
+        }
+        else if keyPath == "playbackBufferEmpty" {
+            // 监听播放器在缓冲数据的状态
+            state = .buffering
+            if playerItem.isPlaybackBufferEmpty {
+                pause()
+            }
+        } else if keyPath == "playbackLikelyToKeepUp" {
+            // 缓存足够了，可以播放
+            state = .playing
+        }
+    }
+  
+    
 }
