@@ -72,7 +72,7 @@ class MainFeedViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayViewController()?.endAppearanceTransition()
-        
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -91,7 +91,6 @@ class MainFeedViewController: UIViewController {
         for videoItem in videoItems {
             videoItem.isAllowPlay = false
         }
-        
     }
     
     fileprivate func setupUI() {
@@ -121,6 +120,7 @@ class MainFeedViewController: UIViewController {
         
         // 设置导航栏阴影图片
         navigationController?.navigationBar.shadowImage = UIImage()
+        
     
     }
     
