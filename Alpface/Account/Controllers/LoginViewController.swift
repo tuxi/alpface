@@ -53,6 +53,7 @@ class LoginViewController: UIViewController {
     fileprivate lazy var passwordTf : UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.isSecureTextEntry = true
         tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
         return tf
     }()
@@ -205,7 +206,7 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setupUI()
         createObserver()
@@ -214,6 +215,8 @@ class LoginViewController: UIViewController {
         registerButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
         usernameTf.becomeFirstResponder()
     }
+    
+    
     
     fileprivate func setupUI() {
         view.backgroundColor = UIColor.clear
@@ -321,6 +324,11 @@ class LoginViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         pastelView.startAnimation()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
