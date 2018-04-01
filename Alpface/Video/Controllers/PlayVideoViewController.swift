@@ -102,6 +102,7 @@ class PlayVideoViewController: UIViewController {
     fileprivate var timeObserver: Any?
     fileprivate var isViewDidLoad: Bool = false
     fileprivate var playInViewDidLoad: Bool = false
+    fileprivate var isViewDisappear: Bool = true
     
     /// 添加AVPlayerItem的监听集合，防止KVO crash
     fileprivate var observerSet: Set<String> = Set()
@@ -127,6 +128,7 @@ class PlayVideoViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
+        isViewDisappear = false
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -134,6 +136,7 @@ class PlayVideoViewController: UIViewController {
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        isViewDisappear = true
         pause(autoPlay: true)
     }
     
@@ -169,38 +172,14 @@ class PlayVideoViewController: UIViewController {
     }
     
     
-    /// 给播放器添加播放进度更新
-    func addPlayProgressObserver(){
-        if let timeObserver = timeObserver {
-            player?.removeTimeObserver(timeObserver)
-        }
-        // 这里设置每秒执行一次.
-        timeObserver =  player?.addPeriodicTimeObserver(forInterval: CMTimeMake(Int64(1.0), Int32(1.0)), queue: DispatchQueue.main) { [weak self](time: CMTime) in
-            //CMTimeGetSeconds函数是将CMTime转换为秒，如果CMTime无效，将返回NaN
-            let currentTime = CMTimeGetSeconds(time)
-            let totalTime = CMTimeGetSeconds(self!.playerItem!.duration)
-            // 更新显示的时间和进度条
-            let timeStr = self!.formatPlayTime(seconds: CMTimeGetSeconds(time))
-            let playProgress = Float(currentTime/totalTime)
-            if let delegate = self?.delegate {
-                if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didChangePlayerProgress:time:progress:))) {
-                    delegate.playVideoViewController!(didChangePlayerProgress: self!, time: timeStr, progress: playProgress)
-                }
-            }
-            
-            print("当前已经播放\(self!.formatPlayTime(seconds: CMTimeGetSeconds(time)))")
-        }
-    }
-    
-    
     /// 通过KVO监控播放器状态
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard let playerItem = object as? AVPlayerItem  else { return }
         guard let keyPath = keyPath else { return }
-        if keyPath == "status"{
+        if keyPath == "status" {
             if playerItem.status == .readyToPlay { //当资源准备好播放，那么开始播放视频
                 preparePlayback()
-                print("正在播放...，视频总长度:\(formatPlayTime(seconds: CMTimeGetSeconds(playerItem.duration)))")
+                print("即将开始播放...，视频总长度:\(formatPlayTime(seconds: CMTimeGetSeconds(playerItem.duration)))")
             }
             else if playerItem.status == .failed || playerItem.status == .unknown {
                 state = .failure
@@ -223,14 +202,14 @@ class PlayVideoViewController: UIViewController {
     }
     
     /// 将秒转成时间字符串的方法，因为我们将得到秒。
-    func formatPlayTime(seconds: Float64)->String{
+    fileprivate func formatPlayTime(seconds: Float64)->String{
         let min = Int(seconds / 60)
         let sec = Int(seconds.truncatingRemainder(dividingBy: 60))
         return String(format: "%02d:%02d", min, sec)
     }
     
     /// 计算当前的缓冲进度
-    func avalableDurationWithplayerItem(_ playerItem: AVPlayerItem?)->TimeInterval{
+    fileprivate func avalableDurationWithplayerItem(_ playerItem: AVPlayerItem?)->TimeInterval{
         guard let loadedTimeRanges = playerItem?.loadedTimeRanges, let first = loadedTimeRanges.first else {fatalError()}
         // 本次缓冲时间范围
         let timeRange = first.timeRangeValue
@@ -268,10 +247,6 @@ class PlayVideoViewController: UIViewController {
     
     /// 播放一个url
     open func playerBack(url: URL) {
-        //获取本地视频资源
-//        guard let path = Bundle.main.path(forResource: "test", ofType: "mov") else {
-//            return
-//        }
         self.url = url
         let playerItem = AVPlayerItem(url: url as URL)
         playerBack(playerItem: playerItem)
@@ -310,7 +285,7 @@ class PlayVideoViewController: UIViewController {
     /// 自动播放, 当非用户暂停时，或者播放完成后的自动播放
     open func autoPlay() {
         if !isPauseByUser && url != nil {
-            if (state == .buffering || state == .playing) && shouldAutoPlayWhenPlaybackFinished == false {
+            if (state == .buffering || state == .playing) && (shouldAutoPlayWhenPlaybackFinished == false || isViewDisappear == true) {
                 return
             }
             play()
@@ -368,8 +343,18 @@ class PlayVideoViewController: UIViewController {
         state = .stopped
     }
     
+    deinit {
+        releasePlayer()
+        player?.replaceCurrentItem(with: nil)
+        player = nil
+        playerItem = nil
+    }
+    
+}
+
+extension PlayVideoViewController {
     /// 移除观察者
-    func removeObserver(playerItem item: AVPlayerItem?) {
+    fileprivate func removeObserver(playerItem item: AVPlayerItem?) {
         guard let playerItem = item else { return }
         if observerSet.contains(ALPLoadedTimeRangesKeyPath) == true {
             playerItem.removeObserver(self, forKeyPath: "loadedTimeRanges")
@@ -395,7 +380,7 @@ class PlayVideoViewController: UIViewController {
     }
     
     /// 给AVPlayerItem、AVPlayer添加监控
-    func addObserver(){
+    fileprivate func addObserver(){
         guard let playerItem = playerItem else {
             return
         }
@@ -420,11 +405,27 @@ class PlayVideoViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
         
     }
-    deinit {
-        releasePlayer()
-        player?.replaceCurrentItem(with: nil)
-        player = nil
-        playerItem = nil
-    }
     
+    /// 给播放器添加播放进度更新
+    fileprivate func addPlayProgressObserver() {
+        if let timeObserver = timeObserver {
+            player?.removeTimeObserver(timeObserver)
+        }
+        // 这里设置每秒执行一次.
+        timeObserver =  player?.addPeriodicTimeObserver(forInterval: CMTimeMake(Int64(1.0), Int32(1.0)), queue: DispatchQueue.main) { [weak self](time: CMTime) in
+            //CMTimeGetSeconds函数是将CMTime转换为秒，如果CMTime无效，将返回NaN
+            let currentTime = CMTimeGetSeconds(time)
+            let totalTime = CMTimeGetSeconds(self!.playerItem!.duration)
+            // 更新显示的时间和进度条
+            let timeStr = self!.formatPlayTime(seconds: CMTimeGetSeconds(time))
+            let playProgress = Float(currentTime/totalTime)
+            if let delegate = self?.delegate {
+                if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didChangePlayerProgress:time:progress:))) {
+                    delegate.playVideoViewController!(didChangePlayerProgress: self!, time: timeStr, progress: playProgress)
+                }
+            }
+            
+            print("当前已经播放\(self!.formatPlayTime(seconds: CMTimeGetSeconds(time)))")
+        }
+    }
 }

@@ -16,8 +16,8 @@ class MainFeedViewController: UIViewController {
         return refresher
     }()
     
-    fileprivate lazy var videoItems: [VideoItem] = {
-        let items = [VideoItem]()
+    fileprivate lazy var videoItems: [PlayVideoCellModel] = {
+        let items = [PlayVideoCellModel]()
         return items
     }()
     
@@ -123,13 +123,19 @@ extension MainFeedViewController {
                 #if DEBUG
                     self?.videoItems.removeAll()
                     let videoItem = VideoItem()
-                    self?.videoItems.append(videoItem)
+                    let cellModel = PlayVideoCellModel(videoItem: videoItem)
+                    self?.videoItems.append(cellModel)
                     self?.collectionView.reloadData()
                 #endif
                 return
             }
             self?.videoItems.removeAll()
-            self?.videoItems += list
+            var array : [PlayVideoCellModel] = [PlayVideoCellModel]()
+            for video in list {
+                let cellModel = PlayVideoCellModel(videoItem: video)
+                array.append(cellModel)
+            }
+            self?.videoItems += array
             self?.collectionView.reloadData()
         }) { (error) in
             print(error?.localizedDescription ?? "请求随机视频失败!")
@@ -168,11 +174,9 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         
-        let video = videoItems[indexPath.row]
-//        let url = URL.init(string: "http://10.211.55.3:8888/media/media_itemstest_6yHn4hk.mov")
-//        cell.url = url
-        cell.videoItem = video
-        cell.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
+        let model = videoItems[indexPath.row]
+        cell.model = model
+        cell.contentView.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
         
         return cell
     }
@@ -190,6 +194,10 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         /// 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
         didEndDisplayingCell.viewController.beginAppearanceTransition(false, animated: true)
         didEndDisplayingCell.viewController.endAppearanceTransition()
+        
+        // 暂停播放
+        let model = videoItems[indexPath.row]
+        model.isPlay = false
     }
     
     /// cell 即将显示在屏幕时调用
@@ -199,6 +207,10 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         }
         didEndDisplayingCell.viewController.beginAppearanceTransition(true, animated: true)
         didEndDisplayingCell.viewController.endAppearanceTransition()
+        
+        // 继续播放
+        let model = videoItems[indexPath.row]
+        model.isPlay = true
     }
     
 }
