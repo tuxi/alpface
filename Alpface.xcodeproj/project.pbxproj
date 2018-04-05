@@ -34,7 +34,6 @@
 		D26AD456206690E60047DC15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D26AD44E206690E60047DC15 /* Info.plist */; };
 		D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD45C2066A9C30047DC15 /* ExploreViewController.swift */; };
 		D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD45F2066BAF40047DC15 /* LoginViewController.swift */; };
-		D26AD4632066BAF40047DC15 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */; };
 		D26AD4652066BB180047DC15 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4642066BB180047DC15 /* User.swift */; };
 		D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD466206729D60047DC15 /* AuthenticationManager.swift */; };
 		D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD47A20672E120047DC15 /* CustomTransitionViewController.swift */; };
@@ -46,13 +45,14 @@
 		D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD488206735CD0047DC15 /* UIView+Attributes.swift */; };
 		D26AD4952067779F0047DC15 /* HttpRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */; };
 		D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD49820677C5C0047DC15 /* ALPConstans.swift */; };
-		D2A2C75720693521003CEB97 /* HitTestScrollViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C75620693521003CEB97 /* HitTestScrollViewCell.swift */; };
-		D2A2C7722069553E003CEB97 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C7712069553E003CEB97 /* ProfileViewController.swift */; };
-		D2A2C7742069556A003CEB97 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C7732069556A003CEB97 /* ProfileHeaderView.swift */; };
-		D2A2C776206955AC003CEB97 /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2A2C775206955AC003CEB97 /* ProfileHeaderView.xib */; };
-		D2A2C778206955C9003CEB97 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C777206955C9003CEB97 /* RoundButton.swift */; };
-		D2A2C77A206955E3003CEB97 /* ProfileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C779206955E3003CEB97 /* ProfileIconView.swift */; };
-		D2A2C77C206955FE003CEB97 /* HitTestScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2C77B206955FE003CEB97 /* HitTestScrollView.swift */; };
+		D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289535E2076A4EE0029CE92 /* ProfileHeaderView.swift */; };
+		D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289535F2076A4EE0029CE92 /* ScrollableSegmentedControl.swift */; };
+		D28953662076A4EE0029CE92 /* HitTestContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28953602076A4EE0029CE92 /* HitTestContainerViewController.swift */; };
+		D28953672076A4EE0029CE92 /* HitTestScrollViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28953612076A4EE0029CE92 /* HitTestScrollViewCell.swift */; };
+		D28953682076A4EE0029CE92 /* BaseProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28953622076A4EE0029CE92 /* BaseProfileViewController.swift */; };
+		D28953692076A4EE0029CE92 /* HitTestScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28953632076A4EE0029CE92 /* HitTestScrollView.swift */; };
+		D289536B2076A5480029CE92 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289536A2076A5480029CE92 /* UserProfileViewController.swift */; };
+		D289536D2076A5A60029CE92 /* ChildTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289536C2076A5A60029CE92 /* ChildTableViewController.swift */; };
 		D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BC720710F6200CB0DC2 /* OSProgressView.swift */; };
 		D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BC820710F6200CB0DC2 /* UINavigationController+OSProgressBar.swift */; };
 		D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */; };
@@ -109,7 +109,6 @@
 		D26AD44F206690E60047DC15 /* Pastel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pastel.h; sourceTree = "<group>"; };
 		D26AD45C2066A9C30047DC15 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		D26AD45F2066BAF40047DC15 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		D26AD4642066BB180047DC15 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D26AD466206729D60047DC15 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		D26AD47A20672E120047DC15 /* CustomTransitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTransitionViewController.swift; sourceTree = "<group>"; };
@@ -121,13 +120,14 @@
 		D26AD488206735CD0047DC15 /* UIView+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Attributes.swift"; sourceTree = "<group>"; };
 		D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpRequestHelper.swift; sourceTree = "<group>"; };
 		D26AD49820677C5C0047DC15 /* ALPConstans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALPConstans.swift; sourceTree = "<group>"; };
-		D2A2C75620693521003CEB97 /* HitTestScrollViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTestScrollViewCell.swift; sourceTree = "<group>"; };
-		D2A2C7712069553E003CEB97 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		D2A2C7732069556A003CEB97 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
-		D2A2C775206955AC003CEB97 /* ProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
-		D2A2C777206955C9003CEB97 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
-		D2A2C779206955E3003CEB97 /* ProfileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIconView.swift; sourceTree = "<group>"; };
-		D2A2C77B206955FE003CEB97 /* HitTestScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTestScrollView.swift; sourceTree = "<group>"; };
+		D289535E2076A4EE0029CE92 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		D289535F2076A4EE0029CE92 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
+		D28953602076A4EE0029CE92 /* HitTestContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HitTestContainerViewController.swift; sourceTree = "<group>"; };
+		D28953612076A4EE0029CE92 /* HitTestScrollViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HitTestScrollViewCell.swift; sourceTree = "<group>"; };
+		D28953622076A4EE0029CE92 /* BaseProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseProfileViewController.swift; sourceTree = "<group>"; };
+		D28953632076A4EE0029CE92 /* HitTestScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HitTestScrollView.swift; sourceTree = "<group>"; };
+		D289536A2076A5480029CE92 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		D289536C2076A5A60029CE92 /* ChildTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildTableViewController.swift; sourceTree = "<group>"; };
 		D2A59BC720710F6200CB0DC2 /* OSProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSProgressView.swift; sourceTree = "<group>"; };
 		D2A59BC820710F6200CB0DC2 /* UINavigationController+OSProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+OSProgressBar.swift"; sourceTree = "<group>"; };
 		D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoDetailView.swift; sourceTree = "<group>"; };
@@ -269,7 +269,7 @@
 		D26AD41620668F130047DC15 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				D2A2C753206932AE003CEB97 /* Views */,
+				D289535D2076A4EE0029CE92 /* UserProfile */,
 				D26AD45E2066BAF40047DC15 /* Controllers */,
 				D26AD4612066BAF40047DC15 /* Modles */,
 			);
@@ -365,8 +365,8 @@
 			isa = PBXGroup;
 			children = (
 				D26AD45F2066BAF40047DC15 /* LoginViewController.swift */,
-				D26AD4602066BAF40047DC15 /* UserProfileViewController.swift */,
-				D2A2C7712069553E003CEB97 /* ProfileViewController.swift */,
+				D289536A2076A5480029CE92 /* UserProfileViewController.swift */,
+				D289536C2076A5A60029CE92 /* ChildTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -417,17 +417,17 @@
 			path = Others;
 			sourceTree = "<group>";
 		};
-		D2A2C753206932AE003CEB97 /* Views */ = {
+		D289535D2076A4EE0029CE92 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
-				D2A2C775206955AC003CEB97 /* ProfileHeaderView.xib */,
-				D2A2C75620693521003CEB97 /* HitTestScrollViewCell.swift */,
-				D2A2C7732069556A003CEB97 /* ProfileHeaderView.swift */,
-				D2A2C777206955C9003CEB97 /* RoundButton.swift */,
-				D2A2C779206955E3003CEB97 /* ProfileIconView.swift */,
-				D2A2C77B206955FE003CEB97 /* HitTestScrollView.swift */,
+				D289535E2076A4EE0029CE92 /* ProfileHeaderView.swift */,
+				D289535F2076A4EE0029CE92 /* ScrollableSegmentedControl.swift */,
+				D28953602076A4EE0029CE92 /* HitTestContainerViewController.swift */,
+				D28953612076A4EE0029CE92 /* HitTestScrollViewCell.swift */,
+				D28953622076A4EE0029CE92 /* BaseProfileViewController.swift */,
+				D28953632076A4EE0029CE92 /* HitTestScrollView.swift */,
 			);
-			path = Views;
+			path = UserProfile;
 			sourceTree = "<group>";
 		};
 		D2A59BC620710F6200CB0DC2 /* ProgreeBar */ = {
@@ -561,7 +561,6 @@
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
 				D26AD450206690E60047DC15 /* .gitkeep in Resources */,
 				D26AD451206690E60047DC15 /* .gitkeep in Resources */,
-				D2A2C776206955AC003CEB97 /* ProfileHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,7 +582,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3C1A8B2334B0CBF06F9952B3 /* [CP] Copy Pods Resources */ = {
@@ -610,12 +609,14 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/GraphicsRenderer/GraphicsRenderer.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Peek/Peek.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GraphicsRenderer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Peek.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -635,14 +636,18 @@
 				D26AD485206733030047DC15 /* UIImage+Extension.swift in Sources */,
 				D26AD47F20672E120047DC15 /* FadeTransition.swift in Sources */,
 				D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */,
-				D2A2C77A206955E3003CEB97 /* ProfileIconView.swift in Sources */,
+				D28953682076A4EE0029CE92 /* BaseProfileViewController.swift in Sources */,
+				D289536B2076A5480029CE92 /* UserProfileViewController.swift in Sources */,
+				D28953692076A4EE0029CE92 /* HitTestScrollView.swift in Sources */,
 				D2DC57552070D64C00458F54 /* HeartAnimation.swift in Sources */,
+				D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
 				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
 				D2BCBA49206F33F2008409B3 /* GestureCoordinatingCollectionView.swift in Sources */,
 				D26AD44120668F140047DC15 /* RootViewController.swift in Sources */,
 				D26AD4652066BB180047DC15 /* User.swift in Sources */,
 				D2BCBA4F206F6D02008409B3 /* VideoItem.swift in Sources */,
+				D28953672076A4EE0029CE92 /* HitTestScrollViewCell.swift in Sources */,
 				D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */,
 				D2BCBA48206F33F2008409B3 /* CollectionViewSection.swift in Sources */,
 				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
@@ -652,8 +657,9 @@
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
 				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
+				D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */,
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
-				D2A2C7722069553E003CEB97 /* ProfileViewController.swift in Sources */,
+				D289536D2076A5A60029CE92 /* ChildTableViewController.swift in Sources */,
 				D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */,
 				D2BCBA47206F33F2008409B3 /* BaseCellModel.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
@@ -675,19 +681,15 @@
 				D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */,
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
 				D2BCBA45206F33F2008409B3 /* PlayInteractionViewController.swift in Sources */,
-				D2A2C77C206955FE003CEB97 /* HitTestScrollView.swift in Sources */,
-				D26AD4632066BAF40047DC15 /* UserProfileViewController.swift in Sources */,
 				D2BCBA44206F33F2008409B3 /* MainFeedViewController.swift in Sources */,
 				D2BCBA4C206F33F2008409B3 /* ScrollingContainerCell.swift in Sources */,
-				D2A2C778206955C9003CEB97 /* RoundButton.swift in Sources */,
-				D2A2C7742069556A003CEB97 /* ProfileHeaderView.swift in Sources */,
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,
 				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,
 				D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */,
 				D26AD48020672E120047DC15 /* SpinerLayer.swift in Sources */,
-				D2A2C75720693521003CEB97 /* HitTestScrollViewCell.swift in Sources */,
 				D26AD452206690E60047DC15 /* PastelGradient.swift in Sources */,
 				D2BCBA4D206F33F2008409B3 /* VideoPlayerView.swift in Sources */,
+				D28953662076A4EE0029CE92 /* HitTestContainerViewController.swift in Sources */,
 				D2DC574A206FB7EA00458F54 /* AccountLogin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
