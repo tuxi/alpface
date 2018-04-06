@@ -88,6 +88,34 @@ class HitTestContainerViewController: UIViewController {
         setupUI()
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let childController = self.displayViewController() {
+            childController.beginAppearanceTransition(true, animated: true)
+        }
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let childController = self.displayViewController() {
+            childController.endAppearanceTransition()
+        }
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let childController = self.displayViewController() {
+            childController.beginAppearanceTransition(false, animated: true)
+        }
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let childController = self.displayViewController() {
+            childController.endAppearanceTransition()
+        }
+    }
+    
     fileprivate func setupUI() {
         self.view.addSubview(self.collectionView)
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -103,7 +131,7 @@ class HitTestContainerViewController: UIViewController {
     }
     
     public var initialPage = 0
-    private func displayViewController() -> UIViewController? {
+    public func displayViewController() -> UIViewController? {
         guard let viewControllers = viewControllers else {
             return nil
         }

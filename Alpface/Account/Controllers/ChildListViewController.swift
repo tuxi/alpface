@@ -22,7 +22,7 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
         collectionView.collectionViewLayout = layout
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "cell")
+        collectionView.register(VideoGifCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "cell")
         return collectionView
     }()
     
@@ -36,6 +36,7 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
         setupUI()
     }
     
+    
     fileprivate func setupUI() {
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.collectionView)
@@ -45,12 +46,47 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
         self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        
+//        self.collectionView.visibleCells.forEach { (cell) in
+//            guard let c = cell as? VideoGifCollectionViewCell else { return }
+//            if c.gifView.isAnimatingGIF == false {
+//                c.gifView.startAnimatingGIF()
+//            }
+//        }
+//    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.collectionView.visibleCells.forEach { (cell) in
+            guard let c = cell as? VideoGifCollectionViewCell else { return }
+//            if c.gifView.isAnimatingGIF == false {
+//                c.gifView.startAnimatingGIF()
+//            }
+        }
     }
+    
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        self.collectionView.visibleCells.forEach { (cell) in
+//            guard let c = cell as? VideoGifCollectionViewCell else { return }
+//            if c.gifView.isAnimatingGIF == true {
+//                c.gifView.prepareForReuse()
+//                c.gifView.stopAnimatingGIF()
+//            }
+//        }
+//    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        self.collectionView.visibleCells.forEach { (cell) in
+            guard let c = cell as? VideoGifCollectionViewCell else { return }
+//            if c.gifView.isAnimatingGIF == true {
+//                c.gifView.prepareForReuse()
+//                c.gifView.stopAnimatingGIF()
+//            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,7 +99,7 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
 extension ChildListViewController: UICollectionViewDataSource, UICollectionViewDelegate, ETCollectionViewDelegateWaterfallLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return 30
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -73,7 +109,17 @@ extension ChildListViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 150)
+        return CGSize(width: 100, height: 130)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let c = cell as? VideoGifCollectionViewCell else { return }
+        c.gifView.startAnimating()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let c = cell as? VideoGifCollectionViewCell else { return }
+        c.gifView.stopAnimating()
     }
     
 }
