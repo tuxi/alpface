@@ -8,6 +8,11 @@
 
 import UIKit
 
+@objc(ALPHitTestScrollViewGestureRecognizerDelegate)
+protocol HitTestScrollViewGestureRecognizerDelegate: UIScrollViewDelegate {
+    @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool
+}
+
 @objc(ALPHitTestScrollView)
 internal class HitTestScrollView: UITableView, UIGestureRecognizerDelegate {
     
@@ -32,6 +37,11 @@ internal class HitTestScrollView: UITableView, UIGestureRecognizerDelegate {
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let delegate = self.delegate as? HitTestScrollViewGestureRecognizerDelegate {
+            if delegate.responds(to: #selector(HitTestScrollViewGestureRecognizerDelegate.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:))) {
+               return delegate.gestureRecognizer(gestureRecognizer, shouldRecognizeSimultaneouslyWith: otherGestureRecognizer)
+            }
+        }
         return true
     }
 }

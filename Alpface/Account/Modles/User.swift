@@ -19,6 +19,7 @@ class User: NSObject, NSCoding {
     public var userid : Int = 0
     public var following : Int = 0
     public var followers : Int = 0
+    public var is_active: Bool = false
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(userid, forKey: "userid")
@@ -38,6 +39,18 @@ class User: NSObject, NSCoding {
         phone = aDecoder.decodeObject(forKey: "phone") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
         address = aDecoder.decodeObject(forKey: "address") as? String
+    }
+    
+    public func getAvatarURL() -> URL? {
+        if let a = self.avatar {
+            if a.hasPrefix("http://") == true {
+                return URL.init(string: a)
+            }
+            else if a.hasPrefix("/media") == true {
+                return URL.init(string: ALPSiteURLString + a)
+            }
+        }
+        return nil
     }
     
 //    convenience init(userid: Int,

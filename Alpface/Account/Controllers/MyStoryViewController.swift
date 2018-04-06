@@ -8,12 +8,13 @@
 
 import UIKit
 
-class MyStoryViewController: UIViewController {
+class MyStoryViewController: ChildListViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.collectionItems = [PlayVideoModel()]
     }
 
     override func didReceiveMemoryWarning() {

@@ -55,7 +55,7 @@ internal class ProfileIconView: UIImageView {
 
 
 @objc(ALPProfileHeaderView)
-class ProfileHeaderView: UIView {
+open class ProfileHeaderView: UIView {
     var iconHeightConstraint: NSLayoutConstraint?
     lazy var iconImageView: ProfileIconView = {
         let imageView = ProfileIconView.init(frame: .zero)
@@ -130,7 +130,7 @@ class ProfileHeaderView: UIView {
         setupUI()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()
     }
@@ -244,7 +244,7 @@ class ProfileHeaderView: UIView {
         iconHeightConstraint!.constant = height
     }
     
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
         
         let newSize = self.systemLayoutSizeFitting(UILayoutFittingExpandedSize)
         return CGSize(width: size.width, height: newSize.height)
