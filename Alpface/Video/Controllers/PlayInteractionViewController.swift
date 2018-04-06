@@ -7,6 +7,7 @@
 //  和PlayVideoViewController配合使用，处理播放器的UI
 
 import UIKit
+import Kingfisher
 
 let ALPplayStatusButtonAlpha: CGFloat = 0.5
 
@@ -16,6 +17,11 @@ class PlayInteractionViewController: UIViewController {
     
     public var videoItem: VideoItem? {
         didSet {
+            if self.placeholderImageView.isHidden == false {
+                if let thumbnail = videoItem?.video_thumbnail {
+                    self.placeholderImageView.kf.setImage(with: URL.init(string: thumbnail))
+                }
+            }
         }
     }
     
@@ -62,6 +68,13 @@ class PlayInteractionViewController: UIViewController {
         let view = FeedVideoDetailView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    /// 视频加载前的图片,防止播放视频前留空
+    fileprivate lazy var placeholderImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     convenience init(playerController: PlayVideoViewController) {
@@ -152,6 +165,9 @@ extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
         else if state == .playing || state == .buffering {
             playStatusButton.isHidden = true
             playStatusButton.isSelected = true
+            if state == .playing {
+                placeholderImageView.isHidden = true
+            }
             
         }
         else if state == .failure || state == .stopped {
@@ -195,14 +211,22 @@ extension PlayInteractionViewController {
         timeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20.0).isActive = true
         timeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0).isActive = true
         
-        view.addSubview(indicator)
-        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
         view.addSubview(detailView)
         detailView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -50.0).isActive = true
         detailView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
         detailView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
          detailView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.6, constant: 0.0).isActive = true
+        
+        view.addSubview(placeholderImageView)
+        placeholderImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0.0).isActive = true
+        placeholderImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
+        placeholderImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
+        placeholderImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0.0).isActive = true
+        placeholderImageView.isHidden = false
+        
+        view.addSubview(indicator)
+        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
     }
 }
