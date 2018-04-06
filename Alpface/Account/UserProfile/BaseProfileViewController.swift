@@ -151,7 +151,7 @@ open class BaseProfileViewController: UIViewController {
         return coverImageView
     }()
     
-    fileprivate lazy var profileHeaderView: ProfileHeaderView = {
+    open lazy var profileHeaderView: ProfileHeaderView = {
         let _profileHeaderView = ProfileHeaderView(frame: CGRect.init(x: 0, y: 0, width: self.mainScrollView.frame.width, height: 220))
         _profileHeaderView.usernameLabel.text = self.username
         _profileHeaderView.locationLabel.text = self.locationString
@@ -455,9 +455,9 @@ extension BaseProfileViewController: UIScrollViewDelegate {
             // Sticky Segmented Control
             let navigationLocation = CGRect(x: 0, y: 0, width: stickyHeaderContainerView.bounds.width, height: stickyHeaderContainerView.frame.origin.y - contentOffset.y + stickyHeaderContainerView.bounds.height)
             let navigationHeight = navigationLocation.height - abs(navigationLocation.origin.y)
-            let segmentedControlContainerLocationY = stickyheaderContainerViewHeight + profileHeaderViewHeight - navigationHeight
-            
-            if contentOffset.y > 0 && contentOffset.y >= segmentedControlContainerLocationY {
+            let segmentedControlContainerLocationY = ceil(stickyheaderContainerViewHeight + profileHeaderViewHeight - navigationHeight)
+            let contentOffSetY = ceil(contentOffset.y)
+            if contentOffSetY > 0 && contentOffSetY >= segmentedControlContainerLocationY {
                 // mainScrollView滚动到顶部了, 让segment悬停在导航底部
                 // 当视图滑动的距离大于header时，这里就可以设置section1的header的位置啦，设置的时候要考虑到导航栏的透明对滚动视图的影响
                 var scrollViewInsets = scrollView.contentInset
@@ -501,6 +501,15 @@ extension BaseProfileViewController: UIScrollViewDelegate {
    
 }
 
+extension BaseProfileViewController: HitTestScrollViewGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == self.mainScrollView.panGestureRecognizer && otherGestureRecognizer == self.containerViewController.collectionView.panGestureRecognizer {
+            return false
+        }
+        return true
+    }
+}
+
 extension BaseProfileViewController {
     
     /// scrollView 滚动结束时调用
@@ -519,13 +528,30 @@ extension BaseProfileViewController {
     fileprivate func scrollViewDidScrollToNavigationBottom(scrollView: UIScrollView, segmentedControlContainerMinY: CGFloat) {
         scrollView.contentOffset = CGPoint(x: 0, y: segmentedControlContainerMinY)
         if self.shouldScrollForMainScrollView == true {
-            self.shouldScrollForMainScrollView = false
-            self.containerViewController.shouldScrollForCurrentChildScrollView = true
+            // 当当前显示的child scrollView 不能够滚动时，比如其contentSize小与其frame.size时，就还让main scrollView 响应滚动
+            if let controller = self.containerViewController.displayViewController() as? ProfileViewChildControllerProtocol {
+                guard let childScrollView = controller.childScrollView() else {
+                    self.shouldScrollForMainScrollView = true
+                    return
+                }
+                let contentSizeHeight = childScrollView.contentSize.height
+                let frameSizeHeight = childScrollView.frame.size.height
+                if contentSizeHeight <= frameSizeHeight {
+                    self.shouldScrollForMainScrollView = true
+                    self.containerViewController.shouldScrollForCurrentChildScrollView = false
+                }
+                else {
+                    self.shouldScrollForMainScrollView = false
+                    self.containerViewController.shouldScrollForCurrentChildScrollView = true
+                }
+            }
+            
         }
     }
     
     /// scrollView 滚动到导航底部了，main scrollView可以滚动了
     fileprivate func scrollViewDidLeaveNavigationBottom(scrollView: UIScrollView, segmentedControlContainerMinY: CGFloat) {
+        
         if (self.shouldScrollForMainScrollView == false) {
             scrollView.contentOffset = CGPoint(x: 0, y: segmentedControlContainerMinY)
         }

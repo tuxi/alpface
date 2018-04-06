@@ -11,7 +11,7 @@ import Foundation
 
 // 存储登录用户信息的key，如果此key获取的value为nil则说明用户未登录
 let ALPLoginUserInfoKey = "LoginUserInfoKey"
-let ALPSiteURLString = "http://www.alpface.com:8889"
+public let ALPSiteURLString = "http://www.alpface.com:8889"
 let ALPCsrfmiddlewaretokenKey = "csrfmiddlewaretoken"
 let ALPCsrftokenKey = "csrftoken"
 let ALPAuthenticationUserKey = "ALPAuthenticationUserKey"

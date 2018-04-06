@@ -8,12 +8,14 @@
 
 import UIKit
 
-class MyReleaseViewController: UIViewController {
+class MyReleaseViewController: ChildListViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        self.collectionItems = [PlayVideoModel()]
     }
 
     override func didReceiveMemoryWarning() {

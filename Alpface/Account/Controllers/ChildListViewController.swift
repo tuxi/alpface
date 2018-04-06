@@ -26,6 +26,8 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
         return collectionView
     }()
     
+    public var collectionItems: [PlayVideoModel] = []
+    
     func childScrollView() -> UIScrollView? {
         return self.collectionView
     }
@@ -99,7 +101,7 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
 extension ChildListViewController: UICollectionViewDataSource, UICollectionViewDelegate, ETCollectionViewDelegateWaterfallLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return 20
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

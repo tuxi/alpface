@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 let ALPSegmentHeight: CGFloat = 44.0
 let ALPNavigationBarHeight: CGFloat = 44.0
@@ -39,8 +40,14 @@ class UserProfileViewController: BaseProfileViewController {
         if let userid = AuthenticationManager.shared.loginUser?.userid {
             self.nickname = "用户号" + ":\(userid)"
         }
-        
-        self.profileImage = UIImage.init(named: "icon.png")
+        let avatarPlaceImage = UIImage.init(named: "icon.png")
+        let avatar = AuthenticationManager.shared.loginUser?.getAvatarURL()
+        if let url = avatar {
+            self.profileHeaderView.iconImageView.kf.setImage(with: url, placeholder: avatarPlaceImage, options: nil, progressBlock: nil, completionHandler: nil)
+        }
+        else {
+            self.profileHeaderView.iconImageView.image = avatarPlaceImage
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,11 +63,11 @@ class UserProfileViewController: BaseProfileViewController {
     override func controller(forSegment index: Int) -> ProfileViewChildControllerProtocol {
         switch index {
         case 0:
-            return ChildListViewController()
+            return MyReleaseViewController()
         case 1:
-            return ChildListViewController()
+            return MyFavoriteViewController()
         case 2:
-            return ChildListViewController()
+            return MyStoryViewController()
         default:
             return ChildListViewController()
         }
