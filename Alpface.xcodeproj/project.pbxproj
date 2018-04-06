@@ -52,7 +52,11 @@
 		D28953682076A4EE0029CE92 /* BaseProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28953622076A4EE0029CE92 /* BaseProfileViewController.swift */; };
 		D28953692076A4EE0029CE92 /* HitTestScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28953632076A4EE0029CE92 /* HitTestScrollView.swift */; };
 		D289536B2076A5480029CE92 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289536A2076A5480029CE92 /* UserProfileViewController.swift */; };
-		D289536D2076A5A60029CE92 /* ChildTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289536C2076A5A60029CE92 /* ChildTableViewController.swift */; };
+		D289536D2076A5A60029CE92 /* ChildListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289536C2076A5A60029CE92 /* ChildListViewController.swift */; };
+		D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289536E20771A230029CE92 /* MyReleaseViewController.swift */; };
+		D289537120771A6B0029CE92 /* MyFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289537020771A6B0029CE92 /* MyFavoriteViewController.swift */; };
+		D289537320771A8B0029CE92 /* MyStoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289537220771A8B0029CE92 /* MyStoryViewController.swift */; };
+		D289537D20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289537C20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift */; };
 		D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BC720710F6200CB0DC2 /* OSProgressView.swift */; };
 		D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BC820710F6200CB0DC2 /* UINavigationController+OSProgressBar.swift */; };
 		D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */; };
@@ -127,7 +131,11 @@
 		D28953622076A4EE0029CE92 /* BaseProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseProfileViewController.swift; sourceTree = "<group>"; };
 		D28953632076A4EE0029CE92 /* HitTestScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HitTestScrollView.swift; sourceTree = "<group>"; };
 		D289536A2076A5480029CE92 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
-		D289536C2076A5A60029CE92 /* ChildTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildTableViewController.swift; sourceTree = "<group>"; };
+		D289536C2076A5A60029CE92 /* ChildListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildListViewController.swift; sourceTree = "<group>"; };
+		D289536E20771A230029CE92 /* MyReleaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReleaseViewController.swift; sourceTree = "<group>"; };
+		D289537020771A6B0029CE92 /* MyFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFavoriteViewController.swift; sourceTree = "<group>"; };
+		D289537220771A8B0029CE92 /* MyStoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoryViewController.swift; sourceTree = "<group>"; };
+		D289537C20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ETCollectionViewWaterFallLayout.swift; sourceTree = "<group>"; };
 		D2A59BC720710F6200CB0DC2 /* OSProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSProgressView.swift; sourceTree = "<group>"; };
 		D2A59BC820710F6200CB0DC2 /* UINavigationController+OSProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+OSProgressBar.swift"; sourceTree = "<group>"; };
 		D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoDetailView.swift; sourceTree = "<group>"; };
@@ -314,6 +322,7 @@
 		D26AD444206690B40047DC15 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				D289537B20772BE60029CE92 /* CollectionViewLayout */,
 				D2A59BCF207125AE00CB0DC2 /* DOFavoriteButton */,
 				D2A59BC620710F6200CB0DC2 /* ProgreeBar */,
 				D26AD47920672E120047DC15 /* TransitionButton */,
@@ -366,7 +375,10 @@
 			children = (
 				D26AD45F2066BAF40047DC15 /* LoginViewController.swift */,
 				D289536A2076A5480029CE92 /* UserProfileViewController.swift */,
-				D289536C2076A5A60029CE92 /* ChildTableViewController.swift */,
+				D289536C2076A5A60029CE92 /* ChildListViewController.swift */,
+				D289536E20771A230029CE92 /* MyReleaseViewController.swift */,
+				D289537020771A6B0029CE92 /* MyFavoriteViewController.swift */,
+				D289537220771A8B0029CE92 /* MyStoryViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -428,6 +440,14 @@
 				D28953632076A4EE0029CE92 /* HitTestScrollView.swift */,
 			);
 			path = UserProfile;
+			sourceTree = "<group>";
+		};
+		D289537B20772BE60029CE92 /* CollectionViewLayout */ = {
+			isa = PBXGroup;
+			children = (
+				D289537C20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift */,
+			);
+			path = CollectionViewLayout;
 			sourceTree = "<group>";
 		};
 		D2A59BC620710F6200CB0DC2 /* ProgreeBar */ = {
@@ -631,6 +651,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D289537D20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift in Sources */,
 				D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */,
 				D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */,
 				D26AD485206733030047DC15 /* UIImage+Extension.swift in Sources */,
@@ -647,6 +668,7 @@
 				D26AD44120668F140047DC15 /* RootViewController.swift in Sources */,
 				D26AD4652066BB180047DC15 /* User.swift in Sources */,
 				D2BCBA4F206F6D02008409B3 /* VideoItem.swift in Sources */,
+				D289537120771A6B0029CE92 /* MyFavoriteViewController.swift in Sources */,
 				D28953672076A4EE0029CE92 /* HitTestScrollViewCell.swift in Sources */,
 				D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */,
 				D2BCBA48206F33F2008409B3 /* CollectionViewSection.swift in Sources */,
@@ -659,7 +681,7 @@
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
 				D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */,
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
-				D289536D2076A5A60029CE92 /* ChildTableViewController.swift in Sources */,
+				D289536D2076A5A60029CE92 /* ChildListViewController.swift in Sources */,
 				D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */,
 				D2BCBA47206F33F2008409B3 /* BaseCellModel.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
@@ -669,6 +691,7 @@
 				D2BCBA4B206F33F2008409B3 /* MainFeedViewCell.swift in Sources */,
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
+				D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */,
 				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,
 				D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */,
 				D26AD4872067334E0047DC15 /* UIButton+Attributes.swift in Sources */,
@@ -682,6 +705,7 @@
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
 				D2BCBA45206F33F2008409B3 /* PlayInteractionViewController.swift in Sources */,
 				D2BCBA44206F33F2008409B3 /* MainFeedViewController.swift in Sources */,
+				D289537320771A8B0029CE92 /* MyStoryViewController.swift in Sources */,
 				D2BCBA4C206F33F2008409B3 /* ScrollingContainerCell.swift in Sources */,
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,
 				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,

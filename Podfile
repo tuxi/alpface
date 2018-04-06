@@ -8,4 +8,5 @@ target 'Alpface' do
 
   pod 'Alamofire', '~> 4.7'
   pod 'Peek', '~> 5.0'
+  pod 'Kingfisher', '~> 4.0'
 end

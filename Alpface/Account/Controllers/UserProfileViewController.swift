@@ -21,18 +21,24 @@ class UserProfileViewController: BaseProfileViewController {
     }
     
     override func segmentTitle(forSegment index: Int) -> String {
-        return "Segment \(index)"
+        switch index {
+        case 0:
+            return "作品"
+        case 1:
+            return "喜欢"
+        default:
+            return "故事"
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.locationString = "Beijing"
-        self.nickname = "alpface"
-        self.username = "xiaoyuan"//AuthenticationManager.shared.loginUser?.username
-//        if let userid = AuthenticationManager.shared.loginUser?.userid {
-//            self.nickname = "用户号" + ":\(userid)"
-//        }
+        self.username = AuthenticationManager.shared.loginUser?.username
+        if let userid = AuthenticationManager.shared.loginUser?.userid {
+            self.nickname = "用户号" + ":\(userid)"
+        }
         
         self.profileImage = UIImage.init(named: "icon.png")
     }
@@ -50,13 +56,13 @@ class UserProfileViewController: BaseProfileViewController {
     override func controller(forSegment index: Int) -> ProfileViewChildControllerProtocol {
         switch index {
         case 0:
-            return ChildTableViewController()
+            return ChildListViewController()
         case 1:
-            return ChildTableViewController()
+            return ChildListViewController()
         case 2:
-            return ChildTableViewController()
+            return ChildListViewController()
         default:
-            return ChildTableViewController()
+            return ChildListViewController()
         }
     }
 }
