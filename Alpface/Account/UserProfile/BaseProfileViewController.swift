@@ -132,6 +132,7 @@ open class BaseProfileViewController: UIViewController {
         _mainScrollView.showsHorizontalScrollIndicator = false
         _mainScrollView.backgroundColor = UIColor.white
         _mainScrollView.separatorStyle = .none
+        _mainScrollView.scrollsToTop = false
         _mainScrollView.register(HitTestScrollViewCell.classForCoder(), forCellReuseIdentifier: HitTestScrollViewCellIdentifier)
         if #available(iOS 11.0, *) {
             _mainScrollView.contentInsetAdjustmentBehavior = .never
@@ -228,6 +229,26 @@ open class BaseProfileViewController: UIViewController {
         self.prepareViews()
         
         shouldUpdateScrollViewContentFrame = true
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.containerViewController.beginAppearanceTransition(true, animated: true)
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.containerViewController.endAppearanceTransition()
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.containerViewController.beginAppearanceTransition(false, animated: true)
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.containerViewController.endAppearanceTransition()
     }
     
     override open func viewDidLayoutSubviews() {

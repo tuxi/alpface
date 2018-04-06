@@ -92,7 +92,7 @@ class VideoItem: NSObject {
     open func getVideoURL() -> URL? {
         guard let video = self.video else {
             #if DEBUG
-                return URL.init(string: "http://alpface.com:8889/media/media_itemsIMG_1229.mov")
+                return URL.init(string: "http://www.alpface.com:8889/media/media_itemsdaed8ee08069428aa1e3605e1dd5a34a.mp4")
             #else
                 return nil
             #endif
