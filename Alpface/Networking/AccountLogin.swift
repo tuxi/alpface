@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 public enum ALPAccountLoginError: LocalizedError {
     case cannotExtractLoginStatus
@@ -122,6 +123,71 @@ public class AccountLogin: NSObject {
         }
         
 
+        
+    }
+    
+    
+    /// 登录解决，会先获取一个新的csrftoken，再进行登录操作
+    public func register(username: String, password: String, confirm_password: String, avate: UIImage? ,success: ALPHttpResponseBlock?, failure: ALPErrorHandler?){
+        
+        /// 註冊之前先请求csrftoken
+        getCsrfToken(success: { (response) in
+            
+            let urlString = ALPConstans.HttpRequestURL().register
+            let parameters = [
+                ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
+                "username": username,
+                "password": password,
+                "confirm_password": confirm_password,
+                "nickname": username,
+                ]
+            
+
+            let url = URL(string: urlString)
+            Alamofire.upload(multipartFormData: { (multipartFormData) in
+                
+                let _data = UIImageJPEGRepresentation((avate)!, 0.5)
+                multipartFormData.append(_data!, withName:"headimg", fileName:  "/(str).jpg", mimeType:"image/jpeg")
+                // 遍历字典
+                for (key, value) in parameters {
+                    
+                    let str: String = value!
+                    let _datas: Data = str.data(using:String.Encoding.utf8)!
+                    multipartFormData.append(_datas, withName: key as String)
+                    
+                }
+                
+            }, to: url!) { (result) in
+                switch result {
+                case .success(let upload,_, _):
+                    upload.responseJSON(completionHandler: { (response) in
+
+                        if let value = response.result.value {
+                            let jsonDict = self.getDictionaryFromJSONString(jsonString: value as! String)
+                            if jsonDict["status"] as? String == "success" {
+                                
+                            }
+                        }
+                    })
+                case .failure(let error):
+                    
+                    guard let fail = failure else { return }
+                    DispatchQueue.main.async {
+                        fail(error)
+                    }
+                }
+            }
+            
+                
+        }) { (error) in
+            guard let fail = failure else { return }
+            DispatchQueue.main.async {
+                fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+            }
+            print(error ?? "")
+        }
+        
+        
         
     }
     
