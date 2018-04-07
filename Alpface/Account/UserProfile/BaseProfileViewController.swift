@@ -211,9 +211,12 @@ open class BaseProfileViewController: UIViewController {
     fileprivate var debugTextView: UILabel!
     
     /// 更新table header 布局，高度是计算出来的，所以当header上的内容发生改变时，应该执行一次更新header布局
-    open var setNeedsUpdateHeaderLayout = false
+    fileprivate var needsUpdateHeaderLayout = false
+    open func setNeedsUpdateHeaderLayout() {
+        self.needsUpdateHeaderLayout = true
+    }
     open func updateHeaderLayoutIfNeeded() {
-        if self.setNeedsUpdateHeaderLayout {
+        if self.needsUpdateHeaderLayout == true {
             self.profileHeaderViewHeight = profileHeaderView.sizeThatFits(self.mainScrollView.bounds.size).height
             
             /// 只要第一次view布局完成时，再调整下stickyHeaderContainerView的frame，剩余的情况会在scrollViewDidScrollView:时调整
@@ -227,7 +230,7 @@ open class BaseProfileViewController: UIViewController {
             self.mainScrollView.tableHeaderView = tableHeaderView
             profileHeaderView.frame = self.computeProfileHeaderViewFrame()
             self.mainScrollView.scrollIndicatorInsets = computeMainScrollViewIndicatorInsets()
-            self.setNeedsUpdateHeaderLayout = false
+            self.needsUpdateHeaderLayout = false
         }
     }
     
@@ -260,7 +263,7 @@ open class BaseProfileViewController: UIViewController {
         
         self.prepareViews()
         
-        setNeedsUpdateHeaderLayout = true
+        self.setNeedsUpdateHeaderLayout()
     }
     
     open override func viewWillAppear(_ animated: Bool) {

@@ -94,8 +94,12 @@ class UserProfileViewController: BaseProfileViewController {
             self.profileHeaderView.iconImageView.image = avatarPlaceImage
         }
         
-        self.setNeedsUpdateHeaderLayout = true
+        self.view.layoutIfNeeded()
+        self.setNeedsUpdateHeaderLayout()
         self.updateHeaderLayoutIfNeeded()
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
         
         self.controllers.forEach { (controller) in
             if let c = controller as? ChildListViewController {
