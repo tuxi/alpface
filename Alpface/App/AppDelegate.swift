@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rootVC = RootViewController()
         window?.rootViewController = rootVC
         window?.makeKeyAndVisible()
-        
+        HttpRequestHelper.setCookie()
         
         window?.peek.enableWithOptions { options in
             options.theme = .dark

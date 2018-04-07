@@ -153,10 +153,10 @@ open class BaseProfileViewController: UIViewController {
     
     open lazy var profileHeaderView: ProfileHeaderView = {
         let _profileHeaderView = ProfileHeaderView(frame: CGRect.init(x: 0, y: 0, width: self.mainScrollView.frame.width, height: 220))
-        _profileHeaderView.usernameLabel.text = self.username
+        _profileHeaderView.nicknameLabel.text = self.username
         _profileHeaderView.locationLabel.text = self.locationString
         _profileHeaderView.iconImageView.image = self.profileImage
-        _profileHeaderView.nicknameLabel.text = self.nickname
+        _profileHeaderView.usernameLabel.text = self.nickname
         return _profileHeaderView
     }()
     
@@ -210,7 +210,26 @@ open class BaseProfileViewController: UIViewController {
     
     fileprivate var debugTextView: UILabel!
     
-    fileprivate var shouldUpdateScrollViewContentFrame = false
+    /// 更新table header 布局，高度是计算出来的，所以当header上的内容发生改变时，应该执行一次更新header布局
+    open var setNeedsUpdateHeaderLayout = false
+    open func updateHeaderLayoutIfNeeded() {
+        if self.setNeedsUpdateHeaderLayout {
+            self.profileHeaderViewHeight = profileHeaderView.sizeThatFits(self.mainScrollView.bounds.size).height
+            
+            /// 只要第一次view布局完成时，再调整下stickyHeaderContainerView的frame，剩余的情况会在scrollViewDidScrollView:时调整
+            self.stickyHeaderContainerView.frame = self.computeStickyHeaderContainerViewFrame()
+            
+            
+            /// 更新profileHeaderView和segmentedControlContainer的frame
+            self.profileHeaderView.frame = self.computeProfileHeaderViewFrame()
+            
+            tableHeaderView.frame = CGRect.init(x: 0, y: 0, width: 0, height: stickyHeaderContainerView.frame.height + profileHeaderView.frame.size.height)
+            self.mainScrollView.tableHeaderView = tableHeaderView
+            profileHeaderView.frame = self.computeProfileHeaderViewFrame()
+            self.mainScrollView.scrollIndicatorInsets = computeMainScrollViewIndicatorInsets()
+            self.setNeedsUpdateHeaderLayout = false
+        }
+    }
     
     deinit {
         self.controllers.forEach { (controller) in
@@ -221,6 +240,19 @@ open class BaseProfileViewController: UIViewController {
         
     }
     
+    /// 刷新页面
+    open func reloadPage() {
+        self.controllers = []
+        for index in 0..<numberOfSegments() {
+            let controller = self.controller(forSegment: index)
+            self.controllers.append(controller)
+        }
+        
+        self.mainScrollView.reloadData()
+        
+        containerDidLoad()
+    }
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         
@@ -228,7 +260,7 @@ open class BaseProfileViewController: UIViewController {
         
         self.prepareViews()
         
-        shouldUpdateScrollViewContentFrame = true
+        setNeedsUpdateHeaderLayout = true
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -254,24 +286,7 @@ open class BaseProfileViewController: UIViewController {
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        
-        if self.shouldUpdateScrollViewContentFrame {
-             self.profileHeaderViewHeight = profileHeaderView.sizeThatFits(self.mainScrollView.bounds.size).height
-            
-            /// 只要第一次view布局完成时，再调整下stickyHeaderContainerView的frame，剩余的情况会在scrollViewDidScrollView:时调整
-            self.stickyHeaderContainerView.frame = self.computeStickyHeaderContainerViewFrame()
-            
-            
-            /// 更新profileHeaderView和segmentedControlContainer的frame
-            self.profileHeaderView.frame = self.computeProfileHeaderViewFrame()
-
-            tableHeaderView.frame = CGRect.init(x: 0, y: 0, width: 0, height: stickyHeaderContainerView.frame.height + profileHeaderView.frame.size.height)
-            self.mainScrollView.tableHeaderView = tableHeaderView
-            profileHeaderView.frame = self.computeProfileHeaderViewFrame()
-            self.mainScrollView.scrollIndicatorInsets = computeMainScrollViewIndicatorInsets()
-            self.shouldUpdateScrollViewContentFrame = false
-        }
-        
+        updateHeaderLayoutIfNeeded()
     }
     
     override open func didReceiveMemoryWarning() {
@@ -349,18 +364,10 @@ extension BaseProfileViewController {
         
         segmentedControl.setTitleTextAttributes(largerRedTextSelectAttributes, for: .selected)
         
-        self.controllers = []
-        for index in 0..<numberOfSegments() {
-            let controller = self.controller(forSegment: index)
-            self.controllers.append(controller)
-        }
-        
-        self.mainScrollView.reloadData()
-        
-        containerDidLoad()
-        
+        self.reloadPage()
         self.showDebugInfo()
     }
+
     
     func computeStickyHeaderContainerViewFrame() -> CGRect {
         return CGRect(x: 0, y: 0, width: mainScrollView.bounds.width, height: stickyheaderContainerViewHeight)
@@ -474,13 +481,13 @@ extension BaseProfileViewController: UIScrollViewDelegate {
             
             
             // 当滚动视图到达标题标签的顶部边缘时
-            let titleLabel = profileHeaderView.nicknameLabel
-            let usernameLabel = profileHeaderView.usernameLabel
+            let titleLabel = profileHeaderView.usernameLabel
+            let nicknameLabel = profileHeaderView.nicknameLabel
             
             //  titleLabel 相对于控制器view的位置
             let titleLabelLocationY = stickyheaderContainerViewHeight - 35
             
-            let totalHeight = titleLabel.bounds.height + usernameLabel.bounds.height + 35
+            let totalHeight = titleLabel.bounds.height + nicknameLabel.bounds.height + 35
             let detailProgress = max(0, min((contentOffset.y - titleLabelLocationY) / totalHeight, 1))
             blurEffectView.alpha = detailProgress
             animateNaivationTitleAt(progress: detailProgress)

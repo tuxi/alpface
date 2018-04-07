@@ -14,6 +14,7 @@ let ALPLoginUserInfoKey = "LoginUserInfoKey"
 public let ALPSiteURLString = "http://www.alpface.com:8889"
 let ALPCsrfmiddlewaretokenKey = "csrfmiddlewaretoken"
 let ALPCsrftokenKey = "csrftoken"
+let ALPAuthTokenKey = "jwttoken"
 let ALPAuthenticationUserKey = "ALPAuthenticationUserKey"
 let ALPLoginSuccessNotification = "ALPLoginSuccessNotification"
 let ALPLoginFailureNotification = "ALPLoginFailureNotification"
@@ -33,11 +34,7 @@ struct ALPConstans {
         let register = "\(ALPSiteURLString)" + "/account/auth/register/"
         let getCsrfToken = "\(ALPSiteURLString)" + "/account/auth/csrf"
         let getRadomVideos = "\(ALPSiteURLString)" + "/video/getAll"
-//        let queryUserInfoByUserID = "\(ALPSiteURLString)" + "/queryUserInfoByUserID"
-//        // moment列表
-//        let momentList = "\(ALPSiteURLString)" + "/momentList"
-//        // 发送moment
-//        let sendMoment = "\(ALPSiteURLString)" + "/sendMoment"
+        let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
         
     }
     

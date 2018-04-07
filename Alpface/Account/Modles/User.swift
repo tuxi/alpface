@@ -10,24 +10,33 @@ import Foundation
 
 @objc(ALPUser)
 class User: NSObject, NSCoding {
+    public var userid : Int = 0
     public var username : String?
-    public var nickname : String?
     public var avatar : String?
+    public var nickname : String?
     public var phone : String?
     public var gender : String?
     public var address : String?
-    public var userid : Int = 0
-    public var following : Int = 0
-    public var followers : Int = 0
+    public var following : Int64 = 0
+    public var followers : Int64 = 0
     public var is_active: Bool = false
+    public var my_videos: [VideoItem]?
+    public var my_likes: [VideoItem]?
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(userid, forKey: "userid")
         aCoder.encode(username, forKey: "username")
+        aCoder.encode(nickname, forKey: "nickname")
         aCoder.encode(avatar, forKey: "avatar")
         aCoder.encode(phone, forKey: "phone")
         aCoder.encode(gender, forKey: "gender")
         aCoder.encode(address, forKey: "address")
+        
+        aCoder.encode(following, forKey: "following")
+        aCoder.encode(followers, forKey: "followers")
+        aCoder.encode(is_active, forKey: "is_active")
+        aCoder.encode(my_videos, forKey: "my_videos")
+        aCoder.encode(my_likes, forKey: "my_likes")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -39,6 +48,11 @@ class User: NSObject, NSCoding {
         phone = aDecoder.decodeObject(forKey: "phone") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
         address = aDecoder.decodeObject(forKey: "address") as? String
+        following = aDecoder.decodeInt64(forKey: "following")
+        followers = aDecoder.decodeInt64(forKey: "followers")
+        is_active = aDecoder.decodeBool(forKey: "is_active")
+        my_videos = aDecoder.decodeObject(forKey: "my_videos") as? [VideoItem]
+        my_likes = aDecoder.decodeObject(forKey: "my_likes") as? [VideoItem]
     }
     
     public func getAvatarURL() -> URL? {
@@ -53,22 +67,6 @@ class User: NSObject, NSCoding {
         return nil
     }
     
-//    convenience init(userid: Int,
-//                     username: String?  = "",
-//                     nickname: String?  = "",
-//                     avatar: String?  = "",
-//                     phone: String?  = "",
-//                     gender: String?  = "",
-//                     address: String?  = "" ) {
-//        self.init()
-//        self.userid = userid
-//        self.username = username
-//        self.nickname = nickname
-//        self.avatar = avatar
-//        self.phone = phone
-//        self.gender = gender
-//        self.address = address
-//    }
     override init() {
         super.init()
     }
@@ -104,7 +102,22 @@ class User: NSObject, NSCoding {
         if let address = dict["address"] as? String {
             self.address = address
         }
-        
+        if let my_videos = dict["my_videos"] as? [[String: Any]] {
+            var items = [VideoItem]()
+            for video in my_videos {
+                let item = VideoItem(dict: video)
+                items.append(item)
+            }
+            self.my_videos = items
+        }
+        if let my_likes = dict["my_likes"] as? [[String: Any]] {
+            var items = [VideoItem]()
+            for video in my_likes {
+                let item = VideoItem(dict: video)
+                items.append(item)
+            }
+            self.my_likes = items
+        }
     }
     
 }

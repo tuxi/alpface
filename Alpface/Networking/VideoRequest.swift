@@ -65,4 +65,56 @@ class VideoRequest: NSObject {
             
         }
     }
+    
+    
+    public func discoverUserByUsername(username: String, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
+        let url = ALPConstans.HttpRequestURL().discoverUserByUsername
+        guard let authUser = AuthenticationManager.shared.loginUser else {
+            if let fail = failure {
+                let e = NSError(domain: "ErrorNOTFoundauthUser", code: 404, userInfo: nil)
+                fail(e)
+            }
+            return
+        }
+        let parameters = [
+            "username": username,
+            "auth_username": authUser.username!,
+            "type": "1",
+            
+        ]  as NSDictionary
+        
+        HttpRequestHelper.request(method: .get, url: url, parameters: parameters) { (response, error) in
+            if let error = error {
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(error)
+                }
+                return
+            }
+            
+            guard let userInfo = response as? String else {
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                }
+                
+                return
+            }
+            
+            let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
+            if let userDict = jsonDict["data"] as? [String : Any] {
+                guard let succ = success else { return }
+                let user = User(dict: userDict)
+                DispatchQueue.main.async {
+                    succ(user)
+                }
+            }
+            else {
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                }
+            }
+        }
+    }
 }

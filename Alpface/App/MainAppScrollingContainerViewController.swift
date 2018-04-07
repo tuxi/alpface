@@ -89,7 +89,7 @@ class MainAppScrollingContainerViewController: UIViewController {
                 searchVc.title = "search"
                 let messageVc = MessageViewController()
                 messageVc.title = "message"
-                let userProfileVc = UserProfileViewController()
+                let userProfileVc = UserProfileViewController(user: nil)
                 userProfileVc.title = "user"
                 let nav1 = MainNavigationController.init(rootViewController: homeVc)
                 let nav2 = MainNavigationController(rootViewController: searchVc)

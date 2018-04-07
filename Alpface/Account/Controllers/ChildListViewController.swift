@@ -26,7 +26,13 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
         return collectionView
     }()
     
-    public var collectionItems: [PlayVideoModel] = []
+    public var collectionItems: [VideoItem]? {
+        didSet {
+            if oldValue != collectionItems {
+                self.collectionView.reloadData()
+            }
+        }
+    }
     
     func childScrollView() -> UIScrollView? {
         return self.collectionView
@@ -101,12 +107,21 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
 extension ChildListViewController: UICollectionViewDataSource, UICollectionViewDelegate, ETCollectionViewDelegateWaterfallLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        guard let items = self.collectionItems else { return 0 }
+        return items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! VideoGifCollectionViewCell
         cell.contentView.backgroundColor = UIColor.randomColor()
+        guard let items = self.collectionItems else { return cell }
+        let video = items[indexPath.row]
+        guard let gifURL = video.getVideoGifURL() else {
+            return cell
+        }
+        cell.gifView.animate(withGIFURL: gifURL, loopCount: 10) {
+            
+        }
         return cell
     }
     
