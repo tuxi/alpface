@@ -10,6 +10,13 @@ import UIKit
 
 class RegisterViewController: UIViewController {
     
+    convenience init(completion: @escaping (_ username: String?, _ password: String?, _ error: Error?) -> (Void)) {
+        self.init()
+        self.registerCompletion = completion
+    }
+    
+    fileprivate var registerCompletion : ((_ username: String?, _ password: String?, _ error: Error?) -> (Void))?
+    
     fileprivate lazy var pastelView : PastelView = {
         let pastelView = PastelView(frame: view.bounds)
         pastelView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,6 +64,22 @@ class RegisterViewController: UIViewController {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.isSecureTextEntry = true
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
+        return tf
+    }()
+    
+    fileprivate lazy var emailTf : UITextField = {
+        let tf = UITextField()
+        tf.keyboardType = .emailAddress
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
+        return tf
+    }()
+    
+    fileprivate lazy var phoneTf : UITextField = {
+        let tf = UITextField()
+        tf.keyboardType = .namePhonePad
+        tf.translatesAutoresizingMaskIntoConstraints = false
         tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
         return tf
     }()
@@ -117,6 +140,8 @@ class RegisterViewController: UIViewController {
         contentView.addSubview(passwordTf)
         contentView.addSubview(confirm_passwordTf)
         contentView.addSubview(registerButton)
+        contentView.addSubview(emailTf)
+        contentView.addSubview(phoneTf)
         addLines()
         setupConstraints()
         setupNavigationBar()
@@ -125,6 +150,8 @@ class RegisterViewController: UIViewController {
         usernameTf.attributedPlaceholder = NSAttributedString(string: "請輸入賬戶名稱", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         passwordTf.attributedPlaceholder = NSAttributedString(string: "請輸入密碼", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         confirm_passwordTf.attributedPlaceholder = NSAttributedString(string: "請輸入確認密碼", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        emailTf.attributedPlaceholder = NSAttributedString(string: "請輸入郵箱", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        phoneTf.attributedPlaceholder = NSAttributedString(string: "請輸入手機號", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         chooseAvatarButton.setTitle("選擇頭像", for: .normal)
     }
     
@@ -160,8 +187,18 @@ class RegisterViewController: UIViewController {
         self.confirm_passwordTf.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         self.confirm_passwordTf.topAnchor.constraint(equalTo: self.passwordTf.bottomAnchor, constant: 5.0).isActive = true
         self.confirm_passwordTf.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        
+        self.emailTf.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        self.emailTf.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        self.emailTf.topAnchor.constraint(equalTo: self.confirm_passwordTf.bottomAnchor, constant: 5.0).isActive = true
+        self.emailTf.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        
+        self.phoneTf.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        self.phoneTf.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        self.phoneTf.topAnchor.constraint(equalTo: self.emailTf.bottomAnchor, constant: 5.0).isActive = true
+        self.phoneTf.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
 
-        self.registerButton.topAnchor.constraint(equalTo: self.confirm_passwordTf.bottomAnchor).isActive = true
+        self.registerButton.topAnchor.constraint(equalTo: self.phoneTf.bottomAnchor, constant: 20.0).isActive = true
         self.registerButton.centerXAnchor.constraint(equalTo: self.chooseAvatarButton.centerXAnchor).isActive = true
         self.registerButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
         self.registerButton.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 1.0).isActive = true
@@ -173,19 +210,30 @@ class RegisterViewController: UIViewController {
         let line1 = UIView()
         let line2 = UIView()
         let line3 = UIView()
+        let line4 = UIView()
+        let line5 = UIView()
         line1.backgroundColor = UIColor.white
         line2.backgroundColor = UIColor.white
         line3.backgroundColor = UIColor.white
+        line4.backgroundColor = UIColor.white
+        line5.backgroundColor = UIColor.white
         contentView.addSubview(line1)
         contentView.addSubview(line2)
         contentView.addSubview(line3)
+        contentView.addSubview(line4)
+        contentView.addSubview(line5)
         line1.translatesAutoresizingMaskIntoConstraints = false
         line2.translatesAutoresizingMaskIntoConstraints = false
         line3.translatesAutoresizingMaskIntoConstraints = false
+        line4.translatesAutoresizingMaskIntoConstraints = false
+        line5.translatesAutoresizingMaskIntoConstraints = false
         
         line1.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         line2.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         line3.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        line4.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        line5.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
         line1.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
         line1.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
         line1.bottomAnchor.constraint(equalTo: self.usernameTf.bottomAnchor, constant: 0.0).isActive = true
@@ -195,6 +243,12 @@ class RegisterViewController: UIViewController {
         line3.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
         line3.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
         line3.bottomAnchor.constraint(equalTo: self.confirm_passwordTf.bottomAnchor, constant: 0.0).isActive = true
+        line4.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
+        line4.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
+        line4.bottomAnchor.constraint(equalTo: self.emailTf.bottomAnchor, constant: 0.0).isActive = true
+        line5.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
+        line5.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
+        line5.bottomAnchor.constraint(equalTo: self.phoneTf.bottomAnchor, constant: 0.0).isActive = true
     }
     
     fileprivate func setupNavigationBar() {
@@ -268,14 +322,14 @@ extension RegisterViewController {
                                   buttonTextColor: [.default: .brown,
                                                     .destructive: .blue,
                                                     .cancel: .gray])
-        let action1 = PCLBlurEffectAlertAction(title: "Default", style: .default) { _ in
-            print("You pressed No.1")
+        let action1 = PCLBlurEffectAlertAction(title: "拍照", style: .default) { _ in
+            self.openCamera()
         }
-        let action2 = PCLBlurEffectAlertAction(title: "Destructive", style: .destructive) { _ in
-            print("You pressed No.2")
+        let action2 = PCLBlurEffectAlertAction(title: "從手機相冊選擇", style: .destructive) { _ in
+            self.openLibrary()
         }
         let cancelAction = PCLBlurEffectAlertAction(title: "Cancel", style: .cancel) { _ in
-            print("You pressed Cancel")
+            
         }
         alertController.addAction(action1)
         alertController.addAction(action2)
@@ -305,10 +359,15 @@ extension RegisterViewController {
         guard let password = passwordTf.text else { return }
         guard let confirm_password = confirm_passwordTf.text else { return }
         guard let avatar = chooseAvatarButton.image(for: .normal) else { return }
-        AuthenticationManager.shared.accountLogin.register(username: username, password: password, confirm_password: confirm_password, avate: avatar, success: { [weak self] (response) in
+        guard let email = emailTf.text else { return }
+        guard let phone = phoneTf.text else { return }
+        AuthenticationManager.shared.accountLogin.register(username: username, password: password, confirm_password: confirm_password, email:email, phone:phone, avate: avatar, success: { [weak self] (response) in
             // 註冊成功
             sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: {
-               
+                if let registerCom = self?.registerCompletion {
+                    registerCom(username, password, nil)
+                }
+                self?.navigationController?.popViewController(animated: true)
                 
             })
         }) { [weak self] (error) in
@@ -325,7 +384,9 @@ extension RegisterViewController {
                 self?.confirm_passwordTf.isEnabled = true
                 self?.chooseAvatarButton.isEnabled = true
                 self?.registerButton.isEnabled = true
-                
+                if let registerCom = self?.registerCompletion {
+                    registerCom(username, password, error)
+                }
             })
         }
         
@@ -378,4 +439,29 @@ extension RegisterViewController {
         })
     }
     
+}
+
+extension RegisterViewController {
+    
+    var croppingParameters: CroppingParameters {
+        return CroppingParameters(isEnabled: false, allowResizing: true, allowMoving: false, minimumSize: CGSize(width: 60, height: 60))
+    }
+    
+    fileprivate func openCamera() {
+        let cameraViewController = CameraViewController(croppingParameters: croppingParameters, allowsLibraryAccess: true) { [weak self] image, asset in
+            self?.chooseAvatarButton.setImage(image, for: .normal)
+            self?.dismiss(animated: true, completion: nil)
+        }
+        
+        present(cameraViewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func openLibrary() {
+        let libraryViewController = CameraViewController.imagePickerViewController(croppingParameters: croppingParameters) { [weak self] image, asset in
+            self?.chooseAvatarButton.setImage(image, for: .normal)
+            self?.dismiss(animated: true, completion: nil)
+        }
+        
+        present(libraryViewController, animated: true, completion: nil)
+    }
 }

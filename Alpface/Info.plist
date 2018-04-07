@@ -25,6 +25,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>App需要相機權限</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App需要訪問您的相冊</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MedulaOne-Regular.ttf</string>

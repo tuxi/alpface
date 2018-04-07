@@ -77,7 +77,16 @@ class LoginViewController: UIViewController {
     }()
     
     @objc fileprivate func registerButtonClick(_ sender: UIButton) {
-        let registerController = RegisterViewController()
+        let registerController = RegisterViewController {[weak self] (username, password, error) -> (Void) in
+            if error == nil {
+                self?.usernameTf.text = username
+                self?.passwordTf.text = password
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+2.0, execute: {
+                    guard let loginButton = self?.loginButton else { return }
+                    self?.loginButtonClick(loginButton)
+                })
+            }
+        }
         self.show(registerController, sender: self)
     }
     
