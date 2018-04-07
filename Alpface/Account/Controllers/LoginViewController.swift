@@ -76,7 +76,12 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    @objc func loginButtonClick(_ sender: TransitionButton) {
+    @objc fileprivate func registerButtonClick(_ sender: UIButton) {
+        let registerController = RegisterViewController()
+        self.show(registerController, sender: self)
+    }
+    
+    @objc fileprivate func loginButtonClick(_ sender: TransitionButton) {
         
         usernameTf.isEnabled = false
         passwordTf.isEnabled = false
@@ -209,9 +214,10 @@ class LoginViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         setupUI()
-        createObserver()
+        setupObserver()
         loginButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
         loginButton.addTarget(self, action: #selector(loginButtonClick(_:)), for: .touchUpInside)
+        registerButton.addTarget(self, action: #selector(registerButtonClick(_:)), for: .touchUpInside)
         registerButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
         usernameTf.becomeFirstResponder()
     }
@@ -243,7 +249,7 @@ class LoginViewController: UIViewController {
         loginProblemButton.setTitle("登錄遇到問題", for: .normal)
         registerButton.setTitle("需要一個新的賬戶", for: .normal)
         usernameTf.text = "alpface"
-        passwordTf.text = "Sey308719*"
+        passwordTf.text = "Sey123456*"
         setupNavigationBar()
         updateLoginButtonLayout(animated: false)
     }
@@ -326,9 +332,15 @@ class LoginViewController: UIViewController {
         pastelView.startAnimation()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.usernameTf.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.usernameTf.resignFirstResponder()
+        self.passwordTf.resignFirstResponder()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -384,7 +396,7 @@ class LoginViewController: UIViewController {
 extension  LoginViewController {
     
     // 监听键盘
-    fileprivate  func createObserver(){
+    fileprivate  func setupObserver(){
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow(notification:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide(notification:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
