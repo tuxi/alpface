@@ -44,6 +44,34 @@ class HitTestContainerViewCollectionViewCell: UICollectionViewCell {
     @objc optional func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, childScrollViewLeaveTop scrollView: UIScrollView) -> Void
 }
 
+class HitTestContainerCollectionView: UICollectionView, UIGestureRecognizerDelegate {
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        let pan : UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
+        
+        if pan.isEqual(self.panGestureRecognizer) == false {
+            return true
+        }
+        
+        let point = pan.translation(in: self)
+        if pan.state == .began || pan.state == .possible {
+            // y轴偏移量大，说明是上下移动, 上下滑动，让其不能响应手势
+            if fabs(point.y) >= fabs(point.x) {
+                return false
+            }
+            else {
+                // 左右滑动，如果此时collectionView的contentOffset.x < 0，
+                // 并且 手指在collectionView上的x轴偏移量大于0，说明向左移动，此时让其不能响应手势
+                if self.contentOffset.x <= 0 && point.x > 0 {
+                    return false
+                }
+            }
+        }
+        
+        return true
+    }
+}
+
 class HitTestContainerViewController: UIViewController {
     
     public var viewControllers: [ProfileViewChildControllerProtocol]? {
@@ -66,12 +94,12 @@ class HitTestContainerViewController: UIViewController {
     
     fileprivate static let cellIfentifier: String = "HitTestContainerViewCollectionViewCell"
     
-    public lazy var collectionView: UICollectionView = {
+    public lazy var collectionView: HitTestContainerCollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 0
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.scrollDirection = .horizontal
-        let view = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let view = HitTestContainerCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         view.delegate = self
         view.dataSource = self
         view.register(HitTestContainerViewCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: HitTestContainerViewController.cellIfentifier)
@@ -262,3 +290,4 @@ extension HitTestContainerViewController {
         }
     }
 }
+

@@ -516,6 +516,9 @@ extension BaseProfileViewController: HitTestScrollViewGestureRecognizerDelegate 
         if gestureRecognizer == self.mainScrollView.panGestureRecognizer && otherGestureRecognizer == self.containerViewController.collectionView.panGestureRecognizer {
             return false
         }
+        if gestureRecognizer.view!.isMember(of: HitTestScrollView.classForCoder()) && otherGestureRecognizer.view!.isMember(of:GestureCoordinatingCollectionView.classForCoder()) {
+            return false
+        }
         return true
     }
 }
