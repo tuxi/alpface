@@ -31,7 +31,7 @@ class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = UIColor.clear
         // Do any additional setup after loading the view.
         UITabBarItem.appearance(whenContainedInInstancesOf: [MainTabBarController.self]).setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22.0)], for:.normal)
         UITabBarItem.appearance(whenContainedInInstancesOf: [MainTabBarController.self]).setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.orange, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22.0)], for:.selected)
