@@ -11,6 +11,7 @@ import Alamofire
 
 // 网络请求超时时间
 let NetworkTimeoutInterval:Double = 10
+let alp_cookies_key = "alp_cookies_key"
 
 @objc protocol HttpRequestDelegate: NSObjectProtocol {
     
@@ -37,25 +38,25 @@ final class HttpRequestHelper: NSObject {
         let config:URLSessionConfiguration = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = NetworkTimeoutInterval
         sessionManager = SessionManager(configuration: config)
-        
-        var headers: HTTPHeaders = [
+        setCookie()
+        let headers: HTTPHeaders = [
             "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" ,
             "Content-Type": "application/x-www-form-urlencoded",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
             "Accept-Encoding": "gzip,deflate",
             "Accept-Language": "zh-CN,zh;q=0.9",
-            "Referer": "http://10.211.55.3:8000/login/",
             "Upgrade-Insecure-Requests": "1"
         ]
         
-        if let csrftoken = AuthenticationManager.shared.csrftoken {
-            headers["Cookie"] = "csrftoken=\(csrftoken)"
-        }
+//        if let csrftoken = AuthenticationManager.shared.csrftoken {
+//            headers["Cookie"] = "csrftoken=\(csrftoken)"
+//        }
         
         Alamofire.request(url, method: method, parameters: parameters as? Parameters, encoding: URLEncoding.default, headers: headers).responseString(queue: DispatchQueue.global(), encoding: String.Encoding.utf8, completionHandler: { (response) in
             let data = response.result.value
             if (response.result.isSuccess)
             {
+                self.saveCookie(response: response)
                 finishedCallBack(data as AnyObject, nil)
             }
             else
@@ -64,6 +65,35 @@ final class HttpRequestHelper: NSObject {
             }
         })
         
+    }
+    
+    class func saveCookie(response: DataResponse<String>) -> Void {
+        // response 获取 cookie
+        let headerFields = response.response?.allHeaderFields as! [String: String]
+        let url = response.request?.url
+        if url?.absoluteString == ALPConstans.HttpRequestURL().login {
+            let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: url!)
+            var cookieArray = [ [HTTPCookiePropertyKey : Any ] ]()
+            for cookie in cookies {
+                cookieArray.append(cookie.properties!)
+            }
+            UserDefaults.standard.set(cookieArray, forKey: alp_cookies_key)
+            UserDefaults.standard.synchronize()
+        }
+        
+    }
+    
+    public class func setCookie() -> Void {
+        // 读取并携带 cookie， 一般写在 AppDelegate 中就可以
+        if let cookieArray = UserDefaults.standard.array(forKey: alp_cookies_key) {
+            for cookieData in cookieArray {
+                if let dict = cookieData as? [HTTPCookiePropertyKey : Any] {
+                    if let cookie = HTTPCookie.init(properties : dict) {
+                        HTTPCookieStorage.shared.setCookie(cookie)
+                    }
+                }
+            }
+        }
     }
     
     

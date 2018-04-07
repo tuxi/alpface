@@ -25,6 +25,16 @@ final class AuthenticationManager: NSObject {
         }
     }
     
+    public var authToken : String? {
+        get {
+            return UserDefaults.standard.object(forKey: ALPAuthTokenKey) as? String
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: ALPAuthTokenKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     var isLogin : Bool  {
         get {
             if loginUser?.username?.isEmpty == false {

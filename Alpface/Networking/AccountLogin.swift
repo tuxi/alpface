@@ -91,6 +91,7 @@ public class AccountLogin: NSObject {
                 
                 let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
                 if let userDict = jsonDict["user"] as? [String : Any] {
+                    // 登录成功后保存cookies
                     guard let succ = success else { return }
                     let user = User(dict: userDict)
                     if let username = user.username {
@@ -169,7 +170,7 @@ extension NSObject {
             print("无法解析出JSONString")
             return ""
         }
-        let data : NSData! = try? JSONSerialization.data(withJSONObject: dictionary, options: []) as NSData!
+        let data : NSData! = try? JSONSerialization.data(withJSONObject: dictionary, options: []) as NSData
         let JSONString = NSString(data:data as Data,encoding: String.Encoding.utf8.rawValue)
         return JSONString! as String
         

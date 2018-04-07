@@ -14,8 +14,6 @@ class MyReleaseViewController: ChildListViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
-        self.collectionItems = [PlayVideoModel()]
     }
 
     override func didReceiveMemoryWarning() {
