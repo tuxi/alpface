@@ -128,7 +128,7 @@ public class AccountLogin: NSObject {
     
     
     /// 登录解决，会先获取一个新的csrftoken，再进行登录操作
-    public func register(username: String, password: String, confirm_password: String, avate: UIImage? ,success: ALPHttpResponseBlock?, failure: ALPErrorHandler?){
+    public func register(username: String, password: String, confirm_password: String, email: String, phone: String, avate: UIImage? ,success: ALPHttpResponseBlock?, failure: ALPErrorHandler?){
         
         /// 註冊之前先请求csrftoken
         getCsrfToken(success: { (response) in
@@ -140,6 +140,8 @@ public class AccountLogin: NSObject {
                 "password": password,
                 "confirm_password": confirm_password,
                 "nickname": username,
+                "phone": phone,
+                "email": email,
                 ]
             
 
@@ -147,7 +149,7 @@ public class AccountLogin: NSObject {
             Alamofire.upload(multipartFormData: { (multipartFormData) in
                 
                 let _data = UIImageJPEGRepresentation((avate)!, 0.5)
-                multipartFormData.append(_data!, withName:"headimg", fileName:  "/(str).jpg", mimeType:"image/jpeg")
+                multipartFormData.append(_data!, withName:"avatar", fileName:  "\(username).jpg", mimeType:"image/jpeg")
                 // 遍历字典
                 for (key, value) in parameters {
                     
@@ -162,11 +164,18 @@ public class AccountLogin: NSObject {
                 case .success(let upload,_, _):
                     upload.responseJSON(completionHandler: { (response) in
 
-                        if let value = response.result.value {
-                            let jsonDict = self.getDictionaryFromJSONString(jsonString: value as! String)
-                            if jsonDict["status"] as? String == "success" {
-                                
+                        if let value = response.result.value as? NSDictionary {
+                            if value["status"] as? String == "success" {
+                                guard let succ = success else { return }
+                                DispatchQueue.main.async {
+                                    succ(value)
+                                }
                             }
+                            return
+                        }
+                        guard let fail = failure else { return }
+                        DispatchQueue.main.async {
+                            fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
                         }
                     })
                 case .failure(let error):
