@@ -44,7 +44,7 @@ class HitTestContainerViewCollectionViewCell: UICollectionViewCell {
     @objc optional func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, childScrollViewLeaveTop scrollView: UIScrollView) -> Void
 }
 
-class HitTestContainerCollectionView: UICollectionView, UIGestureRecognizerDelegate {
+class HitTestContainerCollectionView: UICollectionView {
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         let pan : UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer

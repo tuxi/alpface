@@ -42,6 +42,7 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupEmptyDataView()
     }
     
     
@@ -101,6 +102,34 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    fileprivate func setupEmptyDataView() {
+        collectionView.xy_textLabelBlock = { [weak self] label in
+            label.font = UIFont.systemFont(ofSize: 13.0)
+            label.text = self?.titleForEmptyDataView()
+        }
+        
+        collectionView.xy_detailTextLabelBlock = { [weak self] label in
+            label.text = self?.detailTitleForEmptyDataView()
+        }
+        
+//        collectionView.xy_reloadButtonBlock = { button in
+//            button.setTitle("刷新吧", for: .normal)
+//            button.backgroundColor = UIColor.blue.withAlphaComponent(0.7)
+//            button.layer.cornerRadius = 5.0
+//            button.layer.masksToBounds = true
+//        }
+        
+        collectionView.emptyDataDelegate = self
+    }
+    
+    public func titleForEmptyDataView() -> String? {
+        return nil
+    }
+    
+    public func detailTitleForEmptyDataView() -> String? {
+        return nil
+    }
  
 }
 
@@ -140,4 +169,26 @@ extension ChildListViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
 }
+
+extension ChildListViewController: XYEmptyDataDelegate {
+    
+    func emptyDataView(_ scrollView: UIScrollView, didClickReload button: UIButton) {
+        
+    }
+    
+    func emptyDataView(imageViewSizeforEmptyDataView scrollView: UIScrollView) -> CGSize {
+        
+        return CGSize(width: 280, height: 280)
+    }
+    
+    func emptyDataView(contentOffsetforEmptyDataView scrollView: UIScrollView) -> CGPoint {
+        return CGPoint(x: 0, y: -180)
+    }
+    
+    func emptyDataView(contentSubviewsGlobalVerticalSpaceForEmptyDataView scrollView: UIScrollView) -> CGFloat {
+        return 20.0
+    }
+}
+
+
 

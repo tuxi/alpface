@@ -14,7 +14,7 @@ protocol HitTestScrollViewGestureRecognizerDelegate: UIScrollViewDelegate {
 }
 
 @objc(ALPHitTestScrollView)
-internal class HitTestScrollView: UITableView, UIGestureRecognizerDelegate {
+internal class HitTestScrollView: UITableView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
