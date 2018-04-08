@@ -9,7 +9,7 @@
 import UIKit
 
 @objc(ALPGestureCoordinatingCollectionView)
-class GestureCoordinatingCollectionView: UICollectionView, UIGestureRecognizerDelegate {
+class GestureCoordinatingCollectionView: UICollectionView {
     
     public weak var gestureDelegate: UIGestureRecognizerDelegate?
 
