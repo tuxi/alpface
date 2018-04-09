@@ -23,7 +23,7 @@ class MyStoryViewController: ChildListViewController {
     
 
     override func titleForEmptyDataView() -> String? {
-        return "空空如野~"
+        return "空空如也~"
     }
 
 }
