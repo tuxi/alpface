@@ -14,7 +14,8 @@ protocol HitTestScrollViewGestureRecognizerDelegate: UIScrollViewDelegate {
 }
 
 @objc(ALPHitTestScrollView)
-internal class HitTestScrollView: UITableView {
+// waring : Redundant conformance of 'HitTestScrollView' to protocol 'UIGestureRecognizerDelegate'
+internal class HitTestScrollView: UITableView/*, UIGestureRecognizerDelegate*/ {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

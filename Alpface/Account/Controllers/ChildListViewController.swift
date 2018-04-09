@@ -121,6 +121,7 @@ class ChildListViewController: UIViewController, ProfileViewChildControllerProto
 //        }
         
         collectionView.emptyDataDelegate = self
+        collectionView.reloadData()
     }
     
     public func titleForEmptyDataView() -> String? {
