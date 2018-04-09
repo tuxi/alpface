@@ -80,10 +80,11 @@ class UserProfileViewController: BaseProfileViewController {
     }
     
     func reloadCollectionData() -> Void {
-        self.locationString = self.user?.address
-        self.nickname = self.user?.nickname
+        self.profileHeaderView.locationLabel.text = self.user?.address
+        self.profileHeaderView.nicknameLabel.text = self.user?.nickname
+        self.navigationTitleLabel.text = self.user?.nickname
         if let userName = self.user?.username {
-            self.username = "用户号" + ":" + userName
+            self.profileHeaderView.usernameLabel.text = "用户号" + ":" + userName
         }
         let avatarPlaceImage = UIImage.init(named: "icon.png")
         let avatar = self.user?.getAvatarURL()
@@ -92,6 +93,12 @@ class UserProfileViewController: BaseProfileViewController {
         }
         else {
             self.profileHeaderView.iconImageView.image = avatarPlaceImage
+        }
+        
+        self.profileHeaderView.followButton.setTitle("Follow", for: .normal)
+        if self.user?.username == AuthenticationManager.shared.loginUser?.username {
+            // 登录用户自己的个人页面
+            self.profileHeaderView.followButton.setTitle("Settings", for: .normal)
         }
         
         self.view.layoutIfNeeded()

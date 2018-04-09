@@ -70,43 +70,6 @@ open class BaseProfileViewController: UIViewController {
         return maxHeight
     }
     
-    open var username: String? {
-        didSet {
-            self.profileHeaderView.usernameLabel.text = username
-        }
-    }
-    
-    open var nickname : String? {
-        didSet {
-            self.profileHeaderView.nicknameLabel.text = nickname;
-            self.navigationTitleLabel.text = nickname
-        }
-    }
-    
-    open var profileImage: UIImage? {
-        didSet {
-            self.profileHeaderView.iconImageView.image = profileImage
-        }
-    }
-    
-    open var locationString: String? {
-        didSet {
-            self.profileHeaderView.locationLabel.text = locationString
-        }
-    }
-    
-    open var descriptionString: String? {
-        didSet {
-            self.profileHeaderView.praiseLabel.text = descriptionString
-        }
-    }
-    
-    open var coverImage: UIImage? {
-        didSet {
-            self.headerCoverView.image = coverImage
-        }
-    }
-    
     // MARK: Properties
     open var currentIndex: Int = 0 {
         didSet {
@@ -150,7 +113,7 @@ open class BaseProfileViewController: UIViewController {
         return _mainScrollView
     }()
     
-    fileprivate lazy var headerCoverView: UIImageView = {
+    open lazy var headerCoverView: UIImageView = {
         let coverImageView = UIImageView()
         coverImageView.clipsToBounds = true
         coverImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -161,10 +124,6 @@ open class BaseProfileViewController: UIViewController {
     
     open lazy var profileHeaderView: ProfileHeaderView = {
         let _profileHeaderView = ProfileHeaderView(frame: CGRect.init(x: 0, y: 0, width: self.mainScrollView.frame.width, height: 220))
-        _profileHeaderView.nicknameLabel.text = self.username
-        _profileHeaderView.locationLabel.text = self.locationString
-        _profileHeaderView.iconImageView.image = self.profileImage
-        _profileHeaderView.usernameLabel.text = self.nickname
         return _profileHeaderView
     }()
     
@@ -207,9 +166,9 @@ open class BaseProfileViewController: UIViewController {
         return _segmentedControlContainer
     }()
     
-    fileprivate lazy var navigationTitleLabel: UILabel = {
+    open lazy var navigationTitleLabel: UILabel = {
         let _navigationTitleLabel = UILabel()
-        _navigationTitleLabel.text = self.username ?? "{username}"
+        _navigationTitleLabel.text = "username"
         _navigationTitleLabel.textColor = UIColor.white
         _navigationTitleLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
         
@@ -691,7 +650,7 @@ extension BaseProfileViewController {
 extension BaseProfileViewController {
     
     var debugMode: Bool {
-        return false
+        return true
     }
     
     func showDebugInfo() {
