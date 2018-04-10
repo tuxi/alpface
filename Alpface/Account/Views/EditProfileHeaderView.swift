@@ -10,19 +10,19 @@ import UIKit
 
 class EditProfileHeaderView: UIView {
     
-    lazy var iconImageView: ProfileIconView = {
+    fileprivate lazy var iconImageView: ProfileIconView = {
         let imageView = ProfileIconView.init(frame: .zero)
         imageView.backgroundColor = UIColor.lightGray
         return imageView
     }()
     
-    lazy var bottomLineView: UIView = {
+    fileprivate lazy var bottomLineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 220/255.0, green: 220/255.0, blue: 220/255.0, alpha: 1.0)
         return view
     }()
     
-    lazy var contentView: UIView = {
+    fileprivate lazy var contentView: UIView = {
         let contentView = UIView()
         contentView.backgroundColor = UIColor.clear
         return contentView

@@ -10,18 +10,24 @@ import UIKit
 
 class EditUserProfileViewController: UIViewController {
     
-    fileprivate lazy var mainScrollView: UITableView = {
-        let _mainScrollView = HitTestScrollView(frame: self.view.bounds, style: .plain)
-        _mainScrollView.delegate = self
-        _mainScrollView.showsHorizontalScrollIndicator = false
-        _mainScrollView.backgroundColor = UIColor.white
-        _mainScrollView.separatorStyle = .none
-        _mainScrollView.scrollsToTop = true
-        return _mainScrollView
+    let EditProfileTableViewCellIdentifier: String = "EditProfileTableViewCell"
+    
+    
+    fileprivate lazy var tableView: UITableView = {
+        let _tableView = UITableView(frame: self.view.bounds, style: .plain)
+        _tableView.delegate = self
+        _tableView.dataSource = self
+        _tableView.showsHorizontalScrollIndicator = false
+        _tableView.backgroundColor = UIColor.white
+        _tableView.separatorStyle = .none
+        _tableView.scrollsToTop = true
+        _tableView.keyboardDismissMode = .onDrag
+        _tableView.register(EditProfileTableViewCell.classForCoder(), forCellReuseIdentifier: EditProfileTableViewCellIdentifier)
+        return _tableView
     }()
     
     open lazy var profileHeaderView: EditProfileHeaderView = {
-        let _profileHeaderView = EditProfileHeaderView(frame: CGRect.init(x: 0, y: 0, width: self.mainScrollView.frame.width, height: 55.0))
+        let _profileHeaderView = EditProfileHeaderView(frame: CGRect.init(x: 0, y: 0, width: self.tableView.frame.width, height: 55.0))
         return _profileHeaderView
     }()
     
@@ -64,7 +70,7 @@ class EditUserProfileViewController: UIViewController {
     }
     open func updateHeaderLayoutIfNeeded() {
         if self.needsUpdateHeaderLayout == true {
-            self.profileHeaderViewHeight = profileHeaderView.sizeThatFits(self.mainScrollView.bounds.size).height
+            self.profileHeaderViewHeight = profileHeaderView.sizeThatFits(self.tableView.bounds.size).height
             
             /// 只要第一次view布局完成时，再调整下stickyHeaderContainerView的frame，剩余的情况会在scrollViewDidScrollView:时调整
             self.stickyHeaderContainerView.frame = self.computeStickyHeaderContainerViewFrame()
@@ -74,22 +80,22 @@ class EditUserProfileViewController: UIViewController {
             self.profileHeaderView.frame = self.computeProfileHeaderViewFrame()
             
             tableHeaderView.frame = CGRect.init(x: 0, y: 0, width: 0, height: stickyHeaderContainerView.frame.height + profileHeaderView.frame.size.height)
-            self.mainScrollView.tableHeaderView = tableHeaderView
+            self.tableView.tableHeaderView = tableHeaderView
             profileHeaderView.frame = self.computeProfileHeaderViewFrame()
             self.needsUpdateHeaderLayout = false
         }
     }
     
     func computeStickyHeaderContainerViewFrame() -> CGRect {
-        return CGRect(x: 0, y: 0, width: mainScrollView.bounds.width, height: stickyheaderContainerViewHeight)
+        return CGRect(x: 0, y: 0, width: tableView.bounds.width, height: stickyheaderContainerViewHeight)
     }
     
     func computeProfileHeaderViewFrame() -> CGRect {
-        return CGRect(x: 0, y: computeStickyHeaderContainerViewFrame().origin.y + stickyheaderContainerViewHeight, width: mainScrollView.bounds.width, height: profileHeaderViewHeight)
+        return CGRect(x: 0, y: computeStickyHeaderContainerViewFrame().origin.y + stickyheaderContainerViewHeight, width: tableView.bounds.width, height: profileHeaderViewHeight)
     }
     
     func computeNavigationFrame() -> CGRect {
-        let navigationHeight:CGFloat = max(stickyHeaderContainerView.frame.origin.y - self.mainScrollView.contentOffset.y + stickyHeaderContainerView.bounds.height, navigationMinHeight)
+        let navigationHeight:CGFloat = max(stickyHeaderContainerView.frame.origin.y - self.tableView.contentOffset.y + stickyHeaderContainerView.bounds.height, navigationMinHeight)
         
         let navigationLocation = CGRect(x: 0, y: 0, width: stickyHeaderContainerView.bounds.width, height: navigationHeight)
         return navigationLocation
@@ -118,18 +124,18 @@ extension EditUserProfileViewController {
         self.navigationItem.title = "编辑个人资料"
         self.view.backgroundColor = UIColor.white
         
-        self.view.addSubview(mainScrollView)
+        self.view.addSubview(tableView)
         
-        mainScrollView.translatesAutoresizingMaskIntoConstraints = false
-        mainScrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        mainScrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        mainScrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        mainScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         tableHeaderView.addSubview(stickyHeaderContainerView)
         tableHeaderView.addSubview(profileHeaderView)
         
-        mainScrollView.tableHeaderView = tableHeaderView
+        tableView.tableHeaderView = tableHeaderView
         
         
         // 导航标题
@@ -152,7 +158,7 @@ extension EditUserProfileViewController: UITableViewDelegate {
     /// scrollView滚动时调用
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        if scrollView.isEqual(self.mainScrollView) == false {
+        if scrollView.isEqual(self.tableView) == false {
             return
         }
         let contentOffset = scrollView.contentOffset
@@ -167,7 +173,7 @@ extension EditUserProfileViewController: UITableViewDelegate {
             self.stickyHeaderContainerView.frame = CGRect(
                 x: 0,
                 y: contentOffset.y,
-                width: mainScrollView.bounds.width,
+                width: tableView.bounds.width,
                 height: newHeight)
             
             // 更新blurEffectView的透明度
@@ -191,7 +197,7 @@ extension EditUserProfileViewController: UITableViewDelegate {
             
             // 当scrollView滚动到达阈值时scrollToScaleDownProfileIconDistance
             if contentOffset.y >= scrollToScaleDownProfileIconDistance() {
-                self.stickyHeaderContainerView.frame = CGRect(x: 0, y: contentOffset.y - scrollToScaleDownProfileIconDistance(), width: mainScrollView.bounds.width, height: stickyheaderContainerViewHeight)
+                self.stickyHeaderContainerView.frame = CGRect(x: 0, y: contentOffset.y - scrollToScaleDownProfileIconDistance(), width: tableView.bounds.width, height: stickyheaderContainerViewHeight)
                 // 当scrollView 的 segment顶部 滚动到scrollToScaleDownProfileIconDistance时(也就是导航底部及以上位置)，让stickyHeaderContainerView显示在最上面，防止被profileHeaderView遮挡
                 tableHeaderView.bringSubview(toFront: self.stickyHeaderContainerView)
                 
@@ -214,6 +220,27 @@ extension EditUserProfileViewController: UITableViewDelegate {
     }
     
 }
+
+extension EditUserProfileViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: EditProfileTableViewCellIdentifier, for: indexPath) as! EditProfileTableViewCell
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55.0
+    }
+}
+
 // MARK: Animators
 extension EditUserProfileViewController {
     /// 更新导航条上面titleLabel的位置

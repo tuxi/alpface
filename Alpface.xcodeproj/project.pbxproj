@@ -37,7 +37,8 @@
 		D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20093432078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift */; };
 		D21A2CCB207CF5C600335A8A /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CCA207CF5C600335A8A /* EditUserProfileViewController.swift */; };
 		D21A2CCD207CFA0600335A8A /* StickyHeaderContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CCC207CFA0600335A8A /* StickyHeaderContainerView.swift */; };
-		D21A2CCF207D036A00335A8A /* EditProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CCE207D036A00335A8A /* EditProfileHeaderView.swift */; };
+		D21A2CD1207D09DC00335A8A /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */; };
+		D21A2CD3207D0BF800335A8A /* EditProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CD2207D0BF800335A8A /* EditProfileHeaderView.swift */; };
 		D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD053207A6586003E08B9 /* XYEmptyData.swift */; };
 		D22FD056207A65A2003E08B9 /* RuntimeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
@@ -145,7 +146,8 @@
 		D20093432078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PCLBlurEffectAlert+Controller.swift"; sourceTree = "<group>"; };
 		D21A2CCA207CF5C600335A8A /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		D21A2CCC207CFA0600335A8A /* StickyHeaderContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyHeaderContainerView.swift; sourceTree = "<group>"; };
-		D21A2CCE207D036A00335A8A /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
+		D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
+		D21A2CD2207D0BF800335A8A /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
 		D22FD053207A6586003E08B9 /* XYEmptyData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XYEmptyData.swift; sourceTree = "<group>"; };
 		D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuntimeExtensions.swift; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -505,7 +507,6 @@
 				D289537020771A6B0029CE92 /* MyFavoriteViewController.swift */,
 				D289537220771A8B0029CE92 /* MyStoryViewController.swift */,
 				D21A2CCA207CF5C600335A8A /* EditUserProfileViewController.swift */,
-				D21A2CCE207D036A00335A8A /* EditProfileHeaderView.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -581,7 +582,9 @@
 		D28B22932077329500680970 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D21A2CD2207D0BF800335A8A /* EditProfileHeaderView.swift */,
 				D28B2294207732BA00680970 /* VideoGifCollectionViewCell.swift */,
+				D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -824,9 +827,9 @@
 				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
 				D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
 				D2DC5748206FB1F300458F54 /* VideoRequest.swift in Sources */,
+				D21A2CD1207D09DC00335A8A /* EditProfileTableViewCell.swift in Sources */,
 				D2BCBA43206F33F2008409B3 /* FeedCellViewController.swift in Sources */,
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
-				D21A2CCF207D036A00335A8A /* EditProfileHeaderView.swift in Sources */,
 				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
 				D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */,
@@ -884,6 +887,7 @@
 				D2BCBA4D206F33F2008409B3 /* VideoPlayerView.swift in Sources */,
 				D28953662076A4EE0029CE92 /* HitTestContainerViewController.swift in Sources */,
 				D2DC574A206FB7EA00458F54 /* AccountLogin.swift in Sources */,
+				D21A2CD3207D0BF800335A8A /* EditProfileHeaderView.swift in Sources */,
 				D21A2CCB207CF5C600335A8A /* EditUserProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
