@@ -97,8 +97,9 @@ class UserProfileViewController: BaseProfileViewController {
         
         self.profileHeaderView.followButton.setTitle("Follow", for: .normal)
         if self.user?.username == AuthenticationManager.shared.loginUser?.username {
-            // 登录用户自己的个人页面
+            // 用户自己的个人页面
             self.profileHeaderView.followButton.setTitle("Settings", for: .normal)
+            self.profileHeaderView.followButton.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
         }
         
         self.view.layoutIfNeeded()
@@ -121,6 +122,14 @@ class UserProfileViewController: BaseProfileViewController {
                 }
             }
         }
+    }
+}
+
+extension UserProfileViewController {
+    @objc fileprivate func editProfile() {
+        let editVc = EditUserProfileViewController()
+        let nac = UINavigationController(rootViewController: editVc)
+        self.showDetailViewController(nac, sender: self)
     }
 }
 
