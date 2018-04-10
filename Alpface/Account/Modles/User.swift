@@ -22,6 +22,7 @@ class User: NSObject, NSCoding {
     public var is_active: Bool = false
     public var my_videos: [VideoItem]?
     public var my_likes: [VideoItem]?
+    public var summany: String?
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(userid, forKey: "userid")
@@ -37,6 +38,7 @@ class User: NSObject, NSCoding {
         aCoder.encode(is_active, forKey: "is_active")
         aCoder.encode(my_videos, forKey: "my_videos")
         aCoder.encode(my_likes, forKey: "my_likes")
+        aCoder.encode(summany, forKey: "summany")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,6 +55,7 @@ class User: NSObject, NSCoding {
         is_active = aDecoder.decodeBool(forKey: "is_active")
         my_videos = aDecoder.decodeObject(forKey: "my_videos") as? [VideoItem]
         my_likes = aDecoder.decodeObject(forKey: "my_likes") as? [VideoItem]
+        summany = aDecoder.decodeObject(forKey: "summany") as? String
     }
     
     public func getAvatarURL() -> URL? {
@@ -117,6 +120,9 @@ class User: NSObject, NSCoding {
                 items.append(item)
             }
             self.my_likes = items
+        }
+        if let summany = dict["summany"] as? String {
+            self.summany = summany
         }
     }
     

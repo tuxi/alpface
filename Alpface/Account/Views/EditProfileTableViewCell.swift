@@ -32,6 +32,24 @@ class EditProfileTableViewCell: UITableViewCell {
         return view
     }()
     
+    fileprivate var titleLabelCenterYContraint: NSLayoutConstraint?
+    fileprivate var titleLabelTopContraint: NSLayoutConstraint?
+    
+    public var model: EditUserProfileModel? {
+        didSet {
+            self.titleLabel.text = titleLabel.text
+            self.textField.placeholder = model?.placeholder
+            if model?.type == EditUserProfileModelType.textFieldMultiLine {
+                titleLabelCenterYContraint?.isActive = false
+                titleLabelTopContraint?.isActive = true
+            }
+            else {
+                titleLabelCenterYContraint?.isActive = true
+                titleLabelTopContraint?.isActive = false
+            }
+        }
+    }
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -61,7 +79,11 @@ class EditProfileTableViewCell: UITableViewCell {
         self.textField.translatesAutoresizingMaskIntoConstraints = false
         self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.titleLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
+        titleLabelCenterYContraint = self.titleLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
+        titleLabelCenterYContraint?.isActive = true
+        
+        titleLabelTopContraint = self.titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10.0)
+        
         self.titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 12.0).isActive = true
         
         self.textField.leadingAnchor.constraint(equalTo: self.titleLabel.trailingAnchor, constant: 30.0).isActive = true

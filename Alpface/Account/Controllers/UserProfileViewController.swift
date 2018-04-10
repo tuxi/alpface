@@ -127,7 +127,7 @@ class UserProfileViewController: BaseProfileViewController {
 
 extension UserProfileViewController {
     @objc fileprivate func editProfile() {
-        let editVc = EditUserProfileViewController()
+        let editVc = EditUserProfileViewController(user: self.user!)
         let nac = UINavigationController(rootViewController: editVc)
         self.showDetailViewController(nac, sender: self)
     }

@@ -12,6 +12,9 @@ class EditUserProfileViewController: UIViewController {
     
     let EditProfileTableViewCellIdentifier: String = "EditProfileTableViewCell"
     
+    fileprivate var editProfileItems: [EditUserProfileModel] = []
+    
+    public var user: User?
     
     fileprivate lazy var tableView: UITableView = {
         let _tableView = UITableView(frame: self.view.bounds, style: .plain)
@@ -62,6 +65,11 @@ class EditUserProfileViewController: UIViewController {
         return stickyheaderContainerViewHeight - navigationMinHeight
     }
     
+    convenience init(user: User) {
+        self.init()
+        self.user = user
+    }
+    
     
     /// 更新table header 布局，高度是计算出来的，所以当header上的内容发生改变时，应该执行一次更新header布局
     fileprivate var needsUpdateHeaderLayout = false
@@ -103,7 +111,7 @@ class EditUserProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.setupItems()
         self.prepareViews()
     }
     override open func viewDidLayoutSubviews() {
@@ -118,7 +126,19 @@ class EditUserProfileViewController: UIViewController {
     
 }
 extension EditUserProfileViewController {
-    func prepareViews() {
+    
+    fileprivate func setupItems() -> Void {
+        let item1 = EditUserProfileModel(title: "姓名", content: self.user?.nickname, placeholder: "添加你的姓名")
+        let item2 = EditUserProfileModel(title: "简介", content: self.user?.summany, placeholder: "在你的个人资料中添加简介", type: .textFieldMultiLine)
+        let item3 = EditUserProfileModel(title: "位置", content: self.user?.address, placeholder: "添加你的位置")
+        let item4 = EditUserProfileModel(title: "生日", content: nil, placeholder: "选择你的生日", type: .dateTime)
+        editProfileItems.append(item1)
+        editProfileItems.append(item2)
+        editProfileItems.append(item3)
+        editProfileItems.append(item4)
+    }
+    
+    fileprivate func prepareViews() {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(backAction))
         self.navigationItem.title = "编辑个人资料"
@@ -154,6 +174,11 @@ extension EditUserProfileViewController {
 }
 
 extension EditUserProfileViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+   
+
+    }
     
     /// scrollView滚动时调用
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -227,17 +252,22 @@ extension EditUserProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return self.editProfileItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EditProfileTableViewCellIdentifier, for: indexPath) as! EditProfileTableViewCell
-        
+        cell.selectionStyle = .none
+        cell.model = self.editProfileItems[indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55.0
+        let model = self.editProfileItems[indexPath.row]
+        if model.type == .textFieldMultiLine {
+            return 100.0
+        }
+        return 50.0
     }
 }
 
