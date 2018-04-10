@@ -20,8 +20,8 @@ class EditUserProfileViewController: UIViewController {
         return _mainScrollView
     }()
     
-    open lazy var profileHeaderView: ProfileHeaderView = {
-        let _profileHeaderView = ProfileHeaderView(frame: CGRect.init(x: 0, y: 0, width: self.mainScrollView.frame.width, height: 220))
+    open lazy var profileHeaderView: EditProfileHeaderView = {
+        let _profileHeaderView = EditProfileHeaderView(frame: CGRect.init(x: 0, y: 0, width: self.mainScrollView.frame.width, height: 55.0))
         return _profileHeaderView
     }()
     
@@ -202,14 +202,10 @@ extension EditUserProfileViewController: UITableViewDelegate {
             }
             
             // 当滚动视图到达标题标签的顶部边缘时
-            let titleLabel = profileHeaderView.usernameLabel
-            let nicknameLabel = profileHeaderView.nicknameLabel
+            let profileHeaderMaxY : CGFloat = stickyheaderContainerViewHeight - 35
             
-            //  titleLabel 相对于控制器view的位置
-            let titleLabelLocationY = stickyheaderContainerViewHeight - 35
-            
-            let totalHeight = titleLabel.bounds.height + nicknameLabel.bounds.height + 35
-            let detailProgress = max(0, min((contentOffset.y - titleLabelLocationY) / totalHeight, 1))
+            let totalHeight : CGFloat = 55 + 35
+            let detailProgress = max(0, min((contentOffset.y - profileHeaderMaxY) / totalHeight, 1))
             self.stickyHeaderContainerView.blurEffectView.alpha = detailProgress
             animateNaivationTitleAt(progress: detailProgress)
             
