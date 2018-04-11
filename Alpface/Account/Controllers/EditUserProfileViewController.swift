@@ -129,7 +129,7 @@ extension EditUserProfileViewController {
     
     fileprivate func setupItems() -> Void {
         let item1 = EditUserProfileModel(title: "姓名", content: self.user?.nickname, placeholder: "添加你的姓名")
-        let item2 = EditUserProfileModel(title: "简介", content: self.user?.summany, placeholder: "在你的个人资料中添加简介", type: .textFieldMultiLine)
+        let item2 = EditUserProfileModel(title: "简介", content: self.user?.summary, placeholder: "在你的个人资料中添加简介", type: .textFieldMultiLine)
         let item3 = EditUserProfileModel(title: "位置", content: self.user?.address, placeholder: "添加你的位置")
         let item4 = EditUserProfileModel(title: "生日", content: nil, placeholder: "选择你的生日", type: .dateTime)
         editProfileItems.append(item1)
@@ -143,6 +143,8 @@ extension EditUserProfileViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(backAction))
         self.navigationItem.title = "编辑个人资料"
         self.view.backgroundColor = UIColor.white
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(update))
         
         self.view.addSubview(tableView)
         
@@ -187,17 +189,17 @@ extension EditUserProfileViewController: UITableViewDelegate {
             return
         }
         let contentOffset = scrollView.contentOffset
-        
+        let autoOffsetTop : CGFloat = 64.0
         // 当向下滚动时，固定头部视图
-        if contentOffset.y <= 0 {
-            let bounceProgress = min(1, abs(contentOffset.y) / bouncingThreshold)
+        if contentOffset.y <= -autoOffsetTop {
+            let bounceProgress = min(1, abs(contentOffset.y+autoOffsetTop) / bouncingThreshold)
             
-            let newHeight = abs(contentOffset.y) + stickyheaderContainerViewHeight
-            
+            let newHeight = abs(contentOffset.y+autoOffsetTop) + stickyheaderContainerViewHeight
+
             // 调整 stickyHeader 的 frame
             self.stickyHeaderContainerView.frame = CGRect(
                 x: 0,
-                y: contentOffset.y,
+                y: contentOffset.y+autoOffsetTop,
                 width: tableView.bounds.width,
                 height: newHeight)
             
@@ -215,10 +217,10 @@ extension EditUserProfileViewController: UITableViewDelegate {
         }
         
         // 普通情况时，适用于contentOffset.y改变时的更新
-        let scaleProgress = max(0, min(1, contentOffset.y / self.scrollToScaleDownProfileIconDistance()))
+        let scaleProgress = max(0, min(1, (contentOffset.y + 64) / self.scrollToScaleDownProfileIconDistance()))
         self.profileHeaderView.animator(t: scaleProgress)
         
-        if contentOffset.y > 0 {
+        if contentOffset.y > -autoOffsetTop {
             
             // 当scrollView滚动到达阈值时scrollToScaleDownProfileIconDistance
             if contentOffset.y >= scrollToScaleDownProfileIconDistance() {
@@ -227,18 +229,11 @@ extension EditUserProfileViewController: UITableViewDelegate {
                 tableHeaderView.bringSubview(toFront: self.stickyHeaderContainerView)
                 
             } else {
-                // 当scrollView 的 segment顶部 滚动到导航底部以下位置，让profileHeaderView显示在最上面,防止用户头像被遮挡
+                // 当scrollView 的 segment顶部 滚动到导航底部以下位置，让profileHeaderView显示在最上面,防止用户头像被遮挡, 归位
                 self.stickyHeaderContainerView.frame = computeStickyHeaderContainerViewFrame()
                 tableHeaderView.bringSubview(toFront: self.profileHeaderView)
             }
             
-            // 当滚动视图到达标题标签的顶部边缘时
-            let profileHeaderMaxY : CGFloat = stickyheaderContainerViewHeight - 35
-            
-            let totalHeight : CGFloat = 55 + 35
-            let detailProgress = max(0, min((contentOffset.y - profileHeaderMaxY) / totalHeight, 1))
-            self.stickyHeaderContainerView.blurEffectView.alpha = detailProgress
-            animateNaivationTitleAt(progress: detailProgress)
             
         }
         
@@ -281,6 +276,19 @@ extension EditUserProfileViewController {
         if progress >= 0 {
             let distance = (1 - progress) * totalDistance
             navigationTitleLabelBottomConstraint?.constant = -ALPNavigationTitleLabelBottomPadding + distance
+        }
+    }
+}
+
+extension EditUserProfileViewController {
+    @objc fileprivate func update() {
+        guard let user = self.user else {
+            return;
+        }
+        AuthenticationManager.shared.accountLogin.update(user: user, avatar: nil, cover: nil, success: { (response) in
+            
+        }) { (error) in
+            
         }
     }
 }
