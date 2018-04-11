@@ -9,7 +9,7 @@
 import UIKit
 
 @objc(ALPVideoItem)
-class VideoItem: NSObject {
+open class VideoItem: NSObject {
     open var videoid : Int64 = 0
     open var video_height : Double = 0.0
     open var video_width : Double = 0.0
@@ -53,7 +53,7 @@ class VideoItem: NSObject {
         aCoder.encode(video_gif, forKey: "video_gif")
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init()
         videoid = aDecoder.decodeInt64(forKey: "videoid")
         video_height = aDecoder.decodeDouble(forKey: "video_height")

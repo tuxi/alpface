@@ -95,14 +95,12 @@ public class AccountLogin: NSObject {
                     // 登录成功后保存cookies
                     guard let succ = success else { return }
                     let user = User(dict: userDict)
-                    if let username = user.username {
-                        let result = AccountLoginResult(status: jsonDict["status"] as! String, username:username, message: "")
-                        
-                        // 记录当前登录的用户
-                        AuthenticationManager.shared.loginUser = user
-                        DispatchQueue.main.async {
-                            succ(result)
-                        }
+                    let result = AccountLoginResult(status: jsonDict["status"] as! String, username:username, message: "")
+                    
+                    // 记录当前登录的用户
+                    AuthenticationManager.shared.loginUser = user
+                    DispatchQueue.main.async {
+                        succ(result)
                     }
                 }
                 else {
@@ -147,9 +145,11 @@ public class AccountLogin: NSObject {
 
             let url = URL(string: urlString)
             Alamofire.upload(multipartFormData: { (multipartFormData) in
+                if let avatar = avate {
+                    let _data = UIImageJPEGRepresentation((avatar), 0.5)
+                    multipartFormData.append(_data!, withName:"avatar", fileName:  "\(username).jpg", mimeType:"image/jpeg")
+                }
                 
-                let _data = UIImageJPEGRepresentation((avate)!, 0.5)
-                multipartFormData.append(_data!, withName:"avatar", fileName:  "\(username).jpg", mimeType:"image/jpeg")
                 // 遍历字典
                 for (key, value) in parameters {
                     
@@ -230,7 +230,83 @@ public class AccountLogin: NSObject {
             succ(csrf)
         }
     }
+    
+    public func update(user: User, avatar: UIImage?, cover: UIImage?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
+        guard let loginUser = AuthenticationManager.shared.loginUser else {
+            if let fail = failure {
+                fail(NSError.init(domain: "用户未登录", code: 404, userInfo: nil))
+                return
+            }
+            return
+        }
+        if loginUser != user {
+            if let fail = failure {
+                fail(NSError.init(domain: "没有权限", code: 404, userInfo: nil))
+                return
+            }
+        }
+        
+        let urlString = ALPConstans.HttpRequestURL().register
+        let parameters = [
+            ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
+            "email": user.email,
+            "nickname": user.nickname,
+            "gender": user.gender,
+//            "birday": user.birday,
+            "address": user.address,
+            ]
+        
+        
+        let url = URL(string: urlString)
+        Alamofire.upload(multipartFormData: { (multipartFormData) in
+            if let avatar = avatar {
+                let _data = UIImageJPEGRepresentation((avatar), 0.5)
+                multipartFormData.append(_data!, withName:"avatar", fileName:  "\(user.username!).jpg", mimeType:"image/jpeg")
+            }
+            if let cover = cover {
+                let _data = UIImageJPEGRepresentation((cover), 1.0)
+                multipartFormData.append(_data!, withName:"cover", fileName:  "\(user.username!).jpg", mimeType:"image/jpeg")
+            }
+            
+            // 遍历字典
+            for (key, value) in parameters {
+                
+                let str: String = value!
+                let _datas: Data = str.data(using:String.Encoding.utf8)!
+                multipartFormData.append(_datas, withName: key as String)
+                
+            }
+            
+        }, to: url!) { (result) in
+            switch result {
+            case .success(let upload,_, _):
+                upload.responseJSON(completionHandler: { (response) in
+                    
+                    if let value = response.result.value as? NSDictionary {
+                        if value["status"] as? String == "success" {
+                            guard let succ = success else { return }
+                            DispatchQueue.main.async {
+                                succ(value)
+                            }
+                        }
+                        return
+                    }
+                    guard let fail = failure else { return }
+                    DispatchQueue.main.async {
+                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    }
+                })
+            case .failure(let error):
+                
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(error)
+                }
+            }
+        }
+    }
 }
+
 
 extension NSObject {
     /**

@@ -9,7 +9,7 @@
 import Foundation
 
 @objc(ALPUser)
-class User: NSObject, NSCoding {
+open class User: NSObject, NSCoding {
     public var userid : Int = 0
     public var username : String?
     public var avatar : String?
@@ -22,9 +22,10 @@ class User: NSObject, NSCoding {
     public var is_active: Bool = false
     public var my_videos: [VideoItem]?
     public var my_likes: [VideoItem]?
-    public var summany: String?
+    public var summary: String?
+    public var email: String?
     
-    func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(userid, forKey: "userid")
         aCoder.encode(username, forKey: "username")
         aCoder.encode(nickname, forKey: "nickname")
@@ -38,10 +39,11 @@ class User: NSObject, NSCoding {
         aCoder.encode(is_active, forKey: "is_active")
         aCoder.encode(my_videos, forKey: "my_videos")
         aCoder.encode(my_likes, forKey: "my_likes")
-        aCoder.encode(summany, forKey: "summany")
+        aCoder.encode(summary, forKey: "summary")
+        aCoder.encode(email, forKey: "email")
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init()
         userid = aDecoder.decodeInteger(forKey: "userid")
         username = aDecoder.decodeObject(forKey: "username") as? String
@@ -55,7 +57,8 @@ class User: NSObject, NSCoding {
         is_active = aDecoder.decodeBool(forKey: "is_active")
         my_videos = aDecoder.decodeObject(forKey: "my_videos") as? [VideoItem]
         my_likes = aDecoder.decodeObject(forKey: "my_likes") as? [VideoItem]
-        summany = aDecoder.decodeObject(forKey: "summany") as? String
+        summary = aDecoder.decodeObject(forKey: "summary") as? String
+        email = aDecoder.decodeObject(forKey: "email") as? String
     }
     
     public func getAvatarURL() -> URL? {
@@ -121,8 +124,8 @@ class User: NSObject, NSCoding {
             }
             self.my_likes = items
         }
-        if let summany = dict["summany"] as? String {
-            self.summany = summany
+        if let summary = dict["summary"] as? String {
+            self.summary = summary
         }
     }
     

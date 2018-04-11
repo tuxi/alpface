@@ -78,7 +78,7 @@ class VideoRequest: NSObject {
         }
         let parameters = [
             "username": username,
-            "auth_username": authUser.username!,
+            "auth_username": authUser.username,
             "type": "1",
             
         ]  as NSDictionary
