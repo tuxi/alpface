@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class EditUserProfileViewController: UIViewController {
     
@@ -31,6 +32,9 @@ class EditUserProfileViewController: UIViewController {
     
     open lazy var profileHeaderView: EditProfileHeaderView = {
         let _profileHeaderView = EditProfileHeaderView(frame: CGRect.init(x: 0, y: 0, width: self.tableView.frame.width, height: 55.0))
+        _profileHeaderView.iconImageViewClickAcllBack = {
+            self.chooseAvatarAction(isCover: false)
+        }
         return _profileHeaderView
     }()
     
@@ -38,6 +42,13 @@ class EditUserProfileViewController: UIViewController {
     fileprivate lazy var stickyHeaderContainerView: StickyHeaderContainerView = {
         let _stickyHeaderContainer = StickyHeaderContainerView()
         return _stickyHeaderContainer
+    }()
+    
+    fileprivate lazy var changeCoverButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "icon_personal_changephoto"), for: .normal)
+        button.addTarget(self, action: #selector(chooseCover), for: .touchUpInside)
+        return button
     }()
     
     fileprivate lazy var tableHeaderView: UIView = {
@@ -56,13 +67,13 @@ class EditUserProfileViewController: UIViewController {
     
     /// 头部描述用户信息视图的高度(不固定值)
     open var profileHeaderViewHeight: CGFloat = 160
-    /// 头部背景视图最小的高度(固定值)
-    open let navigationMinHeight : CGFloat = 65.0
-    open var navigationTitleLabelBottomConstraint : NSLayoutConstraint?
+    
+    open let changeCoverButtonHeight : CGFloat = 65.0
+    open var changeCoverButtonCenterYConstraint : NSLayoutConstraint?
     open let bouncingThreshold: CGFloat = 100
     /// scrollView 向上滚动时时，固定头部背景视图，此属性为scrollView滚动到contentView.y==这个偏移量时，就固定头部背景视图，将其作为当导航条展示 (固定值)
     open func scrollToScaleDownProfileIconDistance() -> CGFloat {
-        return stickyheaderContainerViewHeight - navigationMinHeight
+        return stickyheaderContainerViewHeight - changeCoverButtonHeight
     }
     
     convenience init(user: User) {
@@ -102,13 +113,6 @@ class EditUserProfileViewController: UIViewController {
         return CGRect(x: 0, y: computeStickyHeaderContainerViewFrame().origin.y + stickyheaderContainerViewHeight, width: tableView.bounds.width, height: profileHeaderViewHeight)
     }
     
-    func computeNavigationFrame() -> CGRect {
-        let navigationHeight:CGFloat = max(stickyHeaderContainerView.frame.origin.y - self.tableView.contentOffset.y + stickyHeaderContainerView.bounds.height, navigationMinHeight)
-        
-        let navigationLocation = CGRect(x: 0, y: 0, width: stickyHeaderContainerView.bounds.width, height: navigationHeight)
-        return navigationLocation
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupItems()
@@ -144,7 +148,7 @@ extension EditUserProfileViewController {
         self.navigationItem.title = "编辑个人资料"
         self.view.backgroundColor = UIColor.white
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(update))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(update(barItem:)))
         
         self.view.addSubview(tableView)
         
@@ -161,11 +165,19 @@ extension EditUserProfileViewController {
         
         
         // 导航标题
-        stickyHeaderContainerView.addSubview(navigationTitleLabel)
-        navigationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        navigationTitleLabel.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
-        navigationTitleLabelBottomConstraint = navigationTitleLabel.bottomAnchor.constraint(equalTo: stickyHeaderContainerView.bottomAnchor, constant: -ALPNavigationTitleLabelBottomPadding)
-        navigationTitleLabelBottomConstraint?.isActive = true
+        stickyHeaderContainerView.addSubview(self.changeCoverButton)
+        self.changeCoverButton.translatesAutoresizingMaskIntoConstraints = false
+        self.changeCoverButton.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
+        changeCoverButtonCenterYConstraint = self.changeCoverButton.centerYAnchor.constraint(equalTo: stickyHeaderContainerView.centerYAnchor)
+        changeCoverButtonCenterYConstraint?.isActive = true
+        changeCoverButton.widthAnchor.constraint(equalToConstant: changeCoverButtonHeight).isActive = true
+        changeCoverButton.heightAnchor.constraint(equalToConstant: changeCoverButtonHeight).isActive = true
+        if let avatar = self.user?.getAvatarURL() {
+           profileHeaderView.iconImageView.kf.setImage(with: avatar, placeholder: UIImage(named: "icon"), options: nil, progressBlock: nil, completionHandler: nil)
+        }
+        else {
+            profileHeaderView.iconImageView.image = UIImage(named: "icon")
+        }
         
         
         // 设置进度为0时的导航条标题和导航条详情label的位置 (此时标题和详情label 在headerView的最下面隐藏)
@@ -285,24 +297,90 @@ extension EditUserProfileViewController {
     /// 更新导航条上面titleLabel的位置
     func animateNaivationTitleAt(progress: CGFloat) {
         
-        let totalDistance: CGFloat = self.navigationTitleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height + ALPNavigationTitleLabelBottomPadding
-        
-        if progress >= 0 {
-            let distance = (1 - progress) * totalDistance
-            navigationTitleLabelBottomConstraint?.constant = -ALPNavigationTitleLabelBottomPadding + distance
-        }
+//        let totalDistance: CGFloat = self.navigationTitleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height + ALPNavigationTitleLabelBottomPadding
+//
+//        if progress >= 0 {
+//            let distance = (1 - progress) * totalDistance
+//            navigationTitleLabelBottomConstraint?.constant = -ALPNavigationTitleLabelBottomPadding + distance
+//        }
     }
 }
 
 extension EditUserProfileViewController {
-    @objc fileprivate func update() {
+    @objc fileprivate func update(barItem: UIBarButtonItem) {
+        barItem.isEnabled = false
         guard let user = self.user else {
             return;
         }
         AuthenticationManager.shared.accountLogin.update(user: user, avatar: nil, cover: nil, success: { (response) in
-            
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
         }) { (error) in
+            barItem.isEnabled = true
+        }
+    }
+    fileprivate func chooseAvatarAction(isCover: Bool) {
+        let alertController = PCLBlurEffectAlertController(title: nil,
+                                                           message: nil,
+                                                           effect: UIBlurEffect(style: .extraLight),
+                                                           style: .actionSheet)
+        alertController.configure(overlayBackgroundColor: UIColor.orange.withAlphaComponent(0.3))
+        alertController.configure(titleFont: UIFont.systemFont(ofSize: 24),
+                                  titleColor: .red)
+        alertController.configure(messageColor: .blue)
+        alertController.configure(buttonFont: [.default: UIFont.systemFont(ofSize: 24),
+                                               .destructive: UIFont.boldSystemFont(ofSize: 20),
+                                               .cancel: UIFont.systemFont(ofSize: 14)],
+                                  buttonTextColor: [.default: .brown,
+                                                    .destructive: .blue,
+                                                    .cancel: .gray])
+        let action1 = PCLBlurEffectAlertAction(title: "拍照", style: .default) { _ in
+            self.openCamera(isCover: isCover)
+        }
+        let action2 = PCLBlurEffectAlertAction(title: "從手機相冊選擇", style: .destructive) { _ in
+            self.openLibrary(isCover: isCover)
+        }
+        let cancelAction = PCLBlurEffectAlertAction(title: "Cancel", style: .cancel) { _ in
             
         }
+        alertController.addAction(action1)
+        alertController.addAction(action2)
+        alertController.addAction(cancelAction)
+        alertController.show()
+    }
+    
+    @objc func chooseCover() {
+        self.openLibrary(isCover: true)
+    }
+    
+}
+
+extension EditUserProfileViewController {
+    
+    func croppingParameters(isCover: Bool) -> CroppingParameters {
+        var size = CGSize(width: 60, height: 60)
+        if isCover == true {
+            size.width = self.view.frame.width
+            size.height = stickyheaderContainerViewHeight
+                
+            }
+            return CroppingParameters(isEnabled: true, allowResizing: true, allowMoving: false, minimumSize: size)
+    }
+    
+    fileprivate func openCamera(isCover: Bool) {
+        let cameraViewController = CameraViewController(croppingParameters: croppingParameters(isCover: isCover), allowsLibraryAccess: true) { [weak self] image, asset in
+            self?.profileHeaderView.iconImageView.image = image
+            self?.dismiss(animated: true, completion: nil)
+        }
+        
+        present(cameraViewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func openLibrary(isCover: Bool) {
+        let libraryViewController = CameraViewController.imagePickerViewController(croppingParameters: croppingParameters(isCover: isCover)) { [weak self] image, asset in
+            self?.profileHeaderView.iconImageView.image = image
+            self?.dismiss(animated: true, completion: nil)
+        }
+        
+        present(libraryViewController, animated: true, completion: nil)
     }
 }
