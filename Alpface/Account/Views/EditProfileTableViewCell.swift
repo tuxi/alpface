@@ -14,7 +14,7 @@ class EditProfileTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = UIColor.black
         label.text = "姓名"
-        label.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.font = UIFont.boldSystemFont(ofSize: 15.0)
         return label
     }()
     
@@ -22,7 +22,8 @@ class EditProfileTableViewCell: UITableViewCell {
         let tf = UITextField()
         tf.attributedPlaceholder = NSAttributedString(string: "添加你的姓名", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
-        tf.font = UIFont.systemFont(ofSize: 13.0)
+        tf.font = UIFont.systemFont(ofSize: 15.0)
+        tf.textColor = BaseProfileViewController.globalTint
         return tf
     }()
     
@@ -32,13 +33,16 @@ class EditProfileTableViewCell: UITableViewCell {
         return view
     }()
     
+    public var contentChangedCallBack: ((_ content: String?) -> Void)?
+    
     fileprivate var titleLabelCenterYContraint: NSLayoutConstraint?
     fileprivate var titleLabelTopContraint: NSLayoutConstraint?
     
     public var model: EditUserProfileModel? {
         didSet {
-            self.titleLabel.text = titleLabel.text
+            self.titleLabel.text = model?.title
             self.textField.placeholder = model?.placeholder
+            self.textField.text = model?.content
             if model?.type == EditUserProfileModelType.textFieldMultiLine {
                 titleLabelCenterYContraint?.isActive = false
                 titleLabelTopContraint?.isActive = true
@@ -101,6 +105,9 @@ class EditProfileTableViewCell: UITableViewCell {
 
 extension EditProfileTableViewCell {
     @objc fileprivate func textFieldsEditingChanged() {
-        
+        self.model?.content = self.textField.text
+        if let callBack = self.contentChangedCallBack {
+            callBack(self.model?.content)
+        }
     }
 }

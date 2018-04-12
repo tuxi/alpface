@@ -144,7 +144,7 @@ extension EditUserProfileViewController {
         self.navigationItem.title = "编辑个人资料"
         self.view.backgroundColor = UIColor.white
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(update))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(update))
         
         self.view.addSubview(tableView)
         
@@ -171,6 +171,17 @@ extension EditUserProfileViewController {
         // 设置进度为0时的导航条标题和导航条详情label的位置 (此时标题和详情label 在headerView的最下面隐藏)
         animateNaivationTitleAt(progress: 0.0)
         setNeedsUpdateHeaderLayout()
+    }
+    
+    fileprivate func updateSaveBarButtonItem() {
+        let saveItem = self.navigationItem.rightBarButtonItem
+        let nickNameItem = self.editProfileItems.first
+        if nickNameItem?.content?.count == 0  {
+            saveItem?.isEnabled = false
+        }
+        else {
+            saveItem?.isEnabled = true
+        }
     }
     
 }
@@ -254,6 +265,9 @@ extension EditUserProfileViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: EditProfileTableViewCellIdentifier, for: indexPath) as! EditProfileTableViewCell
         cell.selectionStyle = .none
         cell.model = self.editProfileItems[indexPath.row]
+        cell.contentChangedCallBack = { [weak self] content in
+            self?.updateSaveBarButtonItem()
+        }
         return cell
     }
     
