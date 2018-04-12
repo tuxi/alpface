@@ -232,6 +232,7 @@ public class AccountLogin: NSObject {
     }
     
     public func update(user: User, avatar: UIImage?, cover: UIImage?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
+        
         guard let loginUser = AuthenticationManager.shared.loginUser else {
             if let fail = failure {
                 fail(NSError.init(domain: "用户未登录", code: 404, userInfo: nil))
@@ -239,7 +240,7 @@ public class AccountLogin: NSObject {
             }
             return
         }
-        if loginUser != user {
+        if loginUser.username != user.username {
             if let fail = failure {
                 fail(NSError.init(domain: "没有权限", code: 404, userInfo: nil))
                 return
@@ -247,15 +248,22 @@ public class AccountLogin: NSObject {
         }
         
         let urlString = ALPConstans.HttpRequestURL().register
-        let parameters = [
-            ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
-            "email": user.email,
-            "nickname": user.nickname,
-            "gender": user.gender,
-//            "birday": user.birday,
-            "address": user.address,
-            ]
-        
+        var parameters = Dictionary<String, Any>.init()
+        if let csrfToken = AuthenticationManager.shared.csrftoken {
+            parameters[ALPCsrfmiddlewaretokenKey] = csrfToken
+        }
+        if let email = user.email {
+            parameters["email"] = email
+        }
+        if let nickname = user.nickname {
+            parameters["nickname"] = nickname
+        }
+        if let gender = user.gender {
+            parameters["gender"] = gender
+        }
+        if let address = user.address {
+            parameters["address"] = address
+        }
         
         let url = URL(string: urlString)
         Alamofire.upload(multipartFormData: { (multipartFormData) in
@@ -271,9 +279,9 @@ public class AccountLogin: NSObject {
             // 遍历字典
             for (key, value) in parameters {
                 
-                let str: String = value!
+                let str: String = value as! String
                 let _datas: Data = str.data(using:String.Encoding.utf8)!
-                multipartFormData.append(_datas, withName: key as String)
+                multipartFormData.append(_datas, withName: key)
                 
             }
             

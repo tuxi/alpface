@@ -8,12 +8,23 @@
 
 import UIKit
 
-class EditProfileHeaderView: UIView {
+open class EditProfileHeaderView: UIView {
     
-    fileprivate lazy var iconImageView: ProfileIconView = {
+    open var iconImageViewClickAcllBack: (() ->Void)?
+    
+    open lazy var iconImageView: UIImageView = {
         let imageView = ProfileIconView.init(frame: .zero)
         imageView.backgroundColor = UIColor.lightGray
+        imageView.isUserInteractionEnabled =  true
         return imageView
+    }()
+    
+    fileprivate lazy var changeIconButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.contentEdgeInsets = UIEdgeInsetsMake(15.0, 15.0, 15.0, 15.0)
+        button.setImage(UIImage(named: "icon_personal_changephoto"), for: .normal)
+        button.addTarget(self, action: #selector(changeIconButtonClick), for: .touchUpInside)
+        return button
     }()
     
     fileprivate lazy var bottomLineView: UIView = {
@@ -36,7 +47,7 @@ class EditProfileHeaderView: UIView {
         setupUI()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()
     }
@@ -45,9 +56,11 @@ class EditProfileHeaderView: UIView {
         self.addSubview(self.contentView)
         self.contentView.addSubview(self.iconImageView)
         self.contentView.addSubview(self.bottomLineView)
+        self.iconImageView.addSubview(self.changeIconButton)
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.iconImageView.translatesAutoresizingMaskIntoConstraints = false
         self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
+        self.changeIconButton.translatesAutoresizingMaskIntoConstraints = false
         
         self.contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         self.contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
@@ -65,6 +78,11 @@ class EditProfileHeaderView: UIView {
         self.bottomLineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         self.bottomLineView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0.0).isActive = true
         self.bottomLineView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: 0.0).isActive = true
+        
+        self.changeIconButton.centerXAnchor.constraint(equalTo: self.iconImageView.centerXAnchor).isActive = true
+        self.changeIconButton.centerYAnchor.constraint(equalTo: self.iconImageView.centerYAnchor).isActive = true
+        self.changeIconButton.widthAnchor.constraint(equalTo: self.iconImageView.widthAnchor, multiplier: 1.0).isActive = true
+        self.changeIconButton.heightAnchor.constraint(equalTo: self.iconImageView.heightAnchor, multiplier: 1.0).isActive = true
     }
     
     func animator(t: CGFloat) {
@@ -83,5 +101,11 @@ class EditProfileHeaderView: UIView {
         
         let newSize = self.contentView.systemLayoutSizeFitting(UILayoutFittingExpandedSize)
         return CGSize(width: size.width, height: newSize.height)
+    }
+    
+    @objc fileprivate func changeIconButtonClick() {
+        if let callback = self.iconImageViewClickAcllBack {
+            callback()
+        }
     }
 }
