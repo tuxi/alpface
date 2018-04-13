@@ -609,8 +609,8 @@ extension BaseProfileViewController {
             
             self.view.addSubview(debugTextView)
             debugTextView.translatesAutoresizingMaskIntoConstraints = false
-            debugTextView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16.0).isActive = true
-            debugTextView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16.0).isActive = true
+            debugTextView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 6.0).isActive = true
+            debugTextView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
         }
     }
     
