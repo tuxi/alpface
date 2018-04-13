@@ -368,7 +368,12 @@ extension EditUserProfileViewController {
     
     fileprivate func openCamera(isCover: Bool) {
         let cameraViewController = CameraViewController(croppingParameters: croppingParameters(isCover: isCover), allowsLibraryAccess: true) { [weak self] image, asset in
-            self?.profileHeaderView.iconImageView.image = image
+            if isCover {
+                self?.stickyHeaderContainerView.headerCoverView.image = image
+            }
+            else {
+                self?.profileHeaderView.iconImageView.image = image
+            }
             self?.dismiss(animated: true, completion: nil)
         }
         
@@ -377,7 +382,12 @@ extension EditUserProfileViewController {
     
     fileprivate func openLibrary(isCover: Bool) {
         let libraryViewController = CameraViewController.imagePickerViewController(croppingParameters: croppingParameters(isCover: isCover)) { [weak self] image, asset in
-            self?.profileHeaderView.iconImageView.image = image
+            if isCover {
+                self?.stickyHeaderContainerView.headerCoverView.image = image
+            }
+            else {
+                self?.profileHeaderView.iconImageView.image = image
+            }
             self?.dismiss(animated: true, completion: nil)
         }
         
