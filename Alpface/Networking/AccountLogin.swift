@@ -247,7 +247,7 @@ public class AccountLogin: NSObject {
             }
         }
         
-        let urlString = ALPConstans.HttpRequestURL().register
+        let urlString = ALPConstans.HttpRequestURL().updateProfile
         var parameters = Dictionary<String, Any>.init()
         if let csrfToken = AuthenticationManager.shared.csrftoken {
             parameters[ALPCsrfmiddlewaretokenKey] = csrfToken
@@ -263,6 +263,15 @@ public class AccountLogin: NSObject {
         }
         if let address = user.address {
             parameters["address"] = address
+        }
+        else {
+            parameters["address"] = ""
+        }
+        if let summary = user.summary {
+            parameters["summary"] = summary
+        }
+        else {
+            parameters["summary"] = ""
         }
         
         let url = URL(string: urlString)
@@ -292,9 +301,24 @@ public class AccountLogin: NSObject {
                     
                     if let value = response.result.value as? NSDictionary {
                         if value["status"] as? String == "success" {
-                            guard let succ = success else { return }
-                            DispatchQueue.main.async {
-                                succ(value)
+                            
+                            if let userDict = value["user"] as? [String : Any] {
+                                // 登录成功后保存cookies
+                                guard let succ = success else { return }
+                                let user = User(dict: userDict)
+                                
+                                // 记录修改后的user
+                                AuthenticationManager.shared.loginUser = user
+                                DispatchQueue.main.async {
+                                    NotificationCenter.default.post(name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil, userInfo: ["user": user])
+                                    succ(user)
+                                }
+                            }
+                            else {
+                                guard let fail = failure else { return }
+                                DispatchQueue.main.async {
+                                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                                }
                             }
                         }
                         return

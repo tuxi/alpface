@@ -39,9 +39,9 @@ class EditUserProfileViewController: UIViewController {
     }()
     
     /// 下拉头部放大控件 (头部背景视图)
-    fileprivate lazy var stickyHeaderContainerView: StickyHeaderContainerView = {
-        let _stickyHeaderContainer = StickyHeaderContainerView()
-        return _stickyHeaderContainer
+    fileprivate lazy var stickyHeaderView: StickyHeaderContainerView = {
+        let stickyHeaderView = StickyHeaderContainerView()
+        return stickyHeaderView
     }()
     
     fileprivate lazy var changeCoverButton: UIButton = {
@@ -92,13 +92,13 @@ class EditUserProfileViewController: UIViewController {
             self.profileHeaderViewHeight = profileHeaderView.sizeThatFits(self.tableView.bounds.size).height
             
             /// 只要第一次view布局完成时，再调整下stickyHeaderContainerView的frame，剩余的情况会在scrollViewDidScrollView:时调整
-            self.stickyHeaderContainerView.frame = self.computeStickyHeaderContainerViewFrame()
+            self.stickyHeaderView.frame = self.computeStickyHeaderContainerViewFrame()
             
             
             /// 更新profileHeaderView和segmentedControlContainer的frame
             self.profileHeaderView.frame = self.computeProfileHeaderViewFrame()
             
-            tableHeaderView.frame = CGRect.init(x: 0, y: 0, width: 0, height: stickyHeaderContainerView.frame.height + profileHeaderView.frame.size.height)
+            tableHeaderView.frame = CGRect.init(x: 0, y: 0, width: 0, height: stickyHeaderView.frame.height + profileHeaderView.frame.size.height)
             self.tableView.tableHeaderView = tableHeaderView
             profileHeaderView.frame = self.computeProfileHeaderViewFrame()
             self.needsUpdateHeaderLayout = false
@@ -158,17 +158,17 @@ extension EditUserProfileViewController {
         tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        tableHeaderView.addSubview(stickyHeaderContainerView)
+        tableHeaderView.addSubview(stickyHeaderView)
         tableHeaderView.addSubview(profileHeaderView)
         
         tableView.tableHeaderView = tableHeaderView
         
         
         // 导航标题
-        stickyHeaderContainerView.addSubview(self.changeCoverButton)
+        stickyHeaderView.addSubview(self.changeCoverButton)
         self.changeCoverButton.translatesAutoresizingMaskIntoConstraints = false
-        self.changeCoverButton.centerXAnchor.constraint(equalTo: stickyHeaderContainerView.centerXAnchor).isActive = true
-        changeCoverButtonCenterYConstraint = self.changeCoverButton.centerYAnchor.constraint(equalTo: stickyHeaderContainerView.centerYAnchor)
+        self.changeCoverButton.centerXAnchor.constraint(equalTo: stickyHeaderView.centerXAnchor).isActive = true
+        changeCoverButtonCenterYConstraint = self.changeCoverButton.centerYAnchor.constraint(equalTo: stickyHeaderView.centerYAnchor)
         changeCoverButtonCenterYConstraint?.isActive = true
         changeCoverButton.widthAnchor.constraint(equalToConstant: changeCoverButtonHeight).isActive = true
         changeCoverButton.heightAnchor.constraint(equalToConstant: changeCoverButtonHeight).isActive = true
@@ -179,7 +179,12 @@ extension EditUserProfileViewController {
             profileHeaderView.iconImageView.image = UIImage(named: "icon")
         }
         
-        
+        if let cover_url = self.user?.getCoverURL() {
+            self.stickyHeaderView.headerCoverView.kf.setImage(with: cover_url)
+        }
+        else {
+            self.stickyHeaderView.headerCoverView.image = nil
+        }
         // 设置进度为0时的导航条标题和导航条详情label的位置 (此时标题和详情label 在headerView的最下面隐藏)
         animateNaivationTitleAt(progress: 0.0)
         setNeedsUpdateHeaderLayout()
@@ -220,23 +225,23 @@ extension EditUserProfileViewController: UITableViewDelegate {
             let newHeight = abs(contentOffset.y+autoOffsetTop) + stickyheaderContainerViewHeight
 
             // 调整 stickyHeader 的 frame
-            self.stickyHeaderContainerView.frame = CGRect(
+            self.stickyHeaderView.frame = CGRect(
                 x: 0,
                 y: contentOffset.y+autoOffsetTop,
                 width: tableView.bounds.width,
                 height: newHeight)
             
             // 更新blurEffectView的透明度
-            self.stickyHeaderContainerView.blurEffectView.alpha = min(1, bounceProgress * 2)
+            self.stickyHeaderView.blurEffectView.alpha = min(1, bounceProgress * 2)
             
             // 更新headerCoverView的缩放比例
             let scalingFactor = 1 + min(log(bounceProgress + 1), 2)
             //      print(scalingFactor)
-            self.stickyHeaderContainerView.headerCoverView.transform = CGAffineTransform(scaleX: scalingFactor, y: scalingFactor)
+            self.stickyHeaderView.headerCoverView.transform = CGAffineTransform(scaleX: scalingFactor, y: scalingFactor)
             
         } else {
             
-            self.stickyHeaderContainerView.blurEffectView.alpha = 0
+            self.stickyHeaderView.blurEffectView.alpha = 0
         }
         
         // 普通情况时，适用于contentOffset.y改变时的更新
@@ -247,13 +252,13 @@ extension EditUserProfileViewController: UITableViewDelegate {
             
             // 当scrollView滚动到达阈值时scrollToScaleDownProfileIconDistance
             if contentOffset.y >= scrollToScaleDownProfileIconDistance() {
-                self.stickyHeaderContainerView.frame = CGRect(x: 0, y: contentOffset.y - scrollToScaleDownProfileIconDistance(), width: tableView.bounds.width, height: stickyheaderContainerViewHeight)
+                self.stickyHeaderView.frame = CGRect(x: 0, y: contentOffset.y - scrollToScaleDownProfileIconDistance(), width: tableView.bounds.width, height: stickyheaderContainerViewHeight)
                 // 当scrollView 的 segment顶部 滚动到scrollToScaleDownProfileIconDistance时(也就是导航底部及以上位置)，让stickyHeaderContainerView显示在最上面，防止被profileHeaderView遮挡
-                tableHeaderView.bringSubview(toFront: self.stickyHeaderContainerView)
+                tableHeaderView.bringSubview(toFront: self.stickyHeaderView)
                 
             } else {
                 // 当scrollView 的 segment顶部 滚动到导航底部以下位置，让profileHeaderView显示在最上面,防止用户头像被遮挡, 归位
-                self.stickyHeaderContainerView.frame = computeStickyHeaderContainerViewFrame()
+                self.stickyHeaderView.frame = computeStickyHeaderContainerViewFrame()
                 tableHeaderView.bringSubview(toFront: self.profileHeaderView)
             }
             
@@ -278,6 +283,16 @@ extension EditUserProfileViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         cell.model = self.editProfileItems[indexPath.row]
         cell.contentChangedCallBack = { [weak self] content in
+            switch indexPath.row {
+            case 0:
+                self?.user?.nickname = content
+            case 1:
+                self?.user?.summary = content
+            case 2:
+                self?.user?.address = content
+            default:
+                print(content ?? "content not know!")
+            }
             self?.updateSaveBarButtonItem()
         }
         return cell
@@ -312,8 +327,11 @@ extension EditUserProfileViewController {
         guard let user = self.user else {
             return;
         }
-        AuthenticationManager.shared.accountLogin.update(user: user, avatar: nil, cover: nil, success: { (response) in
-            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        AuthenticationManager.shared.accountLogin.update(user: user, avatar: self.profileHeaderView.iconImageView.image, cover: self.stickyHeaderView.headerCoverView.image, success: { [weak self] (response) in
+            barItem.isEnabled = true
+            self?.dismiss(animated: true, completion: {
+                
+            })
         }) { (error) in
             barItem.isEnabled = true
         }
@@ -368,11 +386,13 @@ extension EditUserProfileViewController {
     
     fileprivate func openCamera(isCover: Bool) {
         let cameraViewController = CameraViewController(croppingParameters: croppingParameters(isCover: isCover), allowsLibraryAccess: true) { [weak self] image, asset in
-            if isCover {
-                self?.stickyHeaderContainerView.headerCoverView.image = image
-            }
-            else {
-                self?.profileHeaderView.iconImageView.image = image
+            if image != nil {
+                if isCover {
+                    self?.stickyHeaderView.headerCoverView.image = image
+                }
+                else {
+                    self?.profileHeaderView.iconImageView.image = image
+                }
             }
             self?.dismiss(animated: true, completion: nil)
         }
@@ -382,11 +402,13 @@ extension EditUserProfileViewController {
     
     fileprivate func openLibrary(isCover: Bool) {
         let libraryViewController = CameraViewController.imagePickerViewController(croppingParameters: croppingParameters(isCover: isCover)) { [weak self] image, asset in
-            if isCover {
-                self?.stickyHeaderContainerView.headerCoverView.image = image
-            }
-            else {
-                self?.profileHeaderView.iconImageView.image = image
+            if image != nil {
+                if isCover {
+                    self?.stickyHeaderView.headerCoverView.image = image
+                }
+                else {
+                    self?.profileHeaderView.iconImageView.image = image
+                }
             }
             self?.dismiss(animated: true, completion: nil)
         }

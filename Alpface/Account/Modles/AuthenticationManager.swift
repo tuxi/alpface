@@ -8,6 +8,10 @@
 
 import UIKit
 
+extension NSNotification.Name {
+    /// 账户信息修改
+    public static let AuthenticationAccountProfileChanged: NSNotification.Name = NSNotification.Name(rawValue: "AuthenticationAccountProfileChanged")
+}
 
 @objc(ALPAuthenticationManager)
 final class AuthenticationManager: NSObject {

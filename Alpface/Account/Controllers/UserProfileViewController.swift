@@ -44,11 +44,16 @@ class UserProfileViewController: BaseProfileViewController {
         }
     }
     
+    deinit {
+        self.removeObserver()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.reloadCollectionData()
         self.discoverUserByUsername()
+        self.addObserver()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,9 +84,16 @@ class UserProfileViewController: BaseProfileViewController {
         }
     }
     
-    func reloadCollectionData() -> Void {
+    @objc func reloadCollectionData() -> Void {
         self.profileHeaderView.locationLabel.text = self.user?.address
         self.profileHeaderView.nicknameLabel.text = self.user?.nickname
+        self.profileHeaderView.summaryLabel.text = self.user?.summary
+        if let cover_url = self.user?.getCoverURL() {
+            self.stickyHeaderView.headerCoverView.kf.setImage(with: cover_url)
+        }
+        else {
+            self.stickyHeaderView.headerCoverView.image = nil
+        }
         self.navigationTitleLabel.text = self.user?.nickname
         if let userName = self.user?.username {
             self.profileHeaderView.usernameLabel.text = "用户号" + ":" + userName
@@ -122,6 +134,16 @@ class UserProfileViewController: BaseProfileViewController {
                 }
             }
         }
+    }
+}
+
+extension UserProfileViewController {
+    fileprivate func addObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionData), name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil)
+    }
+    
+    fileprivate func removeObserver() {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
