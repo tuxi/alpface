@@ -298,7 +298,6 @@ public class AccountLogin: NSObject {
             switch result {
             case .success(let upload,_, _):
                 upload.responseJSON(completionHandler: { (response) in
-                    
                     if let value = response.result.value as? NSDictionary {
                         if value["status"] as? String == "success" {
                             
