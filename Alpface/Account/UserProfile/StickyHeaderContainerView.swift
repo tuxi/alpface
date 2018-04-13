@@ -19,6 +19,7 @@ open class StickyHeaderContainerView: UIView {
         coverImageView.translatesAutoresizingMaskIntoConstraints = false
         coverImageView.image = UIImage(named: "Firewatch.png")
         coverImageView.contentMode = .scaleAspectFill
+        coverImageView.backgroundColor = BaseProfileViewController.globalTint
         return coverImageView
     }()
     

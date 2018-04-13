@@ -24,6 +24,7 @@ open class User: NSObject, NSCoding {
     public var my_likes: [VideoItem]?
     public var summary: String?
     public var email: String?
+    public var cover: String?
     
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(userid, forKey: "userid")
@@ -41,6 +42,7 @@ open class User: NSObject, NSCoding {
         aCoder.encode(my_likes, forKey: "my_likes")
         aCoder.encode(summary, forKey: "summary")
         aCoder.encode(email, forKey: "email")
+        aCoder.encode(cover, forKey: "cover")
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -59,6 +61,7 @@ open class User: NSObject, NSCoding {
         my_likes = aDecoder.decodeObject(forKey: "my_likes") as? [VideoItem]
         summary = aDecoder.decodeObject(forKey: "summary") as? String
         email = aDecoder.decodeObject(forKey: "email") as? String
+        cover = aDecoder.decodeObject(forKey: "cover") as? String
     }
     
     public func getAvatarURL() -> URL? {
@@ -73,6 +76,17 @@ open class User: NSObject, NSCoding {
         return nil
     }
     
+    public func getCoverURL() -> URL? {
+        if let c = self.cover {
+            if c.hasPrefix("http://") == true {
+                return URL.init(string: c)
+            }
+            else if c.hasPrefix("/media") == true {
+                return URL.init(string: ALPSiteURLString + c)
+            }
+        }
+        return nil
+    }
     override init() {
         super.init()
     }
@@ -126,6 +140,9 @@ open class User: NSObject, NSCoding {
         }
         if let summary = dict["summary"] as? String {
             self.summary = summary
+        }
+        if let cover = dict["cover"] as? String {
+            self.cover = cover
         }
     }
     
