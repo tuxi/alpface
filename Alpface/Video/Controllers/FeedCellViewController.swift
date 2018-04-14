@@ -49,7 +49,7 @@ class FeedCellViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,7 +75,8 @@ class FeedCellViewController: UIViewController {
         interactionController.endAppearanceTransition()
     }
     
-    fileprivate func setup() {
+    fileprivate func setupUI() {
+        view.backgroundColor = UIColor.clear
         view.addSubview((playVideoVc.view)!)
         playVideoVc.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         playVideoVc.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true

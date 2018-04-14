@@ -83,6 +83,10 @@ import UIKit
     /// imageView的size, 有的时候图片本身太大，导致imageView的尺寸并不是我们想要的，可以通过此方法设置, 当为CGSizeZero时不设置,默认为CGSizeZero
     @objc @available(iOS 2.0, *)
     optional func emptyDataView(imageViewSizeforEmptyDataView scrollView: UIScrollView) -> CGSize
+    
+    /// 自定义空视图view
+    @objc @available(iOS 2.0, *)
+    optional func customView(forEmptyDataView scrollView: UIScrollView) -> UIView?
 }
 
 
@@ -305,7 +309,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             if xy_loading == newValue  {
                 return
             }
-            objc_setAssociatedObject(self, &XYEmptyDataKeys.loading, NSNumber.init(value: xy_loading), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &XYEmptyDataKeys.loading, NSNumber.init(value: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             xy_reloadEmptyDataView()
         }
     }
@@ -412,7 +416,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             if let customView = xy_emptyDataViewCustomView() {
                 emptyDataView.customView = customView
             } else {
-                
                 // customView为nil时，则通过block回到获取子控件 设置
                 if let block = self.xy_textLabelBlock  {
                     block(emptyDataView.titleLabel)
@@ -682,6 +685,11 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     /// 当自定义空数据视图时调用
     private func xy_emptyDataViewCustomView() -> UIView? {
         var view: UIView?
+        if let del = self.emptyDataDelegate {
+            if del.responds(to: #selector(XYEmptyDataDelegate.customView(forEmptyDataView:))) {
+                return del.customView!(forEmptyDataView: self)
+            }
+        }
         if self.customEmptyDataView != nil {
             view = self.customEmptyDataView!()
         }
@@ -1005,13 +1013,14 @@ fileprivate class XYEmptyDataView : UIView {
     
     /// 移除所有子控件及其约束
     func resetSubviews() {
-        for subview in contentView.subviews {
+        contentView.subviews.forEach { (subview) in
             subview.removeFromSuperview()
         }
         titleLabel.removeFromSuperview()
         detailLabel.removeFromSuperview()
         imageView.removeFromSuperview()
         customView?.removeFromSuperview()
+        customView = nil
         reloadButton.removeFromSuperview()
         self.removeAllConstraints()
     }

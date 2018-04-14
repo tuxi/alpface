@@ -27,6 +27,7 @@ class MainAppScrollingContainerViewController: UIViewController {
         // 设置delaysContentTouches为false目的是为了防止UIButton快速按不产生高亮效果
         collectionView.delaysContentTouches = false;
         collectionView.canCancelContentTouches = true;
+        collectionView.backgroundColor = UIColor.black
         return collectionView
     }()
     

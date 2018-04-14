@@ -34,7 +34,7 @@ class MainFeedViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(MainFeedViewCell.classForCoder(), forCellWithReuseIdentifier: "MainFeedViewCell")
-        collectionView.backgroundColor = UIColor.white
+        collectionView.backgroundColor = UIColor.clear
         return collectionView
     }()
     
@@ -72,7 +72,9 @@ class MainFeedViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayViewController()?.endAppearanceTransition()
-
+        DispatchQueue.main.async {
+            UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,6 +96,7 @@ class MainFeedViewController: UIViewController {
     }
     
     fileprivate func setupUI() {
+        view.backgroundColor = UIColor.clear
         automaticallyAdjustsScrollViewInsets = false
         if #available(iOS 11.0, *) {
             collectionView.contentInsetAdjustmentBehavior = .never

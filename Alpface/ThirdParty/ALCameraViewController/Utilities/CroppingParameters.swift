@@ -16,24 +16,27 @@ public struct CroppingParameters {
 
     /// Allow the cropping area to be resized by the user.
     /// Default value is set to true.
-    var allowResizing: Bool
+//    var allowResizing: Bool
+    var resizableSide: CropOverlayResizableSide = .sideDefault
 
     /// Allow the cropping area to be moved by the user.
     /// Default value is set to false.
-    var allowMoving: Bool
+//    var allowMoving: Bool
+    
+    var moveDirection: CropOverlayMovableDirection = .moveDefault
 
     /// Prevent the user to resize the cropping area below a minimum size.
     /// Default value is (60, 60). Below this value, corner buttons will overlap.
     var minimumSize: CGSize
 
     public init(isEnabled: Bool = false,
-                allowResizing: Bool = true,
-                allowMoving: Bool = true,
+                resizableSide: CropOverlayResizableSide = .sideDefault,
+                moveDirection: CropOverlayMovableDirection = .moveDefault,
          minimumSize: CGSize = CGSize(width: 60, height: 60)) {
 
         self.isEnabled = isEnabled
-        self.allowResizing = allowResizing
-        self.allowMoving = allowMoving
+        self.resizableSide = resizableSide
+        self.moveDirection = moveDirection
         self.minimumSize = minimumSize
     }
 }
