@@ -597,7 +597,7 @@ extension BaseProfileViewController {
 extension BaseProfileViewController {
     
     var debugMode: Bool {
-        return true
+        return false
     }
     
     func showDebugInfo() {

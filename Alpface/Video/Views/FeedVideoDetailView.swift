@@ -10,6 +10,14 @@ import UIKit
 
 @objc(ALPVideoDetailView)
 class FeedVideoDetailView: UIView {
+    
+    public var videoItem: VideoItem? {
+        didSet {
+            titleButton.text = "@" + (videoItem?.user?.nickname)!
+            describeButton.text = videoItem?.describe
+            musicButton.text = "大家爱看巨大的空间阿卡"
+        }
+    }
 
     fileprivate lazy var avatarButton: UIButton = {
         let view = UIButton()
@@ -145,9 +153,9 @@ class FeedVideoDetailView: UIView {
         
         musicAvatarButton.setImage(UIImage.init(named: "icon"), for: .normal)
         
-        titleButton.text = "@常灯台"
-        describeButton.text = "建设大道就爱看大家爱看的后来就好了就好了就好了就好了京津冀了解科技；科技考虑考虑"
-        musicButton.text = "大家爱看巨大的空间阿卡"
+//        titleButton.text = "@常灯台"
+//        describeButton.text = "建设大道就爱看大家爱看的后来就好了就好了就好了就好了京津冀了解科技；科技考虑考虑"
+//        musicButton.text = "大家爱看巨大的空间阿卡"
         
     }
     

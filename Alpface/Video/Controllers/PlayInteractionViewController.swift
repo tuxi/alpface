@@ -22,6 +22,7 @@ class PlayInteractionViewController: UIViewController {
                     self.placeholderImageView.kf.setImage(with: URL.init(string: thumbnail))
                 }
             }
+            self.detailView.videoItem = videoItem
         }
     }
     
