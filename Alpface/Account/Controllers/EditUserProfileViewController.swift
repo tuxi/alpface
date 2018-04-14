@@ -312,15 +312,15 @@ extension EditUserProfileViewController: UITableViewDataSource {
 // MARK: Animators
 extension EditUserProfileViewController {
     func animateCoverAt(progress: CGFloat) {
-    
-        
+        let centerYMin: CGFloat = 0.0
+        let centerYMax: CGFloat = scrollToScaleDownProfileIconDistance()
         if progress <= 0.0 {
-            changeCoverButtonCenterYConstraint?.constant = 0
+            changeCoverButtonCenterYConstraint?.constant = centerYMin
             changeCoverButton.alpha = 1 + progress
             return
         }
         
-        let totalDistance = 0 - (0 - scrollToScaleDownProfileIconDistance()) * progress
+        let totalDistance = centerYMin - (centerYMin - centerYMax) * progress
         
         if progress > 0.0 && progress <= 1.0 {
             changeCoverButtonCenterYConstraint?.constant = -totalDistance
