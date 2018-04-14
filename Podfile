@@ -10,4 +10,5 @@ target 'Alpface' do
   pod 'Peek', '~> 5.0'
   pod 'Kingfisher', '~> 4.0'
   pod 'Gifu'
+  pod 'MBProgressHUD', '~> 1.1.0'
 end
