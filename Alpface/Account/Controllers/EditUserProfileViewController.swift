@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import MBProgressHUD
 
 class EditUserProfileViewController: UIViewController {
     
@@ -185,8 +186,8 @@ extension EditUserProfileViewController {
         else {
             self.stickyHeaderView.headerCoverView.image = nil
         }
-        // 设置进度为0时的导航条标题和导航条详情label的位置 (此时标题和详情label 在headerView的最下面隐藏)
-        animateNaivationTitleAt(progress: 0.0)
+    
+        animateCoverAt(progress: 0.0)
         setNeedsUpdateHeaderLayout()
     }
     
@@ -248,6 +249,7 @@ extension EditUserProfileViewController: UITableViewDelegate {
         let scaleProgress = max(0, min(1, (contentOffset.y + 64) / self.scrollToScaleDownProfileIconDistance()))
         self.profileHeaderView.animator(t: scaleProgress)
         
+        self.animateCoverAt(progress: (contentOffset.y + 64) / self.scrollToScaleDownProfileIconDistance())
         if contentOffset.y > -autoOffsetTop {
             
             // 当scrollView滚动到达阈值时scrollToScaleDownProfileIconDistance
@@ -309,15 +311,20 @@ extension EditUserProfileViewController: UITableViewDataSource {
 
 // MARK: Animators
 extension EditUserProfileViewController {
-    /// 更新导航条上面titleLabel的位置
-    func animateNaivationTitleAt(progress: CGFloat) {
+    func animateCoverAt(progress: CGFloat) {
+    
         
-//        let totalDistance: CGFloat = self.navigationTitleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height + ALPNavigationTitleLabelBottomPadding
-//
-//        if progress >= 0 {
-//            let distance = (1 - progress) * totalDistance
-//            navigationTitleLabelBottomConstraint?.constant = -ALPNavigationTitleLabelBottomPadding + distance
-//        }
+        if progress <= 0.0 {
+            changeCoverButtonCenterYConstraint?.constant = 0
+            changeCoverButton.alpha = 1 + progress
+            return
+        }
+        
+        let totalDistance = 0 - (0 - scrollToScaleDownProfileIconDistance()) * progress
+        
+        if progress > 0.0 && progress <= 1.0 {
+            changeCoverButtonCenterYConstraint?.constant = -totalDistance
+        }
     }
 }
 
@@ -327,12 +334,15 @@ extension EditUserProfileViewController {
         guard let user = self.user else {
             return;
         }
+        MBProgressHUD.xy_showActivity()
         AuthenticationManager.shared.accountLogin.update(user: user, avatar: self.profileHeaderView.iconImageView.image, cover: self.stickyHeaderView.headerCoverView.image, success: { [weak self] (response) in
             barItem.isEnabled = true
+            MBProgressHUD.xy_hide()
             self?.dismiss(animated: true, completion: {
                 
             })
         }) { (error) in
+            MBProgressHUD.xy_hide()
             barItem.isEnabled = true
         }
     }
@@ -341,7 +351,7 @@ extension EditUserProfileViewController {
                                                            message: nil,
                                                            effect: UIBlurEffect(style: .extraLight),
                                                            style: .actionSheet)
-        alertController.configure(overlayBackgroundColor: UIColor.orange.withAlphaComponent(0.3))
+        alertController.configure(overlayBackgroundColor: UIColor.lightGray.withAlphaComponent(0.3))
         alertController.configure(titleFont: UIFont.systemFont(ofSize: 24),
                                   titleColor: .red)
         alertController.configure(messageColor: .blue)
@@ -367,7 +377,33 @@ extension EditUserProfileViewController {
     }
     
     @objc func chooseCover() {
-        self.openLibrary(isCover: true)
+        let alertController = PCLBlurEffectAlertController(title: nil,
+                                                           message: nil,
+                                                           effect: UIBlurEffect(style: .extraLight),
+                                                           style: .actionSheet)
+        alertController.configure(overlayBackgroundColor: UIColor.lightGray.withAlphaComponent(0.3))
+        alertController.configure(titleFont: UIFont.systemFont(ofSize: 24),
+                                  titleColor: .red)
+        alertController.configure(messageColor: .blue)
+        alertController.configure(buttonFont: [.default: UIFont.systemFont(ofSize: 24),
+                                               .destructive: UIFont.boldSystemFont(ofSize: 20),
+                                               .cancel: UIFont.systemFont(ofSize: 14)],
+                                  buttonTextColor: [.default: .brown,
+                                                    .destructive: .blue,
+                                                    .cancel: .gray])
+        let action1 = PCLBlurEffectAlertAction(title: "拍照", style: .default) { _ in
+            self.openCamera(isCover: true)
+        }
+        let action2 = PCLBlurEffectAlertAction(title: "從手機相冊選擇", style: .destructive) { _ in
+            self.openLibrary(isCover: true)
+        }
+        let cancelAction = PCLBlurEffectAlertAction(title: "Cancel", style: .cancel) { _ in
+            
+        }
+        alertController.addAction(action1)
+        alertController.addAction(action2)
+        alertController.addAction(cancelAction)
+        alertController.show()
     }
     
 }
