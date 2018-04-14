@@ -109,6 +109,7 @@
 		D2BCBA4D206F33F2008409B3 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA42206F33F1008409B3 /* VideoPlayerView.swift */; };
 		D2BCBA4F206F6D02008409B3 /* VideoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA4E206F6D02008409B3 /* VideoItem.swift */; };
 		D2BCBA53206FA737008409B3 /* VideoRatingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA52206FA737008409B3 /* VideoRatingItem.swift */; };
+		D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */; };
 		D2DC5748206FB1F300458F54 /* VideoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC5747206FB1F300458F54 /* VideoRequest.swift */; };
 		D2DC574A206FB7EA00458F54 /* AccountLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC5749206FB7EA00458F54 /* AccountLogin.swift */; };
 		D2DC574C20706D7C00458F54 /* PlayVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC574B20706D7C00458F54 /* PlayVideoModel.swift */; };
@@ -222,6 +223,7 @@
 		D2BCBA42206F33F1008409B3 /* VideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		D2BCBA4E206F6D02008409B3 /* VideoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoItem.swift; sourceTree = "<group>"; };
 		D2BCBA52206FA737008409B3 /* VideoRatingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRatingItem.swift; sourceTree = "<group>"; };
+		D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+XYExtension.swift"; sourceTree = "<group>"; };
 		D2DC5747206FB1F300458F54 /* VideoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRequest.swift; sourceTree = "<group>"; };
 		D2DC5749206FB7EA00458F54 /* AccountLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountLogin.swift; sourceTree = "<group>"; };
 		D2DC574B20706D7C00458F54 /* PlayVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayVideoModel.swift; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 				D26AD41D20668F140047DC15 /* UINavigationBar+Attributes.swift */,
 				D26AD4862067334E0047DC15 /* UIButton+Attributes.swift */,
 				D26AD488206735CD0047DC15 /* UIView+Attributes.swift */,
+				D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -775,6 +778,7 @@
 				"${BUILT_PRODUCTS_DIR}/Gifu/Gifu.framework",
 				"${BUILT_PRODUCTS_DIR}/GraphicsRenderer/GraphicsRenderer.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Peek/Peek.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -783,6 +787,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gifu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GraphicsRenderer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Peek.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -812,6 +817,7 @@
 				D20093352078EEC50079AD8B /* PhotoLibraryViewController.swift in Sources */,
 				D2DC57552070D64C00458F54 /* HeartAnimation.swift in Sources */,
 				D20093292078EEC50079AD8B /* Utilities.swift in Sources */,
+				D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */,
 				D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */,
 				D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
