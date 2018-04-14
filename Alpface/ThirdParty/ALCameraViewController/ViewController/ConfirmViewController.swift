@@ -12,7 +12,6 @@ import Photos
 public class ConfirmViewController: UIViewController, UIScrollViewDelegate {
 	
     
-    @IBOutlet weak var cropOverlayHeightConstraint: NSLayoutConstraint!
     let imageView = UIImageView()
 	@IBOutlet weak var scrollView: UIScrollView!
 	@IBOutlet weak var cropOverlay: CropOverlay!

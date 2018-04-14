@@ -142,7 +142,20 @@ class UserProfileViewController: BaseProfileViewController {
 
 extension UserProfileViewController {
     fileprivate func addObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionData), name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(authenticationAccountProfileChanged(notification:)), name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil)
+    }
+    
+    @objc fileprivate func authenticationAccountProfileChanged(notification: NSNotification) {
+        guard let userIno = notification.userInfo else {
+            return
+        }
+        guard let user = userIno["user"] as? User else {
+            return
+        }
+        if user.userid == self.user?.userid {
+            self.user = user
+            self.reloadCollectionData()
+        }
     }
     
     fileprivate func removeObserver() {

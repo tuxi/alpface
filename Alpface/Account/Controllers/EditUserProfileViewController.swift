@@ -150,6 +150,7 @@ extension EditUserProfileViewController {
         self.view.backgroundColor = UIColor.white
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(update(barItem:)))
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         self.view.addSubview(tableView)
         
