@@ -177,17 +177,22 @@ extension ChildListViewController: XYEmptyDataDelegate {
         
     }
     
-    func emptyDataView(imageViewSizeforEmptyDataView scrollView: UIScrollView) -> CGSize {
-        
-        return CGSize(width: 280, height: 280)
-    }
-    
     func emptyDataView(contentOffsetforEmptyDataView scrollView: UIScrollView) -> CGPoint {
         return CGPoint(x: 0, y: -180)
     }
     
+    
     func emptyDataView(contentSubviewsGlobalVerticalSpaceForEmptyDataView scrollView: UIScrollView) -> CGFloat {
         return 20.0
+    }
+    
+    func customView(forEmptyDataView scrollView: UIScrollView) -> UIView? {
+        if scrollView.xy_loading == true {
+           let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            indicatorView.startAnimating()
+            return indicatorView
+        }
+        return nil
     }
 }
 

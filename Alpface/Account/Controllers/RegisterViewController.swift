@@ -444,7 +444,7 @@ extension RegisterViewController {
 extension RegisterViewController {
     
     var croppingParameters: CroppingParameters {
-        return CroppingParameters(isEnabled: false, allowResizing: true, allowMoving: false, minimumSize: CGSize(width: 60, height: 60))
+        return CroppingParameters(isEnabled: false, resizableSide: .sideDefault, moveDirection: .moveDefault, minimumSize: CGSize(width: 60, height: 60))
     }
     
     fileprivate func openCamera() {

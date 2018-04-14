@@ -11,7 +11,9 @@ import Photos
 
 public class ConfirmViewController: UIViewController, UIScrollViewDelegate {
 	
-	let imageView = UIImageView()
+    
+    @IBOutlet weak var cropOverlayHeightConstraint: NSLayoutConstraint!
+    let imageView = UIImageView()
 	@IBOutlet weak var scrollView: UIScrollView!
 	@IBOutlet weak var cropOverlay: CropOverlay!
 	@IBOutlet weak var cancelButton: UIButton!
@@ -20,7 +22,7 @@ public class ConfirmViewController: UIViewController, UIScrollViewDelegate {
 	
     var croppingParameters: CroppingParameters {
         didSet {
-            cropOverlay.isResizable = croppingParameters.allowResizing
+            cropOverlay.resizableSide = croppingParameters.resizableSide
             cropOverlay.minimumSize = croppingParameters.minimumSize
         }
     }
@@ -69,8 +71,8 @@ public class ConfirmViewController: UIViewController, UIScrollViewDelegate {
 		scrollView.maximumZoomScale = 1
 		
         cropOverlay.isHidden = true
-        cropOverlay.isResizable = croppingParameters.allowResizing
-        cropOverlay.isMovable = croppingParameters.allowMoving
+        cropOverlay.resizableSide = croppingParameters.resizableSide
+        cropOverlay.moveDirection = croppingParameters.moveDirection
         cropOverlay.minimumSize = croppingParameters.minimumSize
 
 		let spinner = showSpinner()

@@ -132,6 +132,9 @@ class UserProfileViewController: BaseProfileViewController {
                 else {
                     c.collectionItems = []
                 }
+                controller.childScrollView()?.xy_loading = false
+                let collectionView = controller.childScrollView() as? UICollectionView
+                collectionView?.reloadData()
             }
         }
     }
@@ -160,15 +163,18 @@ extension UserProfileViewController {
         if self.user == nil {
             self.user = AuthenticationManager.shared.loginUser
         }
+        self.controllers.forEach { (controller) in
+            controller.childScrollView()?.xy_loading = true
+        }
         guard let username = self.user?.username else { return }
-        VideoRequest.shared.discoverUserByUsername(username: username, success: { (response) in
+        VideoRequest.shared.discoverUserByUsername(username: username, success: {[weak self] (response) in
             guard let user = response as? User else {
                 return
             }
-            self.user = user
-            self.reloadCollectionData()
-        }) { (error) in
-            
+            self?.user = user
+            self?.reloadCollectionData()
+        }) {[weak self] (error) in
+            self?.reloadCollectionData()
         }
     }
 }

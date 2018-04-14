@@ -21,7 +21,8 @@ open class EditProfileHeaderView: UIView {
     
     fileprivate lazy var changeIconButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.contentEdgeInsets = UIEdgeInsetsMake(15.0, 15.0, 15.0, 15.0)
+        button.imageEdgeInsets = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)
+        button.imageView?.contentMode = .scaleAspectFit
         button.setImage(UIImage(named: "icon_personal_changephoto"), for: .normal)
         button.addTarget(self, action: #selector(changeIconButtonClick), for: .touchUpInside)
         return button

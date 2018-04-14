@@ -8,6 +8,20 @@
 
 import UIKit
 
+public enum CropOverlayMovableDirection: Int {
+    case moveDefault   // 随意移动
+    case vertical      // 只能垂直移动
+    case horizontal    // 只能水平移动
+    case not           // 不可以移动
+}
+
+public enum CropOverlayResizableSide: Int {
+    case sideDefault   // 上下左右都可以修改尺寸
+    case vertical      // 只能上下的尺寸
+    case horizontal    // 只能修改左右的尺寸
+    case not           // 不可以修改尺寸
+}
+
 internal class CropOverlay: UIView {
 
     var outerLines = [UIView]()
@@ -34,8 +48,11 @@ internal class CropOverlay: UIView {
         return self.cornerButtonWidth * self.outterGapRatio
     }
 
-    var isResizable: Bool = false
-    var isMovable: Bool = false
+//    var isResizable: Bool = false
+//    var isMovable: Bool = false
+    /// 照片允许哪一面可以修改尺寸
+    var resizableSide: CropOverlayResizableSide = .sideDefault
+    var moveDirection: CropOverlayMovableDirection = .moveDefault
     var minimumSize: CGSize = CGSize.zero
 
     internal override init(frame: CGRect) {
@@ -49,7 +66,7 @@ internal class CropOverlay: UIView {
     }
     
     override func layoutSubviews() {
-        
+        super.layoutSubviews()
         for i in 0..<outerLines.count {
             let line = outerLines[i]
             var lineFrame: CGRect
@@ -165,45 +182,102 @@ internal class CropOverlay: UIView {
 	}
 	
 	@objc func moveCropOverlay(gestureRecognizer: UIPanGestureRecognizer) {
-		if isResizable, let button = gestureRecognizer.view as? UIButton {
+		if self.resizableSide != .not, let button = gestureRecognizer.view as? UIButton {
 			if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
 				let translation = gestureRecognizer.translation(in: self)
 				
 				var newFrame: CGRect
-				
+                let screenSize = UIScreen.main.bounds.size
+                
 				switch button {
 				case cornerButtons[0]:	// Top Left
-                    newFrame = CGRect(x: frame.origin.x + translation.x, y: frame.origin.y + translation.y, width: frame.size.width - translation.x, height: frame.size.height - translation.y)
+                    newFrame = CGRect(x: frame.origin.x + translation.x, y: frame.origin.y + translation.y, width: frame.size.width, height: frame.size.height)
+                    if self.resizableSide == .sideDefault {
+                        newFrame.size.height = min(frame.size.height - translation.y, screenSize.height)
+                        newFrame.size.width = min(frame.size.width - translation.x, screenSize.width)
+                    }
+                    else if self.resizableSide == .horizontal {
+                        newFrame.size.width = min(frame.size.width - translation.x, screenSize.width)
+                    }
+                    else if self.resizableSide == .vertical {
+                        newFrame.size.height = min(frame.size.height - translation.y, screenSize.height)
+                    }
 				case cornerButtons[1]:	// Top Right
-					newFrame = CGRect(x: frame.origin.x, y: frame.origin.y + translation.y, width: frame.size.width + translation.x, height: frame.size.height - translation.y)
+					newFrame = CGRect(x: frame.origin.x, y: frame.origin.y + translation.y, width: frame.size.width, height: frame.size.height)
+                    if self.resizableSide == .sideDefault {
+                        newFrame.size.height = min(frame.size.height - translation.y, screenSize.height)
+                        newFrame.size.width = min(screenSize.width, frame.size.width + translation.x)                    }
+                    else if self.resizableSide == .horizontal {
+                        newFrame.size.width = min(screenSize.width, frame.size.width + translation.x)
+                    }
+                    else if self.resizableSide == .vertical {
+                        newFrame.size.height = min(frame.size.height - translation.y, screenSize.height)
+                    }
 				case cornerButtons[2]:	// Bottom Left
-					newFrame = CGRect(x: frame.origin.x + translation.x, y: frame.origin.y, width: frame.size.width - translation.x, height: frame.size.height + translation.y)
+					newFrame = CGRect(x: frame.origin.x + translation.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height)
+                    if self.resizableSide == .sideDefault {
+                        newFrame.size.height = min(frame.size.height + translation.y, screenSize.height)
+                        newFrame.size.width = min(frame.size.width - translation.x, screenSize.width)                   }
+                    else if self.resizableSide == .horizontal {
+                        newFrame.size.width = min(frame.size.width - translation.x, screenSize.width)
+                    }
+                    else if self.resizableSide == .vertical {
+                        newFrame.size.height = min(frame.size.height + translation.y, screenSize.height)
+                    }
 				case cornerButtons[3]:	// Bottom Right
-					newFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width + translation.x, height: frame.size.height + translation.y)
+					newFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height)
+                    if self.resizableSide == .sideDefault {
+                        newFrame.size.height = min(frame.size.height + translation.y, screenSize.height)
+                        newFrame.size.width = min(frame.size.width + translation.x, screenSize.width)
+                    }
+                    else if self.resizableSide == .horizontal {
+                       newFrame.size.width = min(frame.size.width + translation.x, screenSize.width)
+                    }
+                    else if self.resizableSide == .vertical {
+                        newFrame.size.height = min(frame.size.height + translation.y, screenSize.height)
+                    }
 				default:
 					newFrame = CGRect.zero
 				}
 
-                let minimumFrame = CGRect(x: newFrame.origin.x, y: newFrame.origin.y, width: max(newFrame.size.width, minimumSize.width + 2 * outterGap), height: max(newFrame.size.height, minimumSize.height + 2 * outterGap))
+                let minimumFrame = CGRect(x: newFrame.origin.x, y: newFrame.origin.y, width: min(screenSize.width, max(newFrame.size.width, minimumSize.width + 2 * outterGap)), height: min(screenSize.height, max(newFrame.size.height, minimumSize.height + 2 * outterGap)))
 				frame = minimumFrame
-				layoutSubviews()
+                self.layoutIfNeeded()
 
 				gestureRecognizer.setTranslation(CGPoint.zero, in: self)
 			}
-		} else if isMovable {
-			if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
-				let translation = gestureRecognizer.translation(in: self)
-				
-				gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x + translation.x, y: gestureRecognizer.view!.center.y + translation.y)
-				gestureRecognizer.setTranslation(CGPoint(x: 0, y: 0), in: self)
-			}
-		}
+        } else {
+            if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
+                if self.moveDirection == .moveDefault {
+                    let translation = gestureRecognizer.translation(in: self)
+                    gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x + translation.x, y: gestureRecognizer.view!.center.y + translation.y)
+                    gestureRecognizer.setTranslation(CGPoint(x: 0, y: 0), in: self)
+                }
+                else if self.moveDirection == .horizontal {
+                    let translation = gestureRecognizer.translation(in: self)
+                    var center = gestureRecognizer.view!.center
+                    center.x = gestureRecognizer.view!.center.x + translation.x
+                    gestureRecognizer.view!.center = center
+                    gestureRecognizer.setTranslation(CGPoint(x: 0, y: 0), in: self)
+                    
+                }
+                else if self.moveDirection == .vertical {
+                    let translation = gestureRecognizer.translation(in: self)
+                    var center = gestureRecognizer.view!.center
+                    center.y = gestureRecognizer.view!.center.y + translation.y
+                    gestureRecognizer.view!.center = center
+                    gestureRecognizer.setTranslation(CGPoint(x: 0, y: 0), in: self)
+                }
+            }
+            
+        }
+        
 	}
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, with: event)
 
-        if !isMovable && isResizable && view != nil {
+        if self.moveDirection == .not && self.resizableSide != .not && view != nil {
             let isButton = cornerButtons.reduce(false) { $1.hitTest(convert(point, to: $1), with: event) != nil || $0 }
             if !isButton {
                 return nil

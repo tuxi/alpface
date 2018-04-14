@@ -417,7 +417,7 @@ extension EditUserProfileViewController {
             size.height = stickyheaderContainerViewHeight
                 
             }
-            return CroppingParameters(isEnabled: true, allowResizing: true, allowMoving: false, minimumSize: size)
+        return CroppingParameters(isEnabled: true, resizableSide: isCover ? .vertical : .sideDefault, moveDirection: isCover ? .vertical : .moveDefault, minimumSize: size)
     }
     
     fileprivate func openCamera(isCover: Bool) {
