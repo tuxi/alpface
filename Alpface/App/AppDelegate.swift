@@ -14,14 +14,15 @@ import Peek
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    var rootViewController: RootViewController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        let rootVC = RootViewController()
-        window?.rootViewController = rootVC
+        self.rootViewController = RootViewController()
+        window?.rootViewController = self.rootViewController
         window?.makeKeyAndVisible()
         HttpRequestHelper.setCookie()
         

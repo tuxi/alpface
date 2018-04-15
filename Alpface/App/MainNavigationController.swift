@@ -51,6 +51,9 @@ class MainNavigationController: UINavigationController {
         return topVc.prefersStatusBarHidden
     }
 
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        super.pushViewController(viewController, animated: animated)
+    }
 }
 
 extension MainNavigationController{

@@ -92,7 +92,7 @@ public class AccountLogin: NSObject {
                 
                 let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
                 if let userDict = jsonDict["user"] as? [String : Any] {
-                    // 登录成功后保存cookies
+                    
                     guard let succ = success else { return }
                     let user = User(dict: userDict)
                     let result = AccountLoginResult(status: jsonDict["status"] as! String, username:username, message: "")

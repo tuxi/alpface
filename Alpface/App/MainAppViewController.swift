@@ -11,13 +11,12 @@ import UIKit
 @objc(ALPMainAppViewController)
 class MainAppViewController: UIViewController {
 
-    private lazy var scrollingContainer: MainAppScrollingContainerViewController = {
+    public lazy var scrollingContainer: MainAppScrollingContainerViewController = {
         let controller = MainAppScrollingContainerViewController()
         controller.initialPage = 1
         return controller
         
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

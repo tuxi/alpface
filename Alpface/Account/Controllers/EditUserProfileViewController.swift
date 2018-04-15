@@ -119,6 +119,12 @@ class EditUserProfileViewController: UIViewController {
         self.setupItems()
         self.prepareViews()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         

@@ -33,7 +33,7 @@ class MainAppScrollingContainerViewController: UIViewController {
     
     private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
     public var initialPage = 0
-    private func displayViewController() -> UIViewController? {
+    public func displayViewController() -> UIViewController? {
         let indexPath = collectionView.indexPathsForVisibleItems.first
         guard let ip = indexPath else { return nil }
         let vc = collectionViewItems[ip.section].items[ip.row].model as? UIViewController
@@ -265,12 +265,7 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         if viewController.title != "home" {
             /// 用户点击的只要不是首页，当前如果未登录则弹出登录页面
             if AuthenticationManager.shared.isLogin == false {
-                let loginVc = LoginViewController()
-                loginVc.delegate = self
-                let nav = MainNavigationController(rootViewController: loginVc)
-                /// 模态出来的控制器半透明
-                nav.modalPresentationStyle = .overCurrentContext
-                showDetailViewController(nav, sender: self)
+                showLoginViewController()
                 return false
             }
         }
@@ -280,7 +275,10 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
     public func showLoginViewController() {
         if AuthenticationManager.shared.isLogin == false {
             let loginVc = LoginViewController()
+            loginVc.delegate = self
             let nav = MainNavigationController(rootViewController: loginVc)
+            /// 模态出来的控制器半透明
+            nav.modalPresentationStyle = .overCurrentContext
             showDetailViewController(nav, sender: self)
         }
     }

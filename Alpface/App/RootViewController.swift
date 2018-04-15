@@ -30,6 +30,19 @@ class RootViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    public func showHomePage() {
+        self.appViewController.scrollingContainer.show(page: 1, animated: true)
+        
+        guard let disVc = self.appViewController.scrollingContainer.displayViewController() as? UITabBarController else {
+            return
+        }
+        disVc.selectedIndex = 0
+    }
+    
+    public func show(page: Int, animated: Bool) {
+        self.appViewController.scrollingContainer.show(page: page, animated: animated)
+    }
+    
     private func setupUI() {
         view.backgroundColor = UIColor.clear
         view.addSubview(appViewController.view)

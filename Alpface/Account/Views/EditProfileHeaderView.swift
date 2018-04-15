@@ -30,7 +30,7 @@ open class EditProfileHeaderView: UIView {
     
     fileprivate lazy var bottomLineView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 220/255.0, green: 220/255.0, blue: 220/255.0, alpha: 1.0)
+        view.backgroundColor = AppTheme.cellBottomLineColor
         return view
     }()
     
