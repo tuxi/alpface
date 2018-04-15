@@ -110,6 +110,8 @@
 		D2BCBA4F206F6D02008409B3 /* VideoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA4E206F6D02008409B3 /* VideoItem.swift */; };
 		D2BCBA53206FA737008409B3 /* VideoRatingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA52206FA737008409B3 /* VideoRatingItem.swift */; };
 		D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */; };
+		D2D6632E208245F30044E2A7 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D6632D208245F30044E2A7 /* AppUtils.swift */; };
+		D2D663302082E83C0044E2A7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D2D6632F2082E83C0044E2A7 /* README.md */; };
 		D2DC5748206FB1F300458F54 /* VideoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC5747206FB1F300458F54 /* VideoRequest.swift */; };
 		D2DC574A206FB7EA00458F54 /* AccountLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC5749206FB7EA00458F54 /* AccountLogin.swift */; };
 		D2DC574C20706D7C00458F54 /* PlayVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DC574B20706D7C00458F54 /* PlayVideoModel.swift */; };
@@ -224,6 +226,8 @@
 		D2BCBA4E206F6D02008409B3 /* VideoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoItem.swift; sourceTree = "<group>"; };
 		D2BCBA52206FA737008409B3 /* VideoRatingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRatingItem.swift; sourceTree = "<group>"; };
 		D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+XYExtension.swift"; sourceTree = "<group>"; };
+		D2D6632D208245F30044E2A7 /* AppUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
+		D2D6632F2082E83C0044E2A7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		D2DC5747206FB1F300458F54 /* VideoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRequest.swift; sourceTree = "<group>"; };
 		D2DC5749206FB7EA00458F54 /* AccountLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountLogin.swift; sourceTree = "<group>"; };
 		D2DC574B20706D7C00458F54 /* PlayVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayVideoModel.swift; sourceTree = "<group>"; };
@@ -359,6 +363,7 @@
 				D26AD496206778180047DC15 /* Networking */,
 				D26AD49720677C2E0047DC15 /* Others */,
 				D25188552054D3C8000147CC /* Assets.xcassets */,
+				D2D6632F2082E83C0044E2A7 /* README.md */,
 				D25188572054D3C8000147CC /* LaunchScreen.storyboard */,
 				D251885A2054D3C8000147CC /* Info.plist */,
 			);
@@ -542,6 +547,7 @@
 			children = (
 				D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */,
 				D2DC57542070D64C00458F54 /* HeartAnimation.swift */,
+				D2D6632D208245F30044E2A7 /* AppUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -721,6 +727,7 @@
 			files = (
 				D26AD456206690E60047DC15 /* Info.plist in Resources */,
 				D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */,
+				D2D663302082E83C0044E2A7 /* README.md in Resources */,
 				D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */,
 				D20093272078EEC50079AD8B /* CameraViewAssets.xcassets in Resources */,
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
@@ -775,20 +782,22 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/Gifu/Gifu.framework",
+				"${BUILT_PRODUCTS_DIR}/DeviceKit/DeviceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GraphicsRenderer/GraphicsRenderer.framework",
-				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Peek/Peek.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gifu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DeviceKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GraphicsRenderer.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Peek.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -863,6 +872,7 @@
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
 				D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */,
 				D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */,
+				D2D6632E208245F30044E2A7 /* AppUtils.swift in Sources */,
 				D200932E2078EEC50079AD8B /* VolumeControl.swift in Sources */,
 				D20093302078EEC50079AD8B /* UIViewExtensions.swift in Sources */,
 				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,

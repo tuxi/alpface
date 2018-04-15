@@ -146,12 +146,10 @@ extension ChildListViewController: UICollectionViewDataSource, UICollectionViewD
         cell.contentView.backgroundColor = UIColor.randomColor()
         guard let items = self.collectionItems else { return cell }
         let video = items[indexPath.row]
-        guard let gifURL = video.getVideoGifURL() else {
+        guard let webpURL = video.getVideoAnimatedWebpURL() else {
             return cell
         }
-        cell.gifView.animate(withGIFURL: gifURL, loopCount: 10) {
-            
-        }
+        cell.gifView.sd_setImage(with: webpURL)
         return cell
     }
     

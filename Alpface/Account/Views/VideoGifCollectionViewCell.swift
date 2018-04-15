@@ -7,12 +7,12 @@
 //
 
 import UIKit
-import Gifu
+import SDWebImage
 
 class VideoGifCollectionViewCell: UICollectionViewCell {
     
-    lazy var gifView: GIFImageView = {
-        let imageView = GIFImageView()
+    lazy var gifView: UIImageView = {
+        let imageView = UIImageView()
         return imageView
     }()
     
@@ -33,9 +33,5 @@ class VideoGifCollectionViewCell: UICollectionViewCell {
         gifView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         gifView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
         gifView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
-        gifView.animate(withGIFURL: URL.init(string: "http://www.alpface.com:8889/media/media_itemsdaed8ee08069428aa1e3605e1dd5a34a.mp4.thumb.gif")!, loopCount: 10) {
-            
-        }
-//        gifView.animate(withGIFNamed: "niconiconi@2x.gif")
     }
 }

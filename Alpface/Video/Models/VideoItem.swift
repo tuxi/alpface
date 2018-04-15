@@ -29,6 +29,7 @@ open class VideoItem: NSObject {
     open var video_ogg: String?
     open var user: User?
     open var video_gif: String?
+    open var video_animated_webp: String?
 //    open var rating: VideoRatingItem?
     
     func encode(with aCoder: NSCoder) {
@@ -51,6 +52,7 @@ open class VideoItem: NSObject {
         aCoder.encode(video_ogg, forKey: "video_ogg")
         aCoder.encode(user, forKey: "user")
         aCoder.encode(video_gif, forKey: "video_gif")
+        aCoder.encode(video_animated_webp, forKey: "video_animated_webp")
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -74,6 +76,7 @@ open class VideoItem: NSObject {
         video_ogg = aDecoder.decodeObject(forKey: "video_ogg") as? String
         user = aDecoder.decodeObject(forKey: "user") as? User
         video_gif = aDecoder.decodeObject(forKey: "video_gif") as? String
+        video_animated_webp = aDecoder.decodeBool(forKey: "video_animated_webp") as? String
     }
     
     override init() {
@@ -132,11 +135,14 @@ open class VideoItem: NSObject {
         if let video_ogg = dict["video_ogg"] as? String {
             self.video_ogg = video_ogg
         }
-        if let user = dict["user"] as? [String : Any] {
+        if let user = dict["author"] as? [String : Any] {
             self.user = User(dict: user)
         }
         if let video_gif = dict["video_gif"] as? String {
             self.video_gif = video_gif
+        }
+        if let video_animated_webp = dict["video_animated_webp"] as? String {
+            self.video_animated_webp = video_animated_webp
         }
     }
     
@@ -155,13 +161,38 @@ open class VideoItem: NSObject {
         guard let video_thumbnail = self.video_thumbnail else {
             return nil
         }
-        return URL.init(string: ALPSiteURLString + video_thumbnail)
+        if video_thumbnail.hasPrefix("http") {
+            return URL.init(string: video_thumbnail)
+        }
+        if video_thumbnail.hasPrefix("/media") == true {
+            return URL.init(string: ALPSiteURLString + video_thumbnail)
+        }
+        return nil
     }
     
     open func getVideoGifURL() -> URL? {
         guard let video_gif = self.video_gif else {
             return nil
         }
-        return URL.init(string: video_gif)
+        if video_gif.hasPrefix("http") {
+            return URL.init(string: video_gif)
+        }
+        if video_gif.hasPrefix("/media") == true {
+            return URL.init(string: ALPSiteURLString + video_gif)
+        }
+        return nil
+    }
+    
+    open func getVideoAnimatedWebpURL() -> URL? {
+        guard let webp = self.video_animated_webp else {
+            return nil
+        }
+        if webp.hasPrefix("http") {
+            return URL.init(string: webp)
+        }
+        if webp.hasPrefix("/media") == true {
+            return URL.init(string: ALPSiteURLString + webp)
+        }
+        return nil
     }
 }

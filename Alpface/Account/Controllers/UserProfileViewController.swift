@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Kingfisher
+import SDWebImage
 
 let ALPSegmentHeight: CGFloat = 44.0
 let ALPNavigationBarHeight: CGFloat = 44.0
@@ -89,7 +89,7 @@ class UserProfileViewController: BaseProfileViewController {
         self.profileHeaderView.nicknameLabel.text = self.user?.nickname
         self.profileHeaderView.summaryLabel.text = self.user?.summary
         if let cover_url = self.user?.getCoverURL() {
-            self.stickyHeaderView.headerCoverView.kf.setImage(with: cover_url)
+            self.stickyHeaderView.headerCoverView.sd_setImage(with: cover_url)
         }
         else {
             self.stickyHeaderView.headerCoverView.image = nil
@@ -101,7 +101,7 @@ class UserProfileViewController: BaseProfileViewController {
         let avatarPlaceImage = UIImage.init(named: "icon.png")
         let avatar = self.user?.getAvatarURL()
         if let url = avatar {
-            self.profileHeaderView.iconImageView.kf.setImage(with: url, placeholder: avatarPlaceImage, options: nil, progressBlock: nil, completionHandler: nil)
+            self.profileHeaderView.iconImageView.sd_setImage(with: url, placeholderImage: avatarPlaceImage)
         }
         else {
             self.profileHeaderView.iconImageView.image = avatarPlaceImage
