@@ -2,7 +2,12 @@
 * 学习抖音的iOS项目
 * [服务端开源项目](https://github.com/alpface/ShortVideo)
 
-pod install
+
+##### animated webp 制作 及 展示
+[ffmpeg 制作 webp动图](http://www.alpface.com/article/2018/4/15/53.html)
+
+
+##### 实战中遇到的问题及解决方案
 
 - 2018-4-15 使用animated webp 替换 gif 优化加载动图时 app内存飙升问题
 > 问题描述:
@@ -10,7 +15,7 @@ pod install
 
 优化方案:
 使用webp 动图 替代gif，并使用SDWebImage加载图片，
-为什么我会使用这种方法，最初写这个项目就是为了学习抖音，我hook过抖音项目，发现其使用的是YYAnimatedImageView展示动图，动图的格式为webp，抖音展示动图的页面滑动起来很流畅，虽然内存也会有所增长，但并不明显；今天我在服务端上传图片的方法中，添加了ffmpeg制作animated webp，客户端效果果然有所提升。
+为什么我会使用这种方法，最初写这个项目就是为了学习抖音，我逆向过抖音iOS客户端项目，发现其使用的是YYAnimatedImageView展示动图，抓包抖音的动图发现其格式为webp，抖音展示动图的页面滑动起来很流畅，虽然内存也会有所增长，但并不明显；今天我在服务端上传图片的方法中，添加了ffmpeg制作animated webp，客户端效果果然有所提升。
 
 
 
