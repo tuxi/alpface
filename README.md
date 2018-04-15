@@ -1,4 +1,6 @@
 # Alpface
+学习抖音短视频类iOS客户端的项目
+[服务端开源项目](https://github.com/alpface/ShortVideo)
 
 pod install
 
