@@ -56,7 +56,11 @@ final class HttpRequestHelper: NSObject {
             let data = response.result.value
             if (response.result.isSuccess)
             {
-                self.saveCookie(response: response)
+                // 如果是登录成功后保存cookies
+                let url = response.request?.url
+                if url?.absoluteString == ALPConstans.HttpRequestURL().login {
+                    self.saveCookie(response: response)
+                }
                 finishedCallBack(data as AnyObject, nil)
             }
             else
@@ -71,16 +75,19 @@ final class HttpRequestHelper: NSObject {
         // response 获取 cookie
         let headerFields = response.response?.allHeaderFields as! [String: String]
         let url = response.request?.url
-        if url?.absoluteString == ALPConstans.HttpRequestURL().login {
-            let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: url!)
-            var cookieArray = [ [HTTPCookiePropertyKey : Any ] ]()
-            for cookie in cookies {
-                cookieArray.append(cookie.properties!)
-            }
-            UserDefaults.standard.set(cookieArray, forKey: alp_cookies_key)
-            UserDefaults.standard.synchronize()
+        let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: url!)
+        var cookieArray = [ [HTTPCookiePropertyKey : Any ] ]()
+        for cookie in cookies {
+            cookieArray.append(cookie.properties!)
         }
+        UserDefaults.standard.set(cookieArray, forKey: alp_cookies_key)
+        UserDefaults.standard.synchronize()
         
+    }
+    
+    class func clearCookies() {
+        UserDefaults.standard.set(nil, forKey: alp_cookies_key)
+        UserDefaults.standard.synchronize()
     }
     
     public class func setCookie() -> Void {

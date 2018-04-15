@@ -78,6 +78,10 @@
 		D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD488206735CD0047DC15 /* UIView+Attributes.swift */; };
 		D26AD4952067779F0047DC15 /* HttpRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */; };
 		D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD49820677C5C0047DC15 /* ALPConstans.swift */; };
+		D27D6CE0208397BF0095425A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CDF208397BF0095425A /* SettingsViewController.swift */; };
+		D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE120839B690095425A /* SettingsTableViewCell.swift */; };
+		D27D6CE420839E520095425A /* SettingsTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */; };
+		D27D6CE62083A8F70095425A /* ALPTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE52083A8F70095425A /* ALPTheme.swift */; };
 		D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289535E2076A4EE0029CE92 /* ProfileHeaderView.swift */; };
 		D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289535F2076A4EE0029CE92 /* ScrollableSegmentedControl.swift */; };
 		D28953662076A4EE0029CE92 /* HitTestContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28953602076A4EE0029CE92 /* HitTestContainerViewController.swift */; };
@@ -194,6 +198,10 @@
 		D26AD488206735CD0047DC15 /* UIView+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Attributes.swift"; sourceTree = "<group>"; };
 		D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpRequestHelper.swift; sourceTree = "<group>"; };
 		D26AD49820677C5C0047DC15 /* ALPConstans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALPConstans.swift; sourceTree = "<group>"; };
+		D27D6CDF208397BF0095425A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		D27D6CE120839B690095425A /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCellModel.swift; sourceTree = "<group>"; };
+		D27D6CE52083A8F70095425A /* ALPTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALPTheme.swift; sourceTree = "<group>"; };
 		D289535E2076A4EE0029CE92 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		D289535F2076A4EE0029CE92 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
 		D28953602076A4EE0029CE92 /* HitTestContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HitTestContainerViewController.swift; sourceTree = "<group>"; };
@@ -517,6 +525,7 @@
 				D289537020771A6B0029CE92 /* MyFavoriteViewController.swift */,
 				D289537220771A8B0029CE92 /* MyStoryViewController.swift */,
 				D21A2CCA207CF5C600335A8A /* EditUserProfileViewController.swift */,
+				D27D6CDF208397BF0095425A /* SettingsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -527,6 +536,7 @@
 				D26AD4642066BB180047DC15 /* User.swift */,
 				D26AD466206729D60047DC15 /* AuthenticationManager.swift */,
 				D21A2CD4207D154400335A8A /* EditUserProfileModel.swift */,
+				D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */,
 			);
 			path = Modles;
 			sourceTree = "<group>";
@@ -565,6 +575,7 @@
 			isa = PBXGroup;
 			children = (
 				D26AD49820677C5C0047DC15 /* ALPConstans.swift */,
+				D27D6CE52083A8F70095425A /* ALPTheme.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -597,6 +608,7 @@
 				D21A2CD2207D0BF800335A8A /* EditProfileHeaderView.swift */,
 				D28B2294207732BA00680970 /* VideoGifCollectionViewCell.swift */,
 				D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */,
+				D27D6CE120839B690095425A /* SettingsTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -846,12 +858,15 @@
 				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
 				D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
 				D2DC5748206FB1F300458F54 /* VideoRequest.swift in Sources */,
+				D27D6CE0208397BF0095425A /* SettingsViewController.swift in Sources */,
 				D21A2CD1207D09DC00335A8A /* EditProfileTableViewCell.swift in Sources */,
 				D2BCBA43206F33F2008409B3 /* FeedCellViewController.swift in Sources */,
+				D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */,
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
 				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
 				D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */,
+				D27D6CE62083A8F70095425A /* ALPTheme.swift in Sources */,
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
 				D200932A2078EEC50079AD8B /* CameraGlobals.swift in Sources */,
 				D20093362078EEC50079AD8B /* ConfirmViewController.swift in Sources */,
@@ -887,6 +902,7 @@
 				D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */,
 				D20093282078EEC50079AD8B /* CroppingParameters.swift in Sources */,
 				D2BCBA4A206F33F2008409B3 /* ListCollectionView.swift in Sources */,
+				D27D6CE420839E520095425A /* SettingsTableViewCellModel.swift in Sources */,
 				D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */,
 				D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */,
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,

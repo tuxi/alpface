@@ -70,4 +70,11 @@ final class AuthenticationManager: NSObject {
         }
     }
     
+    public func logout() {
+        self.loginUser = nil
+        self.csrftoken = nil
+        self.authToken = nil
+        HttpRequestHelper.clearCookies()
+    }
+    
 }

@@ -61,6 +61,18 @@ class UserProfileViewController: BaseProfileViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 0.1) {        
+            UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -111,7 +123,7 @@ class UserProfileViewController: BaseProfileViewController {
         if self.user?.username == AuthenticationManager.shared.loginUser?.username {
             // 用户自己的个人页面
             self.profileHeaderView.followButton.setTitle("Settings", for: .normal)
-            self.profileHeaderView.followButton.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+            self.profileHeaderView.followButton.addTarget(self, action: #selector(gotoSettings), for: .touchUpInside)
         }
         
         self.view.layoutIfNeeded()
@@ -164,10 +176,9 @@ extension UserProfileViewController {
 }
 
 extension UserProfileViewController {
-    @objc fileprivate func editProfile() {
-        let editVc = EditUserProfileViewController(user: self.user!)
-        let nac = UINavigationController(rootViewController: editVc)
-        self.showDetailViewController(nac, sender: self)
+    @objc fileprivate func gotoSettings() {
+        let settings = SettingsViewController()
+        self.show(settings, sender: self)
     }
 }
 
