@@ -7,7 +7,7 @@
 //  和PlayVideoViewController配合使用，处理播放器的UI
 
 import UIKit
-import Kingfisher
+import SDWebImage
 
 let ALPplayStatusButtonAlpha: CGFloat = 0.5
 
@@ -19,7 +19,7 @@ class PlayInteractionViewController: UIViewController {
         didSet {
             if self.placeholderImageView.isHidden == false {
                 if let thumbnail = videoItem?.video_thumbnail {
-                    self.placeholderImageView.kf.setImage(with: URL.init(string: thumbnail))
+                    self.placeholderImageView.sd_setImage(with: URL.init(string: thumbnail))
                 }
             }
             self.detailView.videoItem = videoItem

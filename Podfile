@@ -8,7 +8,8 @@ target 'Alpface' do
 
   pod 'Alamofire', '~> 4.7'
   pod 'Peek', '~> 5.0'
-  pod 'Kingfisher', '~> 4.0'
-  pod 'Gifu'
   pod 'MBProgressHUD', '~> 1.1.0'
+  pod 'DeviceKit'
+  pod 'SDWebImage'
+  pod 'SDWebImage/WebP'
 end

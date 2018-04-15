@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Kingfisher
+import SDWebImage
 import MBProgressHUD
 
 class EditUserProfileViewController: UIViewController {
@@ -175,14 +175,14 @@ extension EditUserProfileViewController {
         changeCoverButton.widthAnchor.constraint(equalToConstant: changeCoverButtonHeight).isActive = true
         changeCoverButton.heightAnchor.constraint(equalToConstant: changeCoverButtonHeight).isActive = true
         if let avatar = self.user?.getAvatarURL() {
-           profileHeaderView.iconImageView.kf.setImage(with: avatar, placeholder: UIImage(named: "icon"), options: nil, progressBlock: nil, completionHandler: nil)
+           profileHeaderView.iconImageView.sd_setImage(with: avatar, placeholderImage: UIImage(named: "icon"))
         }
         else {
             profileHeaderView.iconImageView.image = UIImage(named: "icon")
         }
         
         if let cover_url = self.user?.getCoverURL() {
-            self.stickyHeaderView.headerCoverView.kf.setImage(with: cover_url)
+            self.stickyHeaderView.headerCoverView.sd_setImage(with: cover_url)
         }
         else {
             self.stickyHeaderView.headerCoverView.image = nil
