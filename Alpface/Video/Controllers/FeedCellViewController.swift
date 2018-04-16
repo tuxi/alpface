@@ -23,8 +23,9 @@ class FeedCellViewController: UIViewController {
                 interactionController.videoItem = videoItem
                 playVideoVc.preparePlayback(url: url)
             }
-            m.playCallBack = { [weak self] (isPlay: Bool) in
-                if isPlay {
+            m.playCallBack = { [weak self] (canPlay: Bool) in
+                self?.playVideoVc.isEndDisplaying = (canPlay == false)
+                if canPlay {
                     self?.playVideoVc.autoPlay()
                 }
                 else {

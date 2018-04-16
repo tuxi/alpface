@@ -58,12 +58,6 @@ class PlayVideoViewController: UIViewController {
     /// 是否在播放完成后自动播放
     open var shouldAutoPlayWhenPlaybackFinished = true
     
-//    fileprivate var videoModel: PlayVideoModel? {
-//        didSet {
-//            self.playerBack(url: <#T##URL#>)
-//        }
-//    }
-    
     /// 播放的url
     fileprivate var url : URL?
     /// 视频缓冲的进度
@@ -72,6 +66,8 @@ class PlayVideoViewController: UIViewController {
     open var playerProgress : Float = 0.0
     /// 视频总时长
     open var totalDuration : Float = 0.0
+    /// 是否已消失，当未显示在屏幕上是是不允许播放的
+    open var isEndDisplaying : Bool = true
     /// 是否是用户暂停播放
     fileprivate var isPauseByUser   = false
     /// 播放器容器视图
@@ -109,7 +105,23 @@ class PlayVideoViewController: UIViewController {
         super.viewDidLoad()
         isViewDidLoad = true
         setupUI()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationDidEnterBackground),
+                                               name: NSNotification.Name.UIApplicationDidEnterBackground,
+                                               object: nil)
         
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationWillEnterForeground),
+                                               name: NSNotification.Name.UIApplicationWillEnterForeground,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationWillResignActive),
+                                               name: NSNotification.Name.UIApplicationWillResignActive,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationDidBecomeActive),
+                                               name: NSNotification.Name.UIApplicationDidBecomeActive,
+                                               object: nil)
     }
 //    override func viewDidAppear(_ animated: Bool) {
 //         super.viewDidAppear(animated)
@@ -176,6 +188,8 @@ class PlayVideoViewController: UIViewController {
                 delegate.playVideoViewController!(didPlayToEnd: self)
             }
         }
+        // 更新状态
+        state = .stopped
         if shouldAutoPlayWhenPlaybackFinished {
             autoPlay()
         }
@@ -217,7 +231,11 @@ class PlayVideoViewController: UIViewController {
     /// 自动播放, 当非用户暂停时，或者播放完成后的自动播放
     open func autoPlay() {
         if !isPauseByUser && url != nil {
-            if (state == .buffering || state == .playing) && (shouldAutoPlayWhenPlaybackFinished == false) {
+            if isEndDisplaying == true || // 未显示在屏幕上是不允许播放的
+                (state == .playing) || // 正在播放中，就不再重复播放
+                (state == .stopped && shouldAutoPlayWhenPlaybackFinished == false) // 播放结束，且结束后不再重复的
+            {
+                
                 return
             }
             play()
@@ -279,6 +297,7 @@ class PlayVideoViewController: UIViewController {
         player?.replaceCurrentItem(with: nil)
         player = nil
         playerItem = nil
+        NotificationCenter.default.removeObserver(self)
     }
     
 }
@@ -308,9 +327,7 @@ extension PlayVideoViewController {
         }
         timeObserver = nil
         NotificationCenter.default.removeObserver(self, name:  Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemPlaybackStalled, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemPlaybackStalled, object: playerItem)
     }
     
     /// 给AVPlayerItem、AVPlayer添加监控
@@ -339,18 +356,9 @@ extension PlayVideoViewController {
         addPlayProgressObserver()
         NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(applicationDidEnterBackground),
-                                               name: NSNotification.Name.UIApplicationDidEnterBackground,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(applicationWillEnterForeground),
-                                               name: NSNotification.Name.UIApplicationWillEnterForeground,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
                                                selector: #selector(playerItemPlaybackStalled(notification:)),
                                                name: NSNotification.Name.AVPlayerItemPlaybackStalled,
-                                               object: nil)
+                                               object: playerItem)
         
     }
     
@@ -389,6 +397,14 @@ extension PlayVideoViewController {
     
     @objc fileprivate func applicationDidEnterBackground() {
         pause(autoPlay: true)
+    }
+    
+    @objc fileprivate func applicationWillResignActive() {
+        pause(autoPlay: true)
+    }
+    
+    @objc fileprivate func applicationDidBecomeActive() {
+        autoPlay()
     }
     
     @objc fileprivate func playerItemPlaybackStalled(notification: Notification) {
