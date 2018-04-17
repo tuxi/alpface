@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 public typealias ALPHttpResponseBlock = (Any?) -> Void
 public typealias ALPHttpErrorBlock = (_ error: Error?) -> ()
@@ -78,7 +79,7 @@ class VideoRequest: NSObject {
         }
         let parameters = [
             "username": username,
-            "auth_username": authUser.username,
+            "auth_username": authUser.username!,
             "type": "1",
             
         ]  as NSDictionary
@@ -113,6 +114,84 @@ class VideoRequest: NSObject {
                 guard let fail = failure else { return }
                 DispatchQueue.main.async {
                     fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                }
+            }
+        }
+    }
+    
+    public func upload(title: String, describe: String, videoPath: String, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
+        
+        if AuthenticationManager.shared.isLogin == false {
+            return
+        }
+        
+        let file = VideoFile(path: videoPath)
+        guard let data = file.readAll() else {
+            return
+        }
+        file.close()
+        
+        let urlString = ALPConstans.HttpRequestURL().updateProfile
+        var parameters = Dictionary<String, Any>.init()
+        if let csrfToken = AuthenticationManager.shared.csrftoken {
+            parameters[ALPCsrfmiddlewaretokenKey] = csrfToken
+        }
+        parameters["title"] = title
+        parameters["describe"] = describe
+        
+        
+        let url = URL(string: urlString)
+        Alamofire.upload(multipartFormData: { (multipartFormData) in
+            
+            multipartFormData.append(data, withName:"avatar", fileName:file.displayName!, mimeType:"video/mp4")
+            
+            // 遍历字典
+            for (key, value) in parameters {
+                
+                let str: String = value as! String
+                let _datas: Data = str.data(using:String.Encoding.utf8)!
+                multipartFormData.append(_datas, withName: key)
+                
+            }
+            
+        }, to: url!) { (result) in
+            switch result {
+            case .success(let upload,_, _):
+                upload.responseJSON(completionHandler: { (response) in
+                    if let value = response.result.value as? NSDictionary {
+                        if value["status"] as? String == "success" {
+                            
+                            if let userDict = value["user"] as? [String : Any] {
+                                // 登录成功后保存cookies
+                                guard let succ = success else { return }
+                                let user = User(dict: userDict)
+                                
+                                // 记录修改后的user
+                                AuthenticationManager.shared.loginUser = user
+                                DispatchQueue.main.async {
+                                    NotificationCenter.default.post(name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil, userInfo: ["user": user])
+                                    succ(user)
+                                }
+                            }
+                            else {
+                                guard let fail = failure else { return }
+                                DispatchQueue.main.async {
+                                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                                }
+                            }
+                        }
+                        return
+                    }
+                    guard let fail = failure else { return }
+                    DispatchQueue.main.async {
+                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    }
+                })
+            case .failure(let error):
+                
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(error)
                 }
             }
         }

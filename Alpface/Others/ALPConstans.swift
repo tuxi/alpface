@@ -35,6 +35,7 @@ struct ALPConstans {
         let updateProfile = "\(ALPSiteURLString)" + "/account/user/update/"
         let getCsrfToken = "\(ALPSiteURLString)" + "/account/auth/csrf"
         let getRadomVideos = "\(ALPSiteURLString)" + "/video/getAll"
+        let uoloadVideo = "\(ALPSiteURLString)" + "/video/new"
         let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
         
     }

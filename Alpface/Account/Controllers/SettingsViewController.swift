@@ -95,6 +95,15 @@ extension SettingsViewController {
             
         }
         self.settings.append(item1)
+        
+        let item2 = SettingsTableViewCellModel(name: "上传视频") { (model) in
+            if let user = AuthenticationManager.shared.loginUser {
+                let publishVc = PublishViewController()
+                let nac = UINavigationController(rootViewController: publishVc)
+                self.showDetailViewController(nac, sender: self)
+            }
+        }
+        self.settings.append(item2)
     }
 }
 

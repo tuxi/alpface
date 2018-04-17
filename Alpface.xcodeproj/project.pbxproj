@@ -42,6 +42,8 @@
 		D21A2CD5207D154400335A8A /* EditUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CD4207D154400335A8A /* EditUserProfileModel.swift */; };
 		D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD053207A6586003E08B9 /* XYEmptyData.swift */; };
 		D22FD056207A65A2003E08B9 /* RuntimeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */; };
+		D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D902084F73B00588BEC /* PublishViewController.swift */; };
+		D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D932084FD7F00588BEC /* VideoFile.swift */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
 		D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41020668F130047DC15 /* StoryCameraViewController.swift */; };
@@ -159,6 +161,8 @@
 		D21A2CD4207D154400335A8A /* EditUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileModel.swift; sourceTree = "<group>"; };
 		D22FD053207A6586003E08B9 /* XYEmptyData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XYEmptyData.swift; sourceTree = "<group>"; };
 		D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuntimeExtensions.swift; sourceTree = "<group>"; };
+		D2371D902084F73B00588BEC /* PublishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishViewController.swift; sourceTree = "<group>"; };
+		D2371D932084FD7F00588BEC /* VideoFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFile.swift; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D25188552054D3C8000147CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D25188582054D3C8000147CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -337,6 +341,31 @@
 			path = XYEmptyData;
 			sourceTree = "<group>";
 		};
+		D2371D8E2084F6E900588BEC /* Publish */ = {
+			isa = PBXGroup;
+			children = (
+				D2371D922084FD6500588BEC /* Models */,
+				D2371D8F2084F70900588BEC /* Controllers */,
+			);
+			path = Publish;
+			sourceTree = "<group>";
+		};
+		D2371D8F2084F70900588BEC /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D2371D902084F73B00588BEC /* PublishViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D2371D922084FD6500588BEC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D2371D932084FD7F00588BEC /* VideoFile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		D25188422054D3C8000147CC = {
 			isa = PBXGroup;
 			children = (
@@ -367,6 +396,7 @@
 				D26AD40220668F130047DC15 /* Video */,
 				D26AD45B2066A9C30047DC15 /* Discover */,
 				D26AD444206690B40047DC15 /* ThirdParty */,
+				D2371D8E2084F6E900588BEC /* Publish */,
 				D26AD493206777870047DC15 /* Utils */,
 				D26AD496206778180047DC15 /* Networking */,
 				D26AD49720677C2E0047DC15 /* Others */,
@@ -839,6 +869,7 @@
 				D2DC57552070D64C00458F54 /* HeartAnimation.swift in Sources */,
 				D20093292078EEC50079AD8B /* Utilities.swift in Sources */,
 				D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */,
+				D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */,
 				D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */,
 				D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
@@ -863,6 +894,7 @@
 				D2BCBA43206F33F2008409B3 /* FeedCellViewController.swift in Sources */,
 				D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */,
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
+				D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */,
 				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
 				D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */,
