@@ -29,14 +29,14 @@ struct ALPConstans {
     
     struct HttpRequestURL {
         // 登录
-        let login = "\(ALPSiteURLString)" + "/account/auth/login/"
+        static let login = "\(ALPSiteURLString)" + "/account/auth/login/"
         // 注册
-        let register = "\(ALPSiteURLString)" + "/account/auth/register/"
-        let updateProfile = "\(ALPSiteURLString)" + "/account/user/update/"
-        let getCsrfToken = "\(ALPSiteURLString)" + "/account/auth/csrf"
-        let getRadomVideos = "\(ALPSiteURLString)" + "/video/getAll"
-        let uoloadVideo = "\(ALPSiteURLString)" + "/video/new"
-        let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
+        static let register = "\(ALPSiteURLString)" + "/account/auth/register/"
+        static let updateProfile = "\(ALPSiteURLString)" + "/account/user/update/"
+        static let getCsrfToken = "\(ALPSiteURLString)" + "/account/auth/csrf"
+        static let getRadomVideos = "\(ALPSiteURLString)" + "/video/getAll"
+        static let uoloadVideo = "\(ALPSiteURLString)" + "/video/new"
+        static let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
         
     }
     

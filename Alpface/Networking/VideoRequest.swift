@@ -17,7 +17,7 @@ class VideoRequest: NSObject {
     
     public func getRadomVideos(success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
         
-        let url = ALPConstans.HttpRequestURL().getRadomVideos
+        let url = ALPConstans.HttpRequestURL.getRadomVideos
         HttpRequestHelper.request(method: .get, url: url, parameters: nil) { (response, error) in
             
             if error != nil {
@@ -69,7 +69,7 @@ class VideoRequest: NSObject {
     
     
     public func discoverUserByUsername(username: String, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
-        let url = ALPConstans.HttpRequestURL().discoverUserByUsername
+        let url = ALPConstans.HttpRequestURL.discoverUserByUsername
         guard let authUser = AuthenticationManager.shared.loginUser else {
             if let fail = failure {
                 let e = NSError(domain: "ErrorNOTFoundauthUser", code: 404, userInfo: nil)
@@ -131,7 +131,7 @@ class VideoRequest: NSObject {
         }
         file.close()
         
-        let urlString = ALPConstans.HttpRequestURL().updateProfile
+        let urlString = ALPConstans.HttpRequestURL.uoloadVideo
         var parameters = Dictionary<String, Any>.init()
         if let csrfToken = AuthenticationManager.shared.csrftoken {
             parameters[ALPCsrfmiddlewaretokenKey] = csrfToken
@@ -143,7 +143,7 @@ class VideoRequest: NSObject {
         let url = URL(string: urlString)
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             
-            multipartFormData.append(data, withName:"avatar", fileName:file.displayName!, mimeType:"video/mp4")
+            multipartFormData.append(data, withName:"video", fileName:file.displayName!, mimeType:"video/mp4")
             
             // 遍历字典
             for (key, value) in parameters {
@@ -160,27 +160,19 @@ class VideoRequest: NSObject {
                 upload.responseJSON(completionHandler: { (response) in
                     if let value = response.result.value as? NSDictionary {
                         if value["status"] as? String == "success" {
-                            
-                            if let userDict = value["user"] as? [String : Any] {
-                                // 登录成功后保存cookies
-                                guard let succ = success else { return }
-                                let user = User(dict: userDict)
-                                
-                                // 记录修改后的user
-                                AuthenticationManager.shared.loginUser = user
-                                DispatchQueue.main.async {
-                                    NotificationCenter.default.post(name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil, userInfo: ["user": user])
-                                    succ(user)
-                                }
-                            }
-                            else {
-                                guard let fail = failure else { return }
-                                DispatchQueue.main.async {
-                                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                            DispatchQueue.main.async {
+                                if let suc = success {
+                                    if let data = value["data"] as? NSDictionary {
+                                        if let video = data["video"] as? NSDictionary {
+                                            let v = VideoItem(dict: video as! [String : Any])
+                                            suc(v)
+                                            return
+                                        }
+                                    }
+                                    
                                 }
                             }
                         }
-                        return
                     }
                     guard let fail = failure else { return }
                     DispatchQueue.main.async {

@@ -8,33 +8,86 @@
 
 import UIKit
 import MobileCoreServices
+import MBProgressHUD
 
 class PublishViewController: UIViewController {
-
+    @IBOutlet weak var titleTextView: AdaptiveTextView!
+    @IBOutlet weak var selectVideoButton: UIButton!
+    @IBOutlet weak var describeTextView: AdaptiveTextView!
+    @IBOutlet weak var publishButton: UIButton!
+    @IBOutlet weak var describeTextViewHeightConstraint: NSLayoutConstraint!
+    public lazy var playVideoVc: PlayVideoViewController = {
+        let playVideoVc = PlayVideoViewController()
+        return playVideoVc
+    }()
+    
+    fileprivate var filePath: String? {
+        didSet {
+            if let filePath = filePath {
+                self.playVideoVc.preparePlayback(url: URL(fileURLWithPath: filePath))
+            }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.view.backgroundColor = UIColor.white
+        selectVideoButton.setTitle("选择视频", for: .normal)
+        selectVideoButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
+        selectVideoButton.backgroundColor = AppTheme.globalTint
         
-        let button = UIButton(type: .custom)
-        self.view.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        button.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
-        button.layer.cornerRadius = 20.0
-        button.layer.masksToBounds = true
-        button.backgroundColor = AppTheme.globalTint
-        button.setTitle("上传视频", for: .normal)
-        button.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
+        publishButton.setTitle("上传", for: .normal)
+        publishButton.addTarget(self, action: #selector(upload), for: .touchUpInside)
+        publishButton.layer.cornerRadius = 20.0
+        publishButton.layer.masksToBounds = true
+        publishButton.backgroundColor = AppTheme.globalTint
+        
+        describeTextView.placeholder = "输入视频描述..."
+        titleTextView.placeholder = "输入视频标题..."
+        titleTextView.cornerRadius = 4
+        titleTextView.placeholderColor = UIColor.black
+        describeTextView.placeholderColor = UIColor.black
+        describeTextView.maxNumberOfLines = 3
+        titleTextView.maxNumberOfLines = 1
+        describeTextView.textValueDidChanged {[weak self] (text, textHeight) in
+            self?.describeTextViewHeightConstraint.constant = textHeight
+        }
+        
+        playVideoVc.view.translatesAutoresizingMaskIntoConstraints = false
+        self.selectVideoButton.addSubview(self.playVideoVc.view)
+        playVideoVc.view.leadingAnchor.constraint(equalTo: self.selectVideoButton.leadingAnchor).isActive = true
+        playVideoVc.view.trailingAnchor.constraint(equalTo: self.selectVideoButton.trailingAnchor).isActive = true
+        playVideoVc.view.topAnchor.constraint(equalTo: self.selectVideoButton.topAnchor).isActive = true
+        playVideoVc.view.bottomAnchor.constraint(equalTo: self.selectVideoButton.bottomAnchor).isActive = true
+        playVideoVc.view.isUserInteractionEnabled = false
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    @objc fileprivate func upload() {
+        guard let path = self.filePath else {
+            MBProgressHUD.xy_show("还未选择视频...")
+            return
+        }
+        if self.titleTextView.text.isEmpty || self.describeTextView.text.isEmpty {
+            MBProgressHUD.xy_show("请添加标题和描述文本")
+            return
+        }
+        MBProgressHUD.xy_showActivity()
+        VideoRequest.shared.upload(title: self.titleTextView.text, describe: self.describeTextView.text, videoPath: path, success: { (response) in
+            MBProgressHUD.xy_hide()
+            MBProgressHUD.xy_show("视频上传完成")
+        }) { (error) in
+            MBProgressHUD.xy_hide()
+        }
+    }
     
     @objc fileprivate func openLibrary() {
         guard UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum) else {
@@ -48,8 +101,6 @@ class PublishViewController: UIViewController {
         imagePick.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String, kUTTypeAudio as String]
         imagePick.view.backgroundColor = UIColor.init(white: 0.5, alpha: 0.5)
         self.present(imagePick, animated: true) {
-            print("present ImagePicker --> ")
-            
         }
     }
 
@@ -58,9 +109,11 @@ class PublishViewController: UIViewController {
 extension PublishViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-       
-        print(info["UIImagePickerControllerMediaURL"] ?? "")
-        picker.popViewController(animated: true)
+       let fileURL = info["UIImagePickerControllerMediaURL"] as? URL
+        self.filePath = fileURL?.path
+        picker.dismiss(animated: true) {
+            
+        }
     }
     
 }

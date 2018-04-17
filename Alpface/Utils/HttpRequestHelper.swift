@@ -58,7 +58,7 @@ final class HttpRequestHelper: NSObject {
             {
                 // 如果是登录成功后保存cookies
                 let url = response.request?.url
-                if url?.absoluteString == ALPConstans.HttpRequestURL().login {
+                if url?.absoluteString == ALPConstans.HttpRequestURL.login {
                     self.saveCookie(response: response)
                 }
                 finishedCallBack(data as AnyObject, nil)

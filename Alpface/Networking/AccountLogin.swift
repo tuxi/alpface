@@ -63,7 +63,7 @@ public class AccountLogin: NSObject {
         /// 登录之前先请求csrftoken
         getCsrfToken(success: { (response) in
             
-            let urlString = ALPConstans.HttpRequestURL().login
+            let urlString = ALPConstans.HttpRequestURL.login
             let parameters = [
                 ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
                 "username": username,
@@ -131,7 +131,7 @@ public class AccountLogin: NSObject {
         /// 註冊之前先请求csrftoken
         getCsrfToken(success: { (response) in
             
-            let urlString = ALPConstans.HttpRequestURL().register
+            let urlString = ALPConstans.HttpRequestURL.register
             let parameters = [
                 ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
                 "username": username,
@@ -202,7 +202,7 @@ public class AccountLogin: NSObject {
     
     /// 获取csrftoken
     public func getCsrfToken(success: ALPSuccessHandler?, failure: ALPErrorHandler?) {
-         let urlString = ALPConstans.HttpRequestURL().getCsrfToken
+         let urlString = ALPConstans.HttpRequestURL.getCsrfToken
         HttpRequestHelper.request(method: .get, url: urlString, parameters: nil) { (response, error) in
             if let err = error {
                 if let fail = failure {
@@ -247,7 +247,7 @@ public class AccountLogin: NSObject {
             }
         }
         
-        let urlString = ALPConstans.HttpRequestURL().updateProfile
+        let urlString = ALPConstans.HttpRequestURL.updateProfile
         var parameters = Dictionary<String, Any>.init()
         if let csrfToken = AuthenticationManager.shared.csrftoken {
             parameters[ALPCsrfmiddlewaretokenKey] = csrfToken
