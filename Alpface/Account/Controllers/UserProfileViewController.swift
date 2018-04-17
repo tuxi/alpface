@@ -155,6 +155,7 @@ class UserProfileViewController: BaseProfileViewController {
 extension UserProfileViewController {
     fileprivate func addObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(authenticationAccountProfileChanged(notification:)), name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(publushVideoSuccess), name: NSNotification.Name.PublushVideoSuccess, object: nil)
     }
     
     @objc fileprivate func authenticationAccountProfileChanged(notification: NSNotification) {
@@ -168,6 +169,10 @@ extension UserProfileViewController {
             self.user = user
             self.reloadCollectionData()
         }
+    }
+    
+    @objc fileprivate func publushVideoSuccess() {
+        self.discoverUserByUsername()
     }
     
     fileprivate func removeObserver() {

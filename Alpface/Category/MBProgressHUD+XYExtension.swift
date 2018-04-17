@@ -101,14 +101,14 @@ extension MBProgressHUD {
     }
     
     class func xy_show(activity message: String?, actionCallBack: XYHUDActionCallBack?) {
-        self.xy_showHud(to: nil, message: message, mode: .indeterminate, actionCallBack: actionCallBack)
+        _ = self.xy_showHud(to: nil, message: message, mode: .indeterminate, actionCallBack: actionCallBack)
     }
     
-    class func xy_show(progress message: String?, actionCallBack: XYHUDActionCallBack?) {
-        self.xy_showHud(to: nil, message: message, mode: .determinate, actionCallBack: actionCallBack)
+    class func xy_show(progress message: String?, actionCallBack: XYHUDActionCallBack?) -> MBProgressHUD {
+        return self.xy_showHud(to: nil, message: message, mode: .determinate, actionCallBack: actionCallBack)
     }
     
-    fileprivate class func xy_showHud(to view: UIView?, message: String?, mode: MBProgressHUDMode, actionCallBack: XYHUDActionCallBack?) {
+    fileprivate class func xy_showHud(to view: UIView?, message: String?, mode: MBProgressHUDMode, actionCallBack: XYHUDActionCallBack?) -> MBProgressHUD {
         let hud = self.xy_createHud(message: message, toView: view, offset: .zero)
         hud.mode = mode
         let v = XY_HUD_NULL_VIEW(view: view)
@@ -116,6 +116,7 @@ extension MBProgressHUD {
         hud.button.setTitle("取消", for: .normal)
         hud.button.setTitleColor(UIColor.white, for: .normal)
         hud.button.addTarget(view, action: #selector(xy_cancelOperationAction(sender:)), for: .touchUpInside)
+        return hud
     }
     
     class func xy_show(custom image: UIImage, message: String, toView: UIView?, offset: CGPoint) {
@@ -168,6 +169,7 @@ extension MBProgressHUD {
     }
     
     fileprivate func updatePaddingConstraints() {
+        // 下面修改自MBprogressHUD，实现更改间距
         // Set padding dynamically, depending on whether the view is visible or not
         guard let paddingConstraints = self.value(forKey: "paddingConstraints") as? [NSLayoutConstraint] else { return }
         

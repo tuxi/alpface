@@ -10,6 +10,11 @@ import UIKit
 import MobileCoreServices
 import MBProgressHUD
 
+extension NSNotification.Name {
+    /// 视频发送成功
+    public static let PublushVideoSuccess: NSNotification.Name = NSNotification.Name(rawValue: "PublushVideoSuccess")
+}
+
 class PublishViewController: UIViewController {
     @IBOutlet weak var titleTextView: AdaptiveTextView!
     @IBOutlet weak var selectVideoButton: UIButton!
@@ -25,6 +30,8 @@ class PublishViewController: UIViewController {
         didSet {
             if let filePath = filePath {
                 self.playVideoVc.preparePlayback(url: URL(fileURLWithPath: filePath))
+                self.playVideoVc.isEndDisplaying = false
+                self.playVideoVc.autoPlay()
             }
         }
     }
@@ -61,6 +68,7 @@ class PublishViewController: UIViewController {
         playVideoVc.view.topAnchor.constraint(equalTo: self.selectVideoButton.topAnchor).isActive = true
         playVideoVc.view.bottomAnchor.constraint(equalTo: self.selectVideoButton.bottomAnchor).isActive = true
         playVideoVc.view.isUserInteractionEnabled = false
+        playVideoVc.view.backgroundColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(backAction))
         self.navigationItem.title = "上传视频"
@@ -85,13 +93,18 @@ class PublishViewController: UIViewController {
             return
         }
         MBProgressHUD.xy_showActivity()
-        VideoRequest.shared.upload(title: self.titleTextView.text, describe: self.describeTextView.text, videoPath: path, success: {[weak self] (response) in
+        VideoRequest.shared.upload(title: self.titleTextView.text, describe: self.describeTextView.text, videoPath: path, progress: { (p) in
+            print("上传进度\(p.completedUnitCount)")
+        }, success: {[weak self] (response) in
+            guard let video = response as? VideoItem else { return }
+            NotificationCenter.default.post(name: NSNotification.Name.PublushVideoSuccess, object: self, userInfo: ["video": video])
             MBProgressHUD.xy_hide()
             MBProgressHUD.xy_show("视频上传完成")
             self?.backAction()
         }) { (error) in
             MBProgressHUD.xy_hide()
         }
+        
     }
     
     @objc fileprivate func openLibrary() {

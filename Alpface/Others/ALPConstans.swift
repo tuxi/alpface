@@ -39,7 +39,6 @@ struct ALPConstans {
         static let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
         
     }
-    
 }
 
 

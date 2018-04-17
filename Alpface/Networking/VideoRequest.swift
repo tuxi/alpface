@@ -11,7 +11,7 @@ import Alamofire
 
 public typealias ALPHttpResponseBlock = (Any?) -> Void
 public typealias ALPHttpErrorBlock = (_ error: Error?) -> ()
-
+public typealias ALPProgressHandler = (Progress) -> Void
 class VideoRequest: NSObject {
     static public let shared = VideoRequest()
     
@@ -119,7 +119,7 @@ class VideoRequest: NSObject {
         }
     }
     
-    public func upload(title: String, describe: String, videoPath: String, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
+    public func upload(title: String, describe: String, videoPath: String, progress: ALPProgressHandler?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
         
         if AuthenticationManager.shared.isLogin == false {
             return
@@ -141,7 +141,7 @@ class VideoRequest: NSObject {
         
         
         let url = URL(string: urlString)
-        Alamofire.upload(multipartFormData: { (multipartFormData) in
+       Alamofire.upload(multipartFormData: { (multipartFormData) in
             
             multipartFormData.append(data, withName:"video", fileName:file.displayName!, mimeType:"video/mp4")
             
@@ -157,7 +157,11 @@ class VideoRequest: NSObject {
         }, to: url!) { (result) in
             switch result {
             case .success(let upload,_, _):
-                upload.responseJSON(completionHandler: { (response) in
+                upload.uploadProgress(queue: DispatchQueue.main, closure: { (p) in
+                    if let prog = progress {
+                        prog(p)
+                    }
+                }).responseJSON(completionHandler: { (response) in
                     if let value = response.result.value as? NSDictionary {
                         if value["status"] as? String == "success" {
                             DispatchQueue.main.async {
