@@ -61,6 +61,10 @@ class PublishViewController: UIViewController {
         playVideoVc.view.topAnchor.constraint(equalTo: self.selectVideoButton.topAnchor).isActive = true
         playVideoVc.view.bottomAnchor.constraint(equalTo: self.selectVideoButton.bottomAnchor).isActive = true
         playVideoVc.view.isUserInteractionEnabled = false
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.title = "上传视频"
+        self.view.backgroundColor = UIColor.white
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -81,9 +85,10 @@ class PublishViewController: UIViewController {
             return
         }
         MBProgressHUD.xy_showActivity()
-        VideoRequest.shared.upload(title: self.titleTextView.text, describe: self.describeTextView.text, videoPath: path, success: { (response) in
+        VideoRequest.shared.upload(title: self.titleTextView.text, describe: self.describeTextView.text, videoPath: path, success: {[weak self] (response) in
             MBProgressHUD.xy_hide()
             MBProgressHUD.xy_show("视频上传完成")
+            self?.backAction()
         }) { (error) in
             MBProgressHUD.xy_hide()
         }
@@ -102,6 +107,10 @@ class PublishViewController: UIViewController {
         imagePick.view.backgroundColor = UIColor.init(white: 0.5, alpha: 0.5)
         self.present(imagePick, animated: true) {
         }
+    }
+    
+    @objc fileprivate func backAction() {
+        self.dismiss(animated: true, completion: nil)
     }
 
 }
