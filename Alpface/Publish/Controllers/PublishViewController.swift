@@ -21,7 +21,7 @@ class PublishViewController: UIViewController {
     @IBOutlet weak var describeTextView: AdaptiveTextView!
     @IBOutlet weak var publishButton: UIButton!
     @IBOutlet weak var describeTextViewHeightConstraint: NSLayoutConstraint!
-    public lazy var playVideoVc: PlayVideoViewController = {
+    public lazy var playVideoVc: PlayVideoViewController? = {
         let playVideoVc = PlayVideoViewController()
         return playVideoVc
     }()
@@ -29,9 +29,9 @@ class PublishViewController: UIViewController {
     fileprivate var filePath: String? {
         didSet {
             if let filePath = filePath {
-                self.playVideoVc.preparePlayback(url: URL(fileURLWithPath: filePath))
-                self.playVideoVc.isEndDisplaying = false
-                self.playVideoVc.autoPlay()
+                self.playVideoVc?.preparePlayback(url: URL(fileURLWithPath: filePath))
+                self.playVideoVc?.isEndDisplaying = false
+                self.playVideoVc?.autoPlay()
             }
         }
     }
@@ -61,14 +61,14 @@ class PublishViewController: UIViewController {
             self?.describeTextViewHeightConstraint.constant = textHeight
         }
         
-        playVideoVc.view.translatesAutoresizingMaskIntoConstraints = false
-        self.selectVideoButton.addSubview(self.playVideoVc.view)
-        playVideoVc.view.leadingAnchor.constraint(equalTo: self.selectVideoButton.leadingAnchor).isActive = true
-        playVideoVc.view.trailingAnchor.constraint(equalTo: self.selectVideoButton.trailingAnchor).isActive = true
-        playVideoVc.view.topAnchor.constraint(equalTo: self.selectVideoButton.topAnchor).isActive = true
-        playVideoVc.view.bottomAnchor.constraint(equalTo: self.selectVideoButton.bottomAnchor).isActive = true
-        playVideoVc.view.isUserInteractionEnabled = false
-        playVideoVc.view.backgroundColor = UIColor.white
+        playVideoVc?.view.translatesAutoresizingMaskIntoConstraints = false
+        self.selectVideoButton.addSubview((self.playVideoVc?.view)!)
+        playVideoVc?.view.leadingAnchor.constraint(equalTo: self.selectVideoButton.leadingAnchor).isActive = true
+        playVideoVc?.view.trailingAnchor.constraint(equalTo: self.selectVideoButton.trailingAnchor).isActive = true
+        playVideoVc?.view.topAnchor.constraint(equalTo: self.selectVideoButton.topAnchor).isActive = true
+        playVideoVc?.view.bottomAnchor.constraint(equalTo: self.selectVideoButton.bottomAnchor).isActive = true
+        playVideoVc?.view.isUserInteractionEnabled = false
+        playVideoVc?.view.backgroundColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(backAction))
         self.navigationItem.title = "上传视频"
@@ -124,6 +124,11 @@ class PublishViewController: UIViewController {
     
     @objc fileprivate func backAction() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    deinit {
+        self.playVideoVc?.pause()
+        self.playVideoVc = nil
     }
 
 }
