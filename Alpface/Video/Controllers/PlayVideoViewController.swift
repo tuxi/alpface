@@ -9,11 +9,6 @@
 import UIKit
 import AVFoundation
 
-let ALPStatusKeyPath = "status"
-let ALPLoadedTimeRangesKeyPath = "loadedTimeRanges"
-let ALPPlaybackBufferEmptyKeyPath = "playbackBufferEmpty"
-let ALPPlaybackLikelyToKeepUpKeyPath = "playbackLikelyToKeepUp"
-
 //播放器的几种状态
 @objc(ALPPlayerState)
 enum PlayerState : Int {
@@ -38,6 +33,14 @@ protocol PlayVideoViewControllerDelegate: NSObjectProtocol {
 
 @objc(ALPPlayVideoViewController)
 class PlayVideoViewController: UIViewController {
+    
+    fileprivate struct PlayVideoViewControllerKeys {
+        static let ALPStatusKeyPath = "status"
+        static let ALPLoadedTimeRangesKeyPath = "loadedTimeRanges"
+        static let ALPPlaybackBufferEmptyKeyPath = "playbackBufferEmpty"
+        static let ALPPlaybackLikelyToKeepUpKeyPath = "playbackLikelyToKeepUp"
+
+    }
     
     /// 播放代理对象
     open weak var delegate: PlayVideoViewControllerDelegate?
@@ -306,21 +309,21 @@ extension PlayVideoViewController {
     /// 移除观察者
     fileprivate func removeObserver(playerItem item: AVPlayerItem?) {
         guard let playerItem = item else { return }
-        if observerSet.contains(ALPLoadedTimeRangesKeyPath) == true {
-            playerItem.removeObserver(self, forKeyPath: ALPLoadedTimeRangesKeyPath)
-            observerSet.remove(ALPLoadedTimeRangesKeyPath)
+        if observerSet.contains(PlayVideoViewControllerKeys.ALPLoadedTimeRangesKeyPath) == true {
+            playerItem.removeObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPLoadedTimeRangesKeyPath)
+            observerSet.remove(PlayVideoViewControllerKeys.ALPLoadedTimeRangesKeyPath)
         }
-        if observerSet.contains(ALPPlaybackBufferEmptyKeyPath) == true {
-            playerItem.removeObserver(self, forKeyPath: ALPPlaybackBufferEmptyKeyPath)
-            observerSet.remove(ALPPlaybackBufferEmptyKeyPath)
+        if observerSet.contains(PlayVideoViewControllerKeys.ALPPlaybackBufferEmptyKeyPath) == true {
+            playerItem.removeObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPPlaybackBufferEmptyKeyPath)
+            observerSet.remove(PlayVideoViewControllerKeys.ALPPlaybackBufferEmptyKeyPath)
         }
-        if observerSet.contains(ALPPlaybackLikelyToKeepUpKeyPath) == true {
-            playerItem.removeObserver(self, forKeyPath: ALPPlaybackLikelyToKeepUpKeyPath)
-            observerSet.remove(ALPPlaybackLikelyToKeepUpKeyPath)
+        if observerSet.contains(PlayVideoViewControllerKeys.ALPPlaybackLikelyToKeepUpKeyPath) == true {
+            playerItem.removeObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPPlaybackLikelyToKeepUpKeyPath)
+            observerSet.remove(PlayVideoViewControllerKeys.ALPPlaybackLikelyToKeepUpKeyPath)
         }
-        if observerSet.contains(ALPStatusKeyPath) == true {
-            playerItem.removeObserver(self, forKeyPath: ALPStatusKeyPath)
-            observerSet.remove(ALPStatusKeyPath)
+        if observerSet.contains(PlayVideoViewControllerKeys.ALPStatusKeyPath) == true {
+            playerItem.removeObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPStatusKeyPath)
+            observerSet.remove(PlayVideoViewControllerKeys.ALPStatusKeyPath)
         }
         if let timeObserver = timeObserver {
             player?.removeTimeObserver(timeObserver)
@@ -335,23 +338,23 @@ extension PlayVideoViewController {
         guard let playerItem = playerItem else {
             return
         }
-        if observerSet.contains(ALPStatusKeyPath) == false {
+        if observerSet.contains(PlayVideoViewControllerKeys.ALPStatusKeyPath) == false {
             // 为AVPlayerItem添加status属性观察，得到资源准备好，开始播放视频
-            playerItem.addObserver(self, forKeyPath: ALPStatusKeyPath, options: .new, context: nil)
-            observerSet.insert(ALPStatusKeyPath)
+            playerItem.addObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPStatusKeyPath, options: .new, context: nil)
+            observerSet.insert(PlayVideoViewControllerKeys.ALPStatusKeyPath)
         }
-        if observerSet.contains(ALPLoadedTimeRangesKeyPath) == false  {
+        if observerSet.contains(PlayVideoViewControllerKeys.ALPLoadedTimeRangesKeyPath) == false  {
             // 监听AVPlayerItem的loadedTimeRanges属性来监听缓冲进度更新
-            playerItem.addObserver(self, forKeyPath: ALPLoadedTimeRangesKeyPath, options: .new, context: nil)
-            observerSet.insert(ALPLoadedTimeRangesKeyPath)
+            playerItem.addObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPLoadedTimeRangesKeyPath, options: .new, context: nil)
+            observerSet.insert(PlayVideoViewControllerKeys.ALPLoadedTimeRangesKeyPath)
         }
-        if observerSet.contains(ALPPlaybackBufferEmptyKeyPath) == false {
-            playerItem.addObserver(self, forKeyPath: ALPPlaybackBufferEmptyKeyPath, options: .new, context: nil)
-            observerSet.insert(ALPPlaybackBufferEmptyKeyPath)
+        if observerSet.contains(PlayVideoViewControllerKeys.ALPPlaybackBufferEmptyKeyPath) == false {
+            playerItem.addObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPPlaybackBufferEmptyKeyPath, options: .new, context: nil)
+            observerSet.insert(PlayVideoViewControllerKeys.ALPPlaybackBufferEmptyKeyPath)
         }
-        if observerSet.contains(ALPPlaybackLikelyToKeepUpKeyPath) == false {
-            playerItem.addObserver(self, forKeyPath: ALPPlaybackLikelyToKeepUpKeyPath, options: .new, context: nil)
-            observerSet.insert(ALPPlaybackLikelyToKeepUpKeyPath)
+        if observerSet.contains(PlayVideoViewControllerKeys.ALPPlaybackLikelyToKeepUpKeyPath) == false {
+            playerItem.addObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPPlaybackLikelyToKeepUpKeyPath, options: .new, context: nil)
+            observerSet.insert(PlayVideoViewControllerKeys.ALPPlaybackLikelyToKeepUpKeyPath)
         }
         addPlayProgressObserver()
         NotificationCenter.default.addObserver(self, selector: #selector(PlayVideoViewController.playerItemDidPlayToEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
