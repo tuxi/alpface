@@ -20,14 +20,24 @@ class MainNavigationBar: UINavigationBar {
         return CGSize(width: size.width, height: customHeight)
         
     }
-    
+    override var frame: CGRect {
+        didSet {
+            var newFrame = frame
+            newFrame.origin.y = 0.0
+            newFrame.size.height = customHeight
+            super.frame = newFrame
+        }
+    }
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        frame = CGRect(x: frame.origin.x, y:  0, width: frame.size.width, height: customHeight)
+        let newFrame = CGRect(x: frame.origin.x, y:  0, width: frame.size.width, height: customHeight)
+        // 防止死循环
+        if newFrame.equalTo(self.frame) == false {
+            self.frame = newFrame
+        }
         
-        // title position (statusbar height / 2)
-        // 调整title的位置
+        // 调整title的位置：title position (statusbar height / 2)
 //        setTitleVerticalPositionAdjustment(-10, for: UIBarMetrics.default)
         
         for subview in self.subviews {

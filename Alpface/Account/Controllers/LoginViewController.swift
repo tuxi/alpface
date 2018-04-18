@@ -87,7 +87,7 @@ class LoginViewController: UIViewController {
                 })
             }
         }
-        self.show(registerController, sender: self)
+        self.navigationController?.pushViewController(registerController, animated: true)
     }
     
     @objc fileprivate func loginButtonClick(_ sender: TransitionButton) {

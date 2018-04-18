@@ -66,7 +66,7 @@ extension MainNavigationController{
     
     fileprivate func setNavBarAtrributes(){
         
-        navigationBar.setGradientBackground(colors: [UIColor(hex: "833AB4"), UIColor(hex: "FD1D1D"), UIColor(hex: "FCB045")])
+//        navigationBar.setGradientBackground(colors: [UIColor(hex: "833AB4"), UIColor(hex: "FD1D1D"), UIColor(hex: "FCB045")])
         
         navigationBar.isTranslucent = false
     }

@@ -183,7 +183,7 @@ extension UserProfileViewController {
 extension UserProfileViewController {
     @objc fileprivate func gotoSettings() {
         let settings = SettingsViewController()
-        self.show(settings, sender: self)
+        self.navigationController?.pushViewController(settings, animated: true)
     }
 }
 
