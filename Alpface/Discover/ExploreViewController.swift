@@ -22,7 +22,7 @@ class ExploreViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     override var prefersStatusBarHidden: Bool {
         return false
