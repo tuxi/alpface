@@ -154,7 +154,7 @@ open class VideoItem: NSObject {
                 return nil
             #endif
         }
-        return URL.init(string: ALPSiteURLString + video)
+        return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + video)
     }
     
     open func getThumbnailURL() -> URL? {
@@ -165,7 +165,7 @@ open class VideoItem: NSObject {
             return URL.init(string: video_thumbnail)
         }
         if video_thumbnail.hasPrefix("/media") == true {
-            return URL.init(string: ALPSiteURLString + video_thumbnail)
+            return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + video_thumbnail)
         }
         return nil
     }
@@ -178,7 +178,7 @@ open class VideoItem: NSObject {
             return URL.init(string: video_gif)
         }
         if video_gif.hasPrefix("/media") == true {
-            return URL.init(string: ALPSiteURLString + video_gif)
+            return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + video_gif)
         }
         return nil
     }
@@ -191,7 +191,7 @@ open class VideoItem: NSObject {
             return URL.init(string: webp)
         }
         if webp.hasPrefix("/media") == true {
-            return URL.init(string: ALPSiteURLString + webp)
+            return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + webp)
         }
         return nil
     }

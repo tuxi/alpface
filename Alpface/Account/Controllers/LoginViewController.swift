@@ -8,6 +8,11 @@
 
 import UIKit
 
+extension NSNotification.Name {
+    static let ALPLoginSuccess: NSNotification.Name = NSNotification.Name("ALPLoginSuccess")
+    static let ALPLoginFailure: NSNotification.Name = NSNotification.Name("ALPLoginFailure")
+}
+
 @objc(ALPLoginViewControllerDelegate)
 protocol LoginViewControllerDelegate : NSObjectProtocol {
     @objc optional func loginViewController(loginSuccess user: User) -> Void
@@ -105,7 +110,7 @@ class LoginViewController: UIViewController {
             
             if result.status == "success" {
                 guard let user = AuthenticationManager.shared.loginUser else { return }
-                NotificationCenter.default.post(name: NSNotification.Name.init(ALPLoginSuccessNotification), object: nil, userInfo: [ALPAuthenticationUserKey: user])
+                NotificationCenter.default.post(name: NSNotification.Name.ALPLoginSuccess, object: nil, userInfo: [ALPConstans.AuthKeys.ALPAuthenticationUserKey: user])
                 // 登录成功
                 sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: {
                     self?.dismiss(animated: true, completion: {
@@ -123,7 +128,7 @@ class LoginViewController: UIViewController {
             }
            
         }) { (error) in
-            NotificationCenter.default.post(name: NSNotification.Name.init(ALPLoginFailureNotification), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name.ALPLoginFailure, object: nil)
             
             // 登录失败
             sender.stopAnimation(animationStyle: .shake, revertAfterDelay: 1, completion: {

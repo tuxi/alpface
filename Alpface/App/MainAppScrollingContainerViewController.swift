@@ -84,14 +84,14 @@ class MainAppScrollingContainerViewController: UIViewController {
                 let tabBarVc = MainTabBarController()
                 tabBarVc.delegate = self
                 let homeVc = MainFeedViewController()
-                homeVc.title = "home"
+                homeVc.title = "首页"
                 homeVc.navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "potd-mini"), style: .plain, target: self, action: #selector(openStoryCreationPage))
                 let searchVc = ExploreViewController()
-                searchVc.title = "search"
+                searchVc.title = "关注"
                 let messageVc = MessageViewController()
-                messageVc.title = "message"
+                messageVc.title = "消息"
                 let userProfileVc = UserProfileViewController(user: nil)
-                userProfileVc.title = "user"
+                userProfileVc.title = "我"
                 let nav1 = MainNavigationController.init(rootViewController: homeVc)
                 let nav2 = MainNavigationController(rootViewController: searchVc)
                 let nav3 = MainNavigationController(rootViewController: messageVc)
@@ -262,7 +262,7 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if viewController.title != "home" {
+        if viewController.title != "首页" {
             /// 用户点击的只要不是首页，当前如果未登录则弹出登录页面
             if AuthenticationManager.shared.isLogin == false {
                 showLoginViewController()

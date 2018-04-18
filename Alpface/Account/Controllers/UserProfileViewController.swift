@@ -156,6 +156,7 @@ extension UserProfileViewController {
     fileprivate func addObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(authenticationAccountProfileChanged(notification:)), name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(publushVideoSuccess), name: NSNotification.Name.PublushVideoSuccess, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loginSuccess(notification:)), name: NSNotification.Name.ALPLoginSuccess, object: nil)
     }
     
     @objc fileprivate func authenticationAccountProfileChanged(notification: NSNotification) {
@@ -173,6 +174,17 @@ extension UserProfileViewController {
     
     @objc fileprivate func publushVideoSuccess() {
         self.discoverUserByUsername()
+    }
+    
+    @objc fileprivate func loginSuccess(notification: NSNotification) {
+        guard let userIno = notification.userInfo else {
+            return
+        }
+        guard let user = userIno[ALPConstans.AuthKeys.ALPAuthenticationUserKey] as? User else {
+            return
+        }
+        self.user = user
+        self.reloadCollectionData()
     }
     
     fileprivate func removeObserver() {
@@ -204,6 +216,17 @@ extension UserProfileViewController {
             self?.reloadCollectionData()
         }) {[weak self] (error) in
             self?.reloadCollectionData()
+            if let e = error as NSError? {
+                if e.domain == ALPConstans.AuthKeys.ALPAuthPermissionErrorValue {
+                    AuthenticationManager.shared.logout()
+                    if let rootVc = self?.navigationController?.viewControllers.first {
+                        self?.navigationController?.viewControllers = [rootVc]
+                        let delegate = UIApplication.shared.delegate as? AppDelegate
+                        delegate?.rootViewController?.showHomePage()
+                    }
+                    
+                }
+            }
         }
     }
 }

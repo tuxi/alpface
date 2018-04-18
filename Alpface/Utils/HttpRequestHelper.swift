@@ -54,8 +54,12 @@ final class HttpRequestHelper: NSObject {
         
         Alamofire.request(url, method: method, parameters: parameters as? Parameters, encoding: URLEncoding.default, headers: headers).responseString(queue: DispatchQueue.global(), encoding: String.Encoding.utf8, completionHandler: { (response) in
             let data = response.result.value
-            if (response.result.isSuccess)
-            {
+            var error = response.result.error
+            if data == ALPConstans.AuthKeys.ALPAuthPermissionErrorValue {
+                error = NSError(domain: ALPConstans.AuthKeys.ALPAuthPermissionErrorValue, code: 403, userInfo: nil)
+            }
+            if (response.result.isSuccess && error == nil) {
+                
                 // 如果是登录成功后保存cookies
                 let url = response.request?.url
                 if url?.absoluteString == ALPConstans.HttpRequestURL.login {
@@ -63,9 +67,8 @@ final class HttpRequestHelper: NSObject {
                 }
                 finishedCallBack(data as AnyObject, nil)
             }
-            else
-            {
-                finishedCallBack(data as AnyObject,response.result.error)
+            else {
+                finishedCallBack(data as AnyObject, error)
             }
         })
         

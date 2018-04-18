@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 @objc(ALPVideoDetailView)
 class FeedVideoDetailView: UIView {
@@ -16,11 +17,12 @@ class FeedVideoDetailView: UIView {
             titleButton.text = "@" + (videoItem?.user?.nickname)!
             describeButton.text = videoItem?.describe
             musicButton.text = "大家爱看巨大的空间阿卡"
+            avatarButton.sd_setImage(with: videoItem?.user?.getAvatarURL(), for: .normal)
         }
     }
 
-    fileprivate lazy var avatarButton: UIButton = {
-        let view = UIButton()
+    fileprivate lazy var avatarButton: RoundButton = {
+        let view = RoundButton()
         return view
     }()
     

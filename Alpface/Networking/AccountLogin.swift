@@ -65,7 +65,7 @@ public class AccountLogin: NSObject {
             
             let urlString = ALPConstans.HttpRequestURL.login
             let parameters = [
-                ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
+                ALPConstans.AuthKeys.ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
                 "username": username,
                 "password": password,
                 ]
@@ -133,7 +133,7 @@ public class AccountLogin: NSObject {
             
             let urlString = ALPConstans.HttpRequestURL.register
             let parameters = [
-                ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
+                ALPConstans.AuthKeys.ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
                 "username": username,
                 "password": password,
                 "confirm_password": confirm_password,
@@ -221,7 +221,7 @@ public class AccountLogin: NSObject {
            let jsonDict =  self.getDictionaryFromJSONString(jsonString: res)
             
             /// 将csrf存储起来，并回调
-            let csrf = jsonDict[ALPCsrftokenKey] as? String
+            let csrf = jsonDict[ALPConstans.AuthKeys.ALPCsrftokenKey] as? String
             print(csrf ?? "")
             AuthenticationManager.shared.csrftoken = csrf
             guard let succ = success else {
@@ -250,7 +250,7 @@ public class AccountLogin: NSObject {
         let urlString = ALPConstans.HttpRequestURL.updateProfile
         var parameters = Dictionary<String, Any>.init()
         if let csrfToken = AuthenticationManager.shared.csrftoken {
-            parameters[ALPCsrfmiddlewaretokenKey] = csrfToken
+            parameters[ALPConstans.AuthKeys.ALPCsrfmiddlewaretokenKey] = csrfToken
         }
         if let email = user.email {
             parameters["email"] = email

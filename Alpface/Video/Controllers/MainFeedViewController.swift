@@ -109,8 +109,8 @@ class MainFeedViewController: UIViewController {
         collectionView.refreshControl = refreshControl
         
         // 设置导航栏标题属性：设置标题字体
-        let font = UIFont(name: "MedulaOne-Regular", size: 30.0)
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 30.0), NSAttributedStringKey.foregroundColor: UIColor.white]
+        let font = UIFont(name: "MedulaOne-Regular", size: 20.0)
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 20.0), NSAttributedStringKey.foregroundColor: UIColor.white]
         
         // 设置导航栏前景色：设置item指示色
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -123,7 +123,7 @@ class MainFeedViewController: UIViewController {
         
         // 设置导航栏阴影图片
         navigationController?.navigationBar.shadowImage = UIImage()
-        
+        self.navigationItem.title = "推荐"
     
     }
     

@@ -20,21 +20,21 @@ final class AuthenticationManager: NSObject {
     
     public var csrftoken : String? {
         get {
-            return UserDefaults.standard.object(forKey: ALPCsrftokenKey) as? String
+            return UserDefaults.standard.object(forKey: ALPConstans.AuthKeys.ALPCsrftokenKey) as? String
         }
         
         set {
-            UserDefaults.standard .set(newValue, forKey: ALPCsrftokenKey)
+            UserDefaults.standard .set(newValue, forKey: ALPConstans.AuthKeys.ALPCsrftokenKey)
             UserDefaults.standard.synchronize()
         }
     }
     
     public var authToken : String? {
         get {
-            return UserDefaults.standard.object(forKey: ALPAuthTokenKey) as? String
+            return UserDefaults.standard.object(forKey: ALPConstans.AuthKeys.ALPAuthTokenKey) as? String
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: ALPAuthTokenKey)
+            UserDefaults.standard.set(newValue, forKey: ALPConstans.AuthKeys.ALPAuthTokenKey)
             UserDefaults.standard.synchronize()
         }
     }
@@ -54,11 +54,11 @@ final class AuthenticationManager: NSObject {
         set {
             
             let data = NSKeyedArchiver.archivedData(withRootObject: newValue as Any)
-            UserDefaults.standard.setValue(data, forKey: ALPLoginUserInfoKey)
+            UserDefaults.standard.setValue(data, forKey: ALPConstans.AuthKeys.ALPLoginUserInfoKey)
             UserDefaults.standard.synchronize()
         }
         get {
-            guard let data = UserDefaults.standard.value(forKey: ALPLoginUserInfoKey) as? Data else {
+            guard let data = UserDefaults.standard.value(forKey: ALPConstans.AuthKeys.ALPLoginUserInfoKey) as? Data else {
                 return nil
             }
             

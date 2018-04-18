@@ -70,7 +70,7 @@ open class User: NSObject, NSCoding {
                 return URL.init(string: a)
             }
             else if a.hasPrefix("/media") == true {
-                return URL.init(string: ALPSiteURLString + a)
+                return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + a)
             }
         }
         return nil
@@ -82,7 +82,7 @@ open class User: NSObject, NSCoding {
                 return URL.init(string: c)
             }
             else if c.hasPrefix("/media") == true {
-                return URL.init(string: ALPSiteURLString + c)
+                return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + c)
             }
         }
         return nil

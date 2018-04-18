@@ -134,7 +134,7 @@ class VideoRequest: NSObject {
         let urlString = ALPConstans.HttpRequestURL.uoloadVideo
         var parameters = Dictionary<String, Any>.init()
         if let csrfToken = AuthenticationManager.shared.csrftoken {
-            parameters[ALPCsrfmiddlewaretokenKey] = csrfToken
+            parameters[ALPConstans.AuthKeys.ALPCsrfmiddlewaretokenKey] = csrfToken
         }
         parameters["title"] = title
         parameters["describe"] = describe

@@ -9,16 +9,6 @@
 import Foundation
 
 
-// 存储登录用户信息的key，如果此key获取的value为nil则说明用户未登录
-let ALPLoginUserInfoKey = "LoginUserInfoKey"
-public let ALPSiteURLString = "http://www.alpface.com:8889"
-let ALPCsrfmiddlewaretokenKey = "csrfmiddlewaretoken"
-let ALPCsrftokenKey = "csrftoken"
-let ALPAuthTokenKey = "jwttoken"
-let ALPAuthenticationUserKey = "ALPAuthenticationUserKey"
-let ALPLoginSuccessNotification = "ALPLoginSuccessNotification"
-let ALPLoginFailureNotification = "ALPLoginFailureNotification"
-
 struct ALPConstans {
     static var animationDuration: Double {
         get {
@@ -26,8 +16,19 @@ struct ALPConstans {
         }
     }
     
+    struct AuthKeys {
+        /// 存储登录用户信息的key，如果此key获取的value为nil则说明用户未登录
+        static let ALPLoginUserInfoKey = "LoginUserInfoKey"
+        static let ALPCsrfmiddlewaretokenKey = "csrfmiddlewaretoken"
+        static let ALPCsrftokenKey = "csrftoken"
+        static let ALPAuthTokenKey = "jwttoken"
+        static let ALPAuthenticationUserKey = "ALPAuthenticationUserKey"
+        /// 用户授权出现问题，需要重新登录
+        static let ALPAuthPermissionErrorValue = "<h1>403 Forbidden</h1>"
+    }
     
     struct HttpRequestURL {
+        static let ALPSiteURLString = "http://www.alpface.com:8889"
         // 登录
         static let login = "\(ALPSiteURLString)" + "/account/auth/login/"
         // 注册
