@@ -9,7 +9,13 @@
 import UIKit
 
 class MainNavigationController: UINavigationController {
-
+    
+    override func loadView() {
+        super.loadView()
+        // 替换navigationBar，为了自定义其高度
+        let navigationBar = MainNavigationBar()
+        self.setValue(navigationBar, forKey: "navigationBar")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

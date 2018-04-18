@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		17B0454459EAD0F7C5571E1C /* Pods_Alpface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */; };
+		D0C1E3502086E7BB0013F98B /* MainNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */; };
+		D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */; };
 		D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0DB45A32085B4F0000C291A /* PublishViewController.xib */; };
 		D0DB45AA2085B7C6000C291A /* AdaptiveTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DB45A92085B7C6000C291A /* AdaptiveTextView.swift */; };
 		D200930C2078C51E0079AD8B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200930B2078C51E0079AD8B /* RegisterViewController.swift */; };
@@ -129,6 +131,8 @@
 /* Begin PBXFileReference section */
 		33ED24E632F2865D9C7AD091 /* Pods-Alpface.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpface.release.xcconfig"; path = "Pods/Target Support Files/Pods-Alpface/Pods-Alpface.release.xcconfig"; sourceTree = "<group>"; };
 		BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationBar.swift; sourceTree = "<group>"; };
+		D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		D0DB45A32085B4F0000C291A /* PublishViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PublishViewController.xib; sourceTree = "<group>"; };
 		D0DB45A92085B7C6000C291A /* AdaptiveTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveTextView.swift; sourceTree = "<group>"; };
 		D200930B2078C51E0079AD8B /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -485,6 +489,7 @@
 				D26AD4862067334E0047DC15 /* UIButton+Attributes.swift */,
 				D26AD488206735CD0047DC15 /* UIView+Attributes.swift */,
 				D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */,
+				D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -499,6 +504,7 @@
 				D26AD42320668F140047DC15 /* MainNavigationController.swift */,
 				D26AD42420668F140047DC15 /* MainTabBarController.swift */,
 				D26AD42520668F140047DC15 /* RootViewController.swift */,
+				D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -870,6 +876,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D289537D20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift in Sources */,
+				D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */,
 				D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */,
 				D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */,
 				D26AD485206733030047DC15 /* UIImage+Extension.swift in Sources */,
@@ -969,6 +976,7 @@
 				D20093442078F16E0079AD8B /* PCLBlurEffectAlert+TransitionAnimator.swift in Sources */,
 				D200932F2078EEC50079AD8B /* PhotoLibraryAuthorizer.swift in Sources */,
 				D26AD452206690E60047DC15 /* PastelGradient.swift in Sources */,
+				D0C1E3502086E7BB0013F98B /* MainNavigationBar.swift in Sources */,
 				D2BCBA4D206F33F2008409B3 /* VideoPlayerView.swift in Sources */,
 				D28953662076A4EE0029CE92 /* HitTestContainerViewController.swift in Sources */,
 				D2DC574A206FB7EA00458F54 /* AccountLogin.swift in Sources */,
