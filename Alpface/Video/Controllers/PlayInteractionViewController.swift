@@ -44,15 +44,9 @@ class PlayInteractionViewController: UIViewController {
         let progressView = OSProgressView(frame: .zero)
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.progressTintColor = UIColor.white
+        progressView.loadingTintColor = UIColor.white
         progressView.trackTintColor = UIColor.lightGray.withAlphaComponent(0.6)
         return progressView
-    }()
-    
-    /// 加载指示器
-    fileprivate lazy var indicator : UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        return indicator
     }()
     
     /// 显示播放时间
@@ -151,7 +145,7 @@ extension PlayInteractionViewController {
 extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
     /// 播放进度改变时调用
     func playVideoViewController(didChangePlayerProgress player:PlayVideoViewController, time: String, progress: Float) -> Void {
-        self.progressView.progress = CGFloat(progress)
+        self.progressView.setProgress(progress: CGFloat(progress), animated: true)
     }
     /// 缓冲进度改变时调用
     func playVideoViewController(didChangebufferedProgress player:PlayVideoViewController, loadedTime: Double, bufferedProgress: Float) -> Void {
@@ -178,18 +172,16 @@ extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
         }
         
         if state != .buffering {
-            indicator.stopAnimating()
-            indicator.isHidden = true
+            progressView.endLoading()
         }
         else {
-            indicator.startAnimating()
-            indicator.isHidden = false
+            progressView.startLoading()
         }
     }
     /// 播放完毕时调用
     func playVideoViewController(didPlayToEnd player: PlayVideoViewController) -> Void {
         // 播放完毕，重置进度
-        progressView.progress = 0.0
+        progressView.setProgress(progress: 0.0, animated: true)
     }
 }
 
@@ -224,10 +216,6 @@ extension PlayInteractionViewController {
         placeholderImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
         placeholderImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0.0).isActive = true
         placeholderImageView.isHidden = false
-        
-        view.addSubview(indicator)
-        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
     }
 }

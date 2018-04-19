@@ -12,6 +12,7 @@ import AVFoundation
 //播放器的几种状态
 @objc(ALPPlayerState)
 enum PlayerState : Int {
+    case notKnow       = 0
     case buffering     = 1
     case playing       = 2
     case stopped       = 3
@@ -228,7 +229,9 @@ class PlayVideoViewController: UIViewController {
             player = AVPlayer(playerItem: playerItem)
             playerLayer.player = player
         }
-        state = .buffering
+        if state == .notKnow {
+            state = .buffering
+        }
     }
     
     /// 自动播放, 当非用户暂停时，或者播放完成后的自动播放
