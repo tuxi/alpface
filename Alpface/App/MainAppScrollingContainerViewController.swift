@@ -10,6 +10,13 @@ import UIKit
 
 @objc(ALPMainAppScrollingContainerViewController)
 class MainAppScrollingContainerViewController: UIViewController {
+    
+    struct MainAppScrollingTitles {
+        static let home = "首页"
+        static let explore = "关注"
+        static let message = "消息"
+        static let myProfile = "我的"
+    }
 
     fileprivate lazy var collectionView: GestureCoordinatingCollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -40,16 +47,23 @@ class MainAppScrollingContainerViewController: UIViewController {
         return vc
     }
     
+    public var homeFeedController: MainFeedViewController!
+    
     fileprivate var backgroundViewTopC: NSLayoutConstraint!
     fileprivate var backgroundViewTopC1: NSLayoutConstraint!
     
-    public func show(page index: NSInteger, animated: Bool) {
+    fileprivate var showCompletion: ((_ displayController: UIViewController) -> Void)?
+    fileprivate var willShowCallBack: ((_ willAppearController: UIViewController, _ willDisappearController: UIViewController) -> Void)?
+    public func show(page index: NSInteger, animated: Bool, willShowCallBack: ((_ willAppearController: UIViewController, _ willDisappearController: UIViewController) -> Void)? = nil, completion: ((_ displayController: UIViewController) -> Void)? = nil) {
         if collectionView.indexPathsForVisibleItems.first?.row == index {
             return
         }
+        self.willShowCallBack = willShowCallBack
+        self.showCompletion = completion
         collectionView .scrollToItem(at: IndexPath.init(row: index, section: 0), at: .centeredHorizontally, animated: animated)
+        
     }
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -87,14 +101,15 @@ class MainAppScrollingContainerViewController: UIViewController {
                 let tabBarVc = MainTabBarController()
                 tabBarVc.delegate = self
                 let homeVc = MainFeedViewController()
-                homeVc.title = "首页"
+                homeFeedController = homeVc
+                homeVc.title = MainAppScrollingTitles.home
                 homeVc.navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "potd-mini"), style: .plain, target: self, action: #selector(openStoryCreationPage))
                 let searchVc = ExploreViewController()
-                searchVc.title = "关注"
+                searchVc.title = MainAppScrollingTitles.explore
                 let messageVc = MessageViewController()
-                messageVc.title = "消息"
-                let userProfileVc = UserProfileViewController(user: nil)
-                userProfileVc.title = "我"
+                messageVc.title = MainAppScrollingTitles.message
+                let userProfileVc = MyProfileViewController(user: AuthenticationManager.shared.loginUser)
+                userProfileVc.title = MainAppScrollingTitles.myProfile
                 let nav1 = MainNavigationController.init(rootViewController: homeVc)
                 let nav2 = MainNavigationController(rootViewController: searchVc)
                 let nav3 = MainNavigationController(rootViewController: messageVc)
@@ -140,7 +155,7 @@ class MainAppScrollingContainerViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func openStoryCreationPage() {
-        show(page: 0, animated: true)
+        show(page: 0, animated: true, completion: nil)
     }
 
 }
@@ -173,7 +188,9 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         guard let displayIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
         guard let displayIndexPathController = collectionViewItems[0].items[displayIndexPath.row].model as? UIViewController else {return}
         displayIndexPathController.endAppearanceTransition()
-        
+        if let showCompletion = self.showCompletion {
+            showCompletion(displayIndexPathController)
+        }
         // 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
         guard let endDisplayingViewController = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
         if displayIndexPathController != endDisplayingViewController {
@@ -191,17 +208,29 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     /// cell 即将显示在屏幕时调用
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if initialPage > 0 {
-            show(page: initialPage, animated: false)
+            show(page: initialPage, animated: false, completion: nil)
             initialPage = 0
         }
 
         /// 获取即将显示的cell上的控制器，执行其view显示的生命周期方法
         guard let willDisplayController = collectionViewItems[0].items[indexPath.row].model as? UIViewController else {return}
         willDisplayController.beginAppearanceTransition(true, animated: true)
+        if willDisplayController.isKind(of: UserProfileViewController.classForCoder()) == true && indexPath.row == 2 {
+            // 进入用户页面
+            if let video = self.homeFeedController.displayVideoItem() {
+                let userProfile = willDisplayController as? UserProfileViewController
+                userProfile?.user = video.user
+                userProfile?.mainScrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+            }
+            
+        }
         
         /// 获取即将消失的控制器（当前collectionView显示的cell就是即将要离开屏幕的cell）
         guard let willEndDisplayingIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
         guard let willEndDisplayingController = collectionViewItems[0].items[willEndDisplayingIndexPath.row].model as? UIViewController else {return}
+        if let willShowCallBack = self.willShowCallBack {
+            willShowCallBack(willDisplayController, willEndDisplayingController)
+        }
         if willEndDisplayingController != willDisplayController {
             // 如果是同一个控制器return，防止初始化完成后是同一个
             willEndDisplayingController.beginAppearanceTransition(false, animated: true)
@@ -213,41 +242,12 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         
         return collectionViewItems[indexPath.section].items[indexPath.row].size
     }
-    
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        if scrollView != collectionView {
-//            return
-//        }
-//        self.collectionView(didEndScroll: scrollView as! UICollectionView)
-//    }
-//
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        if decelerate == false {
-//            if scrollView != collectionView {
-//                return
-//            }
-//            self.collectionView(didEndScroll: scrollView as! UICollectionView)
-//        }
-//    }
-//
-//    fileprivate func collectionView(didEndScroll collectionView: UICollectionView) {
-//
-//        let row = Int(ceil(collectionView.contentOffset.y / collectionView.frame.height))
-//        let indexPath = IndexPath(item: row, section: 0)
-//        let cell = self.collectionView.cellForItem(at: indexPath) as? ScrollingContainerCell
-//        self.collectionView(self.collectionView, didDisplay: cell, forItemAt: indexPath)
-//    }
-//
-//    /// collectionView cell 完全显示后回调
-//    fileprivate func collectionView(_ collectionView: UICollectionView, didDisplay cell: ScrollingContainerCell?, forItemAt indexPath: IndexPath) {
-//        // 对于willDisplay 时的 beginAppearanceTransition(true)
-//        displayViewController()?.endAppearanceTransition()
-//    }
+ 
 }
 
 extension MainAppScrollingContainerViewController: StoryCreationViewControllerDelegate {
     func storyCreationViewController(didClickBackButton button: UIButton) {
-        show(page: 1, animated: true)
+        show(page: 1, animated: true, completion: nil)
     }
 }
 
@@ -269,11 +269,19 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if viewController.title != "首页" {
+        if viewController.title != MainAppScrollingTitles.home {
             /// 用户点击的只要不是首页，当前如果未登录则弹出登录页面
             if AuthenticationManager.shared.isLogin == false {
                 showLoginViewController()
                 return false
+            }
+            // 如果是我的页面，就传递model
+            if viewController.title == MainAppScrollingTitles.myProfile {
+                if let nac = viewController as? MainNavigationController {
+                    if let vc = nac.viewControllers.first as? MyProfileViewController {
+                        vc.user = AuthenticationManager.shared.loginUser
+                    }
+                }
             }
         }
         return true

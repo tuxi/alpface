@@ -13,9 +13,10 @@ let ALPSegmentHeight: CGFloat = 44.0
 let ALPNavigationBarHeight: CGFloat = 44.0
 let ALPStatusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.height
 
-@objc(ALPProfileViewController)
+@objc(ALPUserProfileViewController)
 class UserProfileViewController: BaseProfileViewController {
     
+    fileprivate var isViewDidLoad: Bool = false
 
     override func numberOfSegments() -> Int {
         return 3
@@ -31,17 +32,24 @@ class UserProfileViewController: BaseProfileViewController {
             return "故事"
         }
     }
-    
-    fileprivate var user: User?
+    fileprivate var _user: User?
+    public var user: User? {
+        get {
+            return _user
+        }
+        set {
+            if _user?.username != newValue?.username {
+                if isViewDidLoad == false { return }
+                _user = newValue
+                self.reloadCollectionData()
+                self.discoverUserByUsername()
+            }
+        }
+    }
     
     convenience init(user: User?) {
         self.init()
-        if user == nil {
-           self.user = AuthenticationManager.shared.loginUser
-        }
-        else {
-            self.user = user
-        }
+        _user = user
     }
     
     deinit {
@@ -54,6 +62,7 @@ class UserProfileViewController: BaseProfileViewController {
         self.reloadCollectionData()
         self.discoverUserByUsername()
         self.addObserver()
+        isViewDidLoad = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -212,7 +221,7 @@ extension UserProfileViewController {
             guard let user = response as? User else {
                 return
             }
-            self?.user = user
+            self?._user = user
             self?.reloadCollectionData()
         }) {[weak self] (error) in
             self?.reloadCollectionData()

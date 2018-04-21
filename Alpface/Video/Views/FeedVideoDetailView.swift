@@ -9,20 +9,28 @@
 import UIKit
 import SDWebImage
 
+@objc(ALPFeedVideoDetailViewDelegate)
+protocol FeedVideoDetailViewDelegate: NSObjectProtocol {
+    @objc optional func feedVideoDetailView(detailView view: FeedVideoDetailView, didClickUserAvatarFrom video: VideoItem)
+}
+
 @objc(ALPVideoDetailView)
 class FeedVideoDetailView: UIView {
+    
+    public weak var delegate: FeedVideoDetailViewDelegate?
     
     public var videoItem: VideoItem? {
         didSet {
             titleButton.text = "@" + (videoItem?.user?.nickname)!
-            describeButton.text = videoItem?.describe
-            musicButton.text = "大家爱看巨大的空间阿卡"
+            describeButton.text = videoItem?.title
+            musicButton.text = videoItem?.describe
             avatarButton.sd_setImage(with: videoItem?.user?.getAvatarURL(), for: .normal)
         }
     }
 
     fileprivate lazy var avatarButton: RoundButton = {
         let view = RoundButton()
+        view.addTarget(self, action: #selector(FeedVideoDetailView.didClickUserAvatar), for: .touchUpInside)
         return view
     }()
     
@@ -154,10 +162,7 @@ class FeedVideoDetailView: UIView {
         forwardButton.alpImage = UIImage.init(named: "icon_home_share")
         
         musicAvatarButton.setImage(UIImage.init(named: "icon"), for: .normal)
-        
-//        titleButton.text = "@常灯台"
-//        describeButton.text = "建设大道就爱看大家爱看的后来就好了就好了就好了就好了京津冀了解科技；科技考虑考虑"
-//        musicButton.text = "大家爱看巨大的空间阿卡"
+
         
     }
     
@@ -168,5 +173,16 @@ class FeedVideoDetailView: UIView {
             }
         }
         return nil
+    }
+}
+
+extension FeedVideoDetailView {
+    @objc fileprivate func didClickUserAvatar() {
+        guard let d = delegate else {
+            return
+        }
+        if d.responds(to: #selector(FeedVideoDetailViewDelegate.feedVideoDetailView(detailView:didClickUserAvatarFrom:))) {
+            d.feedVideoDetailView!(detailView: self, didClickUserAvatarFrom: self.videoItem!)
+        }
     }
 }

@@ -106,6 +106,7 @@
 		D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */; };
 		D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */; };
 		D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */; };
+		D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */; };
 		D2BCBA43206F33F2008409B3 /* FeedCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA36206F33F1008409B3 /* FeedCellViewController.swift */; };
 		D2BCBA44206F33F2008409B3 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA37206F33F1008409B3 /* MainFeedViewController.swift */; };
 		D2BCBA45206F33F2008409B3 /* PlayInteractionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA38206F33F1008409B3 /* PlayInteractionViewController.swift */; };
@@ -232,6 +233,7 @@
 		D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoDetailView.swift; sourceTree = "<group>"; };
 		D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoButton.swift; sourceTree = "<group>"; };
 		D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DOFavoriteButton.swift; sourceTree = "<group>"; };
+		D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		D2BCBA36206F33F1008409B3 /* FeedCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCellViewController.swift; sourceTree = "<group>"; };
 		D2BCBA37206F33F1008409B3 /* MainFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
 		D2BCBA38206F33F1008409B3 /* PlayInteractionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayInteractionViewController.swift; sourceTree = "<group>"; };
@@ -576,6 +578,7 @@
 				D289537220771A8B0029CE92 /* MyStoryViewController.swift */,
 				D21A2CCA207CF5C600335A8A /* EditUserProfileViewController.swift */,
 				D27D6CDF208397BF0095425A /* SettingsViewController.swift */,
+				D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -941,6 +944,7 @@
 				D2BCBA4B206F33F2008409B3 /* MainFeedViewCell.swift in Sources */,
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
+				D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */,
 				D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */,
 				D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */,
 				D2D6632E208245F30044E2A7 /* AppUtils.swift in Sources */,

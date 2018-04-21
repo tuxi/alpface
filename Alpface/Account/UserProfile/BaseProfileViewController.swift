@@ -75,7 +75,7 @@ open class BaseProfileViewController: UIViewController {
     /// main scrollView是否可以滚动 (用于控制main 与 child scrollView 之间的滚动)
     public var shouldScrollForMainScrollView: Bool = true
     
-    fileprivate lazy var mainScrollView: UITableView = {
+    open lazy var mainScrollView: UITableView = {
         let _mainScrollView = HitTestScrollView(frame: self.view.bounds, style: .plain)
         _mainScrollView.delegate = self
         _mainScrollView.dataSource = self
@@ -585,7 +585,6 @@ extension BaseProfileViewController {
 
 extension BaseProfileViewController {
     func updateTableViewContent(index: Int) {
-        print("currentIndex did changed \(self.currentIndex)")
         self.containerViewController.show(page: index, animated: true)
     }
     

@@ -45,6 +45,18 @@ class MainFeedViewController: UIViewController {
         return nil
     }
     
+    public func displayVideoItem() -> VideoItem? {
+        if let cell = collectionView.visibleCells.first as? MainFeedViewCell {
+            guard let model = cell.model else {
+                return nil
+            }
+            guard let video = model.model as? VideoItem else {
+                return nil
+            }
+            return video
+        }
+        return nil
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -257,18 +269,24 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
     
     /// collectionView cell 完全显示后回调
     fileprivate func collectionView(_ collectionView: UICollectionView, didDisplay cell: MainFeedViewCell?, forItemAt indexPath: IndexPath) {
+        
+//        if collectionView.indexPathsForVisibleItems.first == indexPath {
+//            return
+//        }
+        
         if indexPath.row >= videoItems.count {
             return
-        }
-        
-        // 所有model停止播放
-        for videoItem in videoItems {
-            videoItem.isAllowPlay = false
         }
         
         // 取出当前显示的model,继续播放
         let model = videoItems[indexPath.row]
         model.isAllowPlay = true
+        // 所有model停止播放
+        for videoItem in videoItems {
+            if model != videoItem {
+                videoItem.isAllowPlay = false
+            }
+        }
     }
 }
 

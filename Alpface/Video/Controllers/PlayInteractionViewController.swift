@@ -62,6 +62,7 @@ class PlayInteractionViewController: UIViewController {
     fileprivate lazy var detailView: FeedVideoDetailView = {
         let view = FeedVideoDetailView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         return view
     }()
     
@@ -217,5 +218,12 @@ extension PlayInteractionViewController {
         placeholderImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0.0).isActive = true
         placeholderImageView.isHidden = false
         
+    }
+}
+
+extension PlayInteractionViewController: FeedVideoDetailViewDelegate {
+    func feedVideoDetailView(detailView view: FeedVideoDetailView, didClickUserAvatarFrom video: VideoItem) {
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        delegate?.rootViewController?.showUserProfilePage(user: video.user!)
     }
 }
