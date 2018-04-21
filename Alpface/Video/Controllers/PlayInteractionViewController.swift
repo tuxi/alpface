@@ -108,7 +108,7 @@ extension PlayInteractionViewController {
     @objc fileprivate func handleSingleTap(tap: UITapGestureRecognizer) {
         if tap.state == .ended {
             guard let playerController = playerController else { return }
-            if playerController.state == .playing {
+            if playerController.state == .playing || playerController.state == .buffering {
                 playerController.pause()
             }
             else {

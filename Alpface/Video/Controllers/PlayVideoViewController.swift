@@ -46,7 +46,7 @@ class PlayVideoViewController: UIViewController {
     /// 播放代理对象
     open weak var delegate: PlayVideoViewControllerDelegate?
     /// 播放状态， 默认为停止
-    open var state : PlayerState = .stopped {
+    open var state : PlayerState = .notKnow {
         didSet {
             if oldValue == state {
                 return
@@ -256,7 +256,9 @@ class PlayVideoViewController: UIViewController {
         }
         removeObserver(playerItem: playerItem)
         addObserver()
-        state = .playing
+        if state != .playing && state != .stopped { // 如果是继续播放时，就不重置为buffering
+            state = .buffering
+        }
         player?.play()
         isPauseByUser = false
     }
@@ -378,6 +380,9 @@ extension PlayVideoViewController {
             //CMTimeGetSeconds函数是将CMTime转换为秒，如果CMTime无效，将返回NaN
             let currentTime = CMTimeGetSeconds(time)
             let totalTime = CMTimeGetSeconds(self!.playerItem!.duration)
+            if totalTime.isNaN || totalTime.isZero {
+                return
+            }
             if (self?.isPauseByUser == false) {
                 self?.state = .playing;
             }
@@ -446,6 +451,7 @@ extension PlayVideoViewController {
         } else if keyPath == "playbackLikelyToKeepUp" {
             // 缓存足够了，可以播放
             state = .playing
+            print("缓存足够了，可以播放")
         }
     }
   

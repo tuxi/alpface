@@ -91,12 +91,12 @@ public final class OSProgressView: UIImageView {
         }
     }
     
-    public override var frame: CGRect {
-        didSet {
-            let tempProgress = progress
-            progress = tempProgress
-        }
-    }
+//    public override var frame: CGRect {
+//        didSet {
+//            let tempProgress = progress
+//            progress = tempProgress
+//        }
+//    }
     
     public override func layoutSubviews() {
         superview?.layoutSubviews()

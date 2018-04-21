@@ -271,6 +271,7 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         }
         return true
     }
+
     
     public func showLoginViewController() {
         if AuthenticationManager.shared.isLogin == false {
