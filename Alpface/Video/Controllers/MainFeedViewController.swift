@@ -11,6 +11,7 @@ import UIKit
 @objc(ALPMainFeedViewController)
 class MainFeedViewController: UIViewController {
     
+    public var initialPage = 0
     fileprivate lazy var refreshControl: UIRefreshControl = {
         let refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(afterRefresher), for: .valueChanged)
@@ -71,22 +72,12 @@ class MainFeedViewController: UIViewController {
         super.viewWillAppear(animated)
         
         displayViewController()?.beginAppearanceTransition(true, animated: animated)
-        if let vidbleIndexPath = collectionView.indexPathsForVisibleItems.first {
-             playControl(indexPath: vidbleIndexPath)
-        }
-        else {
-            playControl(indexPath: IndexPath.init(row: 0, section: 0))
-        }
+        self.updatePlayControl()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayViewController()?.endAppearanceTransition()
-        if let vidbleIndexPath = collectionView.indexPathsForVisibleItems.first {
-            playControl(indexPath: vidbleIndexPath)
-        }
-        else {
-            playControl(indexPath: IndexPath.init(row: 0, section: 0))
-        }
+        self.updatePlayControl()
         DispatchQueue.main.async {
             UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         }
@@ -110,12 +101,24 @@ class MainFeedViewController: UIViewController {
         }
     }
     
-    fileprivate func playControl(indexPath: IndexPath) {
-        if indexPath.row >= videoItems.count {
+    public func show(page index: Int, animated: Bool) {
+        if collectionView.indexPathsForVisibleItems.first?.row == index {
             return
         }
+        collectionView .scrollToItem(at: IndexPath.init(row: index, section: 0), at: .centeredVertically, animated: animated)
+    }
+    
+    public func updatePlayControl() {
+        var vidbleIndexPath = collectionView.indexPathsForVisibleItems.first
+        if vidbleIndexPath == nil {
+           vidbleIndexPath = IndexPath.init(row: 0, section: 0)
+        }
+        if vidbleIndexPath!.row >= videoItems.count {
+            return
+        }
+        
         // 取出当前显示的model,继续播放
-        let model = videoItems[indexPath.row]
+        let model = videoItems[vidbleIndexPath!.row]
         // 所有model停止播放
         for videoItem in videoItems {
             if model != videoItem {
@@ -223,47 +226,18 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
     
     /// cell 完全离开屏幕后调用
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-       
         
-        // 暂停播放
-        let model = videoItems[indexPath.row]
-        model.isAllowPlay = false
+        self.updatePlayControl()
     }
     
     /// cell 即将显示在屏幕时调用
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-       
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if scrollView != collectionView {
-            return
-        }
-        self.collectionView(didEndScroll: scrollView as! UICollectionView)
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if decelerate == false {
-            if scrollView != collectionView {
-                return
-            }
-            self.collectionView(didEndScroll: scrollView as! UICollectionView)
+        if initialPage > 0 {
+            show(page: initialPage, animated: false)
+            initialPage = 0
         }
     }
     
-    public func collectionView(didEndScroll collectionView: UICollectionView) {
-        
-        let row = Int(ceil(collectionView.contentOffset.y / collectionView.frame.height))
-        let indexPath = IndexPath(item: row, section: 0)
-        let cell = self.collectionView.cellForItem(at: indexPath) as? MainFeedViewCell
-        self.collectionView(self.collectionView, didDisplay: cell, forItemAt: indexPath)
-    }
-    
-    /// collectionView cell 完全显示后回调
-    fileprivate func collectionView(_ collectionView: UICollectionView, didDisplay cell: MainFeedViewCell?, forItemAt indexPath: IndexPath) {
-        guard let vidbleIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
-        playControl(indexPath: vidbleIndexPath)
-    }
 }
 
 extension MainFeedViewController {

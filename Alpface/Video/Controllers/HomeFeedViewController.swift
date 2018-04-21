@@ -28,16 +28,6 @@ extension HomeFeedViewController {
     fileprivate func requestRandomVideos() -> Void {
         VideoRequest.shared.getRadomVideos(success: {[weak self] (response) in
             guard let list = response as? [VideoItem] else {
-                #if DEBUG
-                self?.videoItems.removeAll()
-                let videoItem = VideoItem()
-                let cellModel = PlayVideoModel(videoItem: videoItem)
-                self?.videoItems.append(cellModel)
-                self?.collectionView.reloadData()
-                DispatchQueue.main.async {
-                    self?.collectionView(didEndScroll: (self?.collectionView)!)
-                }
-                #endif
                 return
             }
             self?.videoItems.removeAll()
@@ -49,7 +39,7 @@ extension HomeFeedViewController {
             self?.videoItems += array
             self?.collectionView.reloadData()
             DispatchQueue.main.async {
-                self?.collectionView(didEndScroll: (self?.collectionView)!)
+                self?.updatePlayControl()
             }
         }) { (error) in
             print(error?.localizedDescription ?? "请求随机视频失败!")

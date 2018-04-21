@@ -117,6 +117,8 @@ extension UserProfileChildCollectionViewController: UICollectionViewDataSource, 
         })
         let nac = MainNavigationController(rootViewController: vc)
         self.showDetailViewController(nac, sender: self)
+        vc.initialPage = indexPath.row
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

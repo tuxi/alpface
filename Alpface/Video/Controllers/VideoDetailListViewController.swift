@@ -65,7 +65,7 @@ class VideoDetailListViewController: MainFeedViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }
 
 extension VideoDetailListViewController {
@@ -84,7 +84,7 @@ extension VideoDetailListViewController {
             self?.videoItems += array
             self?.collectionView.reloadData()
             DispatchQueue.main.async {
-                self?.collectionView(didEndScroll: (self?.collectionView)!)
+                self?.updatePlayControl()
             }
         }) { (error) in
             print(error?.localizedDescription ?? "请求随机视频失败!")
