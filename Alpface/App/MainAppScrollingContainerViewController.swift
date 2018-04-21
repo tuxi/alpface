@@ -27,7 +27,7 @@ class MainAppScrollingContainerViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isPagingEnabled = true
-//        collectionView.bounces = false
+        collectionView.bounces = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(ScrollingContainerCell.classForCoder(), forCellWithReuseIdentifier: "ScrollingContainerCell")
@@ -58,6 +58,7 @@ class MainAppScrollingContainerViewController: UIViewController {
     
     public var homeFeedController: HomeFeedViewController!
     public var mainTabbarController: MainTabBarController!
+    public var userProfileController: UserProfileViewController!
     
     fileprivate var backgroundViewTopC: NSLayoutConstraint!
     fileprivate var backgroundViewTopC1: NSLayoutConstraint!
@@ -141,8 +142,9 @@ class MainAppScrollingContainerViewController: UIViewController {
                 updateTabBarBackgroundView(tabbar: tabBarVc.tabBar, selectedIndex: 0)
                 break
             case 2:
-                let vc = UserProfileViewController()
-                item.model = vc
+                userProfileController = UserProfileViewController()
+//                let nac = MainNavigationController.init(rootViewController: userProfileController)
+                item.model = userProfileController
                 break
             default:
                 break
@@ -252,18 +254,15 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         else {
             self.homeFeedController.isVisibleInDisplay = false
         }
-   
-        willDisplayController.beginAppearanceTransition(true, animated: true)
-//        willDisplayController.endAppearanceTransition()
-        if willDisplayController.isKind(of: UserProfileViewController.classForCoder()) == true && indexPath.row == 2 {
+        if willDisplayController == userProfileController {
             // 进入用户页面
             if let video = self.homeFeedController.displayVideoItem() {
-                let userProfile = willDisplayController as? UserProfileViewController
-                userProfile?.user = video.user
-                userProfile?.mainScrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+                userProfileController?.user = video.user
+                userProfileController?.mainScrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
             }
-            
         }
+        willDisplayController.beginAppearanceTransition(true, animated: true)
+//        willDisplayController.endAppearanceTransition()
         
         /// 获取即将消失的控制器（当前collectionView显示的cell就是即将要离开屏幕的cell）
         guard let willEndDisplayingIndexPath = collectionView.indexPathsForVisibleItems.first else { return }

@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol ChildListViewControllerDelegate {
-    
-}
-
 @objc(ALPChildTableViewController)
 class UserProfileChildCollectionViewController: UIViewController, ProfileViewChildControllerProtocol {
     
@@ -26,7 +22,7 @@ class UserProfileChildCollectionViewController: UIViewController, ProfileViewChi
         collectionView.collectionViewLayout = layout
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(VideoGifCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "cell")
+        collectionView.register(VideoGifCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "VideoGifCollectionViewCell")
         return collectionView
     }()
     
@@ -104,7 +100,7 @@ extension UserProfileChildCollectionViewController: UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! VideoGifCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoGifCollectionViewCell", for: indexPath) as! VideoGifCollectionViewCell
         guard let items = self.collectionItems else { return cell }
         let video = items[indexPath.row]
         guard let webpURL = video.getVideoAnimatedWebpURL() else {

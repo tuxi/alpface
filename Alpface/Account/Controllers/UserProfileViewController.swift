@@ -39,8 +39,8 @@ class UserProfileViewController: BaseProfileViewController {
         }
         set {
             if _user?.username != newValue?.username {
-                if isViewDidLoad == false { return }
                 _user = newValue
+                if isViewDidLoad == false { return }
                 self.reloadCollectionData()
                 self.discoverUserByUsername()
             }
