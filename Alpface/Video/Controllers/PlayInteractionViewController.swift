@@ -45,7 +45,7 @@ class PlayInteractionViewController: UIViewController {
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.progressTintColor = UIColor.white
         progressView.loadingTintColor = UIColor.white
-        progressView.trackTintColor = UIColor.lightGray.withAlphaComponent(0.6)
+        progressView.trackTintColor = UIColor.clear
         return progressView
     }()
     

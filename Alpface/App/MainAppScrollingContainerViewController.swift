@@ -40,6 +40,9 @@ class MainAppScrollingContainerViewController: UIViewController {
         return vc
     }
     
+    fileprivate var backgroundViewTopC: NSLayoutConstraint!
+    fileprivate var backgroundViewTopC1: NSLayoutConstraint!
+    
     public func show(page index: NSInteger, animated: Bool) {
         if collectionView.indexPathsForVisibleItems.first?.row == index {
             return
@@ -108,7 +111,8 @@ class MainAppScrollingContainerViewController: UIViewController {
                 nav2.tabBarItem.titlePositionAdjustment = offSet
                 nav3.tabBarItem.titlePositionAdjustment = offSet
                 nav4.tabBarItem.titlePositionAdjustment = offSet
-
+                addTabbarBackgroundView(tabbar: tabBarVc.tabBar)
+                updateTabBarBackgroundView(tabbar: tabBarVc.tabBar, selectedIndex: 0)
                 break
             case 2:
                 let vc = UserProfileViewController()
@@ -253,10 +257,13 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         /// 只有首页才支持左右滑动切换控制器，向左滑动到创建故事页面，向右滑动到我的个人主页
         if tabBarController.selectedIndex == 0 {
             collectionView.isScrollEnabled = true
+//            tabBarController.tabBar.backgroundImage = UIImage()
         }
         else {
             collectionView.isScrollEnabled = false
+//            tabBarController.tabBar.backgroundImage = UIImage(color: UIColor(white: 0.1, alpha: 0.8))
         }
+        updateTabBarBackgroundView(tabbar: tabBarController.tabBar, selectedIndex: tabBarController.selectedIndex)
         UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         
     }
@@ -281,6 +288,56 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
             /// 模态出来的控制器半透明
             nav.modalPresentationStyle = .overCurrentContext
             showDetailViewController(nav, sender: self)
+        }
+    }
+    
+    fileprivate func addTabbarBackgroundView(tabbar: UITabBar) {
+        let backgroundView = UIView(frame: .zero)
+        backgroundView.tag = 222
+        backgroundView.alpha = 0
+        tabbar.addSubview(backgroundView)
+        tabbar.insertSubview(backgroundView, at: 0)
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.leadingAnchor.constraint(equalTo: tabbar.leadingAnchor).isActive = true
+        backgroundView.trailingAnchor.constraint(equalTo: tabbar.trailingAnchor).isActive = true
+        backgroundViewTopC = backgroundView.topAnchor.constraint(equalTo: tabbar.topAnchor)
+        backgroundViewTopC.isActive = true
+        backgroundView.bottomAnchor.constraint(equalTo: tabbar.bottomAnchor).isActive = true
+        backgroundViewTopC1 = backgroundView.topAnchor.constraint(equalTo: tabbar.topAnchor)
+        backgroundView.backgroundColor = UIColor(white: 0.1, alpha: 0.8)
+        
+        let topLine = UIView(frame: .zero)
+        topLine.tag = 223
+        topLine.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
+        tabbar.addSubview(topLine)
+        topLine.translatesAutoresizingMaskIntoConstraints = false
+        topLine.leadingAnchor.constraint(equalTo: tabbar.leadingAnchor).isActive = true
+        topLine.trailingAnchor.constraint(equalTo: tabbar.trailingAnchor).isActive = true
+        topLine.bottomAnchor.constraint(equalTo: tabbar.topAnchor).isActive = true
+        topLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
+    }
+    
+    fileprivate func updateTabBarBackgroundView(tabbar: UITabBar, selectedIndex: Int) {
+        let backgroundView = tabbar.viewWithTag(222)
+        let topLine = tabbar.viewWithTag(223)
+        if selectedIndex == 0 {
+            backgroundView?.alpha = 0.0
+            topLine?.isHidden = false
+            backgroundViewTopC.isActive = true
+            backgroundViewTopC1.isActive = false
+            UIView.animate(withDuration: 0.1) {
+                tabbar.layoutIfNeeded()
+            }
+        }
+        else {
+            backgroundView?.alpha = 1.0
+            topLine?.isHidden = true
+            backgroundViewTopC1.isActive = true
+            backgroundViewTopC.isActive = false
+            UIView.animate(withDuration: 0.1) {
+                tabbar.layoutIfNeeded()
+            }
         }
     }
 }
