@@ -15,12 +15,12 @@ class PlayVideoModel: BaseCellModel {
     
     public var isAllowPlay : Bool {
         set {
-            if newValue != _isAllowPlay {
+//            if newValue != _isAllowPlay {
                 _isAllowPlay = newValue
                 if let callBack = playCallBack {
                     callBack(_isAllowPlay)
                 }
-            }
+//            }
         }
         get {
             return _isAllowPlay

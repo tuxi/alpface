@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyStoryViewController: ChildListViewController {
+class MyStoryViewController: UserProfileChildCollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

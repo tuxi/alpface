@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyReleaseViewController: ChildListViewController {
+class MyReleaseViewController: UserProfileChildCollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

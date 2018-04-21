@@ -126,6 +126,7 @@ open class User: NSObject, NSCoding {
             var items = [VideoItem]()
             for video in my_videos {
                 let item = VideoItem(dict: video)
+                item.user = self
                 items.append(item)
             }
             self.my_videos = items

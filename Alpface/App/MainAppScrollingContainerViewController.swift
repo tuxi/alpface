@@ -46,8 +46,18 @@ class MainAppScrollingContainerViewController: UIViewController {
         let vc = collectionViewItems[ip.section].items[ip.row].model as? UIViewController
         return vc
     }
+    public func displayIndex() -> NSInteger {
+        let indexPath = collectionView.indexPathsForVisibleItems.first
+        guard let ip = indexPath else { return Int.min }
+        return ip.row
+    }
+    
+    public func isHomePageVisible() -> Bool {
+        return self.homeFeedController.isVisibleInDisplay
+    }
     
     public var homeFeedController: HomeFeedViewController!
+    public var mainTabbarController: MainTabBarController!
     
     fileprivate var backgroundViewTopC: NSLayoutConstraint!
     fileprivate var backgroundViewTopC1: NSLayoutConstraint!
@@ -99,6 +109,7 @@ class MainAppScrollingContainerViewController: UIViewController {
             case 1:
                 // 主页
                 let tabBarVc = MainTabBarController()
+                mainTabbarController = tabBarVc
                 tabBarVc.delegate = self
                 let homeVc = HomeFeedViewController()
                 homeFeedController = homeVc
@@ -187,6 +198,20 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         // 获取当前显示已经显示的控制器
         guard let displayIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
         guard let displayIndexPathController = collectionViewItems[0].items[displayIndexPath.row].model as? UIViewController else {return}
+        homeFeedController.isVisibleInDisplay = (displayIndexPathController == mainTabbarController && mainTabbarController.selectedViewController == self.homeFeedController)
+        if displayIndexPathController == mainTabbarController {
+            if let nac = mainTabbarController.selectedViewController as? MainNavigationController {
+                if nac.isKind(of: MainNavigationController.classForCoder()) {
+                    if nac.visibleViewController == self.homeFeedController {
+                        self.homeFeedController.isVisibleInDisplay = true
+                    }
+                }
+            }
+        }
+        else {
+            self.homeFeedController.isVisibleInDisplay = false
+        }
+        
         displayIndexPathController.endAppearanceTransition()
         if let showCompletion = self.showCompletion {
             showCompletion(displayIndexPathController)
@@ -214,6 +239,19 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
 
         /// 获取即将显示的cell上的控制器，执行其view显示的生命周期方法
         guard let willDisplayController = collectionViewItems[0].items[indexPath.row].model as? UIViewController else {return}
+        if willDisplayController == mainTabbarController {
+            if let nac = mainTabbarController.selectedViewController as? MainNavigationController {
+                if nac.isKind(of: MainNavigationController.classForCoder()) {
+                    if nac.visibleViewController == self.homeFeedController {
+                        self.homeFeedController.isVisibleInDisplay = true
+                    }
+                }
+            }
+        }
+        else {
+            self.homeFeedController.isVisibleInDisplay = false
+        }
+   
         willDisplayController.beginAppearanceTransition(true, animated: true)
         if willDisplayController.isKind(of: UserProfileViewController.classForCoder()) == true && indexPath.row == 2 {
             // 进入用户页面
@@ -257,9 +295,11 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         /// 只有首页才支持左右滑动切换控制器，向左滑动到创建故事页面，向右滑动到我的个人主页
         if tabBarController.selectedIndex == 0 {
             collectionView.isScrollEnabled = true
+            homeFeedController.isVisibleInDisplay = true
 //            tabBarController.tabBar.backgroundImage = UIImage()
         }
         else {
+            homeFeedController.isVisibleInDisplay = false
             collectionView.isScrollEnabled = false
 //            tabBarController.tabBar.backgroundImage = UIImage(color: UIColor(white: 0.1, alpha: 0.8))
         }
@@ -284,6 +324,19 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
                 }
             }
         }
+        
+        // 确定是否是homeFeedController在显示着
+        if let nac = viewController as? MainNavigationController {
+            if nac.isKind(of: MainNavigationController.classForCoder()) {
+                if nac.visibleViewController == self.homeFeedController {
+                    self.homeFeedController.isVisibleInDisplay = true
+                }
+            }
+        }
+        else {
+            self.homeFeedController.isVisibleInDisplay = false
+        }
+
         return true
     }
 

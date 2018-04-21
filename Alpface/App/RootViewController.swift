@@ -39,6 +39,10 @@ class RootViewController: UIViewController {
         disVc.selectedIndex = 0
     }
     
+    public func isHomePageVisible() -> Bool {
+        return self.appViewController.scrollingContainer.isHomePageVisible()
+    }
+    
     public func showUserProfilePage(user: User) {
         self.appViewController.scrollingContainer.show(page: 2, animated: true, willShowCallBack: { (appearVC, disAppearVc) in
 //            guard let disVc = appearVC as? UserProfileViewController else {

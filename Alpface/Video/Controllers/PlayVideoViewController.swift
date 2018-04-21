@@ -232,6 +232,7 @@ class PlayVideoViewController: UIViewController {
         if state == .notKnow {
             state = .buffering
         }
+        
     }
     
     /// 自动播放, 当非用户暂停时，或者播放完成后的自动播放

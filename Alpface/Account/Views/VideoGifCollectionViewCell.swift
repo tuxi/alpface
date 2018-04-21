@@ -33,5 +33,6 @@ class VideoGifCollectionViewCell: UICollectionViewCell {
         gifView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         gifView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
         gifView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        self.contentView.backgroundColor = UIColor.randomColor()
     }
 }

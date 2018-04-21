@@ -88,7 +88,7 @@ class UserProfileViewController: BaseProfileViewController {
     }
     
     override func controller(forSegment index: Int) -> ProfileViewChildControllerProtocol {
-        var vc = ChildListViewController()
+        var vc = UserProfileChildCollectionViewController()
         switch index {
         case 0:
             vc = MyReleaseViewController()
@@ -143,7 +143,7 @@ class UserProfileViewController: BaseProfileViewController {
         }
         
         self.controllers.forEach { (controller) in
-            if let c = controller as? ChildListViewController {
+            if let c = controller as? UserProfileChildCollectionViewController {
                 if c.isMember(of: MyReleaseViewController.classForCoder()) {
                     c.collectionItems = self.user?.my_videos
                 }

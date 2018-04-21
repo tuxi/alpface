@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyFavoriteViewController: ChildListViewController {
+class MyFavoriteViewController: UserProfileChildCollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

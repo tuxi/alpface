@@ -38,6 +38,7 @@ struct ALPConstans {
         static let getRadomVideos = "\(ALPSiteURLString)" + "/video/getAll"
         static let uoloadVideo = "\(ALPSiteURLString)" + "/video/new"
         static let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
+        static let getVideoByUserId = "\(ALPSiteURLString)" + "/video/getVideoByUserId"
         
     }
 }
