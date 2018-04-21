@@ -105,20 +105,23 @@ class MainFeedViewController: UIViewController {
     }
     
     fileprivate func playControl(indexPath: IndexPath) {
-        // 所有model停止播放
-        for videoItem in videoItems {
-            videoItem.isAllowPlay = false
-        }
-        
-        if isVisibleInDisplay == false {
-            return
-        }
-        
         if indexPath.row >= videoItems.count {
             return
         }
         // 取出当前显示的model,继续播放
         let model = videoItems[indexPath.row]
+        // 所有model停止播放
+        for videoItem in videoItems {
+            if model != videoItem {
+                videoItem.isAllowPlay = false
+            }
+        }
+        
+        if isVisibleInDisplay == false {
+            model.isAllowPlay = false
+            return
+        }
+        
         model.isAllowPlay = true
     }
     

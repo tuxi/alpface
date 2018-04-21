@@ -80,7 +80,7 @@ public final class OSProgressView: UIImageView {
         UIView.animate(withDuration: duration-0.1, animations: {
             self.layoutIfNeeded()
         }) { (finished) in
-            self.progressBarWidthConstraint.constant = 0.0
+            self.progressBarWidthConstraint.constant = 20
             self.progressBar.alpha = 0.0
             UIView.animate(withDuration: 0.1, animations: {
                 self.layoutIfNeeded()
