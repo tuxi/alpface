@@ -1,5 +1,5 @@
 # Alpface
-* 学习抖音的iOS项目
+* [学习抖音的iOS项目](https://github.com/alpface/alpface)
 * [服务端开源项目](https://github.com/alpface/ShortVideo)
 
 
