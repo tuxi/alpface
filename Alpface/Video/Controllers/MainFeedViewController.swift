@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objc(ALPMainFeedViewController)
 class MainFeedViewController: UIViewController {
     
     fileprivate lazy var refreshControl: UIRefreshControl = {
@@ -16,12 +17,12 @@ class MainFeedViewController: UIViewController {
         return refresher
     }()
     
-    fileprivate lazy var videoItems: [PlayVideoModel] = {
+    public lazy var videoItems: [PlayVideoModel] = {
         let items = [PlayVideoModel]()
         return items
     }()
     
-    fileprivate lazy var collectionView: GestureCoordinatingCollectionView = {
+    public lazy var collectionView: GestureCoordinatingCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0.0
         layout.minimumInteritemSpacing = 0.0
@@ -62,7 +63,6 @@ class MainFeedViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupUI()
-        requestRandomVideos()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -152,39 +152,7 @@ class MainFeedViewController: UIViewController {
     
 }
 
-extension MainFeedViewController {
-    
-    fileprivate func requestRandomVideos() -> Void {
-        VideoRequest.shared.getRadomVideos(success: {[weak self] (response) in
-            guard let list = response as? [VideoItem] else {
-                #if DEBUG
-                    self?.videoItems.removeAll()
-                    let videoItem = VideoItem()
-                    let cellModel = PlayVideoModel(videoItem: videoItem)
-                    self?.videoItems.append(cellModel)
-                    self?.collectionView.reloadData()
-                    DispatchQueue.main.async {
-                        self?.collectionView(didEndScroll: (self?.collectionView)!)
-                    }
-                #endif
-                return
-            }
-            self?.videoItems.removeAll()
-            var array : [PlayVideoModel] = [PlayVideoModel]()
-            for video in list {
-                let cellModel = PlayVideoModel(videoItem: video)
-                array.append(cellModel)
-            }
-            self?.videoItems += array
-            self?.collectionView.reloadData()
-            DispatchQueue.main.async {
-                self?.collectionView(didEndScroll: (self?.collectionView)!)
-            }
-        }) { (error) in
-            print(error?.localizedDescription ?? "请求随机视频失败!")
-        }
-    }
-}
+
 
 extension MainFeedViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -259,7 +227,7 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         }
     }
     
-    fileprivate func collectionView(didEndScroll collectionView: UICollectionView) {
+    public func collectionView(didEndScroll collectionView: UICollectionView) {
         
         let row = Int(ceil(collectionView.contentOffset.y / collectionView.frame.height))
         let indexPath = IndexPath(item: row, section: 0)
@@ -270,9 +238,6 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
     /// collectionView cell 完全显示后回调
     fileprivate func collectionView(_ collectionView: UICollectionView, didDisplay cell: MainFeedViewCell?, forItemAt indexPath: IndexPath) {
         
-//        if collectionView.indexPathsForVisibleItems.first == indexPath {
-//            return
-//        }
         
         if indexPath.row >= videoItems.count {
             return
@@ -280,13 +245,15 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         
         // 取出当前显示的model,继续播放
         let model = videoItems[indexPath.row]
-        model.isAllowPlay = true
+        
         // 所有model停止播放
         for videoItem in videoItems {
             if model != videoItem {
                 videoItem.isAllowPlay = false
             }
         }
+        
+        model.isAllowPlay = true
     }
 }
 

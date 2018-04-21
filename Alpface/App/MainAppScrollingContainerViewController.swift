@@ -47,7 +47,7 @@ class MainAppScrollingContainerViewController: UIViewController {
         return vc
     }
     
-    public var homeFeedController: MainFeedViewController!
+    public var homeFeedController: HomeFeedViewController!
     
     fileprivate var backgroundViewTopC: NSLayoutConstraint!
     fileprivate var backgroundViewTopC1: NSLayoutConstraint!
@@ -100,7 +100,7 @@ class MainAppScrollingContainerViewController: UIViewController {
                 // 主页
                 let tabBarVc = MainTabBarController()
                 tabBarVc.delegate = self
-                let homeVc = MainFeedViewController()
+                let homeVc = HomeFeedViewController()
                 homeFeedController = homeVc
                 homeVc.title = MainAppScrollingTitles.home
                 homeVc.navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "potd-mini"), style: .plain, target: self, action: #selector(openStoryCreationPage))

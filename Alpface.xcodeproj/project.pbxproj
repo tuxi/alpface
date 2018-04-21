@@ -107,6 +107,8 @@
 		D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */; };
 		D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */; };
 		D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */; };
+		D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C54208B24B700CA3908 /* HomeFeedViewController.swift */; };
+		D2B38C57208B25BB00CA3908 /* UserVideoFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C56208B25BB00CA3908 /* UserVideoFeedViewController.swift */; };
 		D2BCBA43206F33F2008409B3 /* FeedCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA36206F33F1008409B3 /* FeedCellViewController.swift */; };
 		D2BCBA44206F33F2008409B3 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA37206F33F1008409B3 /* MainFeedViewController.swift */; };
 		D2BCBA45206F33F2008409B3 /* PlayInteractionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA38206F33F1008409B3 /* PlayInteractionViewController.swift */; };
@@ -234,6 +236,8 @@
 		D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoButton.swift; sourceTree = "<group>"; };
 		D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DOFavoriteButton.swift; sourceTree = "<group>"; };
 		D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		D2B38C54208B24B700CA3908 /* HomeFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedViewController.swift; sourceTree = "<group>"; };
+		D2B38C56208B25BB00CA3908 /* UserVideoFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVideoFeedViewController.swift; sourceTree = "<group>"; };
 		D2BCBA36206F33F1008409B3 /* FeedCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCellViewController.swift; sourceTree = "<group>"; };
 		D2BCBA37206F33F1008409B3 /* MainFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
 		D2BCBA38206F33F1008409B3 /* PlayInteractionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayInteractionViewController.swift; sourceTree = "<group>"; };
@@ -690,6 +694,8 @@
 				D2BCBA37206F33F1008409B3 /* MainFeedViewController.swift */,
 				D2BCBA38206F33F1008409B3 /* PlayInteractionViewController.swift */,
 				D2BCBA39206F33F1008409B3 /* PlayVideoViewController.swift */,
+				D2B38C54208B24B700CA3908 /* HomeFeedViewController.swift */,
+				D2B38C56208B25BB00CA3908 /* UserVideoFeedViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -889,6 +895,7 @@
 				D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */,
 				D28953682076A4EE0029CE92 /* BaseProfileViewController.swift in Sources */,
 				D289536B2076A5480029CE92 /* UserProfileViewController.swift in Sources */,
+				D2B38C57208B25BB00CA3908 /* UserVideoFeedViewController.swift in Sources */,
 				D28953692076A4EE0029CE92 /* HitTestScrollView.swift in Sources */,
 				D20093392078EEC50079AD8B /* CameraView.swift in Sources */,
 				D20093352078EEC50079AD8B /* PhotoLibraryViewController.swift in Sources */,
@@ -930,6 +937,7 @@
 				D200932A2078EEC50079AD8B /* CameraGlobals.swift in Sources */,
 				D20093362078EEC50079AD8B /* ConfirmViewController.swift in Sources */,
 				D200933A2078EEC50079AD8B /* CropOverlay.swift in Sources */,
+				D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */,
 				D20093312078EEC50079AD8B /* UIButtonExtensions.swift in Sources */,
 				D289536D2076A5A60029CE92 /* ChildListViewController.swift in Sources */,
 				D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */,
