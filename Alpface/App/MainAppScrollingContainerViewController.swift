@@ -27,7 +27,7 @@ class MainAppScrollingContainerViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isPagingEnabled = true
-        collectionView.bounces = false
+//        collectionView.bounces = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(ScrollingContainerCell.classForCoder(), forCellWithReuseIdentifier: "ScrollingContainerCell")
@@ -197,9 +197,9 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         // 获取当前显示已经显示的控制器
         guard let displayIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
-        guard let displayIndexPathController = collectionViewItems[0].items[displayIndexPath.row].model as? UIViewController else {return}
-        homeFeedController.isVisibleInDisplay = (displayIndexPathController == mainTabbarController && mainTabbarController.selectedViewController == self.homeFeedController)
-        if displayIndexPathController == mainTabbarController {
+        guard let displayController = collectionViewItems[0].items[displayIndexPath.row].model as? UIViewController else {return}
+        homeFeedController.isVisibleInDisplay = (displayController == mainTabbarController && mainTabbarController.selectedViewController == self.homeFeedController)
+        if displayController == mainTabbarController {
             if let nac = mainTabbarController.selectedViewController as? MainNavigationController {
                 if nac.isKind(of: MainNavigationController.classForCoder()) {
                     if nac.visibleViewController == self.homeFeedController {
@@ -211,15 +211,16 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         else {
             self.homeFeedController.isVisibleInDisplay = false
         }
-        
-        displayIndexPathController.endAppearanceTransition()
+        displayController.beginAppearanceTransition(true, animated: true)
+        displayController.endAppearanceTransition()
         if let showCompletion = self.showCompletion {
-            showCompletion(displayIndexPathController)
+            showCompletion(displayController)
         }
         // 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
         guard let endDisplayingViewController = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
-        if displayIndexPathController != endDisplayingViewController {
+        if displayController != endDisplayingViewController {
             // 如果完全显示的控制器和已经离开屏幕的控制器是同一个就return，防止初始化完成后是同一个
+            endDisplayingViewController.beginAppearanceTransition(false, animated: true)
             endDisplayingViewController.endAppearanceTransition()
         }
         DispatchQueue.main.async {
@@ -253,6 +254,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         }
    
         willDisplayController.beginAppearanceTransition(true, animated: true)
+//        willDisplayController.endAppearanceTransition()
         if willDisplayController.isKind(of: UserProfileViewController.classForCoder()) == true && indexPath.row == 2 {
             // 进入用户页面
             if let video = self.homeFeedController.displayVideoItem() {
@@ -272,6 +274,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         if willEndDisplayingController != willDisplayController {
             // 如果是同一个控制器return，防止初始化完成后是同一个
             willEndDisplayingController.beginAppearanceTransition(false, animated: true)
+//            willEndDisplayingController.endAppearanceTransition()
         }
     }
     

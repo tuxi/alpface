@@ -81,6 +81,12 @@ class MainFeedViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayViewController()?.endAppearanceTransition()
+        if let vidbleIndexPath = collectionView.indexPathsForVisibleItems.first {
+            playControl(indexPath: vidbleIndexPath)
+        }
+        else {
+            playControl(indexPath: IndexPath.init(row: 0, section: 0))
+        }
         DispatchQueue.main.async {
             UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         }

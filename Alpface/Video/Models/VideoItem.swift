@@ -76,7 +76,7 @@ open class VideoItem: NSObject {
         video_ogg = aDecoder.decodeObject(forKey: "video_ogg") as? String
         user = aDecoder.decodeObject(forKey: "user") as? User
         video_gif = aDecoder.decodeObject(forKey: "video_gif") as? String
-        video_animated_webp = aDecoder.decodeBool(forKey: "video_animated_webp") as? String
+        video_animated_webp = aDecoder.decodeObject(forKey: "video_animated_webp") as? String
     }
     
     override init() {
@@ -148,11 +148,7 @@ open class VideoItem: NSObject {
     
     open func getVideoURL() -> URL? {
         guard let video = self.video else {
-            #if DEBUG
-                return URL.init(string: "http://www.alpface.com:8889/media/media_itemsdaed8ee08069428aa1e3605e1dd5a34a.mp4")
-            #else
-                return nil
-            #endif
+           return nil
         }
         return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + video)
     }
