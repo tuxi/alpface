@@ -26,6 +26,7 @@ class PlayVideoModel: BaseCellModel {
             return _isAllowPlay
         }
     }
+    
     convenience init(videoItem: VideoItem) {
         self.init()
         self.model = videoItem

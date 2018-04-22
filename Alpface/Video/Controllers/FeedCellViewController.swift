@@ -59,6 +59,7 @@ class FeedCellViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(resetPlayer), name: NSNotification.Name.ALPPlayerStopAll, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,6 +99,14 @@ class FeedCellViewController: UIViewController {
         interactionController.view.bottomAnchor.constraint(equalTo: playVideoVc.view.bottomAnchor).isActive = true
         interactionController.view.topAnchor.constraint(equalTo: playVideoVc.view.topAnchor).isActive = true
         
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc fileprivate func resetPlayer() {
+        self.playVideoVc.resetPlayer()
     }
     
 }

@@ -10,7 +10,7 @@ import UIKit
 
 extension NSNotification.Name {
     static let ALPRefreshHomePage = NSNotification.Name(rawValue: "ALPRefreshHomePage")
-    static let ALPPauseAll = NSNotification.Name(rawValue: "ALPPauseAll")
+    static let ALPPlayerStopAll = NSNotification.Name(rawValue: "ALPPlayerStopAll")
 }
 
 @objc(ALPMainAppScrollingContainerViewController)

@@ -66,7 +66,6 @@ class MainFeedViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupUI()
-        NotificationCenter.default.post(name: NSNotification.Name.ALPPauseAll, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -249,12 +248,6 @@ extension MainFeedViewController: PlayInteractionViewControllerDelegate {
 }
 
 extension MainFeedViewController {
-    
-    @objc fileprivate func pauseAll() {
-        self.videoItems.forEach { (item) in
-            item.isAllowPlay = false
-        }
-    }
     
     /// 关闭appearance callbacks的自动传递的特性呢
 //    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
