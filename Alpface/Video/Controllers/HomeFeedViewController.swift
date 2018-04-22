@@ -50,6 +50,10 @@ extension HomeFeedViewController {
             guard let list = response as? [VideoItem] else {
                 return
             }
+            // 刷新数据时，移除资源，但是必须暂停全部
+            self?.videoItems.forEach({ (item) in
+                item.isAllowPlay = false
+            })
             self?.videoItems.removeAll()
             var array : [PlayVideoModel] = [PlayVideoModel]()
             for video in list {
