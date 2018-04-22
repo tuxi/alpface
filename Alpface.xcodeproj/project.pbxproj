@@ -106,6 +106,12 @@
 		D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */; };
 		D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */; };
 		D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */; };
+		D2B165EE208C4D8500FA5F05 /* CommentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165ED208C4D8500FA5F05 /* CommentListViewController.swift */; };
+		D2B165F0208C4F4F00FA5F05 /* CornerBarNaviController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165EF208C4F4F00FA5F05 /* CornerBarNaviController.swift */; };
+		D2B165F2208C4FCB00FA5F05 /* SelectMusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165F1208C4FCB00FA5F05 /* SelectMusicViewController.swift */; };
+		D2B165F4208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165F3208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift */; };
+		D2B165F6208C68A800FA5F05 /* PresentTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165F5208C68A800FA5F05 /* PresentTransition.swift */; };
+		D2B165F8208C720B00FA5F05 /* TabbarPlaceholderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165F7208C720B00FA5F05 /* TabbarPlaceholderViewController.swift */; };
 		D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */; };
 		D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C54208B24B700CA3908 /* HomeFeedViewController.swift */; };
 		D2B38C57208B25BB00CA3908 /* VideoDetailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C56208B25BB00CA3908 /* VideoDetailListViewController.swift */; };
@@ -235,6 +241,12 @@
 		D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoDetailView.swift; sourceTree = "<group>"; };
 		D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoButton.swift; sourceTree = "<group>"; };
 		D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DOFavoriteButton.swift; sourceTree = "<group>"; };
+		D2B165ED208C4D8500FA5F05 /* CommentListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListViewController.swift; sourceTree = "<group>"; };
+		D2B165EF208C4F4F00FA5F05 /* CornerBarNaviController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerBarNaviController.swift; sourceTree = "<group>"; };
+		D2B165F1208C4FCB00FA5F05 /* SelectMusicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectMusicViewController.swift; sourceTree = "<group>"; };
+		D2B165F3208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentDrivenInteractiveTransition.swift; sourceTree = "<group>"; };
+		D2B165F5208C68A800FA5F05 /* PresentTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTransition.swift; sourceTree = "<group>"; };
+		D2B165F7208C720B00FA5F05 /* TabbarPlaceholderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarPlaceholderViewController.swift; sourceTree = "<group>"; };
 		D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		D2B38C54208B24B700CA3908 /* HomeFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedViewController.swift; sourceTree = "<group>"; };
 		D2B38C56208B25BB00CA3908 /* VideoDetailListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDetailListViewController.swift; sourceTree = "<group>"; };
@@ -377,6 +389,8 @@
 			children = (
 				D2371D902084F73B00588BEC /* PublishViewController.swift */,
 				D0DB45A32085B4F0000C291A /* PublishViewController.xib */,
+				D2B165EF208C4F4F00FA5F05 /* CornerBarNaviController.swift */,
+				D2B165F1208C4FCB00FA5F05 /* SelectMusicViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -385,6 +399,9 @@
 			isa = PBXGroup;
 			children = (
 				D2371D932084FD7F00588BEC /* VideoFile.swift */,
+				D2B165F3208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift */,
+				D2B165F5208C68A800FA5F05 /* PresentTransition.swift */,
+				D2B165F7208C720B00FA5F05 /* TabbarPlaceholderViewController.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -420,6 +437,7 @@
 				D26AD45B2066A9C30047DC15 /* Discover */,
 				D26AD444206690B40047DC15 /* ThirdParty */,
 				D2371D8E2084F6E900588BEC /* Publish */,
+				D2B165EB208C4D6E00FA5F05 /* Comment */,
 				D26AD493206777870047DC15 /* Utils */,
 				D26AD496206778180047DC15 /* Networking */,
 				D26AD49720677C2E0047DC15 /* Others */,
@@ -687,6 +705,22 @@
 			path = DOFavoriteButton;
 			sourceTree = "<group>";
 		};
+		D2B165EB208C4D6E00FA5F05 /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				D2B165EC208C4D6E00FA5F05 /* Controllers */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		D2B165EC208C4D6E00FA5F05 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D2B165ED208C4D8500FA5F05 /* CommentListViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		D2BCBA35206F33F1008409B3 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -885,6 +919,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D289537D20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift in Sources */,
+				D2B165EE208C4D8500FA5F05 /* CommentListViewController.swift in Sources */,
 				D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */,
 				D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */,
 				D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */,
@@ -894,6 +929,7 @@
 				D26AD47F20672E120047DC15 /* FadeTransition.swift in Sources */,
 				D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */,
 				D28953682076A4EE0029CE92 /* BaseProfileViewController.swift in Sources */,
+				D2B165F4208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift in Sources */,
 				D289536B2076A5480029CE92 /* UserProfileViewController.swift in Sources */,
 				D2B38C57208B25BB00CA3908 /* VideoDetailListViewController.swift in Sources */,
 				D28953692076A4EE0029CE92 /* HitTestScrollView.swift in Sources */,
@@ -904,6 +940,7 @@
 				D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */,
 				D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */,
 				D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */,
+				D2B165F8208C720B00FA5F05 /* TabbarPlaceholderViewController.swift in Sources */,
 				D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
 				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
@@ -929,6 +966,7 @@
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
 				D0DB45AA2085B7C6000C291A /* AdaptiveTextView.swift in Sources */,
 				D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */,
+				D2B165F6208C68A800FA5F05 /* PresentTransition.swift in Sources */,
 				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
 				D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */,
@@ -939,6 +977,7 @@
 				D200933A2078EEC50079AD8B /* CropOverlay.swift in Sources */,
 				D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */,
 				D20093312078EEC50079AD8B /* UIButtonExtensions.swift in Sources */,
+				D2B165F0208C4F4F00FA5F05 /* CornerBarNaviController.swift in Sources */,
 				D289536D2076A5A60029CE92 /* UserProfileChildCollectionViewController.swift in Sources */,
 				D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */,
 				D2BCBA47206F33F2008409B3 /* BaseCellModel.swift in Sources */,
@@ -976,6 +1015,7 @@
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
 				D2BCBA45206F33F2008409B3 /* PlayInteractionViewController.swift in Sources */,
 				D2BCBA44206F33F2008409B3 /* MainFeedViewController.swift in Sources */,
+				D2B165F2208C4FCB00FA5F05 /* SelectMusicViewController.swift in Sources */,
 				D289537320771A8B0029CE92 /* MyStoryViewController.swift in Sources */,
 				D2BCBA4C206F33F2008409B3 /* ScrollingContainerCell.swift in Sources */,
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,

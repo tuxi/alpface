@@ -39,6 +39,8 @@ class MainAppScrollingContainerViewController: UIViewController {
     }()
     
     private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
+    fileprivate var interactiveTransition: PercentDrivenInteractiveTransition?
+    
     public var initialPage = 0
     public func displayViewController() -> UIViewController? {
         let indexPath = collectionView.indexPathsForVisibleItems.first
@@ -55,7 +57,7 @@ class MainAppScrollingContainerViewController: UIViewController {
     public func isHomePageVisible() -> Bool {
         return self.homeFeedController.isVisibleInDisplay
     }
-    
+    fileprivate var interactiveDismiss: PercentDrivenInteractiveTransition?
     public var homeFeedController: HomeFeedViewController!
     public var mainTabbarController: MainTabBarController!
     public var userProfileController: UserProfileViewController!
@@ -81,8 +83,13 @@ class MainAppScrollingContainerViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         setupCollectionViewItems()
+        self.interactiveTransition = PercentDrivenInteractiveTransition(transitionType: .present, gestureDirection: .up)
+        self.interactiveTransition?.presentConifg = { [weak self] in
+            self?.presentSelectMusic()
+        }
+//        self.interactiveTransition?.addPanGesture(forViewController: self)
+        
     }
-    
     
     private func setupUI() {
         view.backgroundColor = UIColor.clear
@@ -119,14 +126,16 @@ class MainAppScrollingContainerViewController: UIViewController {
                 let searchVc = ExploreViewController()
                 searchVc.title = MainAppScrollingTitles.explore
                 let messageVc = MessageViewController()
+                let selectMusicVC = TabbarPlaceholderViewController()
                 messageVc.title = MainAppScrollingTitles.message
                 let userProfileVc = MyProfileViewController(user: AuthenticationManager.shared.loginUser)
                 userProfileVc.title = MainAppScrollingTitles.myProfile
-                let nav1 = MainNavigationController.init(rootViewController: homeVc)
-                let nav2 = MainNavigationController(rootViewController: searchVc)
-                let nav3 = MainNavigationController(rootViewController: messageVc)
-                let nav4 = MainNavigationController(rootViewController: userProfileVc)
-                tabBarVc.setViewControllers([nav1, nav2, nav3, nav4], animated: true)
+                let nac1 = MainNavigationController.init(rootViewController: homeVc)
+                let nac2 = MainNavigationController(rootViewController: searchVc)
+//                let nac3 = CornerBarNaviController(rootViewController: selectMusicVC)
+                let nac4 = MainNavigationController(rootViewController: messageVc)
+                let nac5 = MainNavigationController(rootViewController: userProfileVc)
+                tabBarVc.setViewControllers([nac1, nac2, selectMusicVC, nac4, nac5], animated: true)
                 item.model = tabBarVc
                 tabBarVc.tabBar.backgroundColor = .clear
                 tabBarVc.tabBar.backgroundImage = UIImage()
@@ -134,10 +143,12 @@ class MainAppScrollingContainerViewController: UIViewController {
                 tabBarVc.tabBar.isTranslucent = true
                 // 设置tabbarItem的文本向上偏移15.0，因为无图片，所以尽量居中显示
                 let offSet = UIOffsetMake(0.0, -15.0)
-                nav1.tabBarItem.titlePositionAdjustment = offSet
-                nav2.tabBarItem.titlePositionAdjustment = offSet
-                nav3.tabBarItem.titlePositionAdjustment = offSet
-                nav4.tabBarItem.titlePositionAdjustment = offSet
+                nac1.tabBarItem.titlePositionAdjustment = offSet
+                nac2.tabBarItem.titlePositionAdjustment = offSet
+                selectMusicVC.tabBarItem.titlePositionAdjustment = offSet
+                nac4.tabBarItem.titlePositionAdjustment = offSet
+                nac5.tabBarItem.titlePositionAdjustment = offSet
+                selectMusicVC.tabBarItem.image = UIImage(named: "btn_home_add")
                 addTabbarBackgroundView(tabbar: tabBarVc.tabBar)
                 updateTabBarBackgroundView(tabbar: tabBarVc.tabBar, selectedIndex: 0)
                 break
@@ -317,6 +328,10 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
                 showLoginViewController()
                 return false
             }
+            if viewController.isKind(of: TabbarPlaceholderViewController.classForCoder()) == true {
+                self.presentSelectMusic()
+                return false
+            }
             // 如果是我的页面，就传递model
             if viewController.title == MainAppScrollingTitles.myProfile {
                 if let nac = viewController as? MainNavigationController {
@@ -353,6 +368,7 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
             showDetailViewController(nav, sender: self)
         }
     }
+
     
     fileprivate func addTabbarBackgroundView(tabbar: UITabBar) {
         let backgroundView = UIView(frame: .zero)
@@ -405,6 +421,31 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
     }
 }
 
+extension MainAppScrollingContainerViewController {
+    fileprivate func presentSelectMusic() {
+        let selectMusic = SelectMusicViewController()
+        let nac = CornerBarNaviController(rootViewController: selectMusic)
+        nac.transitioningDelegate = self
+        nac.modalPresentationStyle =  UIModalPresentationStyle.custom
+        self.present(nac, animated: true, completion: nil)
+        
+        self.interactiveDismiss = PercentDrivenInteractiveTransition(transitionType: .dismiss, gestureDirection: .down)
+        self.interactiveDismiss?.addPanGesture(forViewController: nac)
+    }
+}
+
+extension MainAppScrollingContainerViewController {
+    
+    func presentedOneControllerPressedDissmiss() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func interactiveTransitionForPresent() -> UIViewControllerInteractiveTransitioning {
+        return self.interactiveTransition!
+    }
+
+}
+
 extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
     func loginViewController(loginSuccess user: User) {
       
@@ -414,3 +455,30 @@ extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
         
     }
 }
+
+extension MainAppScrollingContainerViewController: UIViewControllerTransitioningDelegate {
+    
+    
+    public func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        let interactivePresent = self.interactiveTransitionForPresent() as? PercentDrivenInteractiveTransition
+        if interactivePresent?.interactionInProgress == true {
+            return interactivePresent
+        }
+        return nil
+    }
+    
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PresentTransition(transitionType: .present)
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PresentTransition(transitionType: .dismiss)
+    }
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return self.interactiveDismiss?.interactionInProgress == true ? interactiveDismiss : nil
+    }
+    
+}
+
