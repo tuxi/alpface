@@ -11,6 +11,10 @@ import SDWebImage
 
 let ALPplayStatusButtonAlpha: CGFloat = 0.5
 
+@objc(ALPPlayInteractionViewControllerDelegate)
+protocol PlayInteractionViewControllerDelegate: NSObjectProtocol {
+    @objc optional func playInteractionViewController(playInteraction controller: PlayInteractionViewController, didClickUserAvatarFrom video: VideoItem)
+}
 
 @objc(ALPPlayInteractionViewController)
 class PlayInteractionViewController: UIViewController {
@@ -25,6 +29,8 @@ class PlayInteractionViewController: UIViewController {
             self.detailView.videoItem = videoItem
         }
     }
+    
+    open weak var delegate: PlayInteractionViewControllerDelegate?
     
     /// 播放控制器
     open var playerController: PlayVideoViewController?
@@ -223,7 +229,10 @@ extension PlayInteractionViewController {
 
 extension PlayInteractionViewController: FeedVideoDetailViewDelegate {
     func feedVideoDetailView(detailView view: FeedVideoDetailView, didClickUserAvatarFrom video: VideoItem) {
-        let delegate = UIApplication.shared.delegate as? AppDelegate
-        delegate?.rootViewController?.showUserProfilePage(user: video.user!)
+        if let delegate = self.delegate {
+            if delegate.responds(to: #selector(PlayInteractionViewControllerDelegate.playInteractionViewController(playInteraction:didClickUserAvatarFrom:))) {
+                delegate.playInteractionViewController!(playInteraction: self, didClickUserAvatarFrom: video)
+            }
+        }
     }
 }

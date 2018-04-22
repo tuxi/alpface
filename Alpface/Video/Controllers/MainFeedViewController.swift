@@ -216,7 +216,7 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         let model = videoItems[indexPath.row]
         cell.model = model
         cell.contentView.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
-        
+        cell.viewController.interactionController.delegate = self
         return cell
     }
     
@@ -239,6 +239,12 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         }
     }
     
+}
+
+extension MainFeedViewController: PlayInteractionViewControllerDelegate {
+    func playInteractionViewController(playInteraction controller: PlayInteractionViewController, didClickUserAvatarFrom video: VideoItem) {
+        
+    }
 }
 
 extension MainFeedViewController {

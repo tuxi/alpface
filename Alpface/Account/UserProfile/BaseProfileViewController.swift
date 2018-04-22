@@ -244,17 +244,17 @@ open class BaseProfileViewController: UIViewController {
     }
     
     open func controller(didDisplay controller: UIViewController, forItemAt index: Int) {
-         /* 子类可以重写 */
+        /* 子类可以重写 */
     }
     
     open func controller(willDisplay controller: UIViewController, forItemAt index: Int) {
-         /* 子类可以重写 */
+        /* 子类可以重写 */
     }
 }
 
 extension BaseProfileViewController {
     
-    func prepareViews() {
+    fileprivate func prepareViews() {
         
         self.view.addSubview(mainScrollView)
         
@@ -292,7 +292,7 @@ extension BaseProfileViewController {
         segmentedControl.underlineSelected = true
         segmentedControl.selectedSegmentIndex = 0
         let largerWhiteTextAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16),
-                                       NSAttributedStringKey.foregroundColor: UIColor.white]
+                                         NSAttributedStringKey.foregroundColor: UIColor.white]
         
         let largerRedTextHighlightAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16),
                                                 NSAttributedStringKey.foregroundColor: UIColor.blue]
@@ -301,36 +301,36 @@ extension BaseProfileViewController {
         
         segmentedControl.setTitleTextAttributes(largerWhiteTextAttributes, for: .normal)
         
-    segmentedControl.setTitleTextAttributes(largerRedTextHighlightAttributes, for: .highlighted)
+        segmentedControl.setTitleTextAttributes(largerRedTextHighlightAttributes, for: .highlighted)
         
         segmentedControl.setTitleTextAttributes(largerRedTextSelectAttributes, for: .selected)
         
         self.reloadPage()
         self.showDebugInfo()
     }
-
     
-    func computeStickyHeaderContainerViewFrame() -> CGRect {
+    
+    fileprivate func computeStickyHeaderContainerViewFrame() -> CGRect {
         return CGRect(x: 0, y: 0, width: mainScrollView.bounds.width, height: stickyheaderContainerViewHeight)
     }
     
-    func computeProfileHeaderViewFrame() -> CGRect {
+    fileprivate func computeProfileHeaderViewFrame() -> CGRect {
         return CGRect(x: 0, y: computeStickyHeaderContainerViewFrame().origin.y + stickyheaderContainerViewHeight, width: mainScrollView.bounds.width, height: profileHeaderViewHeight)
     }
     
-    func computeTableViewFrame(tableView: UIScrollView) -> CGRect {
+    fileprivate func computeTableViewFrame(tableView: UIScrollView) -> CGRect {
         let upperViewFrame = computeSegmentedControlContainerFrame()
         return CGRect(x: 0, y: upperViewFrame.origin.y + upperViewFrame.height , width: mainScrollView.bounds.width, height: tableView.contentSize.height)
     }
     
-    func computeNavigationFrame() -> CGRect {
+    fileprivate func computeNavigationFrame() -> CGRect {
         let navigationHeight:CGFloat = max(stickyHeaderView.frame.origin.y - self.mainScrollView.contentOffset.y + stickyHeaderView.bounds.height, navigationMinHeight)
-
+        
         let navigationLocation = CGRect(x: 0, y: 0, width: stickyHeaderView.bounds.width, height: navigationHeight)
         return navigationLocation
     }
     
-    func computeSegmentedControlContainerFrame() -> CGRect {
+    fileprivate func computeSegmentedControlContainerFrame() -> CGRect {
         //        let rect = computeProfileHeaderViewFrame()
         //        return CGRect(x: 0, y: rect.origin.y + rect.height, width: mainScrollView.bounds.width, height: segmentedControlContainerHeight)
         return CGRect(x: 0, y: profileHeaderView.frame.maxY, width: mainScrollView.bounds.width, height: segmentedControlContainerHeight)
@@ -375,7 +375,7 @@ extension BaseProfileViewController: UIScrollViewDelegate {
             
             self.stickyHeaderView.blurEffectView.alpha = 0
         }
-
+        
         // 普通情况时，适用于contentOffset.y改变时的更新
         let scaleProgress = max(0, min(1, contentOffset.y / self.scrollToScaleDownProfileIconDistance()))
         self.profileHeaderView.animator(t: scaleProgress)
@@ -396,7 +396,7 @@ extension BaseProfileViewController: UIScrollViewDelegate {
             
             // Sticky Segmented Control
             let navigationLocation = computeNavigationFrame()
-//            let navigationHeight:CGFloat = navigationLocation.height - abs(navigationLocation.origin.y)
+            //            let navigationHeight:CGFloat = navigationLocation.height - abs(navigationLocation.origin.y)
             
             let segmentedControlContainerLocationY = ceil(stickyheaderContainerViewHeight + profileHeaderViewHeight - navigationLocation.height)
             let contentOffSetY = ceil(contentOffset.y)
@@ -435,7 +435,7 @@ extension BaseProfileViewController: UIScrollViewDelegate {
             self.scrollViewDidEndScroll(scrollView)
         }
     }
-   
+    
 }
 
 extension BaseProfileViewController: HitTestScrollViewGestureRecognizerDelegate {
@@ -569,7 +569,7 @@ extension BaseProfileViewController: UITableViewDelegate, UITableViewDataSource 
 // MARK: Animators
 extension BaseProfileViewController {
     /// 更新导航条上面titleLabel的位置
-    func animateNaivationTitleAt(progress: CGFloat) {
+    fileprivate func animateNaivationTitleAt(progress: CGFloat) {
         
         let totalDistance: CGFloat = self.navigationTitleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height + ALPNavigationTitleLabelBottomPadding
         
@@ -593,22 +593,22 @@ extension BaseProfileViewController {
 
 
 extension BaseProfileViewController {
-    func updateTableViewContent(index: Int) {
+    fileprivate func updateTableViewContent(index: Int) {
         self.containerViewController.show(page: index, animated: true)
     }
     
-    @objc internal func segmentedControlValueDidChange(sender: AnyObject?) {
+    @objc fileprivate func segmentedControlValueDidChange(sender: AnyObject?) {
         self.currentIndex = self.segmentedControl.selectedSegmentIndex
     }
 }
 
 extension BaseProfileViewController {
     
-    var debugMode: Bool {
+    public var debugMode: Bool {
         return false
     }
     
-    func showDebugInfo() {
+    fileprivate func showDebugInfo() {
         if debugMode {
             self.debugTextView = UILabel()
             debugTextView.text = "debug mode: on"
@@ -627,8 +627,3 @@ extension BaseProfileViewController {
     }
 }
 
-extension CGRect {
-    var alp_originBottom: CGFloat {
-        return self.origin.y + self.height
-    }
-}

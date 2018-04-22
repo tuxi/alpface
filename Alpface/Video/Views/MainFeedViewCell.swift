@@ -15,7 +15,11 @@ class MainFeedViewCell: UICollectionViewCell {
             viewController.model = model
         }
     }
-    
+    public var viewController: FeedCellViewController = {
+        let vc = FeedCellViewController()
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        return vc
+    }()
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -33,11 +37,5 @@ class MainFeedViewCell: UICollectionViewCell {
         viewController.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         viewController.view.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
     }
-    
-    public var viewController: FeedCellViewController = {
-       let vc = FeedCellViewController()
-        vc.view.translatesAutoresizingMaskIntoConstraints = false
-        return vc
-    }()
     
 }

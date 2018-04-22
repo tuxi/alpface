@@ -213,7 +213,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         else {
             self.homeFeedController.isVisibleInDisplay = false
         }
-//        displayController.beginAppearanceTransition(true, animated: true)
+        displayController.beginAppearanceTransition(true, animated: true)
         displayController.endAppearanceTransition()
         if let showCompletion = self.showCompletion {
             showCompletion(displayController)
@@ -222,7 +222,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         guard let endDisplayingViewController = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
         if displayController != endDisplayingViewController {
             // 如果完全显示的控制器和已经离开屏幕的控制器是同一个就return，防止初始化完成后是同一个
-//            endDisplayingViewController.beginAppearanceTransition(false, animated: true)
+            endDisplayingViewController.beginAppearanceTransition(false, animated: true)
             endDisplayingViewController.endAppearanceTransition()
         }
         DispatchQueue.main.async {
@@ -262,7 +262,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
             }
         }
         willDisplayController.beginAppearanceTransition(true, animated: true)
-//        willDisplayController.endAppearanceTransition()
+        willDisplayController.endAppearanceTransition()
         
         /// 获取即将消失的控制器（当前collectionView显示的cell就是即将要离开屏幕的cell）
         guard let willEndDisplayingIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
@@ -273,7 +273,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         if willEndDisplayingController != willDisplayController {
             // 如果是同一个控制器return，防止初始化完成后是同一个
             willEndDisplayingController.beginAppearanceTransition(false, animated: true)
-//            willEndDisplayingController.endAppearanceTransition()
+            willEndDisplayingController.endAppearanceTransition()
         }
     }
     

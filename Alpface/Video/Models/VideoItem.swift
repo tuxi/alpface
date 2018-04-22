@@ -30,6 +30,7 @@ open class VideoItem: NSObject {
     open var user: User?
     open var video_gif: String?
     open var video_animated_webp: String?
+    open var video_mp4: String?
 //    open var rating: VideoRatingItem?
     
     func encode(with aCoder: NSCoder) {
@@ -53,6 +54,7 @@ open class VideoItem: NSObject {
         aCoder.encode(user, forKey: "user")
         aCoder.encode(video_gif, forKey: "video_gif")
         aCoder.encode(video_animated_webp, forKey: "video_animated_webp")
+        aCoder.encode(video_mp4, forKey: "video_mp4")
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -77,6 +79,7 @@ open class VideoItem: NSObject {
         user = aDecoder.decodeObject(forKey: "user") as? User
         video_gif = aDecoder.decodeObject(forKey: "video_gif") as? String
         video_animated_webp = aDecoder.decodeObject(forKey: "video_animated_webp") as? String
+        video_mp4 = aDecoder.decodeObject(forKey: "video_mp4") as? String
     }
     
     override init() {
@@ -144,6 +147,9 @@ open class VideoItem: NSObject {
         if let video_animated_webp = dict["video_animated_webp"] as? String {
             self.video_animated_webp = video_animated_webp
         }
+        if let video_mp4 = dict["video_mp4"] as? String {
+            self.video_mp4 = video_mp4
+        }
     }
     
     open func getVideoURL() -> URL? {
@@ -188,6 +194,19 @@ open class VideoItem: NSObject {
         }
         if webp.hasPrefix("/media") == true {
             return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + webp)
+        }
+        return nil
+    }
+    
+    open func getVideoMP4URL() -> URL? {
+        guard let mp4 = self.video_mp4 else {
+            return nil
+        }
+        if mp4.hasPrefix("http") {
+            return URL.init(string: mp4)
+        }
+        if mp4.hasPrefix("/media") == true {
+            return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + mp4)
         }
         return nil
     }

@@ -20,6 +20,11 @@ class HomeFeedViewController: MainFeedViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func playInteractionViewController(playInteraction controller: PlayInteractionViewController, didClickUserAvatarFrom video: VideoItem) {
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        delegate?.rootViewController?.showUserProfilePage(user: video.user!)
+    }
 
 }
 

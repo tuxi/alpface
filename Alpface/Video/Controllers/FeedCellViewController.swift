@@ -20,7 +20,7 @@ class FeedCellViewController: UIViewController {
             }
             // 准备资源
             if let videoItem = m.model as? VideoItem {
-                guard let url = videoItem.getVideoURL() else { return }
+                guard let url = videoItem.getVideoMP4URL() else { return }
                 interactionController.videoItem = videoItem
                 playVideoVc.preparePlayback(url: url)
             }
