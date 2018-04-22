@@ -14,6 +14,7 @@ class HomeFeedViewController: MainFeedViewController {
         super.viewDidLoad()
         requestRandomVideos()
         self.navigationItem.title = "推荐"
+        addObserver()
     }
     
     override func didReceiveMemoryWarning() {
@@ -25,12 +26,26 @@ class HomeFeedViewController: MainFeedViewController {
         let delegate = UIApplication.shared.delegate as? AppDelegate
         delegate?.rootViewController?.showUserProfilePage(user: video.user!)
     }
+    
+    deinit {
+        removeObserver()
+    }
 
 }
 
 extension HomeFeedViewController {
+    fileprivate func addObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(requestRandomVideos), name: NSNotification.Name.ALPRefreshHomePage, object: nil)
+    }
     
-    fileprivate func requestRandomVideos() -> Void {
+    fileprivate func removeObserver() {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension HomeFeedViewController {
+    
+    @objc fileprivate func requestRandomVideos() -> Void {
         VideoRequest.shared.getRadomVideos(success: {[weak self] (response) in
             guard let list = response as? [VideoItem] else {
                 return

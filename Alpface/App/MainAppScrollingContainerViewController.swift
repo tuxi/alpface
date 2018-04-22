@@ -8,6 +8,10 @@
 
 import UIKit
 
+extension NSNotification.Name {
+    static let ALPRefreshHomePage = NSNotification.Name(rawValue: "ALPRefreshHomePage")
+}
+
 @objc(ALPMainAppScrollingContainerViewController)
 class MainAppScrollingContainerViewController: UIViewController {
     
@@ -38,6 +42,8 @@ class MainAppScrollingContainerViewController: UIViewController {
         return collectionView
     }()
     
+    /// 记录上次选中tabbarItem的时间，做双击刷新功能
+    fileprivate var lastSelectedTabbarItemDate: Date?
     private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
     fileprivate var interactiveTransition: PercentDrivenInteractiveTransition?
     
@@ -353,7 +359,37 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         else {
             self.homeFeedController.isVisibleInDisplay = false
         }
-
+        
+        // 双击首页刷新
+        // 即将选中的页面是之前上一次选中的控制器页面
+        if viewController.isEqual(tabBarController.selectedViewController) == false {
+            return true
+        }
+        
+        // 获取当前点击时间
+        let currentDate = Date()
+        if let lastSelectedTabbarItemDate = self.lastSelectedTabbarItemDate {
+            let timeInterval = currentDate.timeIntervalSince1970 - lastSelectedTabbarItemDate.timeIntervalSince1970
+            
+            // 两次点击时间间隔少于 0.5S 视为一次双击
+            if timeInterval < 0.5 {
+                // 通知首页刷新数据
+                guard let nac = viewController as? MainNavigationController else {
+                    return true
+                }
+                if nac.viewControllers.count == 0 {
+                    return false
+                }
+                if self.homeFeedController.isVisibleInDisplay == true {
+                    NotificationCenter.default.post(name: NSNotification.Name.ALPRefreshHomePage, object: nil)
+                    // 双击之后将上次选中时间置为1970年0点0时0分0秒,用以避免连续三次或多次点击
+                    self.lastSelectedTabbarItemDate = Date(timeIntervalSince1970: 0)
+                    return false
+                }
+            }
+        }
+        // 若是单击将当前点击时间复制给上一次单击时间
+        self.lastSelectedTabbarItemDate = currentDate
         return true
     }
 

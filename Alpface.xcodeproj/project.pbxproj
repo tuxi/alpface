@@ -112,6 +112,7 @@
 		D2B165F4208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165F3208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift */; };
 		D2B165F6208C68A800FA5F05 /* PresentTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165F5208C68A800FA5F05 /* PresentTransition.swift */; };
 		D2B165F8208C720B00FA5F05 /* TabbarPlaceholderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165F7208C720B00FA5F05 /* TabbarPlaceholderViewController.swift */; };
+		D2B16622208CC3B800FA5F05 /* UIView+XYExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B16621208CC3B800FA5F05 /* UIView+XYExtension.swift */; };
 		D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */; };
 		D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C54208B24B700CA3908 /* HomeFeedViewController.swift */; };
 		D2B38C57208B25BB00CA3908 /* VideoDetailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B38C56208B25BB00CA3908 /* VideoDetailListViewController.swift */; };
@@ -247,6 +248,7 @@
 		D2B165F3208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentDrivenInteractiveTransition.swift; sourceTree = "<group>"; };
 		D2B165F5208C68A800FA5F05 /* PresentTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTransition.swift; sourceTree = "<group>"; };
 		D2B165F7208C720B00FA5F05 /* TabbarPlaceholderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarPlaceholderViewController.swift; sourceTree = "<group>"; };
+		D2B16621208CC3B800FA5F05 /* UIView+XYExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+XYExtension.swift"; sourceTree = "<group>"; };
 		D2B38C52208B1A1200CA3908 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		D2B38C54208B24B700CA3908 /* HomeFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedViewController.swift; sourceTree = "<group>"; };
 		D2B38C56208B25BB00CA3908 /* VideoDetailListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDetailListViewController.swift; sourceTree = "<group>"; };
@@ -514,6 +516,7 @@
 				D26AD488206735CD0047DC15 /* UIView+Attributes.swift */,
 				D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */,
 				D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */,
+				D2B16621208CC3B800FA5F05 /* UIView+XYExtension.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -919,6 +922,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D289537D20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift in Sources */,
+				D2B16622208CC3B800FA5F05 /* UIView+XYExtension.swift in Sources */,
 				D2B165EE208C4D8500FA5F05 /* CommentListViewController.swift in Sources */,
 				D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */,
 				D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */,
