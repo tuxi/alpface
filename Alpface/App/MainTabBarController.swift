@@ -56,7 +56,7 @@ class MainTabBarController: UITabBarController {
         
         
         let indicatorImage = UIImage.drawTabBarIndicator(color: indicatorColor,
-                                                         size: CGSize.init(width: imageSize.width-imageSize.width*0.4, height: imageSize.height),
+                                                         size: CGSize.init(width: imageSize.width-imageSize.width*0.6, height: imageSize.height),
                                                          onTop: onTopIndicator)
         self.tabBar.selectionIndicatorImage = indicatorImage
     }

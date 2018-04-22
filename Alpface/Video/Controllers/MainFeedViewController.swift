@@ -146,7 +146,10 @@ class MainFeedViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
         
         collectionView.refreshControl = refreshControl
-        
+        setupNavigation()
+    }
+    
+    fileprivate func setupNavigation() {
         // 设置导航栏标题属性：设置标题字体
         let font = UIFont(name: "MedulaOne-Regular", size: 20.0)
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 20.0), NSAttributedStringKey.foregroundColor: UIColor.white]
@@ -162,8 +165,6 @@ class MainFeedViewController: UIViewController {
         
         // 设置导航栏阴影图片
         navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationItem.title = "推荐"
-    
     }
     
     @objc fileprivate func afterRefresher(){

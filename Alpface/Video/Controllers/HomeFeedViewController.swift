@@ -13,9 +13,9 @@ class HomeFeedViewController: MainFeedViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         requestRandomVideos()
-        
+        self.navigationItem.title = "推荐"
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

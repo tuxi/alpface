@@ -197,12 +197,12 @@ open class BaseProfileViewController: UIViewController {
     }
     
     open override func viewWillAppear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        super.viewWillAppear(animated)
         self.containerViewController.beginAppearanceTransition(true, animated: true)
     }
     
     open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+        super.viewDidAppear(animated)
         self.containerViewController.endAppearanceTransition()
     }
     
@@ -241,6 +241,14 @@ open class BaseProfileViewController: UIViewController {
     open func controller(forSegment index: Int) -> ProfileViewChildControllerProtocol {
         /* 需要子类重写 */
         return (UIViewController() as? ProfileViewChildControllerProtocol)!
+    }
+    
+    open func controller(didDisplay controller: UIViewController, forItemAt index: Int) {
+         /* 子类可以重写 */
+    }
+    
+    open func controller(willDisplay controller: UIViewController, forItemAt index: Int) {
+         /* 子类可以重写 */
     }
 }
 
@@ -497,15 +505,16 @@ extension BaseProfileViewController {
 }
 extension BaseProfileViewController: HitTestContainerViewControllerDelegate {
     
-    func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, didPageDisplay controller: UIViewController, forItemAt index: Int) {
+    internal func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, didPageDisplay controller: UIViewController, forItemAt index: Int) {
         segmentedControl.selectedSegmentIndex = index
+        self.controller(didDisplay: controller, forItemAt: index)
     }
     
-    func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, willPageDisplay controller: UIViewController, forItemAt index: Int) {
-        
+    internal func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, willPageDisplay controller: UIViewController, forItemAt index: Int) {
+        self.controller(willDisplay: controller, forItemAt: index)
     }
     
-    func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, handlerContainerPanGestureState panGesture: UIPanGestureRecognizer) {
+    internal func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, handlerContainerPanGestureState panGesture: UIPanGestureRecognizer) {
         // 当滚动page 的容器视图时，mainScrollView不可以滚动
         switch panGesture.state {
         case .began:
@@ -515,7 +524,7 @@ extension BaseProfileViewController: HitTestContainerViewControllerDelegate {
         }
     }
     
-    func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, childScrollViewLeaveTop scrollView: UIScrollView) {
+    internal func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, childScrollViewLeaveTop scrollView: UIScrollView) {
         
         // 当子scrollview 离开顶部时，其不应该可能滚动，main scrollView 可以滚动
         self.shouldScrollForMainScrollView = true

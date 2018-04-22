@@ -117,14 +117,14 @@ class HitTestContainerViewController: UIViewController {
     }
     
     open override func viewWillAppear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        super.viewWillAppear(animated)
         if let childController = self.displayViewController() {
             childController.beginAppearanceTransition(true, animated: true)
         }
     }
     
     open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+        super.viewDidAppear(animated)
         if let childController = self.displayViewController() {
             childController.endAppearanceTransition()
         }

@@ -45,6 +45,10 @@ class UserProfileChildCollectionViewController: UIViewController, ProfileViewChi
         setupEmptyDataView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.collectionView.reloadData()
+    }
     
     fileprivate func setupUI() {
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false

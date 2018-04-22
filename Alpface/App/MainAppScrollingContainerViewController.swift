@@ -132,8 +132,8 @@ class MainAppScrollingContainerViewController: UIViewController {
                 tabBarVc.tabBar.backgroundImage = UIImage()
                 tabBarVc.tabBar.shadowImage = UIImage()
                 tabBarVc.tabBar.isTranslucent = true
-                // 设置tabbarItem的文本向上便宜10.0，因为无图片，所以尽量居中显示
-                let offSet = UIOffsetMake(0.0, -10.0)
+                // 设置tabbarItem的文本向上偏移15.0，因为无图片，所以尽量居中显示
+                let offSet = UIOffsetMake(0.0, -15.0)
                 nav1.tabBarItem.titlePositionAdjustment = offSet
                 nav2.tabBarItem.titlePositionAdjustment = offSet
                 nav3.tabBarItem.titlePositionAdjustment = offSet
@@ -213,7 +213,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         else {
             self.homeFeedController.isVisibleInDisplay = false
         }
-        displayController.beginAppearanceTransition(true, animated: true)
+//        displayController.beginAppearanceTransition(true, animated: true)
         displayController.endAppearanceTransition()
         if let showCompletion = self.showCompletion {
             showCompletion(displayController)
@@ -222,7 +222,7 @@ extension MainAppScrollingContainerViewController : UICollectionViewDataSource, 
         guard let endDisplayingViewController = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
         if displayController != endDisplayingViewController {
             // 如果完全显示的控制器和已经离开屏幕的控制器是同一个就return，防止初始化完成后是同一个
-            endDisplayingViewController.beginAppearanceTransition(false, animated: true)
+//            endDisplayingViewController.beginAppearanceTransition(false, animated: true)
             endDisplayingViewController.endAppearanceTransition()
         }
         DispatchQueue.main.async {

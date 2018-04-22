@@ -32,6 +32,8 @@ class UserProfileViewController: BaseProfileViewController {
             return "故事"
         }
     }
+    
+    
     fileprivate var _user: User?
     public var user: User? {
         get {

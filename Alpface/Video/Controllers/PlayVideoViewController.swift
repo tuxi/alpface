@@ -396,7 +396,7 @@ extension PlayVideoViewController {
                 }
             }
             
-            print("当前播放进度\(self!.formatPlayTime(seconds: CMTimeGetSeconds(time)))")
+            print("当前播放时间:\(self!.formatPlayTime(seconds: CMTimeGetSeconds(time)))")
         }
     }
     
