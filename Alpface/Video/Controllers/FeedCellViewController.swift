@@ -18,11 +18,15 @@ class FeedCellViewController: UIViewController {
             guard let m = model else {
                 return
             }
+            
             // 准备资源
             if let videoItem = m.model as? VideoItem {
                 guard let url = videoItem.getVideoMP4URL() else { return }
                 interactionController.videoItem = videoItem
                 playVideoVc.preparePlayback(url: url)
+            }
+            else {
+                playVideoVc.resetPlayer()
             }
             // 视图显示的时候播放
             m.playCallBack = { [weak self] (canPlay: Bool) in

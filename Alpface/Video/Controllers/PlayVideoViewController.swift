@@ -73,7 +73,7 @@ class PlayVideoViewController: UIViewController {
     /// 是否已消失，当未显示在屏幕上是是不允许播放的
     open var isEndDisplaying : Bool = true
     /// 是否是用户暂停播放
-    fileprivate var isPauseByUser   = false
+    open var isPauseByUser   = false
     /// 播放器容器视图
     fileprivate lazy var containerView: VideoPlayerView = {
         let  containerView = VideoPlayerView(frame: .zero)

@@ -27,6 +27,8 @@ class PlayVideoModel: BaseCellModel {
         }
     }
     
+//    public var isPauseByUser: Bool = false 
+    
     convenience init(videoItem: VideoItem) {
         self.init()
         self.model = videoItem
