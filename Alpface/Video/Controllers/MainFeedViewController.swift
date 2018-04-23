@@ -72,7 +72,6 @@ class MainFeedViewController: UIViewController {
         super.viewWillAppear(animated)
         
         displayViewController()?.beginAppearanceTransition(true, animated: animated)
-        self.updatePlayControl()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
