@@ -36,6 +36,8 @@ class MainTabBarController: UITabBarController {
         UITabBarItem.appearance(whenContainedInInstancesOf: [MainTabBarController.self]).setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white.withAlphaComponent(0.8), NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17.0)], for:.normal)
         UITabBarItem.appearance(whenContainedInInstancesOf: [MainTabBarController.self]).setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18.0)], for:.selected)
         
+        self.view.layer.cornerRadius = 8.0
+        self.view.layer.masksToBounds = true
     }
     
     override func viewWillAppear(_ animated: Bool) {

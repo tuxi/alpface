@@ -139,7 +139,6 @@ class MainAppScrollingContainerViewController: UIViewController {
                 userProfileVc.title = MainAppScrollingTitles.myProfile
                 let nac1 = MainNavigationController.init(rootViewController: homeVc)
                 let nac2 = MainNavigationController(rootViewController: searchVc)
-//                let nac3 = CornerBarNaviController(rootViewController: selectMusicVC)
                 let nac4 = MainNavigationController(rootViewController: messageVc)
                 let nac5 = MainNavigationController(rootViewController: userProfileVc)
                 tabBarVc.setViewControllers([nac1, nac2, selectMusicVC, nac4, nac5], animated: true)

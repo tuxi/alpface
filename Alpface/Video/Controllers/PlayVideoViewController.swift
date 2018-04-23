@@ -254,12 +254,12 @@ class PlayVideoViewController: UIViewController {
     }
     
     /// 暂停播放
-    open func pause(autoPlay auto: Bool = false) {
+    open func pause(autoPlay auto: Bool = false, isFromApplication: Bool = false) {
         // 防止用户触发暂停后，又因不符合播放而暂停，导致无法区分真正暂停的原因
         if self.state == .paused || self.state == .stopped {
             return
         }
-        removeObserver(playerItem: playerItem)
+        removeObserver(playerItem: playerItem, isFromApplication: isFromApplication)
         player?.pause()
         state = .paused
         isPauseByUser = !auto
@@ -299,7 +299,7 @@ class PlayVideoViewController: UIViewController {
 
 extension PlayVideoViewController {
     /// 移除观察者
-    fileprivate func removeObserver(playerItem item: AVPlayerItem?) {
+    fileprivate func removeObserver(playerItem item: AVPlayerItem?, isFromApplication: Bool = false) {
         guard let playerItem = item else { return }
         if observerSet.contains(PlayVideoViewControllerKeys.ALPLoadedTimeRangesKeyPath) == true {
             playerItem.removeObserver(self, forKeyPath: PlayVideoViewControllerKeys.ALPLoadedTimeRangesKeyPath)
@@ -323,17 +323,19 @@ extension PlayVideoViewController {
         timeObserver = nil
         NotificationCenter.default.removeObserver(self, name:  Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemPlaybackStalled, object: playerItem)
-        self.observerSet.remove(NSNotification.Name.UIApplicationDidEnterBackground.rawValue)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        
-        self.observerSet.remove(NSNotification.Name.UIApplicationWillEnterForeground.rawValue)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-        
-        self.observerSet.remove(NSNotification.Name.UIApplicationWillResignActive.rawValue)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
-        
-        self.observerSet.remove(NSNotification.Name.UIApplicationDidBecomeActive.rawValue)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        if isFromApplication == false {
+            self.observerSet.remove(NSNotification.Name.UIApplicationDidEnterBackground.rawValue)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+            
+            self.observerSet.remove(NSNotification.Name.UIApplicationWillEnterForeground.rawValue)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+            
+            self.observerSet.remove(NSNotification.Name.UIApplicationWillResignActive.rawValue)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+            
+            self.observerSet.remove(NSNotification.Name.UIApplicationDidBecomeActive.rawValue)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        }
     }
     
     /// 给AVPlayerItem、AVPlayer添加监控
@@ -440,11 +442,11 @@ extension PlayVideoViewController {
     }
     
     @objc fileprivate func applicationDidEnterBackground() {
-        pause(autoPlay: true)
+        pause(autoPlay: true, isFromApplication: true)
     }
     
     @objc fileprivate func applicationWillResignActive() {
-        pause(autoPlay: true)
+        pause(autoPlay: true, isFromApplication: true)
     }
     
     @objc fileprivate func applicationDidBecomeActive() {

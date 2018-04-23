@@ -104,6 +104,7 @@ class FeedVideoDetailView: UIView {
         addSubview(titleButton)
         addSubview(describeButton)
         addSubview(musicButton)
+        musicAvatarButton.isHidden = true
         
         avatarButton.translatesAutoresizingMaskIntoConstraints = false
         praiseButton.translatesAutoresizingMaskIntoConstraints = false
