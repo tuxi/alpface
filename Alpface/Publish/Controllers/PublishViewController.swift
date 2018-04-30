@@ -21,6 +21,7 @@ class PublishViewController: UIViewController {
     @IBOutlet weak var describeTextView: AdaptiveTextView!
     @IBOutlet weak var publishButton: UIButton!
     @IBOutlet weak var describeTextViewHeightConstraint: NSLayoutConstraint!
+    public weak var alp_navigationController: UINavigationController?
     public lazy var playVideoVc: PlayVideoViewController? = {
         let playVideoVc = PlayVideoViewController()
         return playVideoVc
@@ -118,12 +119,19 @@ class PublishViewController: UIViewController {
         imagePick.sourceType = UIImagePickerControllerSourceType.photoLibrary
         imagePick.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String, kUTTypeAudio as String]
         imagePick.view.backgroundColor = UIColor.init(white: 0.5, alpha: 0.5)
-        self.present(imagePick, animated: true) {
+        if let nac = self.alp_navigationController {
+            imagePick.usingCustomModalTransitioningAnimator()
+            nac.present(imagePick, animated: true)
         }
+        else {
+            self.present(imagePick, animated: true)
+        }
+        
     }
     
     @objc fileprivate func backAction() {
         self.dismiss(animated: true, completion: nil)
+        
     }
     
     deinit {

@@ -10,12 +10,10 @@ import UIKit
 
 @objc(ALPCornerBarNaviController)
 class CornerBarNaviController: UINavigationController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layer.cornerRadius = 8.0
         self.view.layer.masksToBounds = true
     }
-
-    
 }
+

@@ -46,7 +46,6 @@ class MainAppScrollingContainerViewController: UIViewController {
     /// 记录上次选中tabbarItem的时间，做双击刷新功能
     fileprivate var lastSelectedTabbarItemDate: Date?
     private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
-    fileprivate var interactiveTransition: PercentDrivenInteractiveTransition?
     
     public var initialPage = 0
     public func displayViewController() -> UIViewController? {
@@ -64,7 +63,7 @@ class MainAppScrollingContainerViewController: UIViewController {
     public func isHomePageVisible() -> Bool {
         return self.homeFeedController.isVisibleInDisplay
     }
-    fileprivate var interactiveDismiss: PercentDrivenInteractiveTransition?
+
     public var homeFeedController: HomeFeedViewController!
     public var mainTabbarController: MainTabBarController!
     public var userProfileController: UserProfileViewController!
@@ -90,11 +89,6 @@ class MainAppScrollingContainerViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         setupCollectionViewItems()
-        self.interactiveTransition = PercentDrivenInteractiveTransition(transitionType: .present, gestureDirection: .up)
-        self.interactiveTransition?.presentConifg = { [weak self] in
-            self?.presentSelectMusic()
-        }
-//        self.interactiveTransition?.addPanGesture(forViewController: self)
         
     }
     
@@ -461,26 +455,13 @@ extension MainAppScrollingContainerViewController {
     fileprivate func presentSelectMusic() {
         let selectMusic = SelectMusicViewController()
         let nac = CornerBarNaviController(rootViewController: selectMusic)
-        nac.transitioningDelegate = self
         nac.modalPresentationStyle =  UIModalPresentationStyle.custom
+        nac.usingCustomModalTransitioningAnimator()
         self.present(nac, animated: true, completion: nil)
-        
-        self.interactiveDismiss = PercentDrivenInteractiveTransition(transitionType: .dismiss, gestureDirection: .down)
-        self.interactiveDismiss?.addPanGesture(forViewController: nac)
+    
     }
 }
 
-extension MainAppScrollingContainerViewController {
-    
-    func presentedOneControllerPressedDissmiss() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func interactiveTransitionForPresent() -> UIViewControllerInteractiveTransitioning {
-        return self.interactiveTransition!
-    }
-
-}
 
 extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
     func loginViewController(loginSuccess user: User) {
@@ -492,29 +473,4 @@ extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
     }
 }
 
-extension MainAppScrollingContainerViewController: UIViewControllerTransitioningDelegate {
-    
-    
-    public func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        let interactivePresent = self.interactiveTransitionForPresent() as? PercentDrivenInteractiveTransition
-        if interactivePresent?.interactionInProgress == true {
-            return interactivePresent
-        }
-        return nil
-    }
-    
-    
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return PresentTransition(transitionType: .present)
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return PresentTransition(transitionType: .dismiss)
-    }
-    
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return self.interactiveDismiss?.interactionInProgress == true ? interactiveDismiss : nil
-    }
-    
-}
 

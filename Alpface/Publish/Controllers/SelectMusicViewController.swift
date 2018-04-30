@@ -11,10 +11,21 @@ import UIKit
 @objc(ALPSelectMusicViewController)
 class SelectMusicViewController: UIViewController {
     
+    fileprivate var publishController : PublishViewController = {
+       let vc = PublishViewController()
+        return vc
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.green
+        self.view.backgroundColor = UIColor.white
         
+        self.publishController.alp_navigationController = self.navigationController
+        self.publishController.view.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.publishController.view)
+        self.publishController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.publishController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.publishController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.publishController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
     }
     
     override func viewWillAppear(_ animated: Bool) {

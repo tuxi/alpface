@@ -88,6 +88,7 @@
 		D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE120839B690095425A /* SettingsTableViewCell.swift */; };
 		D27D6CE420839E520095425A /* SettingsTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */; };
 		D27D6CE62083A8F70095425A /* ALPTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE52083A8F70095425A /* ALPTheme.swift */; };
+		D27E4003209737C300776EB0 /* ZFModalTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D27E4001209737C300776EB0 /* ZFModalTransitionAnimator.m */; };
 		D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289535E2076A4EE0029CE92 /* ProfileHeaderView.swift */; };
 		D28953652076A4EE0029CE92 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289535F2076A4EE0029CE92 /* ScrollableSegmentedControl.swift */; };
 		D28953662076A4EE0029CE92 /* HitTestContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28953602076A4EE0029CE92 /* HitTestContainerViewController.swift */; };
@@ -129,6 +130,7 @@
 		D2BCBA4D206F33F2008409B3 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA42206F33F1008409B3 /* VideoPlayerView.swift */; };
 		D2BCBA4F206F6D02008409B3 /* VideoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA4E206F6D02008409B3 /* VideoItem.swift */; };
 		D2BCBA53206FA737008409B3 /* VideoRatingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA52206FA737008409B3 /* VideoRatingItem.swift */; };
+		D2CF4C842097422700666519 /* UIViewController+CustomTransitioningAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CF4C832097422700666519 /* UIViewController+CustomTransitioningAnimator.swift */; };
 		D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */; };
 		D2D6632E208245F30044E2A7 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D6632D208245F30044E2A7 /* AppUtils.swift */; };
 		D2D663302082E83C0044E2A7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D2D6632F2082E83C0044E2A7 /* README.md */; };
@@ -224,6 +226,9 @@
 		D27D6CE120839B690095425A /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCellModel.swift; sourceTree = "<group>"; };
 		D27D6CE52083A8F70095425A /* ALPTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALPTheme.swift; sourceTree = "<group>"; };
+		D27E4000209737C200776EB0 /* Alpface-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Alpface-Bridging-Header.h"; sourceTree = "<group>"; };
+		D27E4001209737C300776EB0 /* ZFModalTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFModalTransitionAnimator.m; sourceTree = "<group>"; };
+		D27E4002209737C300776EB0 /* ZFModalTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFModalTransitionAnimator.h; sourceTree = "<group>"; };
 		D289535E2076A4EE0029CE92 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		D289535F2076A4EE0029CE92 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
 		D28953602076A4EE0029CE92 /* HitTestContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HitTestContainerViewController.swift; sourceTree = "<group>"; };
@@ -265,6 +270,7 @@
 		D2BCBA42206F33F1008409B3 /* VideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		D2BCBA4E206F6D02008409B3 /* VideoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoItem.swift; sourceTree = "<group>"; };
 		D2BCBA52206FA737008409B3 /* VideoRatingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRatingItem.swift; sourceTree = "<group>"; };
+		D2CF4C832097422700666519 /* UIViewController+CustomTransitioningAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+CustomTransitioningAnimator.swift"; sourceTree = "<group>"; };
 		D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+XYExtension.swift"; sourceTree = "<group>"; };
 		D2D6632D208245F30044E2A7 /* AppUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
 		D2D6632F2082E83C0044E2A7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -438,6 +444,7 @@
 				D26AD40220668F130047DC15 /* Video */,
 				D26AD45B2066A9C30047DC15 /* Discover */,
 				D26AD444206690B40047DC15 /* ThirdParty */,
+				D27E3FEF20971E2A00776EB0 /* Reuse */,
 				D2371D8E2084F6E900588BEC /* Publish */,
 				D2B165EB208C4D6E00FA5F05 /* Comment */,
 				D26AD493206777870047DC15 /* Utils */,
@@ -517,6 +524,7 @@
 				D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */,
 				D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */,
 				D2B16621208CC3B800FA5F05 /* UIView+XYExtension.swift */,
+				D2CF4C832097422700666519 /* UIViewController+CustomTransitioningAnimator.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -656,6 +664,16 @@
 				D27D6CE52083A8F70095425A /* ALPTheme.swift */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		D27E3FEF20971E2A00776EB0 /* Reuse */ = {
+			isa = PBXGroup;
+			children = (
+				D27E4002209737C300776EB0 /* ZFModalTransitionAnimator.h */,
+				D27E4001209737C300776EB0 /* ZFModalTransitionAnimator.m */,
+				D27E4000209737C200776EB0 /* Alpface-Bridging-Header.h */,
+			);
+			path = Reuse;
 			sourceTree = "<group>";
 		};
 		D289535D2076A4EE0029CE92 /* UserProfile */ = {
@@ -959,6 +977,7 @@
 				D28953672076A4EE0029CE92 /* HitTestScrollViewCell.swift in Sources */,
 				D21A2CD5207D154400335A8A /* EditUserProfileModel.swift in Sources */,
 				D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */,
+				D2CF4C842097422700666519 /* UIViewController+CustomTransitioningAnimator.swift in Sources */,
 				D2BCBA48206F33F2008409B3 /* CollectionViewSection.swift in Sources */,
 				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
 				D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
@@ -992,6 +1011,7 @@
 				D26AD4952067779F0047DC15 /* HttpRequestHelper.swift in Sources */,
 				D21A2CCD207CFA0600335A8A /* StickyHeaderContainerView.swift in Sources */,
 				D2DC574C20706D7C00458F54 /* PlayVideoModel.swift in Sources */,
+				D27E4003209737C300776EB0 /* ZFModalTransitionAnimator.m in Sources */,
 				D2BCBA4B206F33F2008409B3 /* MainFeedViewCell.swift in Sources */,
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
@@ -1175,6 +1195,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alpface.Alpface;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Alpface/Reuse/Alpface-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1194,6 +1215,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alpface.Alpface;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Alpface/Reuse/Alpface-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
