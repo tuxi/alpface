@@ -2,6 +2,7 @@
 * [学习抖音的iOS项目](https://github.com/alpface/alpface)
 * [服务端开源项目](https://github.com/alpface/ShortVideo)
 
+<img src = "https://github.com/alpface/alpface/blob/master/sv.gif?raw=true" width = "375" height = "667" alt = "Screenshot.gif"/>
 
 ##### animated webp 制作 及 展示
 [ffmpeg 制作 webp动图](http://www.alpface.com/article/2018/4/15/53.html)
