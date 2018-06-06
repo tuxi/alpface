@@ -213,7 +213,7 @@ extension UserProfileViewController {
 extension UserProfileViewController {
     fileprivate func discoverUserByUsername() {
         if self.user == nil {
-            self.user = AuthenticationManager.shared.loginUser
+            return
         }
         self.controllers.forEach { (controller) in
             controller.childScrollView()?.xy_loading = true

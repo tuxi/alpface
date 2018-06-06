@@ -70,20 +70,23 @@ class VideoRequest: NSObject {
     
     public func discoverUserByUsername(username: String, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
         let url = ALPConstans.HttpRequestURL.discoverUserByUsername
-        guard let authUser = AuthenticationManager.shared.loginUser else {
-            if let fail = failure {
-                let e = NSError(domain: "ErrorNOTFoundauthUser", code: 404, userInfo: nil)
-                fail(e)
-            }
-            return
-        }
+//        guard let authUser = AuthenticationManager.shared.loginUser else {
+//            if let fail = failure {
+//                let e = NSError(domain: "ErrorNOTFoundauthUser", code: 404, userInfo: nil)
+//                fail(e)
+//            }
+//            return
+//        }
+        
         let parameters = [
             "username": username,
-            "auth_username": authUser.username!,
             "type": "1",
             
-        ]  as NSDictionary
-        
+        ]  as NSMutableDictionary
+        if let authUser = AuthenticationManager.shared.loginUser {
+            parameters["auth_username"] = authUser.username!
+        }
+
         HttpRequestHelper.request(method: .get, url: url, parameters: parameters) { (response, error) in
             if let error = error {
                 guard let fail = failure else { return }
