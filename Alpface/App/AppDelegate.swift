@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Peek
+//import Peek
 
 @objc(ALPAppDelegate)
 @UIApplicationMain
@@ -26,18 +26,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         HttpRequestHelper.setCookie()
         
-        window?.peek.enableWithOptions { options in
-            options.theme = .dark
-            options.activationMode = .auto
-            options.ignoresContainerViews = false
-            
-            /*
-             Configure the metadata asscociated with this app.
-             */
-            options.metadata = [
-                "Environment": "UAT"
-            ]
-        }
+//        window?.peek.enableWithOptions { options in
+//            options.theme = .dark
+//            options.activationMode = .auto
+//            options.ignoresContainerViews = false
+//            
+//            /*
+//             Configure the metadata asscociated with this app.
+//             */
+//            options.metadata = [
+//                "Environment": "UAT"
+//            ]
+//        }
         
         return true
     }

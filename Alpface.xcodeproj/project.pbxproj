@@ -65,12 +65,10 @@
 		D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42420668F140047DC15 /* MainTabBarController.swift */; };
 		D26AD44120668F140047DC15 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD42520668F140047DC15 /* RootViewController.swift */; };
 		D26AD450206690E60047DC15 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D26AD447206690E60047DC15 /* .gitkeep */; };
-		D26AD451206690E60047DC15 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D26AD449206690E60047DC15 /* .gitkeep */; };
 		D26AD452206690E60047DC15 /* PastelGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44A206690E60047DC15 /* PastelGradient.swift */; };
 		D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44B206690E60047DC15 /* PastelLabel.swift */; };
 		D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44C206690E60047DC15 /* PastelPoint.swift */; };
 		D26AD455206690E60047DC15 /* PastelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD44D206690E60047DC15 /* PastelView.swift */; };
-		D26AD456206690E60047DC15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D26AD44E206690E60047DC15 /* Info.plist */; };
 		D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD45C2066A9C30047DC15 /* ExploreViewController.swift */; };
 		D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD45F2066BAF40047DC15 /* LoginViewController.swift */; };
 		D26AD4652066BB180047DC15 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4642066BB180047DC15 /* User.swift */; };
@@ -202,7 +200,6 @@
 		D26AD42420668F140047DC15 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		D26AD42520668F140047DC15 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		D26AD447206690E60047DC15 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		D26AD449206690E60047DC15 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		D26AD44A206690E60047DC15 /* PastelGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastelGradient.swift; sourceTree = "<group>"; };
 		D26AD44B206690E60047DC15 /* PastelLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastelLabel.swift; sourceTree = "<group>"; };
 		D26AD44C206690E60047DC15 /* PastelPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastelPoint.swift; sourceTree = "<group>"; };
@@ -582,7 +579,6 @@
 		D26AD448206690E60047DC15 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D26AD449206690E60047DC15 /* .gitkeep */,
 				D26AD44A206690E60047DC15 /* PastelGradient.swift */,
 				D26AD44B206690E60047DC15 /* PastelLabel.swift */,
 				D26AD44C206690E60047DC15 /* PastelPoint.swift */,
@@ -801,7 +797,6 @@
 				D25188482054D3C8000147CC /* Frameworks */,
 				D25188492054D3C8000147CC /* Resources */,
 				76DBC535E03447EF5A7BB8FD /* [CP] Embed Pods Frameworks */,
-				3C1A8B2334B0CBF06F9952B3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -853,7 +848,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */,
-				D26AD456206690E60047DC15 /* Info.plist in Resources */,
 				D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */,
 				D2D663302082E83C0044E2A7 /* README.md in Resources */,
 				D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */,
@@ -861,7 +855,6 @@
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
 				D26AD450206690E60047DC15 /* .gitkeep in Resources */,
 				D20093332078EEC50079AD8B /* CameraView.strings in Resources */,
-				D26AD451206690E60047DC15 /* .gitkeep in Resources */,
 				D20093382078EEC50079AD8B /* ConfirmViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -884,22 +877,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		3C1A8B2334B0CBF06F9952B3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		76DBC535E03447EF5A7BB8FD /* [CP] Embed Pods Frameworks */ = {
@@ -911,9 +889,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/DeviceKit/DeviceKit.framework",
-				"${BUILT_PRODUCTS_DIR}/GraphicsRenderer/GraphicsRenderer.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/Peek/Peek.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
 			);
@@ -921,9 +897,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DeviceKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GraphicsRenderer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Peek.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
 			);

@@ -7,7 +7,7 @@ target 'Alpface' do
   use_frameworks!
 
   pod 'Alamofire', '~> 4.7'
-  pod 'Peek', '~> 5.0'
+  #pod 'Peek', :configurations => ['Debug']
   pod 'MBProgressHUD', '~> 1.1.0'
   pod 'DeviceKit'
   pod 'SDWebImage'
