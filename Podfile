@@ -10,6 +10,6 @@ target 'Alpface' do
   #pod 'Peek', :configurations => ['Debug']
   pod 'MBProgressHUD', '~> 1.1.0'
   pod 'DeviceKit'
-  pod 'SDWebImage'
+  pod 'SDWebImage', '~> 4.4.1'
   pod 'SDWebImage/WebP'
 end

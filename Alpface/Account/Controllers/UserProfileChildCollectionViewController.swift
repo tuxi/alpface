@@ -110,7 +110,10 @@ extension UserProfileChildCollectionViewController: UICollectionViewDataSource, 
         guard let webpURL = video.getVideoAnimatedWebpURL() else {
             return cell
         }
-        cell.gifView.sd_setImage(with: webpURL)
+
+        cell.gifView.sd_setImage(with: webpURL) { (image, error, cacheType, url) in
+            
+        }
         return cell
     }
     

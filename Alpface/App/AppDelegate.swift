@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 //import Peek
 
 @objc(ALPAppDelegate)
@@ -25,7 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = self.rootViewController
         window?.makeKeyAndVisible()
         HttpRequestHelper.setCookie()
-        
+        // 延长请求超时是因为服务器在日本，而SDWebImage默认的是15秒，很快就超时了，导致很多webp不能显示
+        SDWebImageManager.shared().imageDownloader?.downloadTimeout = 30.0
 //        window?.peek.enableWithOptions { options in
 //            options.theme = .dark
 //            options.activationMode = .auto
