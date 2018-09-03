@@ -167,24 +167,20 @@ class VideoRequest: NSObject {
                 }).responseJSON(completionHandler: { (response) in
                     if let value = response.result.value as? NSDictionary {
                         if value["status"] as? String == "success" {
-                            DispatchQueue.main.async {
-                                if let suc = success {
-                                    if let data = value["data"] as? NSDictionary {
-                                        if let video = data["video"] as? NSDictionary {
-                                            let v = VideoItem(dict: video as! [String : Any])
-                                            suc(v)
-                                            return
-                                        }
+                            if let suc = success {
+                                if let data = value["data"] as? NSDictionary {
+                                    if let video = data["video"] as? NSDictionary {
+                                        let v = VideoItem(dict: video as! [String : Any])
+                                        suc(v)
+                                        return
                                     }
-                                    
                                 }
+                                
                             }
                         }
                     }
                     guard let fail = failure else { return }
-                    DispatchQueue.main.async {
-                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                    }
+                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
                 })
             case .failure(let error):
                 

@@ -308,24 +308,18 @@ public class AccountLogin: NSObject {
                                 
                                 // 记录修改后的user
                                 AuthenticationManager.shared.loginUser = user
-                                DispatchQueue.main.async {
-                                    NotificationCenter.default.post(name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil, userInfo: ["user": user])
-                                    succ(user)
-                                }
+                                NotificationCenter.default.post(name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil, userInfo: ["user": user])
+                                succ(user)
                             }
                             else {
                                 guard let fail = failure else { return }
-                                DispatchQueue.main.async {
-                                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                                }
+                                fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
                             }
                         }
                         return
                     }
                     guard let fail = failure else { return }
-                    DispatchQueue.main.async {
-                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                    }
+                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
                 })
             case .failure(let error):
                 
