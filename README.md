@@ -40,6 +40,8 @@ swaedeMacBook-Pro:alpface swae$ pod repo
 ``` 
 ```
 swaedeMacBook-Pro:alpface swae$ pod repo
+```
+```
 /Users/swae/.rbenv/versions/2.5.0/lib/ruby/gems/2.5.0/gems/cocoapods-1.4.0/lib/cocoapods/executable.rb:89: warning: Insecure world writable dir /opt in PATH, mode 040777
 
 master
@@ -49,13 +51,17 @@ master
 ```
 2. 在本地库中, 并找到对应的libwebp版本的文件
 ```
-swaedeMacBook-Pro:alpface swae$ find /Users/swae/.cocoapods/repos/master -iname libwebp
+swaedeMacBook-Pro:alpface swae$ find ~/.cocoapods/repos/master -iname libwebp
+```
+```
 /Users/swae/.cocoapods/repos/master/Specs/1/9/2/libwebp
 ```
 进入libwebp目录，可以看到你的仓库中有哪些对应的版本
 ```
-swaedeMacBook-Pro:libwebp swae$ cd /Users/swae/.cocoapods/repos/master/Specs/1/9/2/libwebp
+swaedeMacBook-Pro:libwebp swae$ cd ~/.cocoapods/repos/master/Specs/1/9/2/libwebp
 swaedeMacBook-Pro:libwebp swae$ ls -l
+```
+```
 total 0
 drwxr-xr-x  3 swae  staff  96 12  3 21:50 0.4.1
 drwxr-xr-x  3 swae  staff  96 12  3 21:50 0.4.2
@@ -70,6 +76,8 @@ drwxr-xr-x  3 swae  staff  96 12  3 21:50 0.6.0
 ```
 swaedeMacBook-Pro:libwebp swae$ cd 0.6.0/
 swaedeMacBook-Pro:0.6.0 swae$ ls -l
+```
+```
 total 8
 -rw-r--r--@ 1 swae  staff  1587  4 15 09:53 libwebp.podspec.json
 ```
@@ -88,6 +96,8 @@ swaedeMacBook-Pro:0.6.0 swae$ sudo vim libwebp.podspec.json
 最后再执行`pod install`, 完成
 ```
 swaedeMacBook-Pro:alpface swae$ pod install
+```
+```
 /Users/swae/.rbenv/versions/2.5.0/lib/ruby/gems/2.5.0/gems/cocoapods-1.4.0/lib/cocoapods/executable.rb:89: warning: Insecure world writable dir /opt in PATH, mode 040777
 Analyzing dependencies
 Downloading dependencies
