@@ -104,6 +104,7 @@ class PublishViewController: UIViewController {
             self?.backAction()
         }) { (error) in
             MBProgressHUD.xy_hide()
+            MBProgressHUD.xy_show("请重新登录")
         }
         
     }
