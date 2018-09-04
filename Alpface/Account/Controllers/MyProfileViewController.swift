@@ -14,6 +14,9 @@ class MyProfileViewController: UserProfileViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        var contentInset = self.mainScrollView.contentInset
+        contentInset.bottom = 55.0
+        self.mainScrollView.contentInset = contentInset
     }
 
     override func didReceiveMemoryWarning() {

@@ -23,9 +23,9 @@ let ALPNavigationTitleLabelBottomPadding : CGFloat = 15.0;
 open class BaseProfileViewController: UIViewController {
     
     /// 全局tint color
-    open static var globalTint: UIColor = UIColor(red: 42.0/255.0, green: 163.0/255.0, blue: 239.0/255.0, alpha: 1)
+    public static var globalTint: UIColor = UIColor(red: 42.0/255.0, green: 163.0/255.0, blue: 239.0/255.0, alpha: 1)
     
-    open let bouncingThreshold: CGFloat = 100
+    public let bouncingThreshold: CGFloat = 100
     
     /// scrollView 向上滚动时时，固定头部背景视图，此属性为scrollView滚动到contentView.y==这个偏移量时，就固定头部背景视图，将其作为当导航条展示 (固定值)
     open func scrollToScaleDownProfileIconDistance() -> CGFloat {
@@ -33,14 +33,14 @@ open class BaseProfileViewController: UIViewController {
     }
     
     /// 头部背景视图最小的高度(固定值)
-    open let navigationMinHeight : CGFloat = 65.0
+    public let navigationMinHeight : CGFloat = 65.0
     
     open var navigationTitleLabelBottomConstraint : NSLayoutConstraint?
     
     /// 头部描述用户信息视图的高度(不固定值)
     open var profileHeaderViewHeight: CGFloat = 160
     
-    open let segmentedControlContainerHeight: CGFloat = 46
+    public let segmentedControlContainerHeight: CGFloat = 46
     
     /// 容器cell最大高度
     open func containerCellMaxHeight() -> CGFloat {

@@ -86,7 +86,7 @@ final class AuthenticationManager: NSObject {
         }
     }
     
-    private var timer: DispatchSourceTimer?
+//    private var timer: DispatchSourceTimer?
     private lazy var timerQueue : DispatchQueue = {
        let queue = DispatchQueue(label: "HeartBeat")
         return queue
@@ -101,7 +101,7 @@ final class AuthenticationManager: NSObject {
     }
     
     private func startHeartbeat() {
-        if self.timer == nil {
+//        if self.timer == nil {
             // note: Timer 事件不执行
 //            self.timer = Timer.init(timeInterval: 2.0, target: self, selector:  #selector(AuthenticationManager.checkToken), userInfo: nil, repeats: true)
 //            RunLoop.current.add(self.timer!, forMode: RunLoopMode.commonModes)
@@ -112,14 +112,13 @@ final class AuthenticationManager: NSObject {
 ////                }
 //            }
             
-           self.timer =  MCGCDTimer.shared.scheduledDispatchTimer(WithTimerName: "HeartBeat", timeInterval: 20, queue: .main, repeats: true) {
-                self.checkToken()
-            }
+//        }
+        _ = MCGCDTimer.shared.scheduledDispatchTimer(WithTimerName: "HeartBeat", timeInterval: 20, queue: .main, repeats: true) {
+            self.checkToken()
         }
     }
     private func stopHeartBeat() {
-        self.timer?.cancel()
-        self.timer = nil
+        MCGCDTimer.shared.cancleTimer(WithTimerName: "HeartBeat")
     }
     @objc private func checkToken() {
         guard let loginUser = self.loginUser else {
