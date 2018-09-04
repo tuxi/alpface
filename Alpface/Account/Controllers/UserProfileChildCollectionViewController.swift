@@ -23,6 +23,7 @@ class UserProfileChildCollectionViewController: UIViewController, ProfileViewChi
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(VideoGifCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "VideoGifCollectionViewCell")
+        collectionView.contentInset = UIEdgeInsetsMake(0, 0, 55, 0)
         return collectionView
     }()
     
