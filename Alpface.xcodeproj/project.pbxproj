@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		17B0454459EAD0F7C5571E1C /* Pods_Alpface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */; };
+		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
+		D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868D213E83000009682C /* MCGCDTimer.swift */; };
 		D0C1E3502086E7BB0013F98B /* MainNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */; };
 		D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */; };
 		D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0DB45A32085B4F0000C291A /* PublishViewController.xib */; };
@@ -141,6 +143,8 @@
 /* Begin PBXFileReference section */
 		33ED24E632F2865D9C7AD091 /* Pods-Alpface.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpface.release.xcconfig"; path = "Pods/Target Support Files/Pods-Alpface/Pods-Alpface.release.xcconfig"; sourceTree = "<group>"; };
 		BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D06F868A213E80E20009682C /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
+		D06F868D213E83000009682C /* MCGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCGCDTimer.swift; sourceTree = "<group>"; };
 		D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationBar.swift; sourceTree = "<group>"; };
 		D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		D0DB45A32085B4F0000C291A /* PublishViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PublishViewController.xib; sourceTree = "<group>"; };
@@ -297,6 +301,22 @@
 				33ED24E632F2865D9C7AD091 /* Pods-Alpface.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D06F8689213E80E20009682C /* SwiftyTimer */ = {
+			isa = PBXGroup;
+			children = (
+				D06F868A213E80E20009682C /* SwiftyTimer.swift */,
+			);
+			path = SwiftyTimer;
+			sourceTree = "<group>";
+		};
+		D06F868C213E83000009682C /* MCGCDTimer */ = {
+			isa = PBXGroup;
+			children = (
+				D06F868D213E83000009682C /* MCGCDTimer.swift */,
+			);
+			path = MCGCDTimer;
 			sourceTree = "<group>";
 		};
 		D0DB45A52085B742000C291A /* TextView */ = {
@@ -544,6 +564,8 @@
 		D26AD444206690B40047DC15 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				D06F868C213E83000009682C /* MCGCDTimer */,
+				D06F8689213E80E20009682C /* SwiftyTimer */,
 				D0DB45A52085B742000C291A /* TextView */,
 				D22FD052207A6586003E08B9 /* XYEmptyData */,
 				D200933E2078F16E0079AD8B /* PCLBlurEffectAlert */,
@@ -1012,8 +1034,10 @@
 				D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */,
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
 				D2BCBA45206F33F2008409B3 /* PlayInteractionViewController.swift in Sources */,
+				D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */,
 				D2BCBA44206F33F2008409B3 /* MainFeedViewController.swift in Sources */,
 				D2B165F2208C4FCB00FA5F05 /* SelectMusicViewController.swift in Sources */,
+				D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */,
 				D289537320771A8B0029CE92 /* MyStoryViewController.swift in Sources */,
 				D2BCBA4C206F33F2008409B3 /* ScrollingContainerCell.swift in Sources */,
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,

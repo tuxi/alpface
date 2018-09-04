@@ -21,7 +21,7 @@ struct ALPConstans {
         static let ALPLoginUserInfoKey = "LoginUserInfoKey"
         static let ALPCsrfmiddlewaretokenKey = "csrfmiddlewaretoken"
         static let ALPCsrftokenKey = "csrftoken"
-        static let ALPAuthTokenKey = "jwttoken"
+        static let ALPAuthTokenKey = "token"
         static let ALPAuthenticationUserKey = "ALPAuthenticationUserKey"
         /// 用户授权出现问题，需要重新登录
         static let ALPAuthPermissionErrorValue = "<h1>403 Forbidden</h1>"
@@ -35,6 +35,7 @@ struct ALPConstans {
         static let register = "\(ALPSiteURLString)" + "/account/auth/register/"
         static let updateProfile = "\(ALPSiteURLString)" + "/account/user/update/"
         static let getCsrfToken = "\(ALPSiteURLString)" + "/account/auth/csrf"
+        static let getAuthToken = "\(ALPSiteURLString)" + "/account/auth/authtoken"
         static let getRadomVideos = "\(ALPSiteURLString)" + "/video/getAll"
         static let uoloadVideo = "\(ALPSiteURLString)" + "/video/new"
         static let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"

@@ -92,7 +92,8 @@ public class AccountLogin: NSObject {
                 
                 let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
                 if let userDict = jsonDict["user"] as? [String : Any] {
-                    
+                    let token = jsonDict["token"] as? String
+                    AuthenticationManager.shared.authToken = token
                     guard let succ = success else { return }
                     let user = User(dict: userDict)
                     let result = AccountLoginResult(status: jsonDict["status"] as! String, username:username, message: "")
@@ -228,6 +229,36 @@ public class AccountLogin: NSObject {
                 return
             }
             succ(csrf)
+        }
+    }
+    
+    /// 获取authtoken
+    public func getAuthToken(success: ALPSuccessHandler?, failure: ALPErrorHandler?) {
+        let urlString = ALPConstans.HttpRequestURL.getAuthToken
+        HttpRequestHelper.request(method: .get, url: urlString, parameters: nil) { (response, error) in
+            if let err = error {
+                if let fail = failure {
+                    fail(err)
+                }
+                return
+            }
+            
+            guard let res = response as? String else {
+                if let fail = failure {
+                    fail(NSError.init(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                }
+                return
+            }
+            
+            let jsonDict =  self.getDictionaryFromJSONString(jsonString: res)
+            
+            /// 将csrf存储起来，并回调
+            let authtoken = jsonDict[ALPConstans.AuthKeys.ALPAuthTokenKey] as? String
+            print("authtoken:" + (authtoken ?? "") )
+            guard let succ = success else {
+                return
+            }
+            succ(authtoken)
         }
     }
     
