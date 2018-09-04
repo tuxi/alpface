@@ -236,29 +236,31 @@ public class AccountLogin: NSObject {
     public func getAuthToken(success: ALPSuccessHandler?, failure: ALPErrorHandler?) {
         let urlString = ALPConstans.HttpRequestURL.getAuthToken
         HttpRequestHelper.request(method: .get, url: urlString, parameters: nil) { (response, error) in
-            if let err = error {
-                if let fail = failure {
-                    fail(err)
+            DispatchQueue.main.async {
+                if let err = error {
+                    if let fail = failure {
+                        fail(err)
+                    }
+                    return
                 }
-                return
-            }
-            
-            guard let res = response as? String else {
-                if let fail = failure {
-                    fail(NSError.init(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                
+                guard let res = response as? String else {
+                    if let fail = failure {
+                        fail(NSError.init(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    }
+                    return
                 }
-                return
+                
+                let jsonDict =  self.getDictionaryFromJSONString(jsonString: res)
+                
+                /// 将csrf存储起来，并回调
+                let authtoken = jsonDict[ALPConstans.AuthKeys.ALPAuthTokenKey] as? String
+                print("authtoken:" + (authtoken ?? "") )
+                guard let succ = success else {
+                    return
+                }
+                succ(authtoken)
             }
-            
-            let jsonDict =  self.getDictionaryFromJSONString(jsonString: res)
-            
-            /// 将csrf存储起来，并回调
-            let authtoken = jsonDict[ALPConstans.AuthKeys.ALPAuthTokenKey] as? String
-            print("authtoken:" + (authtoken ?? "") )
-            guard let succ = success else {
-                return
-            }
-            succ(authtoken)
         }
     }
     

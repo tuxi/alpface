@@ -73,7 +73,8 @@ extension MBProgressHUD {
         }
         let hud = self.xy_createHud(message: message, toView: toView, offset: offset)
         hud.mode = .text
-        if d.isEqual(to: Double(Int64.max))  {
+    
+        if d.isLess(than: Double(Int64.max))  {
             hud.hide(animated: true, afterDelay: delay)
         }
     }
