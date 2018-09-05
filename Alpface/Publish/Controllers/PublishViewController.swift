@@ -121,7 +121,7 @@ class PublishViewController: UIViewController {
         imagePick.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String, kUTTypeAudio as String]
         imagePick.view.backgroundColor = UIColor.init(white: 0.5, alpha: 0.5)
         if let nac = self.alp_navigationController {
-            imagePick.usingCustomModalTransitioningAnimator()
+            imagePick.zf_usingCustomModalTransitioningAnimator()
             nac.present(imagePick, animated: true)
         }
         else {

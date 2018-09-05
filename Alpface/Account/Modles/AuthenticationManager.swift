@@ -86,7 +86,6 @@ final class AuthenticationManager: NSObject {
         }
     }
     
-//    private var timer: DispatchSourceTimer?
     private lazy var timerQueue : DispatchQueue = {
        let queue = DispatchQueue(label: "HeartBeat")
         return queue
@@ -113,7 +112,8 @@ final class AuthenticationManager: NSObject {
 //            }
             
 //        }
-        _ = MCGCDTimer.shared.scheduledDispatchTimer(WithTimerName: "HeartBeat", timeInterval: 20, queue: .main, repeats: true) {
+      
+        _ = MCGCDTimer.shared.scheduledDispatchTimer(WithTimerName: "HeartBeat", timeInterval: 20, queue: self.timerQueue, repeats: true) {
             self.checkToken()
         }
     }

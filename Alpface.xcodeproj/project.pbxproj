@@ -130,7 +130,6 @@
 		D2BCBA4D206F33F2008409B3 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA42206F33F1008409B3 /* VideoPlayerView.swift */; };
 		D2BCBA4F206F6D02008409B3 /* VideoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA4E206F6D02008409B3 /* VideoItem.swift */; };
 		D2BCBA53206FA737008409B3 /* VideoRatingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BCBA52206FA737008409B3 /* VideoRatingItem.swift */; };
-		D2CF4C842097422700666519 /* UIViewController+CustomTransitioningAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CF4C832097422700666519 /* UIViewController+CustomTransitioningAnimator.swift */; };
 		D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */; };
 		D2D6632E208245F30044E2A7 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D6632D208245F30044E2A7 /* AppUtils.swift */; };
 		D2D663302082E83C0044E2A7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D2D6632F2082E83C0044E2A7 /* README.md */; };
@@ -271,7 +270,6 @@
 		D2BCBA42206F33F1008409B3 /* VideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		D2BCBA4E206F6D02008409B3 /* VideoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoItem.swift; sourceTree = "<group>"; };
 		D2BCBA52206FA737008409B3 /* VideoRatingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRatingItem.swift; sourceTree = "<group>"; };
-		D2CF4C832097422700666519 /* UIViewController+CustomTransitioningAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+CustomTransitioningAnimator.swift"; sourceTree = "<group>"; };
 		D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+XYExtension.swift"; sourceTree = "<group>"; };
 		D2D6632D208245F30044E2A7 /* AppUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
 		D2D6632F2082E83C0044E2A7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -541,7 +539,6 @@
 				D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */,
 				D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */,
 				D2B16621208CC3B800FA5F05 /* UIView+XYExtension.swift */,
-				D2CF4C832097422700666519 /* UIViewController+CustomTransitioningAnimator.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -973,7 +970,6 @@
 				D28953672076A4EE0029CE92 /* HitTestScrollViewCell.swift in Sources */,
 				D21A2CD5207D154400335A8A /* EditUserProfileModel.swift in Sources */,
 				D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */,
-				D2CF4C842097422700666519 /* UIViewController+CustomTransitioningAnimator.swift in Sources */,
 				D2BCBA48206F33F2008409B3 /* CollectionViewSection.swift in Sources */,
 				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
 				D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,

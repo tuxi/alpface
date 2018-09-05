@@ -6,6 +6,7 @@
 //
 
 #import "ZFModalTransitionAnimator.h"
+#import <objc/runtime.h>
 
 @interface ZFModalTransitionAnimator ()
 @property (nonatomic, weak) UIViewController *modalController;
@@ -198,15 +199,17 @@
         if (fromViewController.modalPresentationStyle == UIModalPresentationCustom) {
             [toViewController beginAppearanceTransition:YES animated:YES];
         }
-
+        
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0
              usingSpringWithDamping:0.8
               initialSpringVelocity:0.1
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
+                             ///note: 未完成 此处处理的是dismiss控制器时的动画，如果toViewController有zf_modalAnimator属性，说明他也是自定义的modal动画
                              CGFloat scaleBack = (1 / self.behindViewScale);
                              toViewController.view.layer.transform = CATransform3DScale(toViewController.view.layer.transform, scaleBack, scaleBack, 1);
+                             
                              toViewController.view.alpha = 1.0f;
                              fromViewController.view.frame = endRect;
                          } completion:^(BOOL finished) {
@@ -559,6 +562,31 @@
     } else {
         self.isFail = @NO;
     }
+}
+
+@end
+
+@implementation UIViewController (ZFModalTransitionAnimatorExtension)
+
+- (void)setZf_modalAnimator:(ZFModalTransitionAnimator *)zf_modalAnimator {
+    objc_setAssociatedObject(self, @selector(zf_modalAnimator), zf_modalAnimator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (ZFModalTransitionAnimator *)zf_modalAnimator {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)zf_usingCustomModalTransitioningAnimator {
+    self.zf_modalAnimator = [[ZFModalTransitionAnimator alloc] initWithModalViewController:self];
+    self.transitioningDelegate = self.zf_modalAnimator;
+    
+    self.zf_modalAnimator.topViewScale = (ZFModalTransitonSizeScale){1.0, 0.95};
+    self.zf_modalAnimator.dragable = YES;
+    self.zf_modalAnimator.bounces = NO;
+    self.zf_modalAnimator.behindViewAlpha = 0.5;
+    self.zf_modalAnimator.behindViewScale = 0.9;
+    self.zf_modalAnimator.transitionDuration = 0.7;
+    self.zf_modalAnimator.direction = ZFModalTransitonDirectionBottom;
 }
 
 @end

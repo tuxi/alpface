@@ -15,5 +15,15 @@ class CornerBarNaviController: UINavigationController {
         self.view.layer.cornerRadius = 8.0
         self.view.layer.masksToBounds = true
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        print(self.view.frame)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print(self.view.frame)
+    }
 }
 

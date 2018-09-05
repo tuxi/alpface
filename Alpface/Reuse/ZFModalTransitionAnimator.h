@@ -20,6 +20,15 @@ typedef struct {
     CGFloat heightScale;
 }ZFModalTransitonSizeScale;
 
+@class ZFModalTransitionAnimator;
+
+@interface UIViewController (ZFModalTransitionAnimatorExtension)
+
+@property (nonatomic, readonly) ZFModalTransitionAnimator *zf_modalAnimator;
+- (void)zf_usingCustomModalTransitioningAnimator;
+
+@end
+
 @interface ZFDetectScrollViewEndGestureRecognizer : UIPanGestureRecognizer
 @property (nonatomic, weak) UIScrollView *scrollview;
 @end
