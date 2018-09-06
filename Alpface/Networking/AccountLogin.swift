@@ -235,6 +235,10 @@ public class AccountLogin: NSObject {
     /// 获取authtoken
     public func getAuthToken(success: ALPSuccessHandler?, failure: ALPErrorHandler?) {
         let urlString = ALPConstans.HttpRequestURL.getAuthToken
+//        guard let token = AuthenticationManager.shared.authToken else {
+//            return
+//        }
+//        let parameters = ["authToken": token] as NSDictionary
         HttpRequestHelper.request(method: .get, url: urlString, parameters: nil) { (response, error) in
             DispatchQueue.main.async {
                 if let err = error {
@@ -251,9 +255,15 @@ public class AccountLogin: NSObject {
                     return
                 }
                 
+                if res == "<h1>Server Error (500)</h1>" { // 处理nginx服务器频繁访问崩溃问题
+                    if let fail = failure {
+                        fail(NSError.init(domain: NSURLErrorDomain, code: 500, userInfo: nil))
+                    }
+                    return
+                }
+                
                 let jsonDict =  self.getDictionaryFromJSONString(jsonString: res)
                 
-                /// 将csrf存储起来，并回调
                 let authtoken = jsonDict[ALPConstans.AuthKeys.ALPAuthTokenKey] as? String
                 print("authtoken:" + (authtoken ?? "") )
                 guard let succ = success else {
