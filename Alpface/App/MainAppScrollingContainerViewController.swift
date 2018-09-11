@@ -457,6 +457,7 @@ extension MainAppScrollingContainerViewController {
         let nac = CornerBarNaviController(rootViewController: selectMusic)
         nac.modalPresentationStyle =  UIModalPresentationStyle.custom
         nac.zf_usingCustomModalTransitioningAnimator()
+        nac.zf_modalAnimator.topViewScale = ZFModalTransitonSizeScale.init(widthScale: 1.0, heightScale: 1.0)
         self.present(nac, animated: true, completion: nil)
     
     }

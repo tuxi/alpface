@@ -143,6 +143,13 @@ final class AuthenticationManager: NSObject {
             }
             
             }) { (error) in
+                guard let error = error as NSError? else {
+                    return
+                }
+                if error.code == 500 {
+                    self.logout()
+                    MBProgressHUD.xy_show("登录状态异常, 请重新登录")
+                }
             
         }
     }
