@@ -453,12 +453,12 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
 
 extension MainAppScrollingContainerViewController {
     fileprivate func presentSelectMusic() {
-        let selectMusic = SelectMusicViewController()
-        let nac = CornerBarNaviController(rootViewController: selectMusic)
-        nac.modalPresentationStyle =  UIModalPresentationStyle.custom
-        nac.zf_usingCustomModalTransitioningAnimator()
-        nac.zf_modalAnimator.topViewScale = ZFModalTransitonSizeScale.init(widthScale: 1.0, heightScale: 1.0)
-        self.present(nac, animated: true, completion: nil)
+        let cameraVc = AlpVideoCameraViewController(delegate: self)
+        let nac = RTRootNavigationController(rootViewControllerNoWrapping: cameraVc)
+        nac?.modalPresentationStyle =  UIModalPresentationStyle.custom
+        nac?.zf_usingCustomModalTransitioningAnimator()
+        nac?.zf_modalAnimator.topViewScale = ZFModalTransitonSizeScale.init(widthScale: 1.0, heightScale: 1.0)
+        self.present(nac!, animated: true, completion: nil)
     
     }
 }
@@ -474,4 +474,37 @@ extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
     }
 }
 
-
+extension MainAppScrollingContainerViewController: AlpVideoCameraViewControllerDelegate {
+    func videoCameraViewController(_ viewController: AlpVideoCameraViewController, viewWillAppear animated: Bool) {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            if let rootViewController = delegate.rootViewController {
+                rootViewController.appViewController.scrollingContainer.displayViewController()?.beginAppearanceTransition(false, animated: true)
+            }
+        }
+    }
+    
+    func videoCameraViewController(_ viewController: AlpVideoCameraViewController, viewWillDisappear animated: Bool) {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            if let rootViewController = delegate.rootViewController {
+                rootViewController.appViewController.scrollingContainer.displayViewController()?.beginAppearanceTransition(true, animated: true)
+            }
+        }
+    }
+    
+    func videoCameraViewController(_ viewController: AlpVideoCameraViewController, viewDidAppear animated: Bool) {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            if let rootViewController = delegate.rootViewController {
+                rootViewController.appViewController.scrollingContainer.displayViewController()?.endAppearanceTransition()
+            }
+        }
+    }
+    
+    func videoCameraViewController(_ viewController: AlpVideoCameraViewController, viewDidDisappear animated: Bool) {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            if let rootViewController = delegate.rootViewController {
+                rootViewController.appViewController.scrollingContainer.displayViewController()?.endAppearanceTransition()
+            }
+        }
+    }
+    
+}
