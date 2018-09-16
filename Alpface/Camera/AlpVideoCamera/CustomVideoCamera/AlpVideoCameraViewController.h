@@ -10,20 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class AlpVideoCameraViewController;
-@protocol AlpVideoCameraViewControllerDelegate <NSObject>
-
-@optional
-- (void)videoCameraViewController:(AlpVideoCameraViewController *)viewController viewWillAppear:(BOOL)animated;
-- (void)videoCameraViewController:(AlpVideoCameraViewController *)viewController viewWillDisappear:(BOOL)animated;
-- (void)videoCameraViewController:(AlpVideoCameraViewController *)viewController viewDidAppear:(BOOL)animated;
-- (void)videoCameraViewController:(AlpVideoCameraViewController *)viewController viewDidDisappear:(BOOL)animated;
-
-@end
 
 @interface AlpVideoCameraViewController : UIViewController
 
-- (instancetype)initWithDelegate:(id<AlpVideoCameraViewControllerDelegate>)delegate;
 
 @end
 

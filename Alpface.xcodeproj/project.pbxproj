@@ -199,6 +199,7 @@
 		D26A9452214E269D00C118CA /* UIViewController+RTRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A944C214E269C00C118CA /* UIViewController+RTRootNavigationController.m */; };
 		D26A9453214E269D00C118CA /* RTRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A944F214E269C00C118CA /* RTRootNavigationController.m */; };
 		D26A9454214E269D00C118CA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D26A9450214E269C00C118CA /* README.md */; };
+		D26A9456214E2FA600C118CA /* AlpVideoCameraNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */; };
 		D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41020668F130047DC15 /* StoryCameraViewController.swift */; };
 		D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41120668F130047DC15 /* StoryCreationViewController.swift */; };
 		D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */; };
@@ -497,6 +498,7 @@
 		D26A944E214E269C00C118CA /* UIViewController+RTRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RTRootNavigationController.h"; sourceTree = "<group>"; };
 		D26A944F214E269C00C118CA /* RTRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTRootNavigationController.m; sourceTree = "<group>"; };
 		D26A9450214E269C00C118CA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlpVideoCameraNavigationController.swift; sourceTree = "<group>"; };
 		D26AD41020668F130047DC15 /* StoryCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCameraViewController.swift; sourceTree = "<group>"; };
 		D26AD41120668F130047DC15 /* StoryCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCreationViewController.swift; sourceTree = "<group>"; };
 		D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MedulaOne-Regular.ttf"; sourceTree = "<group>"; };
@@ -820,9 +822,9 @@
 				D26A9292214E13AA00C118CA /* stickers */,
 				D26A9250214E13AA00C118CA /* music */,
 				D26A928F214E13AA00C118CA /* AlpEditingPublishingViewController.m */,
+				D26A92F7214E13AA00C118CA /* AlpEditingPublishingViewController.h */,
 				D26A9290214E13AA00C118CA /* AlpMusicItemCollectionViewCell.m */,
 				D26A9291214E13AA00C118CA /* AlpVideoCameraUtils.h */,
-				D26A92B9214E13AA00C118CA /* AlpVideoCameraViewController.m */,
 				D26A92BA214E13AA00C118CA /* UIViewController+AlpExtensions.h */,
 				D26A92BB214E13AA00C118CA /* SDAVAssetExportSession.m */,
 				D26A92BC214E13AA00C118CA /* UIImage+AlpExtensions.h */,
@@ -830,8 +832,8 @@
 				D26A92BE214E13AA00C118CA /* ALPVideoCameraView.m */,
 				D26A92CE214E13AA00C118CA /* AlpVideoCameraUtils.m */,
 				D26A92F6214E13AA00C118CA /* AlpMusicItemCollectionViewCell.h */,
-				D26A92F7214E13AA00C118CA /* AlpEditingPublishingViewController.h */,
 				D26A92F8214E13AA00C118CA /* AlpVideoCameraViewController.h */,
+				D26A92B9214E13AA00C118CA /* AlpVideoCameraViewController.m */,
 				D26A92B8214E13AA00C118CA /* UIView+Tools.h */,
 				D26A92F9214E13AA00C118CA /* UIView+Tools.m */,
 				D26A92FA214E13AA00C118CA /* UIViewController+AlpExtensions.m */,
@@ -840,6 +842,7 @@
 				D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */,
 				D26A92FE214E13AA00C118CA /* UIImage+AlpExtensions.m */,
 				D26A92FF214E13AA00C118CA /* SDAVAssetExportSession.h */,
+				D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -1802,6 +1805,7 @@
 				D26A93AC214E13AA00C118CA /* GPUImageBeautifyFilter.m in Sources */,
 				D20093452078F16E0079AD8B /* PCLBlurEffectAlert.swift in Sources */,
 				D26AD47F20672E120047DC15 /* FadeTransition.swift in Sources */,
+				D26A9456214E2FA600C118CA /* AlpVideoCameraNavigationController.swift in Sources */,
 				D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */,
 				D28953682076A4EE0029CE92 /* BaseProfileViewController.swift in Sources */,
 				D2B165F4208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift in Sources */,

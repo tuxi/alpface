@@ -12,18 +12,10 @@
 
 @interface AlpVideoCameraViewController () <ALPVideoCameraViewDelegate>
 
-@property (nonatomic, weak) id<AlpVideoCameraViewControllerDelegate> delegate;
 
 @end
 
 @implementation AlpVideoCameraViewController
-
-- (instancetype)initWithDelegate:(id<AlpVideoCameraViewControllerDelegate>)delegate {
-    if (self = [super init]) {
-        _delegate = delegate;
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,30 +25,6 @@
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     [self setupViewCameraView];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:viewWillAppear:)]) {
-        [self.delegate videoCameraViewController:self viewWillAppear:animated];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:viewWillDisappear:)]) {
-        [self.delegate videoCameraViewController:self viewWillDisappear:animated];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:viewDidAppear:)]) {
-        [self.delegate videoCameraViewController:self viewDidAppear:animated];
-    }
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:viewDidDisappear:)]) {
-        [self.delegate videoCameraViewController:self viewDidDisappear:animated];
-    }
 }
 
 - (void)setupViewCameraView {
