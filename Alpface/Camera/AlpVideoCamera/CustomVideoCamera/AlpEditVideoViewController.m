@@ -527,19 +527,16 @@ typedef NS_ENUM(NSUInteger , choseType)
     //保存到相册
     
 }
--(void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [_mainPlayer play];
         [_movieFile startProcessing];
+        [self playMusic];
     });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         _bgImageView.hidden = YES;
     });
-    
-    
-    
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playingEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
@@ -548,8 +545,7 @@ typedef NS_ENUM(NSUInteger , choseType)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notCloseCor) name:@"closeVideoCamerTwo" object:nil];
 }
 
-- (void)compressVideoWithInputVideoUrl:(NSURL *) inputVideoUrl
-{
+- (void)compressVideoWithInputVideoUrl:(NSURL *) inputVideoUrl {
     /* Create Output File Url */
     NSString *documentsDirectory = NSTemporaryDirectory();
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -1448,9 +1444,9 @@ typedef NS_ENUM(NSUInteger , choseType)
     }
 }
 
--(NSArray*)creatMusicData
-{
+-(NSArray*)creatMusicData {
     
+    /// musics.json 来自 爱动小视频的音乐页面抓取
     NSString *configPath = [[NSBundle mainBundle] pathForResource:@"musics" ofType:@"json"];
     NSData *configData = [NSData dataWithContentsOfFile:configPath];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:configData options:NSJSONReadingAllowFragments error:nil];
@@ -1483,8 +1479,7 @@ typedef NS_ENUM(NSUInteger , choseType)
     
     return array;
 }
--(NSArray*)creatStickersData
-{
+- (NSArray*)creatStickersData {
     NSString *configPath = [[NSBundle mainBundle] pathForResource:@"stickers" ofType:@"json"];
     NSData *configData = [NSData dataWithContentsOfFile:configPath];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:configData options:NSJSONReadingAllowFragments error:nil];
@@ -1504,8 +1499,7 @@ typedef NS_ENUM(NSUInteger , choseType)
     return array;
 }
 
--(NSArray*)creatFilterData
-{
+-(NSArray*)creatFilterData {
     FilterData* filter1 = [self createWithName:@"Empty" andFlieName:@"LFGPUImageEmptyFilter" andValue:nil];
     filter1.isSelected = YES;
     FilterData* filter2 = [self createWithName:@"Amatorka" andFlieName:@"GPUImageAmatorkaFilter" andValue:nil];
@@ -1542,13 +1536,11 @@ typedef NS_ENUM(NSUInteger , choseType)
     }
     return filter1;
 }
--(void)playMusic
-{
+- (void)playMusic {
     // 路径
-    
-    
-    
-    
+    if (_audioPath == nil) {
+        return;
+    }
     NSURL *audioInputUrl = [NSURL fileURLWithPath:_audioPath];
     // 声音来源
     
