@@ -253,7 +253,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
         unlink([_pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
         NSURL *movieURL = [NSURL fileURLWithPath:_pathToMovie];
         _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(720.0, 1280.0)];
-        _movieWriter.isNeedBreakAudioWhiter = YES;
+//        _movieWriter.isNeedBreakAudioWhiter = YES;
         _movieWriter.encodingLiveVideo = YES;
         _movieWriter.shouldPassthroughAudio = YES;
         [_filter addTarget:_movieWriter];

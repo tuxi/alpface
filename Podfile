@@ -14,4 +14,5 @@ target 'Alpface' do
   pod 'SDWebImage/WebP'
   pod 'Masonry'
   pod 'TZImagePickerController'
+  pod 'GPUImage', '~> 0.1.7'
 end
