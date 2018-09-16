@@ -21,11 +21,18 @@
 
 @interface MusicData : NSObject
 
-@property (nonatomic,strong) NSString* name;
-@property (nonatomic,strong) NSString* eid;
-@property (nonatomic,strong) NSString* musicPath;
-@property (nonatomic,strong) NSString* iconPath;
-@property (nonatomic,assign) BOOL isSelected;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, assign) NSInteger eid;
+@property (nonatomic, copy) NSString *start_time;
+@property (nonatomic, strong) NSArray * artists;
+@property (nonatomic, copy) NSString *iconPath;
+@property (nonatomic, copy) NSString *audioPath;
+@property (nonatomic, assign) BOOL isSelected;
+@property (nonatomic, assign) NSTimeInterval duration;
+@property (nonatomic, assign) NSInteger type;
+@property (nonatomic, assign) NSInteger uid;
+@property (nonatomic, assign) NSInteger lid;
+@property (nonatomic, assign) NSInteger total;
 
 @end
 @implementation MusicData
@@ -1444,11 +1451,10 @@ typedef NS_ENUM(NSUInteger , choseType)
 -(NSArray*)creatMusicData
 {
     
-    NSString *configPath = [[NSBundle mainBundle] pathForResource:@"music2" ofType:@"json"];
+    NSString *configPath = [[NSBundle mainBundle] pathForResource:@"musics" ofType:@"json"];
     NSData *configData = [NSData dataWithContentsOfFile:configPath];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:configData options:NSJSONReadingAllowFragments error:nil];
-    NSArray *items = dic[@"music"];
-    int i = 529 ;
+    NSArray *items = dic[@"data"][@"musics"];
     NSMutableArray *array = [NSMutableArray array];
     
     MusicData *effect = [[MusicData alloc] init];
@@ -1459,14 +1465,20 @@ typedef NS_ENUM(NSUInteger , choseType)
     
     
     for (NSDictionary *item in items) {
-        //        NSString *path = [baseDir stringByAppendingPathComponent:item[@"resourceUrl"]];
         MusicData *effect = [[MusicData alloc] init];
         effect.name = item[@"name"];
-        effect.eid = item[@"id"];
-        effect.musicPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"audio%d",i] ofType:@"mp3"];
-        effect.iconPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"icon%d",i] ofType:@"png"];
+        effect.eid = [item[@"id"] integerValue];
+        effect.start_time = item[@"start_time"];
+        effect.artists = item[@"artists"];
+        effect.audioPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%ld",effect.eid] ofType:@"mp3"];
+        effect.iconPath = [[NSBundle mainBundle] pathForResource:[NSString  stringWithFormat:@"%ld",effect.eid] ofType:@"jpeg"];
+        NSParameterAssert(effect.audioPath || effect.iconPath);
+        effect.type = [item[@"type"] integerValue];
+        effect.duration = [item[@"duration"] doubleValue];
+        effect.lid = [item[@"lid"] integerValue];
+        effect.uid = [item[@"uid"] integerValue];
+        effect.total = [item[@"total"] integerValue];
         [array addObject:effect];
-        i++;
     }
     
     return array;
@@ -1789,7 +1801,7 @@ typedef NS_ENUM(NSUInteger , choseType)
         }else
         {
             MusicData* data = [_musicAry objectAtIndex:indexPath.row];
-            _audioPath = data.musicPath;
+            _audioPath = data.audioPath;
             [self playMusic];
             _editTheOriginaBtn.hidden = NO;
             _editTheOriginaSwitch.hidden = NO;

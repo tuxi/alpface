@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     float _preLayerHeight;//镜头高
     float _preLayerHWRate; //高，宽比
     NSMutableArray* _urlArray;
-    float _totalTime; //视频总长度 默认10秒
+    float _totalTime; //允许录制视频的最大长度 默认20秒
     float _currentTime; //当前视频长度
     float _lastTime; //记录上次时间
     UIView* _progressPreView; //进度条
@@ -90,8 +90,8 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 }
 
 - (void)setup {
-    if (_totalTime==0) {
-        _totalTime =10;
+    if (_totalTime ==0 ) {
+        _totalTime =AlpVideoRecordingMaxTime;
         
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notCloseCor) name:@"closeVideoCamerOne" object:nil];
