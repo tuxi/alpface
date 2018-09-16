@@ -12,8 +12,8 @@ import Alamofire
 public typealias ALPHttpResponseBlock = (Any?) -> Void
 public typealias ALPHttpErrorBlock = (_ error: Error?) -> ()
 public typealias ALPProgressHandler = (Progress) -> Void
-class VideoRequest: NSObject {
-    static public let shared = VideoRequest()
+open class VideoRequest: NSObject {
+    static open let shared = VideoRequest()
     
     public func getRadomVideos(success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
         

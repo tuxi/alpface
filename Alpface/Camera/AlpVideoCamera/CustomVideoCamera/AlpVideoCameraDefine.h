@@ -25,5 +25,8 @@
 #define COLOR_FONT_YELLOW 0xFDD854
 #define COLOR_FONT_WHITE 0xFFFFFF
 
+/// 需要发布视频的通知
+static NSNotificationName const AlpPublushVideoNotification = @"AlpPublushVideoNotification";
+
 
 #endif /* AlpVideoCameraDefine_h */

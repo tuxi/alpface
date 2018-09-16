@@ -9,6 +9,8 @@
 #import "AlpVideoCameraViewController.h"
 #import "ALPVideoCameraView.h"
 #import "RTRootNavigationController.h"
+#import "AlpVideoCameraDefine.h"
+#import "AlpEditingPublishingViewController.h"
 
 @interface AlpVideoCameraViewController () <ALPVideoCameraViewDelegate>
 
@@ -20,6 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publishVideoNotification:) name:AlpPublushVideoNotification object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -77,6 +80,17 @@
 
 - (void)videoCamerView:(ALPVideoCameraView *)view presentViewCotroller:(UIViewController *)viewController {
     [self presentViewController:viewController animated:YES completion:nil];
+}
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Notification
+////////////////////////////////////////////////////////////////////////
+
+- (void)publishVideoNotification:(NSNotification *)notification {
+    NSDictionary *videoInfo =  notification.userInfo;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:publishWithVideoURL:title:content:)]) {
+        [self.delegate videoCameraViewController:self publishWithVideoURL:videoInfo[@"video"] title:videoInfo[@"title"] content:videoInfo[@"content"]];
+    }
 }
 
 @end

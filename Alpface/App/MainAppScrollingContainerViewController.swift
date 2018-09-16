@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 extension NSNotification.Name {
     static let ALPRefreshHomePage = NSNotification.Name(rawValue: "ALPRefreshHomePage")
@@ -454,13 +455,15 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
 extension MainAppScrollingContainerViewController {
     fileprivate func presentSelectMusic() {
         let cameraVc = AlpVideoCameraViewController()
+        cameraVc.delegate = self
         let nac = AlpVideoCameraNavigationController(rootViewControllerNoWrapping: cameraVc)
         nac?.modalPresentationStyle =  UIModalPresentationStyle.custom
-        nac?.zf_usingCustomModalTransitioningAnimator()
-        nac?.zf_modalAnimator.topViewScale = ZFModalTransitonSizeScale.init(widthScale: 1.0, heightScale: 1.0)
+//        nac?.zf_usingCustomModalTransitioningAnimator()
+//        nac?.zf_modalAnimator.topViewScale = ZFModalTransitonSizeScale.init(widthScale: 1.0, heightScale: 1.0)
         self.present(nac!, animated: true, completion: nil)
     
     }
+    
 }
 
 
@@ -471,5 +474,25 @@ extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
     
     func loginViewController(loginFailure error: Error) {
         
+    }
+}
+
+extension MainAppScrollingContainerViewController: AlpVideoCameraViewControllerDelegate {
+    
+    func videoCameraViewController(_ viewController: AlpVideoCameraViewController, publishWithVideoURL url: URL, title: String, content: String) {
+        MBProgressHUD.xy_showActivity()
+        VideoRequest.shared.upload(title: title, describe: content, videoPath: url.path, progress: { (p) in
+            print("上传进度\(p.completedUnitCount)")
+        }, success: {[weak self] (response) in
+            guard let video = response as? VideoItem else { return }
+            NotificationCenter.default.post(name: NSNotification.Name.PublushVideoSuccess, object: self, userInfo: ["video": video])
+            MBProgressHUD.xy_hide()
+            MBProgressHUD.xy_show("视频上传完成")
+            viewController.rt_navigationController.dismiss(animated: true, completion: nil)
+            
+        }) { (error) in
+            MBProgressHUD.xy_hide()
+            MBProgressHUD.xy_show("请重新登录")
+        }
     }
 }

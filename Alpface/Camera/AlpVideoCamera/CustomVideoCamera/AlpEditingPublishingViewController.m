@@ -14,6 +14,9 @@
 #import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
 #import "UIImage+AlpExtensions.h"
+#import "Alpface-Swift.h"
+
+static NSString * const AlpContentTextFieldPlaceholder = @"点击添加描述(最多20个字)";
 
 @interface AlpEditingPublishingViewController () <UITextViewDelegate, CLLocationManagerDelegate>
 {
@@ -239,7 +242,7 @@
     
     _contentTextField = [[UITextView alloc ] init];
     _contentTextField.returnKeyType = UIReturnKeyDone;
-    _contentTextField.text = @"点击添加描述(最多20个字)";
+    _contentTextField.text = AlpContentTextFieldPlaceholder;
     _contentTextField.textColor = [UIColor lightGrayColor];
     [_contentTextField setFont:[UIFont systemFontOfSize:SCREEN_LayoutScaleBaseOnIPHEN6(15.0)]];
     [_contentTextField setDelegate:self];
@@ -414,7 +417,7 @@
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
     if ([textView.text length] == 0) {
-        textView.text = @"点击添加描述(最多20个字)";
+        textView.text = AlpContentTextFieldPlaceholder;
         textView.textColor = [UIColor lightGrayColor];
         textView.tag = 0 ;
     }
@@ -438,11 +441,23 @@
 
 - (IBAction)publishingDynamic:(id)sender {
     HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES ];
-    HUD.label.text = @"此处逻辑需根据业务自行实现";
-    [HUD hideAnimated:YES afterDelay:2];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.rt_navigationController dismissViewControllerAnimated:YES completion:nil];
-    });
+    
+    if (_videoURL == nil) {
+        HUD.label.text = @"还未选择视频...";
+        [HUD hideAnimated:YES afterDelay:2];
+        return;
+    }
+    if (self.contentTextField.text.length == 0 || [self.contentTextField.text isEqualToString:AlpContentTextFieldPlaceholder]) {
+        HUD.label.text = @"请添加标题和描述文本";
+        [HUD hideAnimated:YES afterDelay:2];
+        return;
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:AlpPublushVideoNotification object:nil userInfo:@{@"video": _videoURL, @"title": @"test", @"content": _contentTextField.text}];
+
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self.rt_navigationController dismissViewControllerAnimated:YES completion:nil];
+//    });
     
     //
     
