@@ -27,7 +27,10 @@
 
 /// 需要发布视频的通知
 static NSNotificationName const AlpPublushVideoNotification = @"AlpPublushVideoNotification";
+/// 关闭相机
+static NSNotificationName const AlpVideoCameraCloseNotification = @"AlpVideoCameraCloseNotification";
 /// 允许录制视频的最大时间
 static NSTimeInterval const AlpVideoRecordingMaxTime = 20.0;
+
 
 #endif /* AlpVideoCameraDefine_h */

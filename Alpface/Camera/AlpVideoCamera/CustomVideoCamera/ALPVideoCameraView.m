@@ -94,7 +94,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
         _totalTime =AlpVideoRecordingMaxTime;
         
     }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notCloseCor) name:@"closeVideoCamerOne" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeVideoCameraNotification) name:AlpVideoCameraCloseNotification object:nil];
     
     _lastTime = 0;
     _preLayerWidth = SCREEN_WIDTH;
@@ -713,21 +713,21 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
         
     }
 }
-- (void)notCloseCor {
+- (void)closeVideoCameraNotification {
     [self clickBackToHome];
 }
 
 - (OSProgressView *)progressPreView {
     if (!_progressPreView) {
-        CGFloat defaultHeight = 4.0;
-        CGRect frame = CGRectMake(0,
+        CGFloat defaultHeight = 6.0;
+        CGRect frame = CGRectMake(5.0,
                                   5.0,
-                                  self.frame.size.width,
+                                  self.frame.size.width-10.0,
                                   defaultHeight);
         OSProgressView *progressView = [[OSProgressView alloc] initWithFrame:frame];
         progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         progressView.progressTintColor = UIColorFromRGB(0xffc738);
-        progressView.trackTintColor = [UIColor clearColor];
+        progressView.trackTintColor = [[UIColor grayColor] colorWithAlphaComponent:0.2];
         _progressPreView = progressView;
     }
     return _progressPreView;
