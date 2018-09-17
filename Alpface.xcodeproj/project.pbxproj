@@ -14,6 +14,7 @@
 		D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */; };
 		D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0DB45A32085B4F0000C291A /* PublishViewController.xib */; };
 		D0DB45AA2085B7C6000C291A /* AdaptiveTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DB45A92085B7C6000C291A /* AdaptiveTextView.swift */; };
+		D0E8AB18214FA69D00247B5E /* AlpVideoCameraResourceItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E8AB17214FA69D00247B5E /* AlpVideoCameraResourceItem.m */; };
 		D200930C2078C51E0079AD8B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200930B2078C51E0079AD8B /* RegisterViewController.swift */; };
 		D20093272078EEC50079AD8B /* CameraViewAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D200930E2078EEC50079AD8B /* CameraViewAssets.xcassets */; };
 		D20093282078EEC50079AD8B /* CroppingParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20093102078EEC50079AD8B /* CroppingParameters.swift */; };
@@ -295,6 +296,8 @@
 		D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		D0DB45A32085B4F0000C291A /* PublishViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PublishViewController.xib; sourceTree = "<group>"; };
 		D0DB45A92085B7C6000C291A /* AdaptiveTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveTextView.swift; sourceTree = "<group>"; };
+		D0E8AB16214FA69D00247B5E /* AlpVideoCameraResourceItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpVideoCameraResourceItem.h; sourceTree = "<group>"; };
+		D0E8AB17214FA69D00247B5E /* AlpVideoCameraResourceItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpVideoCameraResourceItem.m; sourceTree = "<group>"; };
 		D200930B2078C51E0079AD8B /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		D200930E2078EEC50079AD8B /* CameraViewAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CameraViewAssets.xcassets; sourceTree = "<group>"; };
 		D20093102078EEC50079AD8B /* CroppingParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingParameters.swift; sourceTree = "<group>"; };
@@ -841,6 +844,8 @@
 				D26A92FE214E13AA00C118CA /* UIImage+AlpExtensions.m */,
 				D26A92FF214E13AA00C118CA /* SDAVAssetExportSession.h */,
 				D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */,
+				D0E8AB16214FA69D00247B5E /* AlpVideoCameraResourceItem.h */,
+				D0E8AB17214FA69D00247B5E /* AlpVideoCameraResourceItem.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -1596,7 +1601,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/DeviceKit/DeviceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
@@ -1619,7 +1624,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1724,6 +1729,7 @@
 				D200932E2078EEC50079AD8B /* VolumeControl.swift in Sources */,
 				D20093302078EEC50079AD8B /* UIViewExtensions.swift in Sources */,
 				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,
+				D0E8AB18214FA69D00247B5E /* AlpVideoCameraResourceItem.m in Sources */,
 				D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */,
 				D200932D2078EEC50079AD8B /* SingleImageSaver.swift in Sources */,
 				D26AD4872067334E0047DC15 /* UIButton+Attributes.swift in Sources */,

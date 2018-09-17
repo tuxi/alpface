@@ -18,63 +18,18 @@
 #import "AlpEditingPublishingViewController.h"
 #import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
+#import "AlpVideoCameraResourceItem.h"
 
-@interface MusicData : NSObject
 
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, assign) NSInteger eid;
-@property (nonatomic, copy) NSString *start_time;
-@property (nonatomic, strong) NSArray * artists;
-@property (nonatomic, copy) NSString *iconPath;
-@property (nonatomic, copy) NSString *audioPath;
-@property (nonatomic, assign) BOOL isSelected;
-@property (nonatomic, assign) NSTimeInterval duration;
-@property (nonatomic, assign) NSInteger type;
-@property (nonatomic, assign) NSInteger uid;
-@property (nonatomic, assign) NSInteger lid;
-@property (nonatomic, assign) NSInteger total;
-
-@end
-@implementation MusicData
-
-@end
-
-@interface FilterData : NSObject
-
-@property (nonatomic,strong) NSString* name;
-@property (nonatomic,strong) NSString* value;
-@property (nonatomic,strong) NSString* fillterName;
-@property (nonatomic,strong) NSString* iconPath;
-@property (nonatomic,assign) BOOL isSelected;
-
-@end
-@implementation FilterData
-
-@end
-
-@interface StickersData : NSObject
-
-@property (nonatomic,strong) NSString* name;
-@property (nonatomic,strong) NSString* StickersImgPaht;
-@property (nonatomic,assign) BOOL isSelected;
-
-@end
-@implementation StickersData
-
-@end
-
-typedef NS_ENUM(NSUInteger , choseType)
+typedef NS_ENUM(NSUInteger , AlpChooseEditType)
 {
-    choseFilter = 1, //
-    choseMusic = 2,
-    choseStickers = 3,//
+    AlpChooseEditTypeFilter = 1, //
+    AlpChooseEditTypeMusic = 2,
+    AlpChooseEditTypeStickers = 3,//
 };
 
 @interface AlpEditVideoViewController () <UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, strong) AVPlayer *audioPlayer;
-@property (nonatomic, strong) NSMutableArray* musicAry;
-@property (nonatomic, strong) NSMutableArray* filterAry;
-@property (nonatomic, strong) NSMutableArray* stickersAry;
 
 @property (nonatomic,strong) UIVisualEffectView *visualEffectView;
 @property (nonatomic,strong) UIView* musicBottomBar;
@@ -84,11 +39,12 @@ typedef NS_ENUM(NSUInteger , choseType)
 @property (nonatomic ,strong) NSString* filtClassName;
 @property (nonatomic ,assign) BOOL isdoing;
 
-@property (nonatomic, assign) choseType choseEditType;
+@property (nonatomic, assign) AlpChooseEditType chooseEditType;
 
+@property (nonatomic, strong) AlpVideoCameraResourceItem *resourceItem;
 
 @property (nonatomic ,strong) UICollectionView *musicCollectionView;
-@property (nonatomic ,strong) UICollectionView *collectionView;
+@property (nonatomic ,strong) UICollectionView *filterCollectionView;
 @property (nonatomic ,strong) UICollectionView *stickersCollectionView;
 
 
@@ -139,9 +95,8 @@ typedef NS_ENUM(NSUInteger , choseType)
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
-    _musicAry = [NSMutableArray arrayWithArray:[self creatMusicData]];
-    _filterAry = [NSMutableArray arrayWithArray:[self creatFilterData]];
-    _stickersAry = [NSMutableArray arrayWithArray:[self creatStickersData]];
+    _resourceItem = [AlpVideoCameraResourceItem new];
+    
     _audioPlayer = [[AVPlayer alloc ]init];
     
     _lastMusicIndex = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -289,7 +244,7 @@ typedef NS_ENUM(NSUInteger , choseType)
         make.width.equalTo(@(SCREEN_LayoutScaleBaseOnIPHEN6(83)));
     }];
     _cancleBtn.selected = YES;
-    self.choseEditType = choseFilter;
+    self.chooseEditType = AlpChooseEditTypeFilter;
     
     _okBtn = [[UIButton alloc] init];
     [_okBtn setTitle:@"音乐" forState:UIControlStateNormal];
@@ -385,29 +340,29 @@ typedef NS_ENUM(NSUInteger , choseType)
     
     
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH, 115) collectionViewLayout:layout];
+    _filterCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH, 115) collectionViewLayout:layout];
     
     //设置背景颜色
-    _collectionView.backgroundColor = [UIColor clearColor];
+    _filterCollectionView.backgroundColor = [UIColor clearColor];
     
     
     // 设置数据源,展示数据
-    _collectionView.dataSource = self;
+    _filterCollectionView.dataSource = self;
     //设置代理,监听
-    _collectionView.delegate = self;
+    _filterCollectionView.delegate = self;
     
     // 注册cell
-    [_collectionView registerClass:[AlpMusicItemCollectionViewCell class] forCellWithReuseIdentifier:@"MyCollectionCell"];
+    [_filterCollectionView registerClass:[AlpMusicItemCollectionViewCell class] forCellWithReuseIdentifier:@"MyCollectionCell"];
     
     /* 设置UICollectionView的属性 */
     //设置滚动条
-    _collectionView.showsHorizontalScrollIndicator = NO;
-    _collectionView.showsVerticalScrollIndicator = NO;
+    _filterCollectionView.showsHorizontalScrollIndicator = NO;
+    _filterCollectionView.showsVerticalScrollIndicator = NO;
     
     //设置是否需要弹簧效果
-    _collectionView.bounces = YES;
+    _filterCollectionView.bounces = YES;
     
-    [_musicBottomBar addSubview:_collectionView];
+    [_musicBottomBar addSubview:_filterCollectionView];
     
     
     
@@ -1356,16 +1311,16 @@ typedef NS_ENUM(NSUInteger , choseType)
 -(void)clickOKBtn
 {
     //    [self showEditMusicBar:_musicBtn];
-    if (self.choseEditType == choseMusic) {
+    if (self.chooseEditType == AlpChooseEditTypeMusic) {
         
     }else
     {
-        self.choseEditType = choseMusic;
+        self.chooseEditType = AlpChooseEditTypeMusic;
         
         _okBtn.selected = YES;
         _cancleBtn.selected = NO;
         _stickersBtn.selected = NO;
-        _collectionView.hidden = YES;
+        _filterCollectionView.hidden = YES;
         _musicCollectionView.hidden = NO;
         _stickersCollectionView.hidden = YES;
         
@@ -1381,16 +1336,16 @@ typedef NS_ENUM(NSUInteger , choseType)
 {
     _editTheOriginaBtn.hidden = YES;
     _editTheOriginaSwitch.hidden = YES;
-    if (self.choseEditType == choseStickers) {
+    if (self.chooseEditType == AlpChooseEditTypeStickers) {
         
     }else
     {
-        self.choseEditType = choseStickers;
+        self.chooseEditType = AlpChooseEditTypeStickers;
         
         _okBtn.selected = NO;
         _cancleBtn.selected = NO;
         _stickersBtn.selected = YES;
-        _collectionView.hidden = YES;
+        _filterCollectionView.hidden = YES;
         _musicCollectionView.hidden = YES;
         _stickersCollectionView.hidden = NO;
     }
@@ -1404,16 +1359,16 @@ typedef NS_ENUM(NSUInteger , choseType)
     //    [_audioPlayer pause];
     _editTheOriginaBtn.hidden = YES;
     _editTheOriginaSwitch.hidden = YES;
-    if (self.choseEditType == choseFilter) {
+    if (self.chooseEditType == AlpChooseEditTypeFilter) {
         
     }else
     {
-        self.choseEditType = choseFilter;
+        self.chooseEditType = AlpChooseEditTypeFilter;
         
         _okBtn.selected = NO;
         _cancleBtn.selected = YES;
         _stickersBtn.selected = NO;
-        _collectionView.hidden = NO;
+        _filterCollectionView.hidden = NO;
         _musicCollectionView.hidden = YES;
         _stickersCollectionView.hidden = YES;
         
@@ -1444,98 +1399,6 @@ typedef NS_ENUM(NSUInteger , choseType)
     }
 }
 
--(NSArray*)creatMusicData {
-    
-    /// musics.json 来自 爱动小视频的音乐页面抓取
-    NSString *configPath = [[NSBundle mainBundle] pathForResource:@"musics" ofType:@"json"];
-    NSData *configData = [NSData dataWithContentsOfFile:configPath];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:configData options:NSJSONReadingAllowFragments error:nil];
-    NSArray *items = dic[@"data"][@"musics"];
-    NSMutableArray *array = [NSMutableArray array];
-    
-    MusicData *effect = [[MusicData alloc] init];
-    effect.name = @"原始";
-    effect.iconPath = [[NSBundle mainBundle] pathForResource:@"nilMusic" ofType:@"png"];
-    effect.isSelected = YES;
-    [array addObject:effect];
-    
-    
-    for (NSDictionary *item in items) {
-        MusicData *effect = [[MusicData alloc] init];
-        effect.name = item[@"name"];
-        effect.eid = [item[@"id"] integerValue];
-        effect.start_time = item[@"start_time"];
-        effect.artists = item[@"artists"];
-        effect.audioPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%ld",effect.eid] ofType:@"mp3"];
-        effect.iconPath = [[NSBundle mainBundle] pathForResource:[NSString  stringWithFormat:@"%ld",effect.eid] ofType:@"jpeg"];
-        NSParameterAssert(effect.audioPath || effect.iconPath);
-        effect.type = [item[@"type"] integerValue];
-        effect.duration = [item[@"duration"] doubleValue];
-        effect.lid = [item[@"lid"] integerValue];
-        effect.uid = [item[@"uid"] integerValue];
-        effect.total = [item[@"total"] integerValue];
-        [array addObject:effect];
-    }
-    
-    return array;
-}
-- (NSArray*)creatStickersData {
-    NSString *configPath = [[NSBundle mainBundle] pathForResource:@"stickers" ofType:@"json"];
-    NSData *configData = [NSData dataWithContentsOfFile:configPath];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:configData options:NSJSONReadingAllowFragments error:nil];
-    NSArray *items = dic[@"stickers"];
-    int i = 529 ;
-    NSMutableArray *array = [NSMutableArray array];
-    
-    for (NSDictionary *item in items) {
-        //        NSString *path = [baseDir stringByAppendingPathComponent:item[@"resourceUrl"]];
-        StickersData* stickersItem = [[StickersData alloc] init];
-        stickersItem.name = item[@"name"];
-        stickersItem.StickersImgPaht = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"stickers%d",i] ofType:@"jpg"];
-        [array addObject:stickersItem];
-        i++;
-    }
-    
-    return array;
-}
-
--(NSArray*)creatFilterData {
-    FilterData* filter1 = [self createWithName:@"Empty" andFlieName:@"LFGPUImageEmptyFilter" andValue:nil];
-    filter1.isSelected = YES;
-    FilterData* filter2 = [self createWithName:@"Amatorka" andFlieName:@"GPUImageAmatorkaFilter" andValue:nil];
-    FilterData* filter3 = [self createWithName:@"MissEtikate" andFlieName:@"GPUImageMissEtikateFilter" andValue:nil];
-    FilterData* filter4 = [self createWithName:@"Sepia" andFlieName:@"GPUImageSepiaFilter" andValue:nil];
-    FilterData* filter5 = [self createWithName:@"Sketch" andFlieName:@"GPUImageSketchFilter" andValue:nil];
-    FilterData* filter6 = [self createWithName:@"SoftElegance" andFlieName:@"GPUImageSoftEleganceFilter" andValue:nil];
-    FilterData* filter7 = [self createWithName:@"Toon" andFlieName:@"GPUImageToonFilter" andValue:nil];
-    
-    FilterData* filter8 = [[FilterData alloc] init];
-    filter8.name = @"Saturation0";
-    filter8.iconPath = [[NSBundle mainBundle] pathForResource:@"GPUImageSaturationFilter0" ofType:@"png"];
-    filter8.fillterName = @"GPUImageSaturationFilter";
-    filter8.value = @"0";
-    
-    FilterData* filter9 = [[FilterData alloc] init];
-    filter9.name = @"Saturation2";
-    filter9.iconPath = [[NSBundle mainBundle] pathForResource:@"GPUImageSaturationFilter2" ofType:@"png"];
-    filter9.fillterName = @"GPUImageSaturationFilter";
-    filter9.value = @"2";
-    
-    return [NSArray arrayWithObjects:filter1,filter2,filter3,filter4,filter5,filter6,filter7,filter8,filter9, nil];
-    
-}
-
--(FilterData*)createWithName:(NSString* )name andFlieName:(NSString*)fileName andValue:(NSString*)value
-{
-    FilterData* filter1 = [[FilterData alloc] init];
-    filter1.name = name;
-    filter1.iconPath =  [[NSBundle mainBundle] pathForResource:fileName ofType:@"png"];
-    filter1.fillterName = fileName;
-    if (value) {
-        filter1.value = value;
-    }
-    return filter1;
-}
 - (void)playMusic {
     // 路径
     if (_audioPath == nil) {
@@ -1631,16 +1494,16 @@ typedef NS_ENUM(NSUInteger , choseType)
 // 告诉系统每组多少个
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
-    if (collectionView == _collectionView) {
-        return _filterAry.count;
+    if (collectionView == _filterCollectionView) {
+        return self.resourceItem.filterAry.count;
         
     }else if (collectionView == _stickersCollectionView)
     {
-        return _stickersAry.count;
+        return self.resourceItem.stickersAry.count;
     }
     else
     {
-        return _musicAry.count;
+        return self.resourceItem.musicAry.count;
     }
     
     
@@ -1649,10 +1512,10 @@ typedef NS_ENUM(NSUInteger , choseType)
 // 告诉系统每个Cell如何显示
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // 1.从缓存池中取
-    if (collectionView == _collectionView) {
+    if (collectionView == _filterCollectionView) {
         static NSString *cellID = @"MyCollectionCell";
         AlpMusicItemCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
-        FilterData* data = [_filterAry objectAtIndex:indexPath.row];
+        AlpFilterData* data = [self.resourceItem.filterAry objectAtIndex:indexPath.row];
         cell.iconImgView.image = [UIImage imageWithContentsOfFile:data.iconPath];
         cell.nameLabel.text = data.name;
         
@@ -1662,7 +1525,7 @@ typedef NS_ENUM(NSUInteger , choseType)
     {
         static NSString *cellID = @"MyCollectionCell3";
         AlpMusicItemCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
-        StickersData* data = [_stickersAry objectAtIndex:indexPath.row];
+        AlpStickersData* data = [self.resourceItem.stickersAry objectAtIndex:indexPath.row];
         cell.iconImgView.image = [UIImage imageWithContentsOfFile:data.StickersImgPaht];
         cell.nameLabel.text = data.name;
         
@@ -1671,7 +1534,7 @@ typedef NS_ENUM(NSUInteger , choseType)
     }else{
         static NSString *cellID2 = @"MyCollectionCell2";
         AlpMusicItemCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID2 forIndexPath:indexPath];
-        MusicData* data = [_musicAry objectAtIndex:indexPath.row];
+        AlpMusicData* data = [self.resourceItem.musicAry objectAtIndex:indexPath.row];
         UIImage* image = [UIImage imageWithContentsOfFile:data.iconPath];
         cell.iconImgView.image = image;
         cell.nameLabel.text = data.name;
@@ -1684,19 +1547,19 @@ typedef NS_ENUM(NSUInteger , choseType)
 {
     
     
-    if (collectionView == _collectionView) {
+    if (collectionView == _filterCollectionView) {
         _nowFilterIndex = indexPath;
         if (_lastFilterIndex.row != _nowFilterIndex.row) {
             
             //1.修改数据源
-            FilterData* dataNow = [_filterAry objectAtIndex:indexPath.row];
+            AlpFilterData* dataNow = [self.resourceItem.filterAry objectAtIndex:indexPath.row];
             dataNow.isSelected = YES;
-            [_filterAry replaceObjectAtIndex:indexPath.row withObject:dataNow];
-            FilterData* dataLast = [_filterAry objectAtIndex:_lastFilterIndex.row];
+            [self.resourceItem.filterAry replaceObjectAtIndex:indexPath.row withObject:dataNow];
+            AlpFilterData* dataLast = [self.resourceItem.filterAry objectAtIndex:_lastFilterIndex.row];
             dataLast.isSelected = NO;
-            [_filterAry replaceObjectAtIndex:_lastFilterIndex.row withObject:dataLast];
+            [self.resourceItem.filterAry replaceObjectAtIndex:_lastFilterIndex.row withObject:dataLast];
             //2.刷新collectionView
-            [_collectionView reloadData];
+            [_filterCollectionView reloadData];
             _lastFilterIndex = indexPath;
             
         }
@@ -1705,7 +1568,7 @@ typedef NS_ENUM(NSUInteger , choseType)
             [_movieFile removeAllTargets];
             
             
-            FilterData* data = [_filterAry objectAtIndex:indexPath.row];
+            AlpFilterData* data = [self.resourceItem.filterAry objectAtIndex:indexPath.row];
             _filtClassName = data.fillterName;
             _filter = [[NSClassFromString(_filtClassName) alloc] init];
             [_movieFile addTarget:_filter];
@@ -1717,7 +1580,7 @@ typedef NS_ENUM(NSUInteger , choseType)
             [_movieFile removeAllTargets];
             
             
-            FilterData* data = [_filterAry objectAtIndex:indexPath.row];
+            AlpFilterData* data = [self.resourceItem.filterAry objectAtIndex:indexPath.row];
             _filtClassName = data.fillterName;
             
             if ([data.fillterName isEqualToString:@"GPUImageSaturationFilter"]) {
@@ -1742,12 +1605,12 @@ typedef NS_ENUM(NSUInteger , choseType)
             
             //1.修改数据源
             //            FilterData* dataNow = [_filterAry objectAtIndex:indexPath.row];
-            StickersData* dataNow = [_stickersAry objectAtIndex:indexPath.row];
+            AlpStickersData* dataNow = [self.resourceItem.stickersAry objectAtIndex:indexPath.row];
             dataNow.isSelected = YES;
-            [_stickersAry replaceObjectAtIndex:indexPath.row withObject:dataNow];
-            StickersData* dataLast = [_stickersAry objectAtIndex:_lastStickersIndex.row];
+            [self.resourceItem.stickersAry replaceObjectAtIndex:indexPath.row withObject:dataNow];
+            AlpStickersData* dataLast = [self.resourceItem.stickersAry objectAtIndex:_lastStickersIndex.row];
             dataLast.isSelected = NO;
-            [_stickersAry replaceObjectAtIndex:_lastStickersIndex.row withObject:dataLast];
+            [self.resourceItem.stickersAry replaceObjectAtIndex:_lastStickersIndex.row withObject:dataLast];
             //2.刷新collectionView
             [_stickersCollectionView reloadData];
             _lastStickersIndex = indexPath;
@@ -1756,7 +1619,7 @@ typedef NS_ENUM(NSUInteger , choseType)
         {
             _stickersImgView.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
         }
-        StickersData* data = [_stickersAry objectAtIndex:indexPath.row];
+        AlpStickersData* data = [self.resourceItem.stickersAry objectAtIndex:indexPath.row];
         _stickersImgView.image = [UIImage imageWithContentsOfFile:data.StickersImgPaht];
         _stickersImgView.hidden = NO;
         
@@ -1766,12 +1629,12 @@ typedef NS_ENUM(NSUInteger , choseType)
         if (_lastMusicIndex.row != _nowMusicIndex.row) {
             
             //1.修改数据源
-            FilterData* dataNow = [_musicAry objectAtIndex:indexPath.row];
+            AlpMusicData* dataNow = [self.resourceItem.musicAry objectAtIndex:indexPath.row];
             dataNow.isSelected = YES;
-            [_musicAry replaceObjectAtIndex:indexPath.row withObject:dataNow];
-            FilterData* dataLast = [_musicAry objectAtIndex:_lastMusicIndex.row];
+            [self.resourceItem.musicAry replaceObjectAtIndex:indexPath.row withObject:dataNow];
+            AlpMusicData* dataLast = [self.resourceItem.musicAry objectAtIndex:_lastMusicIndex.row];
             dataLast.isSelected = NO;
-            [_musicAry replaceObjectAtIndex:_lastMusicIndex.row withObject:dataLast];
+            [self.resourceItem.musicAry replaceObjectAtIndex:_lastMusicIndex.row withObject:dataLast];
             //刷新collectionView
             [_musicCollectionView reloadData];
             _lastMusicIndex = indexPath;
@@ -1792,7 +1655,7 @@ typedef NS_ENUM(NSUInteger , choseType)
             
         }else
         {
-            MusicData* data = [_musicAry objectAtIndex:indexPath.row];
+            AlpMusicData* data = [self.resourceItem.musicAry objectAtIndex:indexPath.row];
             _audioPath = data.audioPath;
             [self playMusic];
             _editTheOriginaBtn.hidden = NO;
