@@ -850,7 +850,7 @@
     //    [audioTrack2 insertTimeRange:audioTimeRange ofTrack:audioAssetTrack2 atTime:nextClistartTime error:nil];
     
     
-    if (!self.editVideoBar.editTheOriginaBtn.selected) {
+    if (!self.editVideoBar.isUseOriginalSound) {
         AVMutableAudioMix *mutableAudioMix = [AVMutableAudioMix audioMix];
         // Create the audio mix input parameters object.
         AVMutableAudioMixInputParameters *mixParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:audioTrack];

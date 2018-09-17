@@ -10,14 +10,31 @@
 #import "AlpMusicItemCollectionViewCell.h"
 #import "AlpVideoCameraDefine.h"
 
+typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
+    AlpChooseEditTypeFilter = 1,
+    AlpChooseEditTypeMusic = 2,
+    AlpChooseEditTypeStickers = 3,
+};
+
 @interface AlpEditVideoBar () <UICollectionViewDelegate, UICollectionViewDataSource>
 
+@property (nonatomic, strong) UICollectionView *musicCollectionView;
+@property (nonatomic, strong) UICollectionView *filterCollectionView;
+@property (nonatomic, strong) UICollectionView *stickersCollectionView;
 @property (nonatomic, strong) UIVisualEffectView *visualEffectView;
 @property (nonatomic, strong) UIButton *cancleBtn;
 @property (nonatomic, strong) UIButton *okBtn;
-@property (nonatomic, strong) UIButton* stickersBtn;
-@property (nonatomic, strong) UISwitch* editTheOriginaSwitch;
+@property (nonatomic, strong) UIButton *stickersBtn;
+@property (nonatomic, strong) UISwitch *editTheOriginaSwitch;
+@property (nonatomic, strong) UIButton *editTheOriginaBtn;
 @property (nonatomic, strong) NSString *audioPath;
+@property (nonatomic, strong) NSIndexPath *lastFilterIndex;
+@property (nonatomic, strong) NSIndexPath *lastMusicIndex;
+@property (nonatomic, strong) NSIndexPath *nowMusicIndex;
+@property (nonatomic, strong) NSIndexPath *nowFilterIndex;
+@property (nonatomic, strong) NSIndexPath *lastStickersIndex;
+@property (nonatomic, strong) NSIndexPath *nowStickersIndex;
+@property (nonatomic, assign) AlpChooseEditType chooseEditType;
 
 @end
 
@@ -552,6 +569,10 @@
     }
     
     
+}
+
+- (BOOL)isUseOriginalSound {
+    return self.editTheOriginaBtn.isSelected;
 }
 
 @end

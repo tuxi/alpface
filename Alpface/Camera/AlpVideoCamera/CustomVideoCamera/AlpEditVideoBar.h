@@ -11,12 +11,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
-    AlpChooseEditTypeFilter = 1, //
-    AlpChooseEditTypeMusic = 2,
-    AlpChooseEditTypeStickers = 3,//
-};
-
 @class AlpEditVideoBar;
 @protocol AlpEditVideoBarDelegate <NSObject>
 
@@ -40,19 +34,9 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
 
 @interface AlpEditVideoBar : UIView
 
-@property (nonatomic, strong) UICollectionView *musicCollectionView;
-@property (nonatomic, strong) UICollectionView *filterCollectionView;
-@property (nonatomic, strong) UICollectionView *stickersCollectionView;
-@property (nonatomic, assign) AlpChooseEditType chooseEditType;
 @property (nonatomic, strong) AlpVideoCameraResourceItem *resourceItem;
-@property (nonatomic, strong) NSIndexPath* lastFilterIndex;
-@property (nonatomic, strong) NSIndexPath* lastMusicIndex;
-@property (nonatomic, strong) NSIndexPath* nowMusicIndex;
-@property (nonatomic, strong) NSIndexPath* nowFilterIndex;
-@property (nonatomic, strong) NSIndexPath* lastStickersIndex;
-@property (nonatomic, strong) NSIndexPath* nowStickersIndex;
-@property (nonatomic, strong) UIButton* editTheOriginaBtn;
 @property (nonatomic, strong, readonly) NSString *audioPath;
+@property (nonatomic, getter=isUseOriginalSound, readonly) BOOL useOriginalSound;
 
 @property (nonatomic, weak) id<AlpEditVideoBarDelegate> delegate;
 
