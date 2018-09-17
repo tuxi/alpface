@@ -200,6 +200,7 @@
 		D26A954A214E953B00C118CA /* 6404.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D26A9521214E953B00C118CA /* 6404.mp3 */; };
 		D26A954B214E953B00C118CA /* 6402.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D26A9522214E953B00C118CA /* 6402.jpeg */; };
 		D26A954C214E953B00C118CA /* 6455.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D26A9523214E953B00C118CA /* 6455.jpeg */; };
+		D26A95A2214FD2FD00C118CA /* OSProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A95A1214FD2FD00C118CA /* OSProgressView.m */; };
 		D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41020668F130047DC15 /* StoryCameraViewController.swift */; };
 		D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41120668F130047DC15 /* StoryCreationViewController.swift */; };
 		D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */; };
@@ -500,6 +501,8 @@
 		D26A9521214E953B00C118CA /* 6404.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 6404.mp3; sourceTree = "<group>"; };
 		D26A9522214E953B00C118CA /* 6402.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6402.jpeg; sourceTree = "<group>"; };
 		D26A9523214E953B00C118CA /* 6455.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6455.jpeg; sourceTree = "<group>"; };
+		D26A95A0214FD2FD00C118CA /* OSProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSProgressView.h; sourceTree = "<group>"; };
+		D26A95A1214FD2FD00C118CA /* OSProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSProgressView.m; sourceTree = "<group>"; };
 		D26AD41020668F130047DC15 /* StoryCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCameraViewController.swift; sourceTree = "<group>"; };
 		D26AD41120668F130047DC15 /* StoryCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCreationViewController.swift; sourceTree = "<group>"; };
 		D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MedulaOne-Regular.ttf"; sourceTree = "<group>"; };
@@ -846,6 +849,8 @@
 				D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */,
 				D0E8AB16214FA69D00247B5E /* AlpVideoCameraResourceItem.h */,
 				D0E8AB17214FA69D00247B5E /* AlpVideoCameraResourceItem.m */,
+				D26A95A0214FD2FD00C118CA /* OSProgressView.h */,
+				D26A95A1214FD2FD00C118CA /* OSProgressView.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -1705,6 +1710,7 @@
 				D289536D2076A5A60029CE92 /* UserProfileChildCollectionViewController.swift in Sources */,
 				D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */,
 				D26A9452214E269D00C118CA /* UIViewController+RTRootNavigationController.m in Sources */,
+				D26A95A2214FD2FD00C118CA /* OSProgressView.m in Sources */,
 				D2BCBA47206F33F2008409B3 /* BaseCellModel.swift in Sources */,
 				D26A93AD214E13AA00C118CA /* LFGPUImageEmptyFilter.m in Sources */,
 				D26A9437214E13AA00C118CA /* UIView+Tools.m in Sources */,

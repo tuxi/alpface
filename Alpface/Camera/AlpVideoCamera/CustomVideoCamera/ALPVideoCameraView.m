@@ -23,6 +23,7 @@
 #import "GPUImage.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraUtils.h"
+#import "OSProgressView.h"
 
 typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     CameraManagerDevicePositionBack,
@@ -50,8 +51,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     float _totalTime; //允许录制视频的最大长度 默认20秒
     float _currentTime; //当前视频长度
     float _lastTime; //记录上次时间
-    UIView* _progressPreView; //进度条
-    float _progressStep; //进度条每次变长的最小单位
     MBProgressHUD* _HUD;
 }
 @property (nonatomic ,strong) UIButton *camerafilterChangeButton;
@@ -65,8 +64,9 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 @property (nonatomic, strong) NSMutableArray *lastAry;
 
 @property (nonatomic, strong) UIView* btView;
-
 @property (nonatomic, assign) BOOL isRecoding;
+@property (nonatomic, strong) OSProgressView *progressPreView;
+
 @end
 
 @implementation ALPVideoCameraView
@@ -97,7 +97,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notCloseCor) name:@"closeVideoCamerOne" object:nil];
     
     _lastTime = 0;
-    _progressStep = SCREEN_WIDTH*TIMER_INTERVAL/_totalTime;
     _preLayerWidth = SCREEN_WIDTH;
     _preLayerHeight = SCREEN_HEIGHT;
     _preLayerHWRate =_preLayerHeight/_preLayerWidth;
@@ -225,10 +224,8 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [_filteredVideoView addSubview:_inputLocalVieoBtn];
     
     // 录制的进度条
-    _progressPreView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT -4 , 0, 4)];
-    _progressPreView.backgroundColor = UIColorFromRGB(0xffc738);
-    [_progressPreView makeCornerRadius:2 borderColor:nil borderWidth:0];
-    [_filteredVideoView addSubview:_progressPreView];
+    [_filteredVideoView addSubview:self.progressPreView];
+    [self.progressPreView makeCornerRadius:2 borderColor:nil borderWidth:0];
     
 }
 
@@ -350,7 +347,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
         self->_currentTime = 0;
         self->_lastTime = 0;
         self->_dleButton.hidden = YES;
-        [self->_progressPreView setFrame:CGRectMake(0, SCREEN_HEIGHT - 4, 0, 4)];
+        [self.progressPreView cancelProgress];
         self->_btView.backgroundColor = [UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1];
         self->_photoCaptureButton.backgroundColor = [UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1];
         self->_photoCaptureButton.selected = NO;
@@ -371,8 +368,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 
 /// 删除当前已经录制的内容
 - (void)clickDleBtn:(UIButton*)sender {
-    float progressWidth = [_lastAry.lastObject floatValue]/10*SCREEN_WIDTH;
-    [_progressPreView setFrame:CGRectMake(0, SCREEN_HEIGHT - 4, progressWidth, 4)];
+    [self.progressPreView cancelProgress];
     _currentTime = [_lastAry.lastObject floatValue];
     _timeLabel.text = [NSString stringWithFormat:@"录制 00:0%.0f",_currentTime];
     if (_urlArray.count) {
@@ -607,18 +603,17 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     //    _timeLabel.text = [NSString stringWithFormat:@"录制 00:02%d",(int)_currentTime];
     if (_currentTime>=10) {
         _timeLabel.text = [NSString stringWithFormat:@"录制 00:%d",(int)_currentTime];
-    }else
-    {
+    }
+    else {
         _timeLabel.text = [NSString stringWithFormat:@"录制 00:0%.0f",_currentTime];
     }
     
-    float progressWidth = _progressPreView.frame.size.width+_progressStep;
-    [_progressPreView setFrame:CGRectMake(0, SCREEN_HEIGHT - 4, progressWidth, 4)];
+    [self.progressPreView setProgress:_currentTime/_totalTime animated:YES];
     if (_currentTime>3) {
         _cameraChangeButton.hidden = NO;
     }
     
-    //时间到了停止录制视频
+    // 时间到了停止录制视频
     if (_currentTime>=_totalTime) {
         
         _photoCaptureButton.enabled = NO;
@@ -664,6 +659,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     }
 }
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    
 }
 
 
@@ -721,6 +717,21 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [self clickBackToHome];
 }
 
+- (OSProgressView *)progressPreView {
+    if (!_progressPreView) {
+        CGFloat defaultHeight = 4.0;
+        CGRect frame = CGRectMake(0,
+                                  5.0,
+                                  self.frame.size.width,
+                                  defaultHeight);
+        OSProgressView *progressView = [[OSProgressView alloc] initWithFrame:frame];
+        progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        progressView.progressTintColor = UIColorFromRGB(0xffc738);
+        progressView.trackTintColor = [UIColor clearColor];
+        _progressPreView = progressView;
+    }
+    return _progressPreView;
+}
 - (void)dealloc {
     NSLog(@"%@释放了",self.class);
 }
