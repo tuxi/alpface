@@ -118,12 +118,6 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_okBtn attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeHeight multiplier:1.0 constant:.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeWidth multiplier:1.0 constant:.0].active = YES;
-//    [_stickersBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(_editVideoBar);
-//        make.left.equalTo(_okBtn.mas_right).offset(0);
-//        make.height.equalTo(@(45));
-//        make.width.equalTo(@(SCREEN_LayoutScaleBaseOnIPHEN6(83)));
-//    }];
     
     _editTheOriginaSwitch = [[UISwitch alloc] init];
     _editTheOriginaSwitch.onTintColor = [UIColor colorWithRed:253.0 / 255 green:215.0 / 255 blue:4.0 / 255 alpha:1.0];
@@ -134,33 +128,21 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     [NSLayoutConstraint constraintWithItem:_editTheOriginaSwitch attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-8.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaSwitch attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaSwitch attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
-//    [_editTheOriginaSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(_okBtn);
-//        make.right.equalTo(_editVideoBar).offset(-8);
-//        make.height.equalTo(@(30));
-//        make.width.equalTo(@(50));
-//    }];
+
     _editTheOriginaSwitch.hidden = YES;
     
     _editTheOriginaBtn = [[UIButton alloc] init];
-    [_editTheOriginaBtn setTitle:@"剔除原声" forState:UIControlStateNormal];
+    [_editTheOriginaBtn setTitle:@"去除原声" forState:UIControlStateNormal];
     [_editTheOriginaBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [_editTheOriginaBtn setTitleColor:[UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1] forState:UIControlStateSelected];
     [_editTheOriginaBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     _editTheOriginaBtn.backgroundColor = [UIColor clearColor];
-    //    [_editTheOriginaBtn addTarget:self action:@selector(clickEditOriginalBtn) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_editTheOriginaBtn];
     _editTheOriginaBtn.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_editTheOriginaSwitch attribute:NSLayoutAttributeLeading multiplier:1.0 constant:.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeHeight multiplier:1.0 constant:.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeWidth multiplier:1.0 constant:.0].active = YES;
-//    [_editTheOriginaBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(_editVideoBar);
-//        make.right.equalTo(_editTheOriginaSwitch.mas_left).offset(0);
-//        make.height.equalTo(@(45));
-//        make.width.equalTo(@(SCREEN_LayoutScaleBaseOnIPHEN6(83)));
-//    }];
     _editTheOriginaBtn.hidden = YES;
     
     
@@ -173,13 +155,6 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     [NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:.5].active = YES;
-//    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(_okBtn);
-//        make.left.right.equalTo(_editVideoBar);
-//        make.height.equalTo(@(.5));
-//    }];
-//    
-    
     
     //collectionView
     UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
@@ -346,8 +321,8 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     _editTheOriginaSwitch.hidden = YES;
     if (self.chooseEditType == AlpChooseEditTypeFilter) {
         
-    }else
-    {
+    }
+    else {
         self.chooseEditType = AlpChooseEditTypeFilter;
         
         _okBtn.selected = NO;
@@ -366,8 +341,8 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     //    [self showEditMusicBar:_musicBtn];
     if (self.chooseEditType == AlpChooseEditTypeMusic) {
         
-    }else
-    {
+    }
+    else {
         self.chooseEditType = AlpChooseEditTypeMusic;
         
         _okBtn.selected = YES;
@@ -391,8 +366,8 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     _editTheOriginaSwitch.hidden = YES;
     if (self.chooseEditType == AlpChooseEditTypeStickers) {
         
-    }else
-    {
+    }
+    else {
         self.chooseEditType = AlpChooseEditTypeStickers;
         
         _okBtn.selected = NO;
@@ -435,12 +410,11 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     if (collectionView == _filterCollectionView) {
         return self.resourceItem.filterAry.count;
         
-    }else if (collectionView == _stickersCollectionView)
-    {
+    }
+    else if (collectionView == _stickersCollectionView) {
         return self.resourceItem.stickersAry.count;
     }
-    else
-    {
+    else {
         return self.resourceItem.musicAry.count;
     }
     

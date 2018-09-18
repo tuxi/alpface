@@ -12,12 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AlpEditVideoViewController : UIViewController
 
-@property(nonatomic,retain) NSURL * videoURL;
+@property (nonatomic, strong) NSURL * videoURL;
 
-@property (nonatomic , strong) NSNumber* width;
-@property (nonatomic , strong) NSNumber* hight;
-@property (nonatomic , strong) NSNumber* bit;
-@property (nonatomic , strong) NSNumber* frameRate;
+@property (nonatomic , strong) NSNumber *width;
+@property (nonatomic , strong) NSNumber *hight;
+@property (nonatomic , strong) NSNumber *bit;
+@property (nonatomic , strong) NSNumber *frameRate;
 
 @end
 

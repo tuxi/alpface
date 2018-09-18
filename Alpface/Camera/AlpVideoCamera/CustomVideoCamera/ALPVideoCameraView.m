@@ -412,11 +412,11 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
                     AVURLAsset *urlAsset = (AVURLAsset *)asset;
                     NSURL *url = urlAsset.URL;
                     NSData* videoData = [NSData dataWithContentsOfFile:[[url absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
-                    if (videoData.length>1024*1024*4.5) {
-                        _HUD.label.text = @"所选视频大于5M,请重新选择";
+                    if (videoData.length/1024/1024>AlpVideoCameraMaxVideoSize) {
+                        _HUD.label.text = @"所选视频大于8M,请重新选择";
                         [_HUD hide:YES afterDelay:1.5];
-                    }else
-                    {
+                    }
+                    else {
                         AlpEditingPublishingViewController* cor = [[AlpEditingPublishingViewController alloc] init];
                         cor.videoURL = url;
                         
@@ -439,11 +439,11 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
                 NSURL *videoURL =[myasset valueForProperty:ALAssetPropertyAssetURL];
                 NSURL *url = videoURL;
                 NSData* videoData = [NSData dataWithContentsOfFile:[[url absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
-                if (videoData.length>1024*1024*4.5) {
-                    _HUD.label.text = @"所选视频大于5M,请重新选择";
+                if (videoData.length/1024/1024>AlpVideoCameraMaxVideoSize) {
+                    _HUD.label.text = [NSString stringWithFormat:@"所选视频大于%fM,请重新选择", AlpVideoCameraMaxVideoSize];
                     [_HUD hide:YES afterDelay:1.5];
-                }else
-                {
+                }
+                else {
                     AlpEditingPublishingViewController* cor = [[AlpEditingPublishingViewController alloc] init];
                     cor.videoURL = url;
                     
@@ -457,9 +457,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
                 }
                 
             });
-            
-            
-            
         }
         
         
@@ -467,9 +464,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
         
     }];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    //    [[AppDelegate appDelegate] presentViewController:imagePickerVc animated:YES completion:^{
-    
-    //    }];
     if (self.delegate&&[self.delegate respondsToSelector:@selector(videoCamerView:presentViewCotroller:)]) {
         [self.delegate videoCamerView:self presentViewCotroller:imagePickerVc];
     }
@@ -493,12 +487,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
         self.backToHomeBlock();
         [self removeFromSuperview];
     }
-    
-    //    [self.navigationController popToRootViewControllerAnimated:YES];
-    
-    
-    
-    
 }
 
 /// 切换前后摄像头

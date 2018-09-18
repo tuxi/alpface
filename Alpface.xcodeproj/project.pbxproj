@@ -10,6 +10,7 @@
 		17B0454459EAD0F7C5571E1C /* Pods_Alpface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */; };
 		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
 		D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868D213E83000009682C /* MCGCDTimer.swift */; };
+		D0B47A1E2150A1A300E78B90 /* AlpEditVideoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B47A1D2150A1A300E78B90 /* AlpEditVideoNavigationBar.m */; };
 		D0C1E3502086E7BB0013F98B /* MainNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */; };
 		D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */; };
 		D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0DB45A32085B4F0000C291A /* PublishViewController.xib */; };
@@ -151,7 +152,6 @@
 		D26A9435214E13AA00C118CA /* complete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26A92F4214E13AA00C118CA /* complete@2x.png */; };
 		D26A9436214E13AA00C118CA /* beautyOFF@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26A92F5214E13AA00C118CA /* beautyOFF@2x.png */; };
 		D26A9437214E13AA00C118CA /* UIView+Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92F9214E13AA00C118CA /* UIView+Tools.m */; };
-		D26A9438214E13AA00C118CA /* UIViewController+AlpExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92FA214E13AA00C118CA /* UIViewController+AlpExtensions.m */; };
 		D26A9439214E13AA00C118CA /* AlpEditVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */; };
 		D26A943A214E13AA00C118CA /* UIImage+AlpExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92FE214E13AA00C118CA /* UIImage+AlpExtensions.m */; };
 		D26A9451214E269D00C118CA /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D26A9449214E269C00C118CA /* LICENSE */; };
@@ -294,6 +294,8 @@
 		BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D06F868A213E80E20009682C /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
 		D06F868D213E83000009682C /* MCGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCGCDTimer.swift; sourceTree = "<group>"; };
+		D0B47A1C2150A1A300E78B90 /* AlpEditVideoNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditVideoNavigationBar.h; sourceTree = "<group>"; };
+		D0B47A1D2150A1A300E78B90 /* AlpEditVideoNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoNavigationBar.m; sourceTree = "<group>"; };
 		D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationBar.swift; sourceTree = "<group>"; };
 		D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		D0DB45A32085B4F0000C291A /* PublishViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PublishViewController.xib; sourceTree = "<group>"; };
@@ -386,7 +388,6 @@
 		D26A92B7214E13AA00C118CA /* stickers554.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stickers554.jpg; sourceTree = "<group>"; };
 		D26A92B8214E13AA00C118CA /* UIView+Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Tools.h"; sourceTree = "<group>"; };
 		D26A92B9214E13AA00C118CA /* AlpVideoCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpVideoCameraViewController.m; sourceTree = "<group>"; };
-		D26A92BA214E13AA00C118CA /* UIViewController+AlpExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AlpExtensions.h"; sourceTree = "<group>"; };
 		D26A92BB214E13AA00C118CA /* SDAVAssetExportSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAVAssetExportSession.m; sourceTree = "<group>"; };
 		D26A92BC214E13AA00C118CA /* UIImage+AlpExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AlpExtensions.h"; sourceTree = "<group>"; };
 		D26A92BD214E13AA00C118CA /* AlpEditVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpEditVideoViewController.h; sourceTree = "<group>"; };
@@ -448,7 +449,6 @@
 		D26A92F7214E13AA00C118CA /* AlpEditingPublishingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpEditingPublishingViewController.h; sourceTree = "<group>"; };
 		D26A92F8214E13AA00C118CA /* AlpVideoCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpVideoCameraViewController.h; sourceTree = "<group>"; };
 		D26A92F9214E13AA00C118CA /* UIView+Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Tools.m"; sourceTree = "<group>"; };
-		D26A92FA214E13AA00C118CA /* UIViewController+AlpExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AlpExtensions.m"; sourceTree = "<group>"; };
 		D26A92FB214E13AA00C118CA /* AlpVideoCameraDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpVideoCameraDefine.h; sourceTree = "<group>"; };
 		D26A92FC214E13AA00C118CA /* ALPVideoCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALPVideoCameraView.h; sourceTree = "<group>"; };
 		D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoViewController.m; sourceTree = "<group>"; };
@@ -832,7 +832,6 @@
 				D26A92F7214E13AA00C118CA /* AlpEditingPublishingViewController.h */,
 				D26A9290214E13AA00C118CA /* AlpMusicItemCollectionViewCell.m */,
 				D26A9291214E13AA00C118CA /* AlpVideoCameraUtils.h */,
-				D26A92BA214E13AA00C118CA /* UIViewController+AlpExtensions.h */,
 				D26A92BB214E13AA00C118CA /* SDAVAssetExportSession.m */,
 				D26A92BC214E13AA00C118CA /* UIImage+AlpExtensions.h */,
 				D26A92BD214E13AA00C118CA /* AlpEditVideoViewController.h */,
@@ -843,7 +842,6 @@
 				D26A92B9214E13AA00C118CA /* AlpVideoCameraViewController.m */,
 				D26A92B8214E13AA00C118CA /* UIView+Tools.h */,
 				D26A92F9214E13AA00C118CA /* UIView+Tools.m */,
-				D26A92FA214E13AA00C118CA /* UIViewController+AlpExtensions.m */,
 				D26A92FB214E13AA00C118CA /* AlpVideoCameraDefine.h */,
 				D26A92FC214E13AA00C118CA /* ALPVideoCameraView.h */,
 				D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */,
@@ -856,6 +854,8 @@
 				D26A95A6214FDCD600C118CA /* AlpEditVideoBar.m */,
 				D26A95A0214FD2FD00C118CA /* OSProgressView.h */,
 				D26A95A1214FD2FD00C118CA /* OSProgressView.m */,
+				D0B47A1C2150A1A300E78B90 /* AlpEditVideoNavigationBar.h */,
+				D0B47A1D2150A1A300E78B90 /* AlpEditVideoNavigationBar.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -1663,6 +1663,7 @@
 				D289536B2076A5480029CE92 /* UserProfileViewController.swift in Sources */,
 				D26A9410214E13AA00C118CA /* AlpVideoCameraUtils.m in Sources */,
 				D2B38C57208B25BB00CA3908 /* VideoDetailListViewController.swift in Sources */,
+				D0B47A1E2150A1A300E78B90 /* AlpEditVideoNavigationBar.m in Sources */,
 				D28953692076A4EE0029CE92 /* HitTestScrollView.swift in Sources */,
 				D20093392078EEC50079AD8B /* CameraView.swift in Sources */,
 				D20093352078EEC50079AD8B /* PhotoLibraryViewController.swift in Sources */,
@@ -1728,7 +1729,6 @@
 				D21A2CCD207CFA0600335A8A /* StickyHeaderContainerView.swift in Sources */,
 				D2DC574C20706D7C00458F54 /* PlayVideoModel.swift in Sources */,
 				D27E4003209737C300776EB0 /* ZFModalTransitionAnimator.m in Sources */,
-				D26A9438214E13AA00C118CA /* UIViewController+AlpExtensions.m in Sources */,
 				D2BCBA4B206F33F2008409B3 /* MainFeedViewCell.swift in Sources */,
 				D26A93D8214E13AA00C118CA /* AlpEditingPublishingViewController.m in Sources */,
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,

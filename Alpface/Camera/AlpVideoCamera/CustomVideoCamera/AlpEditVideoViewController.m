@@ -20,25 +20,26 @@
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraResourceItem.h"
 #import "AlpEditVideoBar.h"
+#import "AlpEditVideoNavigationBar.h"
 
-@interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate>
+@interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate, AlpEditVideoNavigationBarDelegate>
 @property (nonatomic, strong) AVPlayer *audioPlayer;
 
 @property (nonatomic, strong) AlpEditVideoBar *editVideoBar;
 
-@property (nonatomic,strong) UIButton* musicBtn;
-@property (nonatomic ,strong) NSString* filtClassName;
-@property (nonatomic ,assign) BOOL isdoing;
+@property (nonatomic, strong) UIButton *musicBtn;
+@property (nonatomic, strong) NSString *filtClassName;
+@property (nonatomic, assign) BOOL isdoing;
 
 @property (nonatomic, strong) AlpVideoCameraResourceItem *resourceItem;
 
-@property (nonatomic ,strong) GPUImageView *filterView;
+@property (nonatomic, strong) GPUImageView *filterView;
 
-@property (nonatomic ,assign) float saturationValue;
+@property (nonatomic, assign) float saturationValue;
 
-@property (nonatomic ,strong) UIImageView* bgImageView;
+@property (nonatomic, strong) UIImageView *bgImageView;
 
-@property (nonatomic ,strong) UIImageView* stickersImgView;
+@property (nonatomic, strong) UIImageView *stickersImgView;
 
 @end
 
@@ -116,7 +117,7 @@
     [_playerLayer addSublayer:_playImg.layer];
     _playImg.hidden = YES;
     
-    UIView* superView = self.view;
+    UIView *superView = self.view;
     
     _stickersImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 150, 150)];
     _stickersImgView.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
@@ -128,40 +129,12 @@
     [_stickersImgView addGestureRecognizer:panGestureRecognizer];
     
     
-    UIView* headerBar = [[UIView alloc] init];
+    AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
+    headerBar.delegate = self;
     [self.view addSubview:headerBar];
-    headerBar.backgroundColor = [UIColor blackColor];
     [headerBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.equalTo(@(44));
-    }];
-    headerBar.alpha = .8;
-    
-    UILabel* titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"编辑";
-    titleLabel.textColor = [UIColor whiteColor];
-    [headerBar addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.centerY.equalTo(headerBar);
-    }];
-    
-    UIButton* nextBtn = [[UIButton alloc] init];
-    [nextBtn setTitle:@"下一步" forState:UIControlStateNormal];
-    [nextBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [nextBtn addTarget:self action:@selector(clickNextBtn) forControlEvents:UIControlEventTouchUpInside];
-    [headerBar addSubview:nextBtn];
-    [nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.bottom.top.equalTo(headerBar);
-        make.width.equalTo(@(80));
-    }];
-    
-    UIButton* BackToVideoCammer = [[UIButton alloc] init];
-    [BackToVideoCammer setImage:[UIImage imageNamed:@"BackToVideoCammer"] forState:UIControlStateNormal];
-    [BackToVideoCammer addTarget:self action:@selector(clickBackToVideoCammer) forControlEvents:UIControlEventTouchUpInside];
-    [headerBar addSubview:BackToVideoCammer];
-    [BackToVideoCammer mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.top.equalTo(headerBar);
-        make.width.equalTo(@(60));
     }];
     
     _editVideoBar = [AlpEditVideoBar new];
@@ -289,31 +262,7 @@
     }];
 }
 
-- (void)clickBackToVideoCammer {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
-
-- (void)clickNextBtn {
-    _HUD.hidden = NO;
-    if ([_filtClassName isEqualToString:@"LFGPUImageEmptyFilter"]) {
-        //无滤镜效果
-        if (self.editVideoBar.audioPath||!_stickersImgView.hidden) {
-            //音乐混合
-            [self mixAudioAndVidoWithInputURL:_videoURL];
-        }else
-        {
-            _HUD.label.text = @"视频处理中...";
-            [self compressVideoWithInputVideoUrl:_videoURL];
-            
-        }
-    }
-    else {
-        //添加滤镜效果
-        [self mixFiltWithVideoAndInputVideoURL:_videoURL];
-    }
-}
 
 - (void)mixFiltWithVideoAndInputVideoURL:(NSURL*)inputURL {
     
@@ -1112,6 +1061,34 @@
     if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
         _editVideoBar.hidden = NO;
     }
+}
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - AlpEditVideoNavigationBarDelegate
+////////////////////////////////////////////////////////////////////////
+- (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickNextButton:(UIButton *)nextButton {
+    _HUD.hidden = NO;
+    if ([_filtClassName isEqualToString:@"LFGPUImageEmptyFilter"]) {
+        //无滤镜效果
+        if (self.editVideoBar.audioPath||!_stickersImgView.hidden) {
+            //音乐混合
+            [self mixAudioAndVidoWithInputURL:_videoURL];
+        }
+        else {
+            _HUD.label.text = @"视频处理中...";
+            [self compressVideoWithInputVideoUrl:_videoURL];
+            
+        }
+    }
+    else {
+        //添加滤镜效果
+        [self mixFiltWithVideoAndInputVideoURL:_videoURL];
+    }
+}
+
+- (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickBackButton:(UIButton *)backButton {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 ////////////////////////////////////////////////////////////////////////
