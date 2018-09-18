@@ -8,7 +8,6 @@
 
 #import "AlpEditVideoViewController.h"
 #import <AVFoundation/AVFoundation.h>
-#import "Masonry.h"
 #import "UIView+Tools.h"
 #import "AlpMusicItemCollectionViewCell.h"
 #import "MBProgressHUD.h"
@@ -40,6 +39,7 @@
 @property (nonatomic, strong) UIImageView *bgImageView;
 
 @property (nonatomic, strong) UIImageView *stickersImgView;
+@property (nonatomic, weak) NSLayoutConstraint *editVideoBarBottomConstraint;
 
 @end
 
@@ -56,7 +56,6 @@
     AVPlayerLayer *_playerLayer;
     AVPlayerItem *_playerItem;
     GPUImageMovieWriter *_movieWriter;
-    
 }
 
 - (void)viewDidLoad {
@@ -97,27 +96,26 @@
     _bgImageView = [[UIImageView alloc] init];
     //    _bgImageView.image = [[AppDelegate appDelegate].cmImageSize getImage:[[videoURL absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
     [self.view addSubview:_bgImageView];
-    [_bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.left.right.equalTo(self.view);
-    }];
+    _bgImageView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:_bgImageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_bgImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_bgImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_bgImageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     
-    UIImageView* PlayImge = [[UIImageView alloc] init];
-    PlayImge.image = [UIImage imageNamed:@"播放按钮-1"];
-    [_bgImageView addSubview:PlayImge];
-    [PlayImge mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(_bgImageView);
-        make.width.height.equalTo(@(SCREEN_LayoutScaleBaseOnIPHEN6(60)));
-    }];
-    
-    
+    UIImageView* playImgeView = [[UIImageView alloc] init];
+    playImgeView.image = [UIImage imageNamed:@"播放按钮-1"];
+    [_bgImageView addSubview:playImgeView];
+    playImgeView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:playImgeView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_bgImageView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:playImgeView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_bgImageView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:playImgeView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:SCREEN_LayoutScaleBaseOnIPHEN6(60)].active = YES;
+    [NSLayoutConstraint constraintWithItem:playImgeView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:SCREEN_LayoutScaleBaseOnIPHEN6(60)].active = YES;
     
     _playImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
     _playImg.center = CGPointMake(videoWidth/2, videoWidth/2);
     [_playImg setImage:[UIImage imageNamed:@"videoPlay"]];
     [_playerLayer addSublayer:_playImg.layer];
     _playImg.hidden = YES;
-    
-    UIView *superView = self.view;
     
     _stickersImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 150, 150)];
     _stickersImgView.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
@@ -132,26 +130,26 @@
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
     headerBar.delegate = self;
     [self.view addSubview:headerBar];
-    [headerBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.equalTo(@(44));
-    }];
+    headerBar.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+     [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+     [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:44.0].active = YES;
     
     _editVideoBar = [AlpEditVideoBar new];
     _editVideoBar.delegate = self;
     _editVideoBar.resourceItem = _resourceItem;
     [self.view addSubview:_editVideoBar];
-    [_editVideoBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(superView)/*.offset(160)*/;
-        make.left.right.equalTo(superView);
-        make.height.equalTo(@(160));
-    }];
-    
+    _editVideoBar.translatesAutoresizingMaskIntoConstraints = false;
+    NSLayoutConstraint *editVideoBarBottomConstraint = [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
+    editVideoBarBottomConstraint.active = YES;
+    _editVideoBarBottomConstraint = editVideoBarBottomConstraint;
+    [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:160.0].active = YES;
+
     _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     _HUD.hidden = YES;
-    
-    
-    //保存到相册
     
 }
 
@@ -939,27 +937,21 @@
         }];
         
     }
-    
-    
-    
+
 }
 
 
 - (void)showEditMusicBar:(UIButton*)sender {
     if (!sender.selected) {
         sender.selected = YES;
-        [_editVideoBar mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.view);
-        }];
+        _editVideoBarBottomConstraint.constant = 0.0;
         // 更新约束
         [UIView animateWithDuration:.3 animations:^{
             [self.view layoutIfNeeded];
         }];
     }
     else {
-        [_editVideoBar mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.view).offset(160);
-        }];
+        _editVideoBarBottomConstraint.constant = 160.0;
         // 更新约束
         [UIView animateWithDuration:.3 animations:^{
             [self.view layoutIfNeeded];
@@ -977,9 +969,7 @@
     // 声音来源
     
     //    NSURL *audioInputUrl = [NSURL URLWithString:_audioPath];
-    
-    
-    
+
     _audioPlayerItem =[AVPlayerItem playerItemWithURL:audioInputUrl];
     
     [_audioPlayer replaceCurrentItemWithPlayerItem:_audioPlayerItem];
@@ -998,32 +988,25 @@
     }
 }
 
-- (void)pressPlayButton {
+/// 重新播放
+- (void)replayVideo {
     [_playerItem seekToTime:kCMTimeZero];
     [_mainPlayer play];
     if (self.editVideoBar.audioPath) {
         [_audioPlayerItem seekToTime:kCMTimeZero];
         [_audioPlayer play];
     }
-    
 }
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Notification methods
+////////////////////////////////////////////////////////////////////////
 
 - (void)playingEnd:(NSNotification *)notification {
-    
-    [self pressPlayButton];
-    //    if (playImg.isHidden) {
-    //        [self pressPlayButton];
-    //    }
-    
-    //    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    //    [self dismissViewControllerAnimated:YES completion:nil];
+    [self replayVideo];
 }
 
-
-- (void)onApplicationWillResignActive
-{
-    
-    
+- (void)onApplicationWillResignActive {
     [_mainPlayer pause];
     [_movieFile endProcessing];
     if (_isdoing) {
@@ -1031,8 +1014,6 @@
         [_endMovieFile endProcessing];
         _HUD.hidden = YES;
     }
-    
-    
 }
 
 - (void)onApplicationDidBecomeActive {
@@ -1042,11 +1023,12 @@
     
     if (_isdoing) {
         
-        
     }
-    
 }
 
+////////////////////////////////////////////////////////////////////////
+#pragma mark -
+////////////////////////////////////////////////////////////////////////
 - (void) panView:(UIPanGestureRecognizer *)panGestureRecognizer {
     UIView *view = panGestureRecognizer.view;
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
@@ -1113,8 +1095,8 @@
         [_filter addTarget:_filterView];
         
         
-    }else
-    {
+    }
+    else {
         [_movieFile removeAllTargets];
         
         
@@ -1139,12 +1121,11 @@
 }
 
 - (void)editVideoBar:(AlpEditVideoBar *)bar didSelectMusic:(AlpMusicData *)musicData {
-    if ([musicData.name isEqualToString:@"原始"]) {
+    if ([musicData.name isEqualToString:@"原始"] && musicData.audioPath.length == 0) {
         [_audioPlayer pause];
         [_mainPlayer setVolume:1];
-        
     }
-    else{
+    else {
         [self playMusic];
         
     }
@@ -1156,9 +1137,7 @@
 }
 
 - (void)dealloc {
-    NSLog(@"EditVideoViewController 释放了");
-    
+    NSLog(@"释放了 %@", NSStringFromClass([self class]));
 }
-
 
 @end
