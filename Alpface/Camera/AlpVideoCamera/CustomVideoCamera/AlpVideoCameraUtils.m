@@ -60,8 +60,7 @@
     }
     NSLog(@"%@",NSHomeDirectory());
     
-    //创建视频水印layer 并添加到视频layer上
-    //2017 年 04 月 19 日 视频水印由后台统一转码添加   del by hyy；
+    // 创建视频水印layer 并添加到视频layer上
     CGSize videoSize = [videoTrack naturalSize];
     
     CALayer *parentLayer = [CALayer layer];
@@ -109,126 +108,17 @@
     exporter.outputURL = mergeFileURL;
     exporter.outputFileType = AVFileTypeQuickTimeMovie;
     exporter.shouldOptimizeForNetworkUse = YES;
-//    __weak typeof(self) weakSelf = self;
-//    __weak typeof(_videoCamera) weakVideoCamera = _videoCamera;
     [exporter exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             NSURL *outURL = [NSURL fileURLWithPath:outpath];
             if (completion) {
                 completion(outURL);
             }
-//            [weakVideoCamera stopCameraCapture];
-//
-//            AlpEditVideoViewController* vc = [[AlpEditVideoViewController alloc]init];
-//            vc.width = weakSelf.width;
-//            vc.hight = weakSelf.hight;
-//            vc.bit = weakSelf.bit;
-//            vc.frameRate = weakSelf.frameRate;
-//            vc.videoURL = [NSURL fileURLWithPath:outpath];;
-//            [[NSNotificationCenter defaultCenter] removeObserver:weakSelf];
-//            //            [[AppDelegate sharedAppDelegate] pushViewController:view animated:YES];
-//            if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
-//                [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:vc];
-//            }
-//            [weakSelf removeFromSuperview];
         });
         
         
     }];
     
-    
-    ////    UIImage* waterImg = [UIImage imageNamed:@"LDWatermark"];
-    //    CMTime totalDuration = kCMTimeZero;
-    //    for (int i = 0; i < videosPathArray.count; i++) {
-    ////        AVURLAsset *asset = [AVURLAsset assetWithURL:[NSURL URLWithString:videosPathArray[i]]];
-    //        NSDictionary* options = @{AVURLAssetPreferPreciseDurationAndTimingKey:@YES};
-    //        AVAsset* asset = [AVURLAsset URLAssetWithURL:videosPathArray[i] options:options];
-    //
-    //        NSError *erroraudio = nil;
-    //        //获取AVAsset中的音频 或者视频
-    //        AVAssetTrack *assetAudioTrack = [[asset tracksWithMediaType:AVMediaTypeAudio] firstObject];
-    //        //向通道内加入音频或者视频
-    //        BOOL ba = [audioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration)
-    //                                      ofTrack:assetAudioTrack
-    //                                       atTime:totalDuration
-    //                                        error:&erroraudio];
-    //
-    //        NSLog(@"erroraudio:%@%d",erroraudio,ba);
-    //        NSError *errorVideo = nil;
-    //        AVAssetTrack *assetVideoTrack = [[asset tracksWithMediaType:AVMediaTypeVideo]firstObject];
-    //        BOOL bl = [videoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration)
-    //                                      ofTrack:assetVideoTrack
-    //                                       atTime:totalDuration
-    //                                        error:&errorVideo];
-    //
-    //        NSLog(@"errorVideo:%@%d",errorVideo,bl);
-    //        totalDuration = CMTimeAdd(totalDuration, asset.duration);
-    //    }
-    //    NSLog(@"%@",NSHomeDirectory());
-    //
-    //    //创建视频水印layer 并添加到视频layer上
-    //    //2017 年 04 月 19 日 视频水印由后台统一转码添加   del by hyy；
-    ////    CGSize videoSize = [videoTrack naturalSize];
-    ////    CALayer* aLayer = [CALayer layer];
-    ////    aLayer.contents = (id)waterImg.CGImage;
-    ////    aLayer.frame = CGRectMake(videoSize.width - waterImg.size.width - 30, videoSize.height - waterImg.size.height*3, waterImg.size.width, waterImg.size.height);
-    ////    aLayer.opacity = 0.9;
-    ////
-    ////    CALayer *parentLayer = [CALayer layer];
-    ////    CALayer *videoLayer = [CALayer layer];
-    ////    parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-    ////    videoLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-    ////    [parentLayer addSublayer:videoLayer];
-    ////    [parentLayer addSublayer:aLayer];
-    ////    AVMutableVideoComposition* videoComp = [AVMutableVideoComposition videoComposition];
-    ////    videoComp.renderSize = videoSize;
-    ////
-    ////
-    ////    videoComp.frameDuration = CMTimeMake(1, 30);
-    ////    videoComp.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
-    ////    AVMutableVideoCompositionInstruction* instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    ////
-    ////    instruction.timeRange = CMTimeRangeMake(kCMTimeZero, [mixComposition duration]);
-    ////    AVAssetTrack* mixVideoTrack = [[mixComposition tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    ////    AVMutableVideoCompositionLayerInstruction* layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:mixVideoTrack];
-    ////    instruction.layerInstructions = [NSArray arrayWithObject:layerInstruction];
-    ////    videoComp.instructions = [NSArray arrayWithObject: instruction];
-    //
-    //
-    //    NSURL *mergeFileURL = [NSURL fileURLWithPath:outpath];
-    //
-    //    //视频导出工具
-    //    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition
-    //                                                                      presetName:AVAssetExportPreset1280x720];
-    ////    exporter.videoComposition = videoComp;
-    //    /*
-    //    exporter.progress
-    //     导出进度
-    //     This property is not key-value observable.
-    //     不支持kvo 监听
-    //     只能用定时器监听了  NStimer
-    //     */
-    //    exporter.outputURL = mergeFileURL;
-    //    exporter.outputFileType = AVFileTypeQuickTimeMovie;
-    //    exporter.shouldOptimizeForNetworkUse = YES;
-    //    [exporter exportAsynchronouslyWithCompletionHandler:^{
-    //        dispatch_async(dispatch_get_main_queue(), ^{
-    //
-    //            [videoCamera stopCameraCapture];
-    //
-    //            EditVideoViewController* view = [[EditVideoViewController alloc]init];
-    //            view.width = _width;
-    //            view.hight = _hight;
-    //            view.bit = _bit;
-    //            view.frameRate = _frameRate;
-    //            view.videoURL = [NSURL fileURLWithPath:outpath];;
-    //            [[NSNotificationCenter defaultCenter] removeObserver:self];
-    //            [[AppDelegate sharedAppDelegate] pushViewController:view animated:YES];
-    //            [self removeFromSuperview];
-    //        });
-    //
-    //
-    //        }];
 }
 
 
