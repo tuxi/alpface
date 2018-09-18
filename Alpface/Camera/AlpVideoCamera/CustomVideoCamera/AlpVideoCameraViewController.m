@@ -11,7 +11,7 @@
 #import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpEditingPublishingViewController.h"
-#import "AlpEditVideoOptions.h"
+#import "AlpEditVideoParameter.h"
 
 @interface AlpVideoCameraViewController () <ALPVideoCameraViewDelegate>
 
@@ -50,7 +50,7 @@
         CGRect frame = [[UIScreen mainScreen] bounds];
         ALPVideoCameraView* videoCameraView = [[ALPVideoCameraView alloc] initWithFrame:frame];
         videoCameraView.delegate = self;
-        AlpEditVideoOptions *videoOptions = [[AlpEditVideoOptions alloc] initWithBitRate:bit frameRate:framRate];
+        AlpEditVideoParameter *videoOptions = [[AlpEditVideoParameter alloc] initWithBitRate:bit frameRate:framRate];
         videoCameraView.videoOptions = videoOptions;
         [self.view addSubview:videoCameraView];
     }

@@ -10,13 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class AlpEditVideoOptions;
+@class AlpEditVideoParameter;
 
 @interface AlpEditVideoViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *videoURL;
 
-@property (nonatomic, strong) AlpEditVideoOptions *videoOptions;
+@property (nonatomic, strong) AlpEditVideoParameter *videoOptions;
 
 @end
 

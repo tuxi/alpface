@@ -1,5 +1,5 @@
 //
-//  AlpEditVideoOptions.h
+//  AlpEditVideoParameter.h
 //  Alpface
 //
 //  Created by xiaoyuan on 2018/9/18.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AlpEditVideoOptions : NSObject
+@interface AlpEditVideoParameter : NSObject
 
 /// 比特率
 @property (nonatomic , assign) long long bitRate;

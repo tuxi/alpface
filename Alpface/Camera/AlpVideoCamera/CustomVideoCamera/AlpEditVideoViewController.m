@@ -20,7 +20,7 @@
 #import "AlpVideoCameraResourceItem.h"
 #import "AlpEditVideoBar.h"
 #import "AlpEditVideoNavigationBar.h"
-#import "AlpEditVideoOptions.h"
+#import "AlpEditVideoParameter.h"
 
 @interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate, AlpEditVideoNavigationBarDelegate>
 @property (nonatomic, strong) AVPlayer *audioPlayer;

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ALPVideoCameraView, AlpEditVideoOptions;
+@class ALPVideoCameraView, AlpEditVideoParameter;
 
 @protocol ALPVideoCameraViewDelegate <NSObject>
 
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ALPVideoCameraView : UIView
 
 @property (nonatomic, weak) id<ALPVideoCameraViewDelegate> delegate;
-@property (nonatomic, strong) AlpEditVideoOptions *videoOptions;
+@property (nonatomic, strong) AlpEditVideoParameter *videoOptions;
 
 @end
 

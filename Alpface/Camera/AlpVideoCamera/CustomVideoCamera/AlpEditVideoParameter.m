@@ -1,14 +1,14 @@
 //
-//  AlpEditVideoOptions.m
+//  AlpEditVideoParameter.m
 //  Alpface
 //
 //  Created by xiaoyuan on 2018/9/18.
 //  Copyright © 2018 alpface. All rights reserved.
 //
 
-#import "AlpEditVideoOptions.h"
+#import "AlpEditVideoParameter.h"
 
-@implementation AlpEditVideoOptions
+@implementation AlpEditVideoParameter
 
 - (instancetype)initWithBitRate:(long long)bitRate frameRate:(long long)frameRate {
     if (self = [super init]) {

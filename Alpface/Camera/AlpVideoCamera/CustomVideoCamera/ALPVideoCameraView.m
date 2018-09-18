@@ -24,7 +24,7 @@
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraUtils.h"
 #import "OSProgressView.h"
-#import "AlpEditVideoOptions.h"
+#import "AlpEditVideoParameter.h"
 
 typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     CameraManagerDevicePositionBack,

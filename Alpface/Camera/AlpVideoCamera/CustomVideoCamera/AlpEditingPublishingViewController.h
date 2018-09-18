@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AlpEditingPublishingViewController : UIViewController
 
-@property(nonatomic,retain) NSURL * videoURL;
+@property (nonatomic, strong) NSURL *videoURL;
 
 @end
 
