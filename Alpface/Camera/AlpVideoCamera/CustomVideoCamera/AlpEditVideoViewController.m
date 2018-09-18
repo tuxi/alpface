@@ -14,7 +14,8 @@
 #import "SDAVAssetExportSession.h"
 #import "GPUImage.h"
 #import "LFGPUImageEmptyFilter.h"
-#import "AlpEditingPublishingViewController.h"
+//#import "AlpEditingPublishingViewController.h"
+#import "AlpEditPublishViewController.h"
 #import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraResourceItem.h"
@@ -130,6 +131,7 @@
     
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
     headerBar.delegate = self;
+    [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
     [self.view addSubview:headerBar];
     headerBar.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
@@ -229,7 +231,7 @@
                      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                          _HUD.hidden = YES;
                          [[NSNotificationCenter defaultCenter] removeObserver:self];
-                         AlpEditingPublishingViewController* cor = [[AlpEditingPublishingViewController alloc] init];
+                         AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
                          cor.videoURL = compressionEncoder.outputURL;
                          //                         [[AppDelegate appDelegate] pushViewController:cor animated:YES];
                          [self.rt_navigationController pushViewController:cor animated:YES complete:nil];

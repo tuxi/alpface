@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<AlpEditVideoNavigationBarDelegate> delegate;
 
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIButton *rightButton;
+@property (nonatomic, strong) UIButton *leftButton;
+
 @end
 
 NS_ASSUME_NONNULL_END

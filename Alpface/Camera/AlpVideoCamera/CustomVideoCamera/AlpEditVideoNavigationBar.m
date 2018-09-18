@@ -22,7 +22,8 @@
 - (void)setupUI {
     self.alpha = .8;
     self.backgroundColor = [UIColor blackColor];
-    UILabel* titleLabel = [[UILabel alloc] init];
+    UILabel *titleLabel = [[UILabel alloc] init];
+    _titleLabel = titleLabel;
     titleLabel.text = @"编辑";
     titleLabel.textColor = [UIColor whiteColor];
     [self addSubview:titleLabel];
@@ -33,7 +34,7 @@
     
     UIButton *nextBtn = [UIButton buttonWithType:UIButtonTypeSystem];
     [nextBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [nextBtn setTitle:@"下一步" forState:UIControlStateNormal];
+    _rightButton = nextBtn;
     [nextBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [nextBtn addTarget:self action:@selector(clickNextBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:nextBtn];
@@ -45,6 +46,7 @@
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setImage:[UIImage imageNamed:@"BackToVideoCammer"] forState:UIControlStateNormal];
+    _leftButton = backButton;
     [backButton addTarget:self action:@selector(clickBackBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:backButton];
     backButton.translatesAutoresizingMaskIntoConstraints = false;

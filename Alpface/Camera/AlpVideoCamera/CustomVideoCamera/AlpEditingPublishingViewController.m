@@ -14,9 +14,6 @@
 #import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
 #import "UIImage+AlpExtensions.h"
-#import "Alpface-Swift.h"
-
-static NSString * const AlpContentTextFieldPlaceholder = @"点击添加描述(最多20个字)";
 
 @interface AlpEditingPublishingViewController () <UITextViewDelegate, CLLocationManagerDelegate>
 {

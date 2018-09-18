@@ -34,6 +34,6 @@ static NSTimeInterval const AlpVideoRecordingMaxTime = 20.0;
 static CGFloat const AlpVideoCameraMaxVideoSize = 8.0;
 static CGFloat const TIMER_INTERVAL = 0.05;
 
-
+static NSString * const AlpContentTextFieldPlaceholder = @"点击添加描述(最多20个字)";
 
 #endif /* AlpVideoCameraDefine_h */

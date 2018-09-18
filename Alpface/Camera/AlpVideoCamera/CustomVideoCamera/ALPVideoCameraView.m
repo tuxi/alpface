@@ -17,7 +17,8 @@
 #import "SDAVAssetExportSession.h"
 #import "TZImagePickerController.h"
 #import "TZImageManager.h"
-#import "AlpEditingPublishingViewController.h"
+//#import "AlpEditingPublishingViewController.h"
+#import "AlpEditPublishViewController.h"
 #import <Photos/Photos.h>
 #import <Photos/PHImageManager.h>
 #import "GPUImage.h"
@@ -415,7 +416,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
                         [_HUD hide:YES afterDelay:1.5];
                     }
                     else {
-                        AlpEditingPublishingViewController* cor = [[AlpEditingPublishingViewController alloc] init];
+                        AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
                         cor.videoURL = url;
                         
                         [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -442,7 +443,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
                     [_HUD hide:YES afterDelay:1.5];
                 }
                 else {
-                    AlpEditingPublishingViewController* cor = [[AlpEditingPublishingViewController alloc] init];
+                    AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
                     cor.videoURL = url;
                     
                     [[NSNotificationCenter defaultCenter] removeObserver:self];
