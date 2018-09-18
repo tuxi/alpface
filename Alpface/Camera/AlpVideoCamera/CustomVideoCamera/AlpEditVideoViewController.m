@@ -20,6 +20,7 @@
 #import "AlpVideoCameraResourceItem.h"
 #import "AlpEditVideoBar.h"
 #import "AlpEditVideoNavigationBar.h"
+#import "AlpEditVideoOptions.h"
 
 @interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate, AlpEditVideoNavigationBarDelegate>
 @property (nonatomic, strong) AVPlayer *audioPlayer;
@@ -192,6 +193,7 @@
     NSDictionary* options = @{AVURLAssetPreferPreciseDurationAndTimingKey:@YES};
     AVAsset* asset = [AVURLAsset URLAssetWithURL:inputVideoUrl options:options];
     NSArray* keys = @[@"tracks",@"duration",@"commonMetadata"];
+    __weak typeof(self) weakSelf = self;
     [asset loadValuesAsynchronouslyForKeys:keys completionHandler:^{
         SDAVAssetExportSession *compressionEncoder = [SDAVAssetExportSession.alloc initWithAsset:asset]; // provide inputVideo Url Here
         compressionEncoder.outputFileType = AVFileTypeMPEG4;
@@ -205,9 +207,9 @@
             {
                 //2000*1000  建议800*1000-5000*1000
                 //AVVideoAverageBitRateKey: @2500000, // Give your bitrate here for lower size give low values
-            AVVideoAverageBitRateKey: _bit,
+            AVVideoAverageBitRateKey: @(weakSelf.videoOptions.bitRate),
             AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel,
-            AVVideoAverageNonDroppableFrameRateKey: _frameRate,
+            AVVideoAverageNonDroppableFrameRateKey: @(weakSelf.videoOptions.frameRate),
             },
         };
         compressionEncoder.audioSettings = @

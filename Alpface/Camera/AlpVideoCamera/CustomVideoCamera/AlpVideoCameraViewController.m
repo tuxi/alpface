@@ -11,6 +11,7 @@
 #import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpEditingPublishingViewController.h"
+#import "AlpEditVideoOptions.h"
 
 @interface AlpVideoCameraViewController () <ALPVideoCameraViewDelegate>
 
@@ -49,19 +50,8 @@
         CGRect frame = [[UIScreen mainScreen] bounds];
         ALPVideoCameraView* videoCameraView = [[ALPVideoCameraView alloc] initWithFrame:frame];
         videoCameraView.delegate = self;
-        NSLog(@"new VideoCameraView");
-        videoCameraView.width = [NSNumber numberWithInteger:width];
-        videoCameraView.hight = [NSNumber numberWithInteger:hight];
-        videoCameraView.bit = [NSNumber numberWithInteger:bit];
-        videoCameraView.frameRate = [NSNumber numberWithInteger:framRate];
-        
-        typeof(self) __weak weakself = self;
-        videoCameraView.backToHomeBlock = ^(){
-            [weakself.navigationController dismissViewControllerAnimated:YES completion:nil];
-            
-            [[UIApplication sharedApplication] setStatusBarHidden:NO];
-            NSLog(@"clickBackToHomg2");
-        };
+        AlpEditVideoOptions *videoOptions = [[AlpEditVideoOptions alloc] initWithBitRate:bit frameRate:framRate];
+        videoCameraView.videoOptions = videoOptions;
         [self.view addSubview:videoCameraView];
     }
 }
@@ -80,6 +70,11 @@
 
 - (void)videoCamerView:(ALPVideoCameraView *)view presentViewCotroller:(UIViewController *)viewController {
     [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)videoCamerView:(ALPVideoCameraView *)view didClickBackButton:(UIButton *)btn {
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -24,6 +24,7 @@
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraUtils.h"
 #import "OSProgressView.h"
+#import "AlpEditVideoOptions.h"
 
 typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     CameraManagerDevicePositionBack,
@@ -175,7 +176,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     // 返回按钮
     UIButton* backBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, 25, 30, 30)];
     [backBtn setImage:[UIImage imageNamed:@"BackToHome"] forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(clickBackToHome) forControlEvents:UIControlEventTouchUpInside];
+    [backBtn addTarget:self action:@selector(clickBack:) forControlEvents:UIControlEventTouchUpInside];
     [_filteredVideoView addSubview:backBtn];
     
     // 前后摄像头切换按钮
@@ -329,10 +330,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
             [weakVideoCamera stopCameraCapture];
             
             AlpEditVideoViewController* vc = [[AlpEditVideoViewController alloc]init];
-            vc.width = weakSelf.width;
-            vc.hight = weakSelf.hight;
-            vc.bit = weakSelf.bit;
-            vc.frameRate = weakSelf.frameRate;
+            vc.videoOptions = weakSelf.videoOptions;
             vc.videoURL = outLocalURL;
             [[NSNotificationCenter defaultCenter] removeObserver:weakSelf];
             //            [[AppDelegate sharedAppDelegate] pushViewController:view animated:YES];
@@ -471,7 +469,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 }
 
 /// 退出
-- (void)clickBackToHome {
+- (void)clickBack:(UIButton *)btn {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_videoCamera stopCameraCapture];
@@ -482,9 +480,8 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     }
     [_myTimer invalidate];
     _myTimer = nil;
-    if (self.backToHomeBlock) {
-        NSLog(@"clickBacktoHome");
-        self.backToHomeBlock();
+    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCamerView:didClickBackButton:)]) {
+        [self.delegate videoCamerView:self didClickBackButton:btn];
         [self removeFromSuperview];
     }
 }
@@ -702,7 +699,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     }
 }
 - (void)closeVideoCameraNotification {
-    [self clickBackToHome];
+    [self clickBack:nil];
 }
 
 - (OSProgressView *)progressPreView {

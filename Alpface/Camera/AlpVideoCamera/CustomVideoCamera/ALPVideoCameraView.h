@@ -10,27 +10,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^clickBackToHomeBtnBlock)(void);
-
-@class ALPVideoCameraView;
+@class ALPVideoCameraView, AlpEditVideoOptions;
 
 @protocol ALPVideoCameraViewDelegate <NSObject>
 
+/// 需要以modal的方式弹出某个控制器时回调，此事件交给控制器处理
 - (void)videoCamerView:(ALPVideoCameraView *)view presentViewCotroller:(UIViewController *)viewController;
+/// 需要以push的方式跳转到某个控制器时回调，此事件交给控制器处理
 - (void)videoCamerView:(ALPVideoCameraView *)view pushViewCotroller:(UIViewController *)viewController;
+/// 点击返回按钮的回调
+- (void)videoCamerView:(ALPVideoCameraView *)view didClickBackButton:(UIButton *)btn;
 
 @end
 
 @interface ALPVideoCameraView : UIView
 
-@property (nonatomic , copy) clickBackToHomeBtnBlock backToHomeBlock;
-
-@property (nonatomic , strong) NSNumber* width;
-@property (nonatomic , strong) NSNumber* hight;
-@property (nonatomic , strong) NSNumber* bit;
-@property (nonatomic , strong) NSNumber* frameRate;
 @property (nonatomic, weak) id<ALPVideoCameraViewDelegate> delegate;
-
+@property (nonatomic, strong) AlpEditVideoOptions *videoOptions;
 
 @end
 

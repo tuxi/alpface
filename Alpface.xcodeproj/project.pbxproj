@@ -11,6 +11,7 @@
 		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
 		D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868D213E83000009682C /* MCGCDTimer.swift */; };
 		D0B47A1E2150A1A300E78B90 /* AlpEditVideoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B47A1D2150A1A300E78B90 /* AlpEditVideoNavigationBar.m */; };
+		D0B47A912150FB8E00E78B90 /* AlpEditVideoOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B47A902150FB8E00E78B90 /* AlpEditVideoOptions.m */; };
 		D0C1E3502086E7BB0013F98B /* MainNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */; };
 		D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */; };
 		D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0DB45A32085B4F0000C291A /* PublishViewController.xib */; };
@@ -296,6 +297,8 @@
 		D06F868D213E83000009682C /* MCGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCGCDTimer.swift; sourceTree = "<group>"; };
 		D0B47A1C2150A1A300E78B90 /* AlpEditVideoNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditVideoNavigationBar.h; sourceTree = "<group>"; };
 		D0B47A1D2150A1A300E78B90 /* AlpEditVideoNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoNavigationBar.m; sourceTree = "<group>"; };
+		D0B47A8F2150FB8E00E78B90 /* AlpEditVideoOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditVideoOptions.h; sourceTree = "<group>"; };
+		D0B47A902150FB8E00E78B90 /* AlpEditVideoOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoOptions.m; sourceTree = "<group>"; };
 		D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationBar.swift; sourceTree = "<group>"; };
 		D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		D0DB45A32085B4F0000C291A /* PublishViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PublishViewController.xib; sourceTree = "<group>"; };
@@ -856,6 +859,8 @@
 				D26A95A1214FD2FD00C118CA /* OSProgressView.m */,
 				D0B47A1C2150A1A300E78B90 /* AlpEditVideoNavigationBar.h */,
 				D0B47A1D2150A1A300E78B90 /* AlpEditVideoNavigationBar.m */,
+				D0B47A8F2150FB8E00E78B90 /* AlpEditVideoOptions.h */,
+				D0B47A902150FB8E00E78B90 /* AlpEditVideoOptions.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -1756,6 +1761,7 @@
 				D2BCBA4A206F33F2008409B3 /* ListCollectionView.swift in Sources */,
 				D27D6CE420839E520095425A /* SettingsTableViewCellModel.swift in Sources */,
 				D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */,
+				D0B47A912150FB8E00E78B90 /* AlpEditVideoOptions.m in Sources */,
 				D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */,
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
 				D2BCBA45206F33F2008409B3 /* PlayInteractionViewController.swift in Sources */,

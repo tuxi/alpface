@@ -34,4 +34,6 @@ static NSTimeInterval const AlpVideoRecordingMaxTime = 20.0;
 static CGFloat const AlpVideoCameraMaxVideoSize = 8.0;
 static CGFloat const TIMER_INTERVAL = 0.05;
 
+
+
 #endif /* AlpVideoCameraDefine_h */
