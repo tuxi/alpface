@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AlpVideoCameraPermissionView : UIView
 
+- (void)updateHidden;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -27,6 +27,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>App需要相機權限</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>App需要麥克風權限</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>App需要訪問您的相冊</string>
 	<key>UIAppFonts</key>

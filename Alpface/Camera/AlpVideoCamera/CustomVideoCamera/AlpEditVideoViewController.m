@@ -14,7 +14,6 @@
 #import "SDAVAssetExportSession.h"
 #import "GPUImage.h"
 #import "LFGPUImageEmptyFilter.h"
-//#import "AlpEditingPublishingViewController.h"
 #import "AlpEditPublishViewController.h"
 #import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"

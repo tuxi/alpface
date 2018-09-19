@@ -238,10 +238,10 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-    self.permissionView.hidden = NO;
     
     [_filteredVideoView bringSubviewToFront:backBtn];
     
+    [self.permissionView updateHidden];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -737,7 +737,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     if (!_permissionView) {
         _permissionView = [AlpVideoCameraPermissionView new];
         _permissionView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
-        _permissionView.hidden = YES;
     }
     return _permissionView;
 }
