@@ -111,6 +111,15 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     [self setupUI];
     [self initObserver];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNeedsStatusBarAppearanceUpdate];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
 
 - (void)initObserver {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];

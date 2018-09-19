@@ -27,6 +27,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNeedsStatusBarAppearanceUpdate];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     [self setupViewCameraView];
 }
@@ -73,7 +74,7 @@
 }
 
 - (void)videoCamerView:(ALPVideoCameraView *)view didClickBackButton:(UIButton *)btn {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
