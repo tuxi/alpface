@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic, strong) AlpEditVideoNavigationBar *navigationBar;
 @property (nonatomic, strong) AlpEditPublishViewBottomView *bottomView;
 @property (nonatomic, strong) AlpEditPublishVideoModel *publishModel;
-@property (nonatomic, strong) UIView *maskView;
+@property (nonatomic, strong) UIButton *maskView;
 @property (nonatomic, weak) NSLayoutConstraint *maskViewTopConstraint;
 
 @end
@@ -258,6 +258,14 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 }
 
 ////////////////////////////////////////////////////////////////////////
+#pragma mark - Actions
+////////////////////////////////////////////////////////////////////////
+
+- (void)maskViewClick:(id)sender {
+    [self.view endEditing:YES];
+}
+
+////////////////////////////////////////////////////////////////////////
 #pragma mark - Lazy
 ////////////////////////////////////////////////////////////////////////
 
@@ -296,12 +304,13 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     return _publishModel;
 }
 
-- (UIView *)maskView {
+- (UIButton *)maskView {
     if (!_maskView) {
-        _maskView = [UIView new];
+        _maskView = [UIButton new];
         _maskView.translatesAutoresizingMaskIntoConstraints = false;
         _maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
         _maskView.hidden = YES;
+        [_maskView addTarget:self action:@selector(maskViewClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _maskView;
 }
