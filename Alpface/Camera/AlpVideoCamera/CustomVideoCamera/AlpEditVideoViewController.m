@@ -311,8 +311,8 @@
         if (weakself.editVideoBar.audioPath||!weakself.stickersImgView.hidden) {
             [weakself mixAudioAndVidoWithInputURL:movieURL];
             //音乐混合
-        }else
-        {
+        }
+        else {
             //压缩
             [weakself compressVideoWithInputVideoUrl:movieURL];
         }

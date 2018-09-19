@@ -27,6 +27,10 @@
 #import "OSProgressView.h"
 #import "AlpEditVideoParameter.h"
 
+/**
+ @note GPUImageVideoCamera录制视频 有时第一帧是黑屏 待解决
+ */
+
 typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     CameraManagerDevicePositionBack,
     CameraManagerDevicePositionFront,
@@ -74,11 +78,9 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 @implementation ALPVideoCameraView
 
 - (instancetype) initWithFrame:(CGRect)frame{
-    if (!(self = [super initWithFrame:frame])) {
-        return nil;
+    if (self = [super initWithFrame:frame]) {
+        [self setup];
     }
-    [self setup];
-    
     return self;
 }
 
@@ -148,7 +150,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - UI
 ////////////////////////////////////////////////////////////////////////
-- (void) setupUI{
+- (void)setupUI {
     //    253 91 73
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 27.0, 80, 26.0)];
     _timeLabel.font = [UIFont systemFontOfSize:13.0f];
@@ -392,6 +394,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     imagePickerVc.allowPickingGif = NO;
     imagePickerVc.allowPickingVideo = YES;
     imagePickerVc.sortAscendingByModificationDate = YES;
+    __weak typeof(self) weakSelf = self;
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage,id asset) {
         _HUD = [MBProgressHUD showHUDAddedTo:self animated:YES];
         _HUD.label.text = @"视频导出中...";
@@ -422,10 +425,10 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
                         [[NSNotificationCenter defaultCenter] removeObserver:self];
                         [_videoCamera stopCameraCapture];
                         //                     [[AppDelegate appDelegate] pushViewController:cor animated:YES];
-                        if (self.delegate&&[self.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
-                            [self.delegate videoCamerView:self pushViewCotroller:cor];
+                        if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
+                            [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:cor];
                         }
-                        [self removeFromSuperview];
+                        [weakSelf removeFromSuperview];
                         
                     }
                 });
@@ -449,10 +452,10 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
                     [[NSNotificationCenter defaultCenter] removeObserver:self];
                     [_videoCamera stopCameraCapture];
                     //                    [[AppDelegate appDelegate] pushViewController:cor animated:YES];
-                    if (self.delegate&&[self.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
-                        [self.delegate videoCamerView:self pushViewCotroller:cor];
+                    if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
+                        [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:cor];
                     }
-                    [self removeFromSuperview];
+                    [weakSelf removeFromSuperview];
                 }
                 
             });

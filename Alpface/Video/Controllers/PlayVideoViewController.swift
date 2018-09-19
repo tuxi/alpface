@@ -467,7 +467,10 @@ extension PlayVideoViewController {
                 // 视频总时间
                 totalDuration = Float(Float64(playerItem.duration.value) / Float64(playerItem.duration.timescale))
                 //        let totalDurationString = formatPlayTime(seconds: totalDuration)
-                print("准备播放中...，视频总长度:\(formatPlayTime(seconds: CMTimeGetSeconds(playerItem.duration)))")
+                let seconds = CMTimeGetSeconds(playerItem.duration)
+                if seconds.isNaN == false {
+                    print("准备播放中...，视频总长度:\(formatPlayTime(seconds: ))")
+                }
             }
             else if playerItem.status == .failed || playerItem.status == .unknown {
                 state = .failure

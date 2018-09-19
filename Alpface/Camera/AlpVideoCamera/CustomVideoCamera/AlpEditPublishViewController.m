@@ -11,6 +11,7 @@
 #import "AlpVideoCameraDefine.h"
 #import "UIImage+AlpExtensions.h"
 #import <CoreLocation/CoreLocation.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 
 typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     AlpPublishVideoPermissionTypePublic,
@@ -83,6 +84,10 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic, strong) UIButton *publishButton;
 @property (nonatomic, strong) UIButton *saveAlbumButton;
 @property (nonatomic, strong) UILabel *titleLabel;
+
+@property (nonatomic, copy) void (^clickDraftButtonBlock)(UIButton *button);
+@property (nonatomic, copy) void (^clickPublishButtonBlock)(UIButton *button);
+@property (nonatomic, copy) void (^clickSaveAlbumButtonBlock)(BOOL isSave);
 
 @end
 
@@ -199,6 +204,18 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     maskViewTopConstraint.active = YES;
     _maskViewTopConstraint = maskViewTopConstraint;
     
+//    UIBlurEffect *blurEffrct =[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+//    // 毛玻璃视图
+//    UIVisualEffectView* visualEffectView = [[UIVisualEffectView alloc]initWithEffect:blurEffrct];
+//    visualEffectView.alpha = .5;
+//    [self.maskView addSubview:visualEffectView];
+//    visualEffectView.userInteractionEnabled = NO;
+//    visualEffectView.translatesAutoresizingMaskIntoConstraints = false;
+//    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+//    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+//    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+//    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    
 }
 
 - (void)setVideoURL:(NSURL *)videoURL {
@@ -300,6 +317,35 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     [self.view endEditing:YES];
 }
 
+- (void)releaseVideo {
+    AlpEditPublishViewContentCell *contentCell = (id)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//    AlpEditPublishViewSelectLocationCell *locationCell = (id)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//    AlpEditPublishViewPermissionCell *permissionCell = (id)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES ];
+    
+    if (_videoURL == nil) {
+        hud.label.text = @"还未选择视频...";
+        [hud hideAnimated:YES afterDelay:2];
+        return;
+    }
+    
+    if (contentCell.textView.text.length == 0 || [contentCell.textView.text isEqualToString:AlpContentTextFieldPlaceholder]) {
+        hud.label.text = @"请添加标题和描述文本";
+        [hud hideAnimated:YES afterDelay:2];
+        return;
+    }
+    if (self.publishModel.isSaveAlbum) {
+        hud.label.text = @"正在保存到相册...";
+        UISaveVideoAtPathToSavedPhotosAlbum([[_videoURL absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""], nil, nil, nil);
+        
+    }
+    [hud hideAnimated:YES];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:AlpPublushVideoNotification object:nil userInfo:@{@"video": _videoURL, @"title": @"test", @"content": contentCell.textView.text}];
+}
+
+
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - Lazy
 ////////////////////////////////////////////////////////////////////////
@@ -328,6 +374,16 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     if (!_bottomView) {
         _bottomView = [AlpEditPublishViewBottomView new];
         _bottomView.backgroundColor = [UIColor clearColor];
+        __weak typeof(self) weakSelf = self;
+        _bottomView.clickSaveAlbumButtonBlock = ^(BOOL isSave) {
+            weakSelf.publishModel.saveAlbum = isSave;
+        };
+        _bottomView.clickDraftButtonBlock = ^(UIButton *button) {
+            
+        };
+        _bottomView.clickPublishButtonBlock = ^(UIButton *button) {
+            [weakSelf releaseVideo];
+        };
     }
     return _bottomView;
 }
@@ -410,6 +466,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     }
     _videoURL = videoURL;
     UIImage *thumbImage = [UIImage getThumbnailByVideoPath:[[_videoURL absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
+    // file:///private/var/mobile/Containers/Data/Application/7460F046-6F5F-46F7-BD31-A1F1ADDDD61D/tmp/compressedVideo20180919200614.mp4
+    // file:///private/var/mobile/Containers/Data/Application/7460F046-6F5F-46F7-BD31-A1F1ADDDD61D/tmp/compressedVideo20180919200705.mp4
     [self.videoButton setImage:thumbImage forState:UIControlStateNormal];
 }
 
@@ -696,6 +754,33 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     [NSLayoutConstraint constraintWithItem:self.publishButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.draftButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
 }
 
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Actions
+////////////////////////////////////////////////////////////////////////
+
+- (void)draftButtonClick:(id)sender {
+    if (self.clickDraftButtonBlock) {
+        self.clickDraftButtonBlock(sender);
+    }
+}
+
+- (void)publishButtonClick:(id)sender {
+    if (self.clickPublishButtonBlock) {
+        self.clickPublishButtonBlock(sender);
+    }
+}
+
+- (void)saveAlbumButtonClick:(UIButton *)sender {
+    sender.selected = !sender.isSelected;
+    if (self.clickSaveAlbumButtonBlock) {
+        self.clickSaveAlbumButtonBlock(!sender.selected);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Lazy
+////////////////////////////////////////////////////////////////////////
+
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [UILabel new];
@@ -716,6 +801,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         _draftButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         _draftButton.layer.cornerRadius = 1.0;
         _draftButton.layer.masksToBounds = YES;
+        [_draftButton addTarget:self action:@selector(draftButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _draftButton;
 }
@@ -730,6 +816,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         _publishButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         _publishButton.layer.cornerRadius = 1.0;
         _publishButton.layer.masksToBounds = YES;
+        [_publishButton addTarget:self action:@selector(publishButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _publishButton;
 }
@@ -742,6 +829,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         [_saveAlbumButton setTitle:@"保存本地" forState:UIControlStateNormal];
         [_saveAlbumButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
         _saveAlbumButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+        [_saveAlbumButton addTarget:self action:@selector(saveAlbumButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         
     }
     return _saveAlbumButton;
@@ -768,8 +856,10 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 - (UIButton *)searchButton {
     if (!_searchButton) {
-        _searchButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _searchButton = [UIButton new];
         [_searchButton setTitle:@"查看更多" forState:UIControlStateNormal];
+        [_searchButton setImage:[UIImage imageNamed:@"icSearshSugbarSearch_24x24_"] forState:UIControlStateNormal];
+        _searchButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         _searchButton.layer.masksToBounds = YES;
         _searchButton.layer.cornerRadius = 10.0;
         _searchButton.layer.borderWidth = 0.5;
@@ -777,7 +867,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         [_searchButton setBackgroundColor:[UIColor darkGrayColor]];
         [_searchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _searchButton.titleLabel.font = [UIFont systemFontOfSize:10.0];
-        [_searchButton setContentEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 10.0)];
+        [_searchButton setContentEdgeInsets:UIEdgeInsetsMake(0.0, 5.0, 0.0, 10.0)];
     }
     return _searchButton;
 }
@@ -785,7 +875,14 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @end
 @implementation AlpEditPublishVideoModel
 
-
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.saveAlbum = YES;
+    }
+    return self;
+}
 
 @end
 

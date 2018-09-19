@@ -33,10 +33,7 @@
 }
 
 - (void)setupViewCameraView {
-    int width,hight,bit,framRate;
-    {
-        width = 720;
-        hight = 1280;
+    int bit,framRate; {
         bit = 2500000;
         framRate = 30;
     }
@@ -49,7 +46,7 @@
     if (needNewVideoCamera) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
         CGRect frame = [[UIScreen mainScreen] bounds];
-        ALPVideoCameraView* videoCameraView = [[ALPVideoCameraView alloc] initWithFrame:frame];
+        ALPVideoCameraView *videoCameraView = [[ALPVideoCameraView alloc] initWithFrame:frame];
         videoCameraView.delegate = self;
         AlpEditVideoParameter *videoOptions = [[AlpEditVideoParameter alloc] initWithBitRate:bit frameRate:framRate];
         videoCameraView.videoOptions = videoOptions;
