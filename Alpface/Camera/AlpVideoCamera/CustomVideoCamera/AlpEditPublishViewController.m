@@ -18,6 +18,14 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     AlpPublishVideoPermissionTypeFriend,
 };
 
+@interface AlpEditPublishTableViewCellModel : NSObject
+
+@property (nonatomic) Class cellClass;
+@property (nonatomic, assign) CGFloat cellHeight;
+@property (nonatomic, strong) id model;
+
+@end
+
 @interface AlpEditPublishVideoModel : NSObject
 
 @property (nonatomic, strong) NSURL *videoURL;
@@ -37,6 +45,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (strong, nonatomic) UILabel *limitLabel;
 @property BOOL isExceed_cai;
 
+@property (nonatomic, strong) AlpEditPublishTableViewCellModel *cellModel;
+
 @end
 
 @interface AlpEditPublishViewSelectLocationCell : UITableViewCell
@@ -44,6 +54,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIImageView *arrowIconView;
+
+@property (nonatomic, strong) AlpEditPublishTableViewCellModel *cellModel;
 
 @end
 
@@ -54,9 +66,14 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic, strong) UIImageView *arrowIconView;
 @property (nonatomic, strong) UILabel *resultLabel;
 
+@property (nonatomic, strong) AlpEditPublishTableViewCellModel *cellModel;
+
 @end
 
 @interface AlpEditPublishViewLocationListCell : UITableViewCell
+
+@property (nonatomic, strong) AlpEditPublishTableViewCellModel *cellModel;
+@property (nonatomic, strong) UIButton *searchButton;
 
 @end
 
@@ -77,6 +94,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic, strong) AlpEditPublishVideoModel *publishModel;
 @property (nonatomic, strong) UIButton *maskView;
 @property (nonatomic, weak) NSLayoutConstraint *maskViewTopConstraint;
+@property (nonatomic, strong) NSMutableArray *cellModels;
 
 @end
 
@@ -89,6 +107,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self initData];
     [self setupUI];
     [self initObserver];
 }
@@ -97,6 +116,36 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)initData {
+    {
+        AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
+        m.cellClass = [AlpEditPublishViewContentCell class];
+        m.model = self.videoURL;
+        m.cellHeight = 160.0;
+        
+        [self.cellModels addObject:m];
+    }
+    {
+        AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
+        m.cellClass = [AlpEditPublishViewSelectLocationCell class];
+        m.cellHeight = 60.0;
+        [self.cellModels addObject:m];
+    }
+    {
+        AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
+        m.cellClass = [AlpEditPublishViewLocationListCell class];
+        m.cellHeight = 40.0;
+        [self.cellModels addObject:m];
+    }
+    {
+        AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
+        m.cellClass = [AlpEditPublishViewPermissionCell class];
+        m.cellHeight = 60.0;
+        [self.cellModels addObject:m];
+    }
+    
 }
 
 - (void)setupUI {
@@ -146,6 +195,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 - (void)setVideoURL:(NSURL *)videoURL {
     _videoURL = videoURL;
     self.publishModel.videoURL = videoURL;
+    AlpEditPublishTableViewCellModel *cellModel = [self.cellModels firstObject];
+    cellModel.model = videoURL;
     [self.tableView reloadData];
 }
 
@@ -175,48 +226,23 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return self.cellModels.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        static NSString * const cellId = @"AlpEditPublishViewContentCell";
-        AlpEditPublishViewContentCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-        if (cell == nil) {
-            cell = [[AlpEditPublishViewContentCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
-        }
-        cell.videoURL = self.videoURL;
-        return cell;
+    AlpEditPublishTableViewCellModel *cellModel = self.cellModels[indexPath.row];
+    Class cellClass = cellModel.cellClass;
+    NSString * cellId = NSStringFromClass(cellClass);
+    AlpEditPublishViewContentCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (cell == nil) {
+        cell = [[cellClass alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
     }
-    else if (indexPath.row == 1) {
-        static NSString * const cellId = @"AlpEditPublishViewSelectLocationCell";
-        AlpEditPublishViewSelectLocationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-        if (cell == nil) {
-            cell = [[AlpEditPublishViewSelectLocationCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
-        }
-        return cell;
-    }
-    else if (indexPath.row == 2) {
-        static NSString * const cellId = @"AlpEditPublishViewPermissionCell";
-        AlpEditPublishViewPermissionCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-        if (cell == nil) {
-            cell = [[AlpEditPublishViewPermissionCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
-        }
-        return cell;
-    }
-    return nil;
+    cell.cellModel = cellModel;
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return 160.0;
-    }
-    if (indexPath.row == 1) {
-        return 60.0;
-    }
-    if (indexPath.row == 2) {
-        return 60.0;
-    }
-    return 0.0;
+    AlpEditPublishTableViewCellModel *cellModel = self.cellModels[indexPath.row];
+    return cellModel.cellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -315,6 +341,13 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     return _maskView;
 }
 
+- (NSMutableArray *)cellModels {
+    if (!_cellModels) {
+        _cellModels = @[].mutableCopy;
+    }
+    return _cellModels;
+}
+
 @end
 
 @implementation AlpEditPublishViewContentCell
@@ -355,6 +388,11 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         
     }
     return self;
+}
+
+- (void)setCellModel:(AlpEditPublishTableViewCellModel *)cellModel {
+    _cellModel = cellModel;
+    self.videoURL = cellModel.model;
 }
 
 - (void)setVideoURL:(NSURL *)videoURL {
@@ -654,7 +692,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         _titleLabel = [UILabel new];
         _titleLabel.text = @"同步视频至";
         _titleLabel.textColor = [[[UIColor whiteColor] colorWithAlphaComponent:0.8] colorWithAlphaComponent:0.8];
-        _titleLabel.font = [UIFont systemFontOfSize:12.0];
+        _titleLabel.font = [UIFont systemFontOfSize:15.0];
     }
     return _titleLabel;
 }
@@ -667,6 +705,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         [_draftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_draftButton setBackgroundColor:[UIColor lightGrayColor]];
         _draftButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+        _draftButton.layer.cornerRadius = 1.0;
+        _draftButton.layer.masksToBounds = YES;
     }
     return _draftButton;
 }
@@ -679,6 +719,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_publishButton setBackgroundColor:[UIColor redColor]];
         _publishButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+        _publishButton.layer.cornerRadius = 1.0;
+        _publishButton.layer.masksToBounds = YES;
     }
     return _publishButton;
 }
@@ -698,14 +740,47 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @end
 
+@implementation AlpEditPublishViewLocationListCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        
+        [self.contentView addSubview:self.searchButton];
+        self.searchButton.translatesAutoresizingMaskIntoConstraints = false;
+        [NSLayoutConstraint constraintWithItem:self.searchButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.searchButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.searchButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:20.0].active = YES;
+    }
+    return self;
+}
+
+- (UIButton *)searchButton {
+    if (!_searchButton) {
+        _searchButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [_searchButton setTitle:@"查看更多" forState:UIControlStateNormal];
+        _searchButton.layer.masksToBounds = YES;
+        _searchButton.layer.cornerRadius = 10.0;
+        _searchButton.layer.borderWidth = 0.5;
+        _searchButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        [_searchButton setBackgroundColor:[UIColor darkGrayColor]];
+        [_searchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _searchButton.titleLabel.font = [UIFont systemFontOfSize:10.0];
+        [_searchButton setContentEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 10.0)];
+    }
+    return _searchButton;
+}
+
+@end
 @implementation AlpEditPublishVideoModel
 
 
 
 @end
 
-@implementation AlpEditPublishViewLocationListCell
-
+@implementation AlpEditPublishTableViewCellModel
 
 
 @end
