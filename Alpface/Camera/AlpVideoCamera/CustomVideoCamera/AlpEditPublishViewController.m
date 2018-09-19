@@ -75,16 +75,33 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic, strong) AlpEditVideoNavigationBar *navigationBar;
 @property (nonatomic, strong) AlpEditPublishViewBottomView *bottomView;
 @property (nonatomic, strong) AlpEditPublishVideoModel *publishModel;
+@property (nonatomic, strong) UIView *maskView;
+@property (nonatomic, weak) NSLayoutConstraint *maskViewTopConstraint;
 
 @end
 
 @implementation AlpEditPublishViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self setupUI];
+    [self initObserver];
+}
+
+- (void)initObserver {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)setupUI {
     self.navigationController.navigationBarHidden = YES;
-//    self.view.alpha = .8;
+    //    self.view.alpha = .8;
     self.view.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.navigationBar];
     self.navigationBar.titleLabel.text = @"发布";
@@ -116,12 +133,37 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     [NSLayoutConstraint constraintWithItem:self.bottomView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.bottomView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     
+    [self.view addSubview:self.maskView];
+    [NSLayoutConstraint constraintWithItem:self.maskView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.maskView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.maskView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    NSLayoutConstraint *maskViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.maskView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.tableView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
+    maskViewTopConstraint.active = YES;
+    _maskViewTopConstraint = maskViewTopConstraint;
+    
 }
 
 - (void)setVideoURL:(NSURL *)videoURL {
     _videoURL = videoURL;
     self.publishModel.videoURL = videoURL;
     [self.tableView reloadData];
+}
+
+- (void)setMaskViewHidden:(BOOL)hidden animateDuration:(CGFloat)duration {
+    self.maskView.hidden = hidden;
+    if (hidden) {
+        self.maskViewTopConstraint.constant = 0;
+    }
+    else {
+        CGFloat height = [self tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        self.maskViewTopConstraint.constant = height;
+    }
+    duration = fabs(duration);
+    if (duration) {
+        [UIView animateWithDuration:duration animations:^{
+            [self.view layoutIfNeeded];
+        }];
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -186,6 +228,27 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 }
 
 ////////////////////////////////////////////////////////////////////////
+#pragma mark - Notification
+////////////////////////////////////////////////////////////////////////
+
+/// 键盘显示事件
+- (void) keyboardWillShow:(NSNotification *)notification {
+    self.tableView.scrollEnabled = NO;
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+//    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [self setMaskViewHidden:NO animateDuration:0];
+}
+
+/// 键盘消失事件
+- (void) keyboardWillHide:(NSNotification *)notification {
+    self.tableView.scrollEnabled = YES;
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+//    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [self setMaskViewHidden:YES animateDuration:0];
+}
+
+
+////////////////////////////////////////////////////////////////////////
 #pragma mark - AlpEditVideoNavigationBarDelegate
 ////////////////////////////////////////////////////////////////////////
 
@@ -231,6 +294,16 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         _publishModel = [AlpEditPublishVideoModel new];
     }
     return _publishModel;
+}
+
+- (UIView *)maskView {
+    if (!_maskView) {
+        _maskView = [UIView new];
+        _maskView.translatesAutoresizingMaskIntoConstraints = false;
+        _maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+        _maskView.hidden = YES;
+    }
+    return _maskView;
 }
 
 @end

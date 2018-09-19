@@ -158,7 +158,7 @@
 		D26A9451214E269D00C118CA /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D26A9449214E269C00C118CA /* LICENSE */; };
 		D26A9452214E269D00C118CA /* UIViewController+RTRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A944C214E269C00C118CA /* UIViewController+RTRootNavigationController.m */; };
 		D26A9453214E269D00C118CA /* RTRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A944F214E269C00C118CA /* RTRootNavigationController.m */; };
-		D26A9454214E269D00C118CA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D26A9450214E269C00C118CA /* README.md */; };
+		D26A9454214E269D00C118CA /* README_1.md in Resources */ = {isa = PBXBuildFile; fileRef = D26A9450214E269C00C118CA /* README_1.md */; };
 		D26A9456214E2FA600C118CA /* AlpVideoCameraNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */; };
 		D26A9524214E953B00C118CA /* 6401.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D26A94FB214E953B00C118CA /* 6401.jpeg */; };
 		D26A9525214E953B00C118CA /* 6513.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D26A94FC214E953B00C118CA /* 6513.jpeg */; };
@@ -481,7 +481,7 @@
 		D26A944D214E269C00C118CA /* RTRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTRootNavigationController.h; sourceTree = "<group>"; };
 		D26A944E214E269C00C118CA /* UIViewController+RTRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RTRootNavigationController.h"; sourceTree = "<group>"; };
 		D26A944F214E269C00C118CA /* RTRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTRootNavigationController.m; sourceTree = "<group>"; };
-		D26A9450214E269C00C118CA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D26A9450214E269C00C118CA /* README_1.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_1.md; sourceTree = "<group>"; };
 		D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlpVideoCameraNavigationController.swift; sourceTree = "<group>"; };
 		D26A94FB214E953B00C118CA /* 6401.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6401.jpeg; sourceTree = "<group>"; };
 		D26A94FC214E953B00C118CA /* 6513.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6513.jpeg; sourceTree = "<group>"; };
@@ -1039,7 +1039,7 @@
 			children = (
 				D26A9449214E269C00C118CA /* LICENSE */,
 				D26A944A214E269C00C118CA /* RTRootNavigationController */,
-				D26A9450214E269C00C118CA /* README.md */,
+				D26A9450214E269C00C118CA /* README_1.md */,
 			);
 			path = RTRootNavigationController;
 			sourceTree = "<group>";
@@ -1559,7 +1559,7 @@
 				D26A93EC214E13AA00C118CA /* stickers534.jpg in Resources */,
 				D26A9525214E953B00C118CA /* 6513.jpeg in Resources */,
 				D26A9407214E13AA00C118CA /* GPUImageSepiaFilter.png in Resources */,
-				D26A9454214E269D00C118CA /* README.md in Resources */,
+				D26A9454214E269D00C118CA /* README_1.md in Resources */,
 				D26A95C02151479D00C118CA /* icPoiNewPublishLocation_20x20_@3x.png in Resources */,
 				D26A9540214E953B00C118CA /* 6473.jpeg in Resources */,
 				D26A9535214E953B00C118CA /* 6534.jpeg in Resources */,
