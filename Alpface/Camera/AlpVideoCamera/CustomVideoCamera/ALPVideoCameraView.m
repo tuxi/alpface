@@ -17,7 +17,6 @@
 #import "SDAVAssetExportSession.h"
 #import "TZImagePickerController.h"
 #import "TZImageManager.h"
-//#import "AlpEditingPublishingViewController.h"
 #import "AlpEditPublishViewController.h"
 #import <Photos/Photos.h>
 #import <Photos/PHImageManager.h>
@@ -26,6 +25,7 @@
 #import "AlpVideoCameraUtils.h"
 #import "OSProgressView.h"
 #import "AlpEditVideoParameter.h"
+#import "AlpVideoCameraPermissionView.h"
 
 /**
  @note GPUImageVideoCamera录制视频 有时第一帧是黑屏 待解决
@@ -72,6 +72,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 @property (nonatomic, strong) UIView* btView;
 @property (nonatomic, assign) BOOL isRecoding;
 @property (nonatomic, strong) OSProgressView *progressPreView;
+@property (nonatomic, strong) AlpVideoCameraPermissionView *permissionView;
 
 @end
 
@@ -230,6 +231,16 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     // 录制的进度条
     [_filteredVideoView addSubview:self.progressPreView];
     [self.progressPreView makeCornerRadius:2 borderColor:nil borderWidth:0];
+    
+    [_filteredVideoView addSubview:self.permissionView];
+    self.permissionView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    self.permissionView.hidden = NO;
+    
+    [_filteredVideoView bringSubviewToFront:backBtn];
     
 }
 
@@ -721,6 +732,16 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     }
     return _progressPreView;
 }
+
+- (AlpVideoCameraPermissionView *)permissionView {
+    if (!_permissionView) {
+        _permissionView = [AlpVideoCameraPermissionView new];
+        _permissionView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+        _permissionView.hidden = YES;
+    }
+    return _permissionView;
+}
+
 - (void)dealloc {
     NSLog(@"%@释放了",self.class);
 }

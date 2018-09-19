@@ -10,7 +10,6 @@
 #import "ALPVideoCameraView.h"
 #import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
-#import "AlpEditingPublishingViewController.h"
 #import "AlpEditVideoParameter.h"
 
 @interface AlpVideoCameraViewController () <ALPVideoCameraViewDelegate>
