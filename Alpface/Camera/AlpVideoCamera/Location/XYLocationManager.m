@@ -36,6 +36,16 @@ NSNotificationName const XYUpdateLocationsNotification = @"XYUpdateLocationsNoti
 //kCLAuthorizationStatusAuthorizedWhenInUse： 使用此应用过程中允许访问定位服务
 - (void)getAuthorization
 {
+    // Setup location services
+    if (![CLLocationManager locationServicesEnabled]) {
+        NSLog(@"Please enable location services");
+        return;
+    }
+    
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+        NSLog(@"Please authorize location services");
+        return;
+    }
     if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
         
         switch ([CLLocationManager authorizationStatus]) {

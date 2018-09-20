@@ -27,7 +27,7 @@ typedef enum : NSUInteger {
  */
 @interface XYLocationCell : UITableViewCell
 
-- (void)updateCellWithTitle:(NSString *)title address:(NSString *)address;
+@property (nonatomic, strong) MKMapItem *item;
 
 @end
 

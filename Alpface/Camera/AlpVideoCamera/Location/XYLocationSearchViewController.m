@@ -9,6 +9,7 @@
 #import "XYLocationSearchViewController.h"
 #import "XYLocationSearchTopView.h"
 #import "XYLocationManager.h"
+#import "LocationConverter.h"
 
 @interface XYLocationCell()
 
@@ -87,6 +88,22 @@
         [textContentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:textContentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
     }
     return self;
+}
+
+- (void)setItem:(MKMapItem *)item {
+    _item = item;
+    NSArray *address = [XYLocationSearchTableViewModel stringsForItem:item];
+    [self updateCellWithTitle:address.firstObject address:address.lastObject];
+    
+    double distance = [LocationConverter countLineDistanceDest:[XYLocationManager sharedManager].coordinate.longitude dest_Lat:[XYLocationManager sharedManager].coordinate.latitude self_Lon:item.placemark.coordinate.longitude self_Lat:item.placemark.coordinate.latitude];
+    NSString *distanceStr;
+    if (distance < 1000) {
+        distanceStr = [NSString stringWithFormat:@"%ld m", (long)distance];
+    }
+    else {
+        distanceStr = [NSString stringWithFormat:@"%.2f km", distance/1000.0];
+    }
+    self.distanceLabel.text = distanceStr;
 }
 
 - (void)updateCellWithTitle:(NSString *)title address:(NSString *)address {
@@ -319,18 +336,7 @@
         if (indexPath.row < self.searchResults.count) {
            item = self.searchResults[indexPath.row];
         }
-        
-        NSString *title = @"";
-        NSString *address = @"";
-        NSArray *strs = [XYLocationSearchTableViewModel stringsForItem:item];
-        if ([strs.firstObject isKindOfClass:[NSString class]]) {
-            title = strs.firstObject;
-        }
-        if ([strs.lastObject isKindOfClass:[NSString class]]) {
-            address = strs.lastObject;
-        }
-        
-        [cell updateCellWithTitle:title address:address];
+        cell.item = item;
         return cell;
     }
     return nil;

@@ -126,11 +126,13 @@
         [_search cancel];
     }
     CLLocationCoordinate2D location = coordinate;
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 1 ,1 );
+    // 创建一个位置信息对象，第一个参数为经纬度，第二个为纬度检索范围，单位为米，第三个为经度检索范围，单位为米
+    // 每次只能获取到10e个poi 如果想获取更多可以将1+1
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 1 , 1);
     MKLocalSearchRequest *requst = [[MKLocalSearchRequest alloc] init];
     requst.region = region;
     // poi检索： 就是在指定的区域去搜索 美食、电影、酒店 等服务, 注意最多只有10条数据，数据条数有限制
-    requst.naturalLanguageQuery = @"美食"; // 想要检索附近poi的关键词
+    requst.naturalLanguageQuery = @"地点"; // 想要检索附近poi的关键词
     _search = [[MKLocalSearch alloc] initWithRequest:requst];
     [_search startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
         self.reversing = NO;

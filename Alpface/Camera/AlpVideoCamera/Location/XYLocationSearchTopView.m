@@ -62,9 +62,14 @@
     [_searchBar sizeToFit];
     //用textfiled代替搜索框
     UITextField *searchField = [_searchBar valueForKey:@"_searchField"];
-    searchField.backgroundColor = [UIColor colorWithRed:227/255.0 green:227/255.0 blue:227/255.0 alpha:1.0];
-    //placeholderLabel.textColor的颜色
-    [searchField setValue:[UIColor colorWithRed:122/255.0 green:122/255.0 blue:122/255.0 alpha:1.0] forKeyPath:@"_placeholderLabel.textColor"];
+    searchField.backgroundColor = [UIColor colorWithRed:227/255.0 green:227/255.0 blue:227/255.0 alpha:0.5];
+    searchField.textColor = [UIColor whiteColor];
+    //渲染模式改变searchBar左侧imag的渲染颜色
+    UIImageView *searchImageView = (id)searchField.leftView;
+    searchImageView.image = [searchImageView.image imageWithRenderingMode:(UIImageRenderingModeAlwaysTemplate)];
+    [searchImageView setTintColor:[UIColor whiteColor]];
+    //修改placeholderLabel.textColor的颜色
+    [searchField setValue:[UIColor lightGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
 //    _searchBar.layer.borderColor = [UIColor lightGrayColor].CGColor;
 //    _searchBar.layer.borderWidth = 0.5;
     [self addSubview:self.searchBar];
