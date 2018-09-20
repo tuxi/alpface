@@ -60,7 +60,7 @@
     [self.cameraAuthorButton setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.microAuthorButton setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5.0)-[titleLabel]-(8.0)-[describeTextLabel]-(50.0)-[cameraAuthorButton]-(25.0)-[microAuthorButton]-(5.0)-|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:@{@"titleLabel": self.titleLabel, @"describeTextLabel": self.describeTextLabel, @"cameraAuthorButton": self.cameraAuthorButton, @"microAuthorButton": self.microAuthorButton}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5.0)-[titleLabel]-(8.0)-[describeTextLabel]-(50.0)-[cameraAuthorButton]-(15.0)-[microAuthorButton]-(5.0)-|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:@{@"titleLabel": self.titleLabel, @"describeTextLabel": self.describeTextLabel, @"cameraAuthorButton": self.cameraAuthorButton, @"microAuthorButton": self.microAuthorButton}]];
     
     [NSLayoutConstraint constraintWithItem:self.titleLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.titleLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
@@ -77,9 +77,11 @@
     /// 检查相机权限
     AVAuthorizationStatus cameraStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     self.cameraAuthorButton.selected = cameraStatus == AVAuthorizationStatusAuthorized;
+    self.cameraAuthorButton.userInteractionEnabled = !self.cameraAuthorButton.selected;
     /// 检查麦克风权限
     AVAuthorizationStatus audioStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
     self.microAuthorButton.selected = audioStatus == AVAuthorizationStatusAuthorized;
+    self.microAuthorButton.userInteractionEnabled = !self.microAuthorButton.selected;
     if (cameraStatus == AVAuthorizationStatusAuthorized &&
         audioStatus == AVAuthorizationStatusAuthorized) {
         self.hidden = YES;
@@ -188,7 +190,7 @@
     if (!_cameraAuthorButton) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.translatesAutoresizingMaskIntoConstraints = false;
-        [button setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithRed:0/255.0 green:191/255.0 blue:255/255.0 alpha:1] forState:UIControlStateNormal];
         [button setTitle:@"启用相机访问权限" forState:UIControlStateNormal];
         [button setTitle:@"✅启用相机访问权限" forState:UIControlStateSelected];
         [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateSelected];
@@ -202,7 +204,7 @@
     if (!_microAuthorButton) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.translatesAutoresizingMaskIntoConstraints = false;
-        [button setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithRed:0/255.0 green:191/255.0 blue:255/255.0 alpha:1] forState:UIControlStateNormal];
         [button setTitle:@"启用麦克风访问权限" forState:UIControlStateNormal];
         [button setTitle:@"✅启用麦克风访问权限" forState:UIControlStateSelected];
         [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateSelected];

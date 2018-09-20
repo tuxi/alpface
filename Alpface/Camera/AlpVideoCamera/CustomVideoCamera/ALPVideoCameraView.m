@@ -43,7 +43,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     GPUImageOutput<GPUImageInput> *_filter;
     GPUImageMovieWriter *_movieWriter;
     NSString *_pathToMovie;
-    GPUImageView *_filteredVideoView;
     CALayer *_focusLayer;
     NSTimer *_myTimer;
     UILabel *_timeLabel;
@@ -73,6 +72,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 @property (nonatomic, assign) BOOL isRecoding;
 @property (nonatomic, strong) OSProgressView *progressPreView;
 @property (nonatomic, strong) AlpVideoCameraPermissionView *permissionView;
+@property (nonatomic, strong) GPUImageView *filteredVideoView;
 
 @end
 
@@ -111,21 +111,16 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     _mainScreenFrame = self.frame;
     /// 检查相机权限
     AVAuthorizationStatus cameraStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    if (cameraStatus != AVAuthorizationStatusNotDetermined) {
+    if (cameraStatus == AVAuthorizationStatusAuthorized) {
         [self createVideoCamera];
     }
     
-    _filter = [[LFGPUImageEmptyFilter alloc] init];
-    _filteredVideoView = [[GPUImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [_videoCamera addTarget:_filter];
-    [_filter addTarget:_filteredVideoView];
-    [_videoCamera startCameraCapture];
     [self setupUI];
     UITapGestureRecognizer *singleFingerOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cameraViewTapAction:)];
     singleFingerOne.numberOfTouchesRequired = 1; //手指数
     singleFingerOne.numberOfTapsRequired = 1; //tap次数
-    [_filteredVideoView addGestureRecognizer:singleFingerOne];
-    [self addSubview:_filteredVideoView];
+    [self.filteredVideoView addGestureRecognizer:singleFingerOne];
+    [self addSubview:self.filteredVideoView];
 }
 
 - (void)createVideoCamera {
@@ -157,6 +152,11 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     _videoCamera.horizontallyMirrorFrontFacingCamera = YES;
     _videoCamera.horizontallyMirrorRearFacingCamera = NO;
     
+    _filter = [[LFGPUImageEmptyFilter alloc] init];
+    [_videoCamera addTarget:_filter];
+    [_filter addTarget:self.filteredVideoView];
+    [_videoCamera startCameraCapture];
+    
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -186,20 +186,21 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [_photoCaptureButton addTarget:self action:@selector(startRecording:) forControlEvents:UIControlEventTouchUpInside];
     [_photoCaptureButton makeCornerRadius:31.5 borderColor:[UIColor blackColor] borderWidth:1.5];
     
-    [_filteredVideoView addSubview:_photoCaptureButton];
+    [self.filteredVideoView addSubview:_photoCaptureButton];
     
     // 返回按钮
     UIButton* backBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, 25, 30, 30)];
+    backBtn.showsTouchWhenHighlighted = YES;
     [backBtn setImage:[UIImage imageNamed:@"BackToHome"] forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(clickBack:) forControlEvents:UIControlEventTouchUpInside];
-    [_filteredVideoView addSubview:backBtn];
+    [self.filteredVideoView addSubview:backBtn];
     
     // 前后摄像头切换按钮
     _cameraPositionChangeButton = [[UIButton alloc] initWithFrame:CGRectMake(backBtn.frame.origin.x, backBtn.frame.origin.y + 60, 30, 30)];
     UIImage* img2 = [UIImage imageNamed:@"cammera"];
     [_cameraPositionChangeButton setImage:img2 forState:UIControlStateNormal];
     [_cameraPositionChangeButton addTarget:self action:@selector(changeCameraPositionBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [_filteredVideoView addSubview:_cameraPositionChangeButton];
+    [self.filteredVideoView addSubview:_cameraPositionChangeButton];
     
     // 打开和关闭美颜按钮
     _camerafilterChangeButton = [[UIButton alloc] init];
@@ -208,7 +209,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [_camerafilterChangeButton setImage:img forState:UIControlStateNormal];
     [_camerafilterChangeButton setImage:[UIImage imageNamed:@"iconBeautyOn2_40x40_"] forState:UIControlStateSelected];
     [_camerafilterChangeButton addTarget:self action:@selector(changebeautifyFilterBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [_filteredVideoView addSubview:_camerafilterChangeButton];
+    [self.filteredVideoView addSubview:_camerafilterChangeButton];
     
     
     // 完成录制按钮
@@ -218,7 +219,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     UIImage* img3 = [UIImage imageNamed:@"complete"];
     [_cameraChangeButton setImage:img3 forState:UIControlStateNormal];
     [_cameraChangeButton addTarget:self action:@selector(stopRecording:) forControlEvents:UIControlEventTouchUpInside];
-    [_filteredVideoView addSubview:_cameraChangeButton];
+    [self.filteredVideoView addSubview:_cameraChangeButton];
     
     // 删除录制按钮
     _dleButton = [[UIButton alloc] init];
@@ -237,7 +238,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     UIImage* img5 = [UIImage imageNamed:@"record_ico_input_1"];
     [_inputLocalVieoBtn setImage:img5 forState:UIControlStateNormal];
     [_inputLocalVieoBtn addTarget:self action:@selector(clickInputBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [_filteredVideoView addSubview:_inputLocalVieoBtn];
+    [self.filteredVideoView addSubview:_inputLocalVieoBtn];
     
     // 录制的进度条
     [_filteredVideoView addSubview:self.progressPreView];
@@ -250,7 +251,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.permissionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_filteredVideoView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
     
-    [_filteredVideoView bringSubviewToFront:backBtn];
+    [self.filteredVideoView bringSubviewToFront:backBtn];
     
     [self.permissionView updateHidden];
     __weak typeof(self) weakSelf = self;
@@ -324,8 +325,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
             _dleButton.hidden = NO;
         }
     }
-    
-    
 }
 
 /// 停止录制视频
@@ -756,6 +755,13 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
         _permissionView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
     }
     return _permissionView;
+}
+
+- (GPUImageView *)filteredVideoView {
+    if (!_filteredVideoView) {
+        _filteredVideoView = [[GPUImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    }
+    return _filteredVideoView;
 }
 
 - (void)dealloc {
