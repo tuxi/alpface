@@ -354,13 +354,21 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     if (mapItm == nil) {
         // 选择的当前位置
         coordinate = [XYLocationManager sharedManager].coordinate;
+        MKPlacemark *placeMark = [[MKPlacemark alloc] initWithCoordinate:coordinate];
+        mapItm = [[MKMapItem alloc] initWithPlacemark:placeMark];
+        mapItm.name = name;
+        
     }
     else {
-        CLLocation *location = [mapItm.placemark performSelector:@selector(location)];
-        coordinate  = location.coordinate;
+//        CLLocation *location = [mapItm.placemark performSelector:@selector(location)];
+//        coordinate  = location.coordinate;
     }
     
     // update UI
+    AlpEditPublishTableViewCellModel *cellModel = self.cellModels[1];
+    cellModel.model = mapItm;
+    [self.tableView reloadData];
+    [sender.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -660,6 +668,17 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         
     }
     return self;
+}
+
+- (void)setCellModel:(AlpEditPublishTableViewCellModel *)cellModel {
+    _cellModel = cellModel;
+    if (cellModel.model == nil) {
+        _titleLabel.text = @"添加位置";
+    }
+    else {
+        MKMapItem *item = cellModel.model;
+        _titleLabel.text = item.name;
+    }
 }
 
 - (UIImageView *)iconView {
