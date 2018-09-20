@@ -10,6 +10,12 @@
 		17B0454459EAD0F7C5571E1C /* Pods_Alpface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */; };
 		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
 		D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868D213E83000009682C /* MCGCDTimer.swift */; };
+		D07748AF215334CD0080610A /* XYLocationSearch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D07748A6215334CD0080610A /* XYLocationSearch.bundle */; };
+		D07748B0215334CD0080610A /* XYMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D07748A9215334CD0080610A /* XYMapViewController.m */; };
+		D07748B1215334CD0080610A /* XYLocationSearchTableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D07748AB215334CD0080610A /* XYLocationSearchTableViewModel.m */; };
+		D07748B2215334CD0080610A /* XYLocationSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D07748AC215334CD0080610A /* XYLocationSearchViewController.m */; };
+		D07748B3215334CD0080610A /* XYLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D07748AE215334CD0080610A /* XYLocationManager.m */; };
+		D07748B6215335A70080610A /* LocationConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = D07748B5215335A70080610A /* LocationConverter.m */; };
 		D0B47A1E2150A1A300E78B90 /* AlpEditVideoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B47A1D2150A1A300E78B90 /* AlpEditVideoNavigationBar.m */; };
 		D0B47A912150FB8E00E78B90 /* AlpEditVideoParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B47A902150FB8E00E78B90 /* AlpEditVideoParameter.m */; };
 		D0C1E3502086E7BB0013F98B /* MainNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */; };
@@ -318,6 +324,17 @@
 		BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D06F868A213E80E20009682C /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
 		D06F868D213E83000009682C /* MCGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCGCDTimer.swift; sourceTree = "<group>"; };
+		D07748A6215334CD0080610A /* XYLocationSearch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = XYLocationSearch.bundle; sourceTree = "<group>"; };
+		D07748A7215334CD0080610A /* XYLocationSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYLocationSearchViewController.h; sourceTree = "<group>"; };
+		D07748A8215334CD0080610A /* XYLocationSearchTableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYLocationSearchTableViewModel.h; sourceTree = "<group>"; };
+		D07748A9215334CD0080610A /* XYMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYMapViewController.m; sourceTree = "<group>"; };
+		D07748AA215334CD0080610A /* XYLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYLocationManager.h; sourceTree = "<group>"; };
+		D07748AB215334CD0080610A /* XYLocationSearchTableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYLocationSearchTableViewModel.m; sourceTree = "<group>"; };
+		D07748AC215334CD0080610A /* XYLocationSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYLocationSearchViewController.m; sourceTree = "<group>"; };
+		D07748AD215334CD0080610A /* XYMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYMapViewController.h; sourceTree = "<group>"; };
+		D07748AE215334CD0080610A /* XYLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYLocationManager.m; sourceTree = "<group>"; };
+		D07748B4215335A70080610A /* LocationConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationConverter.h; sourceTree = "<group>"; };
+		D07748B5215335A70080610A /* LocationConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationConverter.m; sourceTree = "<group>"; };
 		D0B47A1C2150A1A300E78B90 /* AlpEditVideoNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditVideoNavigationBar.h; sourceTree = "<group>"; };
 		D0B47A1D2150A1A300E78B90 /* AlpEditVideoNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoNavigationBar.m; sourceTree = "<group>"; };
 		D0B47A8F2150FB8E00E78B90 /* AlpEditVideoParameter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditVideoParameter.h; sourceTree = "<group>"; };
@@ -685,6 +702,24 @@
 			path = MCGCDTimer;
 			sourceTree = "<group>";
 		};
+		D07748A5215334CD0080610A /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				D07748A6215334CD0080610A /* XYLocationSearch.bundle */,
+				D07748A7215334CD0080610A /* XYLocationSearchViewController.h */,
+				D07748A8215334CD0080610A /* XYLocationSearchTableViewModel.h */,
+				D07748A9215334CD0080610A /* XYMapViewController.m */,
+				D07748AA215334CD0080610A /* XYLocationManager.h */,
+				D07748AB215334CD0080610A /* XYLocationSearchTableViewModel.m */,
+				D07748AC215334CD0080610A /* XYLocationSearchViewController.m */,
+				D07748AD215334CD0080610A /* XYMapViewController.h */,
+				D07748AE215334CD0080610A /* XYLocationManager.m */,
+				D07748B4215335A70080610A /* LocationConverter.h */,
+				D07748B5215335A70080610A /* LocationConverter.m */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		D0DB45A52085B742000C291A /* TextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -854,6 +889,7 @@
 		D26A9249214E13AA00C118CA /* AlpVideoCamera */ = {
 			isa = PBXGroup;
 			children = (
+				D07748A5215334CD0080610A /* Location */,
 				D26A924A214E13AA00C118CA /* Filters */,
 				D26A924F214E13AA00C118CA /* CustomVideoCamera */,
 			);
@@ -1651,6 +1687,7 @@
 				D26A93F7214E13AA00C118CA /* stickers542.jpg in Resources */,
 				D26A9419214E13AA00C118CA /* iconBeautyOn2_40x40_@3x.png in Resources */,
 				D26A9532214E953B00C118CA /* 6536.mp3 in Resources */,
+				D07748AF215334CD0080610A /* XYLocationSearch.bundle in Resources */,
 				D26A93FA214E13AA00C118CA /* stickers543.jpg in Resources */,
 				D26A9527214E953B00C118CA /* 6476.jpeg in Resources */,
 				D26A93F3214E13AA00C118CA /* stickers547.jpg in Resources */,
@@ -1766,6 +1803,7 @@
 				D2DC57552070D64C00458F54 /* HeartAnimation.swift in Sources */,
 				D20093292078EEC50079AD8B /* Utilities.swift in Sources */,
 				D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */,
+				D07748B1215334CD0080610A /* XYLocationSearchTableViewModel.m in Sources */,
 				D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */,
 				D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */,
 				D2B165F8208C720B00FA5F05 /* TabbarPlaceholderViewController.swift in Sources */,
@@ -1774,6 +1812,7 @@
 				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
 				D20093342078EEC50079AD8B /* CameraViewControllerConstraint.swift in Sources */,
 				D2BCBA49206F33F2008409B3 /* GestureCoordinatingCollectionView.swift in Sources */,
+				D07748B3215334CD0080610A /* XYLocationManager.m in Sources */,
 				D26AD44120668F140047DC15 /* RootViewController.swift in Sources */,
 				D26A93FF214E13AA00C118CA /* AlpVideoCameraViewController.m in Sources */,
 				D200933B2078EEC50079AD8B /* PermissionsView.swift in Sources */,
@@ -1805,6 +1844,7 @@
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
 				D200932A2078EEC50079AD8B /* CameraGlobals.swift in Sources */,
 				D20093362078EEC50079AD8B /* ConfirmViewController.swift in Sources */,
+				D07748B6215335A70080610A /* LocationConverter.m in Sources */,
 				D200933A2078EEC50079AD8B /* CropOverlay.swift in Sources */,
 				D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */,
 				D20093312078EEC50079AD8B /* UIButtonExtensions.swift in Sources */,
@@ -1827,6 +1867,7 @@
 				D2DC574C20706D7C00458F54 /* PlayVideoModel.swift in Sources */,
 				D27E4003209737C300776EB0 /* ZFModalTransitionAnimator.m in Sources */,
 				D2BCBA4B206F33F2008409B3 /* MainFeedViewCell.swift in Sources */,
+				D07748B2215334CD0080610A /* XYLocationSearchViewController.m in Sources */,
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
 				D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */,
@@ -1837,6 +1878,7 @@
 				D26A97452152916000C118CA /* AlpVideoCameraPermissionView.m in Sources */,
 				D200932E2078EEC50079AD8B /* VolumeControl.swift in Sources */,
 				D20093302078EEC50079AD8B /* UIViewExtensions.swift in Sources */,
+				D07748B0215334CD0080610A /* XYMapViewController.m in Sources */,
 				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,
 				D0E8AB18214FA69D00247B5E /* AlpVideoCameraResourceItem.m in Sources */,
 				D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */,

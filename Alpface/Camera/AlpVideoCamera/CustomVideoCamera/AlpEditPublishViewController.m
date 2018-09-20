@@ -12,6 +12,8 @@
 #import "UIImage+AlpExtensions.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "XYLocationSearchViewController.h"
+#import "RTRootNavigationController.h"
 
 typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     AlpPublishVideoPermissionTypePublic,
@@ -24,6 +26,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic) Class cellClass;
 @property (nonatomic, assign) CGFloat cellHeight;
 @property (nonatomic, strong) id model;
+@property (nonatomic, assign) BOOL cellShouldHighlight;
 
 @end
 
@@ -91,7 +94,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @end
 
-@interface AlpEditPublishViewController () <UITableViewDelegate, UITableViewDataSource, AlpEditVideoNavigationBarDelegate>
+@interface AlpEditPublishViewController () <UITableViewDelegate, UITableViewDataSource, AlpEditVideoNavigationBarDelegate, XYLocationSearchViewControllerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) AlpEditVideoNavigationBar *navigationBar;
@@ -138,7 +141,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         m.cellClass = [AlpEditPublishViewContentCell class];
         m.model = self.videoURL;
         m.cellHeight = 160.0;
-        
+        m.cellShouldHighlight = NO;
         [self.cellModels addObject:m];
     }
     {
@@ -151,6 +154,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
         m.cellClass = [AlpEditPublishViewLocationListCell class];
         m.cellHeight = 40.0;
+        m.cellShouldHighlight = NO;
         [self.cellModels addObject:m];
     }
     {
@@ -272,11 +276,19 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    AlpEditPublishTableViewCellModel *cellModel = self.cellModels[indexPath.row];
+    if (cellModel.cellClass == [AlpEditPublishViewSelectLocationCell class]) {
+        XYLocationSearchViewController *vc = [XYLocationSearchViewController new];
+        vc.delegate = self;
+        RTRootNavigationController *nac = [[RTRootNavigationController alloc] initWithRootViewControllerNoWrapping:vc];
+        [self presentViewController:nac animated:YES completion:nil];
+        vc.title = @"添加位置";
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
+    AlpEditPublishTableViewCellModel *cellModel = self.cellModels[indexPath.row];
+    return cellModel.cellShouldHighlight;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -307,6 +319,25 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 - (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickBackButton:(UIButton *)backButton {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.navigationController popViewControllerAnimated:YES];
+}
+////////////////////////////////////////////////////////////////////////
+#pragma mark - XYLocationSearchViewControllerDelegate
+////////////////////////////////////////////////////////////////////////
+- (void)locationSearchViewController:(UIViewController *)sender didSelectLocationWithName:(NSString *)name address:(NSString *)address mapItem:(MKMapItem *)mapItm {
+    
+//    CLLocationCoordinate2D coordinate;
+//    if (mapItm == nil) {
+//        coordinate = CLLocationCoordinate2DMake([XYLocationManager sharedManager].latitude, [XYLocationManager sharedManager].longitude);
+//    }
+//    else {
+//        CLLocation *location = [mapItm.placemark performSelector:@selector(location)];
+//        coordinate  = location.coordinate;
+//    }
+//    
+//    [self updateLocationWithCoordinate:coordinate];
+//    
+//    //    [self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
+//    [[sender navigationController] popViewControllerAnimated:YES];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -419,6 +450,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.textView];
@@ -572,7 +604,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor = [UIColor clearColor];
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self.contentView addSubview:self.iconView];
         [self.contentView addSubview:self.titleLabel];
@@ -636,7 +668,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor = [UIColor clearColor];
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self.contentView addSubview:self.iconView];
         [self.contentView addSubview:self.titleLabel];
@@ -843,7 +875,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor = [UIColor clearColor];
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self.contentView addSubview:self.searchButton];
         self.searchButton.translatesAutoresizingMaskIntoConstraints = false;
@@ -887,6 +919,13 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @end
 
 @implementation AlpEditPublishTableViewCellModel
-
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.cellShouldHighlight = YES;
+    }
+    return self;
+}
 
 @end
