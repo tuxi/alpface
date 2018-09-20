@@ -114,7 +114,7 @@
 }
 
 - (void)fetchNearbyInfoCompletionHandler:(void (^)(NSArray<MKMapItem *> *, NSError *))completionHandle {
-    [self fetchNearbyInfoWithCoordinate:CLLocationCoordinate2DMake([XYLocationManager sharedManager].latitude, [XYLocationManager sharedManager].longitude) completionHandler:completionHandle];
+    [self fetchNearbyInfoWithCoordinate:[XYLocationManager sharedManager].coordinate completionHandler:completionHandle];
 }
 
 /// 根据经纬度检索附近poi
@@ -129,7 +129,8 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 1 ,1 );
     MKLocalSearchRequest *requst = [[MKLocalSearchRequest alloc] init];
     requst.region = region;
-    requst.naturalLanguageQuery = @"place"; //想要的信息
+    // poi检索： 就是在指定的区域去搜索 美食、电影、酒店 等服务, 注意最多只有10条数据，数据条数有限制
+    requst.naturalLanguageQuery = @"美食"; // 想要检索附近poi的关键词
     _search = [[MKLocalSearch alloc] initWithRequest:requst];
     [_search startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
         self.reversing = NO;

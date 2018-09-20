@@ -117,15 +117,15 @@
     
     
     XYMyAnotation *anno = [[XYMyAnotation alloc] init];
-    anno.coordinate = CLLocationCoordinate2DMake([XYLocationManager sharedManager].latitude, [XYLocationManager sharedManager].longitude);
-    anno.title = [NSString stringWithFormat:@"经度：%f",[XYLocationManager sharedManager].longitude];
-    anno.subtitle = [NSString stringWithFormat:@"纬度：%f",[XYLocationManager sharedManager].latitude];
+    anno.coordinate = [XYLocationManager sharedManager].coordinate;
+    anno.title = [NSString stringWithFormat:@"经度：%f",[XYLocationManager sharedManager].coordinate.longitude];
+    anno.subtitle = [NSString stringWithFormat:@"纬度：%f",[XYLocationManager sharedManager].coordinate.latitude];
     
-    self.bottomView.longitudeLabel.text = [NSString stringWithFormat:@"经度：%f",[XYLocationManager sharedManager].longitude];
-    self.bottomView.latitudeLabel.text = [NSString stringWithFormat:@"纬度：%f",[XYLocationManager sharedManager].latitude];
+    self.bottomView.longitudeLabel.text = [NSString stringWithFormat:@"经度：%f",[XYLocationManager sharedManager].coordinate.longitude];
+    self.bottomView.latitudeLabel.text = [NSString stringWithFormat:@"纬度：%f",[XYLocationManager sharedManager].coordinate.latitude];
     //反地理编码
     _locManager = [[LocationConverter alloc] init];
-    [_locManager reverseGeocodeWithlatitude:[XYLocationManager sharedManager].latitude longitude:[XYLocationManager sharedManager].longitude success:^(NSString *address) {
+    [_locManager reverseGeocodeWithlatitude:[XYLocationManager sharedManager].coordinate.latitude longitude:[XYLocationManager sharedManager].coordinate.longitude success:^(NSString *address) {
         self.bottomView.addressLabel.text = [NSString stringWithFormat:@"%@",address];
     } failure:^{
         
@@ -236,8 +236,8 @@
 }
 
 - (void)updateLocationWithCoordinate:(CLLocationCoordinate2D)coordinate {
-    [XYLocationManager sharedManager].latitude = coordinate.latitude;
-    [XYLocationManager sharedManager].longitude = coordinate.longitude;
+//    [XYLocationManager sharedManager].latitude = coordinate.latitude;
+//    [XYLocationManager sharedManager].longitude = coordinate.longitude;
     
     NSLog(@"%@",self.mapView.annotations);
     NSMutableArray *array = [NSMutableArray array];
@@ -279,7 +279,7 @@
     
     CLLocationCoordinate2D coordinate;
     if (mapItm == nil) {
-        coordinate = CLLocationCoordinate2DMake([XYLocationManager sharedManager].latitude, [XYLocationManager sharedManager].longitude);
+        coordinate = [XYLocationManager sharedManager].coordinate;
     }
     else {
         CLLocation *location = [mapItm.placemark performSelector:@selector(location)];

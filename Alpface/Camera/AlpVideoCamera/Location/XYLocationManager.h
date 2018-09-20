@@ -16,12 +16,16 @@ FOUNDATION_EXPORT NSNotificationName const XYUpdateLocationsNotification;
 
 + (instancetype)sharedManager;
 @property (strong, nonatomic) CLLocationManager *locationManager;
-@property (nonatomic,assign) double longitude;//经度
-@property (nonatomic,assign) double latitude;//纬度
-//定位结束的回调
-@property (nonatomic,strong) void(^locationCompleteBlock)(double longitude,double latitude);
-- (void)getAuthorization;//授权
-//- (void)alertOpenLocationSwitch;//提示用户打开定位开关
-- (void)startLocation;//点击某个按钮开始定位
+/// 当前位置
+//@property (nonatomic,assign) double longitude;//经度
+//@property (nonatomic,assign) double latitude;//纬度
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
+
+/// 请求定位授权
+- (void)getAuthorization;
+
+// 开始定位
+- (void)startLocation;
+- (void)stopUpdatingLocation;
 
 @end

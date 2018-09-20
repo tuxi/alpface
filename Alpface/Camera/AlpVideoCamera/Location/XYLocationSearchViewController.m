@@ -7,16 +7,14 @@
 //
 
 #import "XYLocationSearchViewController.h"
+#import "XYLocationSearchTopView.h"
+#import "XYLocationManager.h"
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- *  动态位置cell。包含地方名字和地址信息。
- */
-@interface XYLocationCell(){
-    UIImageView *_iconView;
-    UILabel *_titleLabel;
-    UILabel *_addressLabel;
-}
+@interface XYLocationCell()
+
+@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *addressLabel;
 
 @end
 
@@ -25,7 +23,8 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // icon
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor clearColor];
         _iconView = [[UIImageView alloc] init];
         _iconView.tintColor = [UIColor blackColor];
         _iconView.image = [UIImage imageNamed:@"XYLocationSearch.bundle/LegacyPinDown3Sat"];
@@ -34,9 +33,9 @@
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:15.0]];
         
-        // title
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont systemFontOfSize:16];
+        _titleLabel.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_titleLabel];
         _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -46,6 +45,7 @@
         
         _addressLabel = [[UILabel alloc] init];
         _addressLabel.font = [UIFont systemFontOfSize:10];
+        _addressLabel.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_addressLabel];
         _addressLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-4.0]];
@@ -62,11 +62,6 @@
 
 @end
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- *  静态Cell。
- *  输入位置的Cell，当前位置Cell
- */
 @interface XYLocationStaticCell() {
     UIImageView *_iconView;
     UILabel *_titleLabel;
@@ -81,6 +76,8 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor clearColor];
         self.separatorInset = UIEdgeInsetsMake(0, 45, 0, 0);
         // icon
         _iconView = [[UIImageView alloc] init];
@@ -93,6 +90,7 @@
         // title
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont systemFontOfSize:16];
+        _titleLabel.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_titleLabel];
         _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
@@ -134,40 +132,53 @@
 @interface XYLocationSearchViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UISearchBarDelegate, XYLocationSearchTableViewModelDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) XYLocationSearchTopView *topView;
 @property (nonatomic, strong) XYLocationSearchTableViewModel *viewModel;
-@property (nonatomic, strong) NSArray<MKMapItem *> *xy_searchResults;
+@property (nonatomic, strong) NSArray<MKMapItem *> *searchResults;
+
 
 @end
 
 @implementation XYLocationSearchViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"搜索位置";
+    self.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.searchBar];
+    [self.view addSubview:self.topView];
     [self makeConstarints];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                          target:self
-                                                                          action:@selector(onClickedCancelItem)];
-    self.navigationItem.rightBarButtonItem = item;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    [self.viewModel fetchNearbyInfoCompletionHandler:^(NSArray<MKMapItem *> *searchResult, NSError *error) {
-        self.xy_searchResults = [searchResult mutableCopy];
-        [self reloadTableData];
-    }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocationsNotification) name:XYUpdateLocationsNotification object:nil];
     
 }
 
+- (void)updateLocationsNotification {
+    __weak typeof(self) weakSelf = self;
+    [self.viewModel fetchNearbyInfoCompletionHandler:^(NSArray<MKMapItem *> *searchResult, NSError *error) {
+        weakSelf.searchResults = [searchResult mutableCopy];
+        [weakSelf reloadTableData];
+    }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
 - (void)makeConstarints {
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.topView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.topView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
+     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.topView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.searchBar attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
@@ -178,9 +189,9 @@
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - Action
 ////////////////////////////////////////////////////////////////////////
-- (void)onClickedCancelItem {
-//    [self dismissViewControllerAnimated:YES completion:NULL];
-    [self.navigationController popViewControllerAnimated:YES];
+
+- (void)backAction:(UIButton *)sender {
+    [self.navigationController dismissViewControllerAnimated:self completion:nil];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -197,14 +208,14 @@
 }
 
 - (void)startSearch {
-    self.xy_searchResults = @[];
+    self.searchResults = @[];
     [self reloadTableData];
     [self.viewModel searchFromServer];
 }
 
 - (void)reloadTableData {
-    if (self.viewModel.searchResultType == XYLocationSearchResultTypeSearchPoi && !self.searchBar.text.length) {
-        self.xy_searchResults = @[];
+    if (self.viewModel.searchResultType == XYLocationSearchResultTypeSearchPoi && !self.topView.searchBar.text.length) {
+        self.searchResults = @[];
     }
     [self.tableView reloadData];
 }
@@ -213,8 +224,8 @@
 #pragma mark - UIScrollViewDelegate
 ////////////////////////////////////////////////////////////////////////
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    if ([_searchBar isFirstResponder]) {
-        [_searchBar resignFirstResponder];
+    if ([self.topView.searchBar isFirstResponder]) {
+        [self.topView resignFirstResponder];
     }
 }
 
@@ -247,8 +258,8 @@
     else {
         XYLocationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XYLocationCell"];
         MKMapItem *item = nil;
-        if (indexPath.row < self.xy_searchResults.count) {
-           item = self.xy_searchResults[indexPath.row];
+        if (indexPath.row < self.searchResults.count) {
+           item = self.searchResults[indexPath.row];
         }
         
         NSString *title = @"";
@@ -320,8 +331,8 @@
             }
         }
     } else {
-        nameAndAddress = [XYLocationSearchTableViewModel stringsForItem:self.xy_searchResults[indexPath.row]];
-        currentMap = self.xy_searchResults[indexPath.row];
+        nameAndAddress = [XYLocationSearchTableViewModel stringsForItem:self.searchResults[indexPath.row]];
+        currentMap = self.searchResults[indexPath.row];
     }
     
     if ([nameAndAddress.firstObject isKindOfClass:[NSString class]]) {
@@ -337,7 +348,7 @@
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSections {
-    if (self.xy_searchResults.count > 0) {
+    if (self.searchResults.count > 0) {
         return 2;
     }
     else {
@@ -347,7 +358,7 @@
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        if (self.searchBar.text.length > 0) {
+        if (self.topView.searchBar.text.length > 0) {
             return 2;
         }
         else {
@@ -355,7 +366,7 @@
         }
     }
     else {
-        return self.xy_searchResults.count;
+        return self.searchResults.count;
     }
 }
 
@@ -364,7 +375,7 @@
 ////////////////////////////////////////////////////////////////////////
 
 - (void)locationSearchTableViewModel:(XYLocationSearchTableViewModel *)viewModel searchResultChange:(NSArray *)searchResult error:(NSError *)error {
-    self.xy_searchResults = [searchResult mutableCopy];
+    self.searchResults = [searchResult mutableCopy];
     [self reloadTableData];
 }
 
@@ -393,21 +404,17 @@
     return _tableView;
 }
 
-- (UISearchBar *)searchBar {
-    if (!_searchBar) {
-        _searchBar = [[UISearchBar alloc] init];
-        _searchBar.placeholder = @"Enter Location";
-        _searchBar.delegate = self;
-        _searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+- (XYLocationSearchTopView *)topView {
+    if (!_topView) {
+        _topView = [[XYLocationSearchTopView alloc] init];
+        _topView.searchBar.placeholder = @"搜索地点";
+        _topView.searchBar.delegate = self;
+        _topView.translatesAutoresizingMaskIntoConstraints = NO;
+        [_topView.leftButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
+        _topView.rightButton.hidden = YES;
     }
-    return _searchBar;
+    return _topView;
 }
 
-- (void)dealloc {
-#if ! __has_feature(objc_arc)
-    [super dealloc];
-#endif
-    self.delegate = nil;
-}
 
 @end

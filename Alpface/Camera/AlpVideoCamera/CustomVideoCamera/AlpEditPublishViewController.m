@@ -14,6 +14,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "XYLocationSearchViewController.h"
 #import "RTRootNavigationController.h"
+#import "XYLocationManager.h"
 
 typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     AlpPublishVideoPermissionTypePublic,
@@ -280,6 +281,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     if (cellModel.cellClass == [AlpEditPublishViewSelectLocationCell class]) {
         XYLocationSearchViewController *vc = [XYLocationSearchViewController new];
         vc.delegate = self;
+        // modal 半透明样式
+        vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         RTRootNavigationController *nac = [[RTRootNavigationController alloc] initWithRootViewControllerNoWrapping:vc];
         [self presentViewController:nac animated:YES completion:nil];
         vc.title = @"添加位置";
@@ -325,19 +328,17 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 ////////////////////////////////////////////////////////////////////////
 - (void)locationSearchViewController:(UIViewController *)sender didSelectLocationWithName:(NSString *)name address:(NSString *)address mapItem:(MKMapItem *)mapItm {
     
-//    CLLocationCoordinate2D coordinate;
-//    if (mapItm == nil) {
-//        coordinate = CLLocationCoordinate2DMake([XYLocationManager sharedManager].latitude, [XYLocationManager sharedManager].longitude);
-//    }
-//    else {
-//        CLLocation *location = [mapItm.placemark performSelector:@selector(location)];
-//        coordinate  = location.coordinate;
-//    }
-//    
-//    [self updateLocationWithCoordinate:coordinate];
-//    
-//    //    [self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
-//    [[sender navigationController] popViewControllerAnimated:YES];
+    CLLocationCoordinate2D coordinate;
+    if (mapItm == nil) {
+        // 选择的当前位置
+        coordinate = [XYLocationManager sharedManager].coordinate;
+    }
+    else {
+        CLLocation *location = [mapItm.placemark performSelector:@selector(location)];
+        coordinate  = location.coordinate;
+    }
+    
+    // update UI
 }
 
 ////////////////////////////////////////////////////////////////////////

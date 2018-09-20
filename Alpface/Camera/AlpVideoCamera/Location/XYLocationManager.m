@@ -56,6 +56,7 @@ NSNotificationName const XYUpdateLocationsNotification = @"XYUpdateLocationsNoti
     
 }
 
+///提示用户打开定位开关
 - (void)alertOpenLocationSwitch
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请在隐私设置中打开定位开关" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -66,6 +67,10 @@ NSNotificationName const XYUpdateLocationsNotification = @"XYUpdateLocationsNoti
 
 - (void)startLocation {
     [_locationManager startUpdatingLocation];
+}
+
+- (void)stopUpdatingLocation {
+    [_locationManager stopUpdatingLocation];
 }
 
 #pragma mark - LocationManager
@@ -95,14 +100,9 @@ NSNotificationName const XYUpdateLocationsNotification = @"XYUpdateLocationsNoti
     CLLocation *location = [locations lastObject];
     // 取出经纬度
     CLLocationCoordinate2D coordinate = location.coordinate;
-    _longitude = coordinate.longitude;
-    _latitude = coordinate.latitude;
-    // 3.打印经纬度
-    NSLog(@"didUpdateLocations------%f %f", coordinate.latitude, coordinate.longitude);
-    if (self.locationCompleteBlock) {
-        self.locationCompleteBlock(_longitude,_latitude);
-    }
-    [_locationManager stopUpdatingLocation];//停止定位
+    self.coordinate = coordinate;
+    // 获取到位置后停止定位
+    [_locationManager stopUpdatingLocation];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:XYUpdateLocationsNotification object:locations];
 }

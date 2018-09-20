@@ -45,10 +45,7 @@ typedef enum : NSUInteger {
 @end
 
 @interface XYLocationSearchViewController : UIViewController
-#if ! __has_feature(objc_arc)
-@property (nonatomic, assign) id<XYLocationSearchViewControllerDelegate> delegate;
-#else
+
 @property (nonatomic, weak) id<XYLocationSearchViewControllerDelegate> delegate;
-#endif
 
 @end
