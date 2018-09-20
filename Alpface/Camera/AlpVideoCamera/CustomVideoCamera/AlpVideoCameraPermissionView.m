@@ -113,6 +113,9 @@
     /// 请求麦克风权限
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.requestAudioAccessBlock) {
+                self.requestAudioAccessBlock(granted);
+            }
             sender.selected = granted;
             [self updateHidden];
         });
@@ -138,6 +141,9 @@
     /// 请求相机权限
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.requestCameraAccessBlock) {
+                self.requestCameraAccessBlock(granted);
+            }
             sender.selected = granted;
             [self updateHidden];
         });

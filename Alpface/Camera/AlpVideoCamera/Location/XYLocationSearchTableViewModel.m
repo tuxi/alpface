@@ -130,7 +130,7 @@
     MKLocalSearchRequest *requst = [[MKLocalSearchRequest alloc] init];
     requst.region = region;
     // poi检索： 就是在指定的区域去搜索 美食、电影、酒店 等服务, 注意最多只有10条数据，数据条数有限制
-    requst.naturalLanguageQuery = @"地点"; // 想要检索附近poi的关键词
+    requst.naturalLanguageQuery = @"美食"; // 想要检索附近poi的关键词
     _search = [[MKLocalSearch alloc] initWithRequest:requst];
     [_search startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
         self.reversing = NO;

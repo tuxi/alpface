@@ -109,6 +109,29 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     _urlArray = [[NSMutableArray alloc]init];
     [AlpVideoCameraUtils createVideoFolderIfNotExist];
     _mainScreenFrame = self.frame;
+    /// 检查相机权限
+    AVAuthorizationStatus cameraStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (cameraStatus != AVAuthorizationStatusNotDetermined) {
+        [self createVideoCamera];
+    }
+    
+    _filter = [[LFGPUImageEmptyFilter alloc] init];
+    _filteredVideoView = [[GPUImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [_videoCamera addTarget:_filter];
+    [_filter addTarget:_filteredVideoView];
+    [_videoCamera startCameraCapture];
+    [self setupUI];
+    UITapGestureRecognizer *singleFingerOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cameraViewTapAction:)];
+    singleFingerOne.numberOfTouchesRequired = 1; //手指数
+    singleFingerOne.numberOfTapsRequired = 1; //tap次数
+    [_filteredVideoView addGestureRecognizer:singleFingerOne];
+    [self addSubview:_filteredVideoView];
+}
+
+- (void)createVideoCamera {
+    if (_videoCamera) {
+        return;
+    }
     _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
     if ([_videoCamera.inputCamera lockForConfiguration:nil]) {
         //自动对焦
@@ -134,18 +157,6 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     _videoCamera.horizontallyMirrorFrontFacingCamera = YES;
     _videoCamera.horizontallyMirrorRearFacingCamera = NO;
     
-    
-    _filter = [[LFGPUImageEmptyFilter alloc] init];
-    _filteredVideoView = [[GPUImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [_videoCamera addTarget:_filter];
-    [_filter addTarget:_filteredVideoView];
-    [_videoCamera startCameraCapture];
-    [self setupUI];
-    UITapGestureRecognizer *singleFingerOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cameraViewTapAction:)];
-    singleFingerOne.numberOfTouchesRequired = 1; //手指数
-    singleFingerOne.numberOfTapsRequired = 1; //tap次数
-    [_filteredVideoView addGestureRecognizer:singleFingerOne];
-    [self addSubview:_filteredVideoView];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -242,6 +253,12 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [_filteredVideoView bringSubviewToFront:backBtn];
     
     [self.permissionView updateHidden];
+    __weak typeof(self) weakSelf = self;
+    self.permissionView.requestCameraAccessBlock = ^(BOOL granted) {
+        if (granted) {        
+            [weakSelf createVideoCamera];
+        }
+    };
 }
 
 ////////////////////////////////////////////////////////////////////////

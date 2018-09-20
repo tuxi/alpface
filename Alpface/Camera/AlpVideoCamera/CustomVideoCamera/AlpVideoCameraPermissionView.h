@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateHidden;
 
+@property (nonatomic, strong) void (^ requestCameraAccessBlock)(BOOL granted);
+@property (nonatomic, strong) void (^ requestAudioAccessBlock)(BOOL granted);
+
 @end
 
 NS_ASSUME_NONNULL_END
