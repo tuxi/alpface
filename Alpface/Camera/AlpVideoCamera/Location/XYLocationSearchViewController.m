@@ -228,11 +228,16 @@
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.topView];
     [self makeConstarints];
-    
+    [[XYLocationManager sharedManager] getAuthorization];
+    [[XYLocationManager sharedManager] startLocation];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocationsNotification) name:XYUpdateLocationsNotification object:nil];
-    
+    if ([[XYLocationManager sharedManager] getGpsPostion]) {
+        [self updateLocationsNotification];
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocationsNotification) name:XYUpdateLocationsNotification object:nil];
+        
+    }
 }
 
 - (void)updateLocationsNotification {

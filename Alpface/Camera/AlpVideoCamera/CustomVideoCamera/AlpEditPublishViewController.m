@@ -15,6 +15,7 @@
 #import "XYLocationSearchViewController.h"
 #import "RTRootNavigationController.h"
 #import "XYLocationManager.h"
+#import "XYLocationSearchTableViewModel.h"
 
 typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     AlpPublishVideoPermissionTypePublic,
@@ -75,10 +76,11 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @end
 
-@interface AlpEditPublishViewLocationListCell : UITableViewCell
+@interface AlpEditPublishViewLocationListCell : UITableViewCell <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) AlpEditPublishTableViewCellModel *cellModel;
 @property (nonatomic, strong) UIButton *searchButton;
+@property (nonatomic, strong) UICollectionView *collectionView;
 
 @end
 
@@ -104,6 +106,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic, strong) UIButton *maskView;
 @property (nonatomic, weak) NSLayoutConstraint *maskViewTopConstraint;
 @property (nonatomic, strong) NSMutableArray *cellModels;
+@property (nonatomic, strong) XYLocationSearchTableViewModel *nearbyPoiViewModel;
 
 @end
 
@@ -165,6 +168,25 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         [self.cellModels addObject:m];
     }
     
+    [[XYLocationManager sharedManager] getAuthorization];
+    [[XYLocationManager sharedManager] startLocation];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    if ([[XYLocationManager sharedManager] getGpsPostion]) {
+        [self updateLocationsNotification];
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocationsNotification) name:XYUpdateLocationsNotification object:nil];
+        
+    }
+}
+
+- (void)updateLocationsNotification {
+    __weak typeof(self) weakSelf = self;
+    [self.nearbyPoiViewModel fetchNearbyInfoCompletionHandler:^(NSArray<MKMapItem *> *searchResult, NSError *error) {
+        AlpEditPublishTableViewCellModel *m = weakSelf.cellModels[2];
+        m.model = searchResult;
+        [weakSelf.tableView reloadData];
+    }];
 }
 
 - (void)setupUI {
@@ -443,6 +465,13 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         _cellModels = @[].mutableCopy;
     }
     return _cellModels;
+}
+
+- (XYLocationSearchTableViewModel *)nearbyPoiViewModel {
+    if (!_nearbyPoiViewModel) {
+        _nearbyPoiViewModel = [XYLocationSearchTableViewModel new];
+    }
+    return _nearbyPoiViewModel;
 }
 
 @end
@@ -870,7 +899,14 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @end
 
-@implementation AlpEditPublishViewLocationListCell
+@interface AlpEditPublishViewLocationListCellCollectionCell : UICollectionViewCell
+@property (nonatomic, strong) UIButton *titleButton;
+@end
+
+@implementation AlpEditPublishViewLocationListCell {
+    NSArray<MKMapItem *> *_pois;
+    NSLayoutConstraint *_searchButtonWidthConstraint;
+}
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -883,6 +919,14 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         [NSLayoutConstraint constraintWithItem:self.searchButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.0].active = YES;
         [NSLayoutConstraint constraintWithItem:self.searchButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
         [NSLayoutConstraint constraintWithItem:self.searchButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:20.0].active = YES;
+        _searchButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.searchButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:0.0];
+        
+        [self.contentView addSubview:self.collectionView];
+        self.collectionView.translatesAutoresizingMaskIntoConstraints = false;
+        [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.searchButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-10.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0].active = YES;
     }
     return self;
 }
@@ -897,7 +941,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         _searchButton.layer.cornerRadius = 10.0;
         _searchButton.layer.borderWidth = 0.5;
         _searchButton.layer.borderColor = [UIColor whiteColor].CGColor;
-        [_searchButton setBackgroundColor:[UIColor darkGrayColor]];
+        [_searchButton setBackgroundColor:[UIColor orangeColor]];
         [_searchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _searchButton.titleLabel.font = [UIFont systemFontOfSize:10.0];
         [_searchButton setContentEdgeInsets:UIEdgeInsetsMake(0.0, 5.0, 0.0, 10.0)];
@@ -905,6 +949,52 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     return _searchButton;
 }
 
+- (UICollectionView *)collectionView {
+    if (!_collectionView) {
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        // 设置预估size，真实size自适应
+        layout.estimatedItemSize = CGSizeMake(30.0, 20.0);
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        layout.minimumInteritemSpacing = 10.0;
+        layout.minimumLineSpacing = 10.0;
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        _collectionView.delegate = self;
+        _collectionView.dataSource = self;
+        [_collectionView registerClass:[AlpEditPublishViewLocationListCellCollectionCell class] forCellWithReuseIdentifier:@"AlpEditPublishViewLocationListCellCollection"];
+    }
+    return _collectionView;
+}
+
+- (void)setCellModel:(AlpEditPublishTableViewCellModel *)cellModel {
+    _cellModel = cellModel;
+    _pois = cellModel.model;
+    if (_pois) {
+        self.searchButton.hidden = YES;
+        _searchButtonWidthConstraint.active = YES;
+    }
+    else {
+        _searchButtonWidthConstraint.active = NO;
+        self.searchButton.hidden = NO;
+    }
+    [self.collectionView reloadData];
+}
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark -
+////////////////////////////////////////////////////////////////////////
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _pois.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    AlpEditPublishViewLocationListCellCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"AlpEditPublishViewLocationListCellCollection" forIndexPath:indexPath];
+    MKMapItem *item = _pois[indexPath.row];
+    [cell.titleButton setTitle:item.name forState:UIControlStateNormal];
+    return cell;
+}
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
 @end
 @implementation AlpEditPublishVideoModel
 
@@ -927,6 +1017,54 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         self.cellShouldHighlight = YES;
     }
     return self;
+}
+
+@end
+
+@implementation AlpEditPublishViewLocationListCellCollectionCell
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize:10.0];
+        button.titleLabel.textAlignment = NSTextAlignmentCenter;
+        button.titleLabel.numberOfLines = 1;
+        button.backgroundColor = [UIColor lightGrayColor];
+        button.layer.cornerRadius = 10.0;
+        button.layer.masksToBounds = YES;
+        [button setContentEdgeInsets:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        _titleButton = button;
+        [_titleButton setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [_titleButton setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [self.contentView addSubview:_titleButton];
+        _titleButton.translatesAutoresizingMaskIntoConstraints = false;
+        [NSLayoutConstraint constraintWithItem:_titleButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:_titleButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:_titleButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:_titleButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0].active = YES;
+    }
+    return self;
+}
+/// 计算cell的size
+- (UICollectionViewLayoutAttributes*)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes*)layoutAttributes {
+    
+    [self.contentView setNeedsLayout];
+    
+    [self.contentView layoutIfNeeded];
+    
+    CGSize size = [self.contentView systemLayoutSizeFittingSize: layoutAttributes.size];
+    
+    CGRect cellFrame = layoutAttributes.frame;
+    
+    cellFrame.size.height= size.height;
+    cellFrame.size.width = size.width;
+    layoutAttributes.frame= cellFrame;
+    
+    return layoutAttributes;
+    
 }
 
 @end

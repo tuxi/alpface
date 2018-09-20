@@ -29,8 +29,6 @@
     self = [super init];
     if (self) {
         [self cleanSearch];
-        [[XYLocationManager sharedManager] getAuthorization];
-        [[XYLocationManager sharedManager] startLocation];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateLocations:) name:XYUpdateLocationsNotification object:nil];
     }

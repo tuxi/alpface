@@ -107,6 +107,7 @@ NSNotificationName const XYUpdateLocationsNotification = @"XYUpdateLocationsNoti
 
 /// 跟踪定位代理方法，每次位置发生变化即会执行（只要定位到相应位置）
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    self.getGpsPostion = YES;
     CLLocation *location = [locations lastObject];
     // 取出经纬度
     CLLocationCoordinate2D coordinate = location.coordinate;
