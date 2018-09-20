@@ -15,6 +15,8 @@
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *addressLabel;
+@property (nonatomic, strong) UIView *bottomLineView;
+@property (nonatomic, strong) UILabel *distanceLabel;
 
 @end
 
@@ -25,32 +27,64 @@
     if (self) {
         self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor = [UIColor clearColor];
+        
         _iconView = [[UIImageView alloc] init];
         _iconView.tintColor = [UIColor blackColor];
+        _iconView.contentMode = UIViewContentModeScaleAspectFill;
         _iconView.image = [UIImage imageNamed:@"XYLocationSearch.bundle/LegacyPinDown3Sat"];
         [self.contentView addSubview:_iconView];
         _iconView.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [self.contentView addSubview:self.bottomLineView];
+        [NSLayoutConstraint constraintWithItem:self.bottomLineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.bottomLineView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_iconView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.bottomLineView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.bottomLineView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:0.3].active = YES;
+        
+        
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:15.0]];
+        [self.iconView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:15.0]];
+        [self.iconView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_iconView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]];
+        
+        self.distanceLabel = [UILabel new];
+        [self.contentView addSubview:self.distanceLabel];
+        self.distanceLabel.font = [UIFont systemFontOfSize:13];
+        self.distanceLabel.textColor = [UIColor lightGrayColor];
+        self.distanceLabel.translatesAutoresizingMaskIntoConstraints = false;
+        [self.distanceLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [self.distanceLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [NSLayoutConstraint constraintWithItem:self.distanceLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.distanceLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-10.0].active = YES;
+        self.distanceLabel.text = @"100米";
+        
+        UIView *textContentView = [UIView new];
+        textContentView.translatesAutoresizingMaskIntoConstraints = false;
+        textContentView.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:textContentView];
+        [NSLayoutConstraint constraintWithItem:textContentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:textContentView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_iconView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:10.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:textContentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationLessThanOrEqual toItem:self.distanceLabel attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-10.0].active = YES;
         
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont systemFontOfSize:16];
+        _titleLabel.font = [UIFont systemFontOfSize:15];
         _titleLabel.textColor = [UIColor whiteColor];
-        [self.contentView addSubview:_titleLabel];
+        [textContentView addSubview:_titleLabel];
         _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
         
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:8.0]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:45.0]];
-         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-8.0]];
+        [textContentView addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:textContentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+        [textContentView addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:textContentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
+         [textContentView addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:textContentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
         
         _addressLabel = [[UILabel alloc] init];
-        _addressLabel.font = [UIFont systemFontOfSize:10];
-        _addressLabel.textColor = [UIColor whiteColor];
-        [self.contentView addSubview:_addressLabel];
+        _addressLabel.font = [UIFont systemFontOfSize:12];
+        _addressLabel.textColor = [UIColor lightGrayColor];
+        [textContentView addSubview:_addressLabel];
         _addressLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-4.0]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:45.0]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-8.0]];
+        [textContentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_titleLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:5.0]];
+        [textContentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:textContentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+        [textContentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:textContentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
+        [textContentView addConstraint:[NSLayoutConstraint constraintWithItem:_addressLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:textContentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
     }
     return self;
 }
@@ -59,14 +93,21 @@
     _titleLabel.text = title;
     _addressLabel.text = address;
 }
-
+- (UIView *)bottomLineView {
+    if (!_bottomLineView) {
+        _bottomLineView = [UIView new];
+        _bottomLineView.backgroundColor = [UIColor colorWithRed:235/255.0f green:235/255.0f blue:235/255.0f alpha:0.6f];
+        _bottomLineView.translatesAutoresizingMaskIntoConstraints = false;
+    }
+    return _bottomLineView;
+}
 @end
 
-@interface XYLocationStaticCell() {
-    UIImageView *_iconView;
-    UILabel *_titleLabel;
-}
+@interface XYLocationStaticCell()
 
+@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong)  UILabel *titleLabel;
+@property (nonatomic, strong) UIView *bottomLineView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicator;
 
 @end
@@ -78,14 +119,23 @@
     if (self) {
         self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor = [UIColor clearColor];
-        self.separatorInset = UIEdgeInsetsMake(0, 45, 0, 0);
         // icon
         _iconView = [[UIImageView alloc] init];
         [self.contentView addSubview:_iconView];
         _iconView.translatesAutoresizingMaskIntoConstraints = NO;
+        _iconView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        [self.contentView addSubview:self.bottomLineView];
+        [NSLayoutConstraint constraintWithItem:self.bottomLineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.bottomLineView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_iconView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.bottomLineView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.bottomLineView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:0.3].active = YES;
+        
         
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:15.0]];
+        [self.iconView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:15.0]];
+        [self.iconView addConstraint:[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_iconView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]];
         
         // title
         _titleLabel = [[UILabel alloc] init];
@@ -117,15 +167,22 @@
     _type = type;
     if (_type == XYLocationStaticCellTypeCurrent) {
         _iconView.image = [[UIImage imageNamed:@"XYLocationSearch.bundle/TrackingLocation"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        _iconView.tintColor = [UIColor blackColor];
-        _titleLabel.text = @"Current";
+        _iconView.tintColor = [UIColor whiteColor];
+        _titleLabel.text = @"当前位置";
     }else {
         _iconView.image = [[UIImage imageNamed:@"XYLocationSearch.bundle/LegacyPinDown3Sat"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        _iconView.tintColor = [UIColor grayColor];
+        _iconView.tintColor = [UIColor whiteColor];
         _titleLabel.text = nil;
     }
 }
-
+- (UIView *)bottomLineView {
+    if (!_bottomLineView) {
+        _bottomLineView = [UIView new];
+        _bottomLineView.backgroundColor = [UIColor colorWithRed:235/255.0f green:235/255.0f blue:235/255.0f alpha:0.6f];
+        _bottomLineView.translatesAutoresizingMaskIntoConstraints = false;
+    }
+    return _bottomLineView;
+}
 @end
 
 
@@ -149,7 +206,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
     self.tableView.backgroundColor = [UIColor clearColor];
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.navigationController.view.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.topView];
     [self makeConstarints];
@@ -302,10 +360,15 @@
     return nil;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 66.0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - UITableViewDelegate
 ////////////////////////////////////////////////////////////////////////
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (![self.delegate respondsToSelector:@selector(locationSearchViewController:didSelectLocationWithName:address:mapItem:)]) {
         return;
     }

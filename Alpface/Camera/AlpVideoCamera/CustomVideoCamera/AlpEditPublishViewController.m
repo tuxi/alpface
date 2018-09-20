@@ -282,8 +282,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         XYLocationSearchViewController *vc = [XYLocationSearchViewController new];
         vc.delegate = self;
         // modal 半透明样式
-        vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         RTRootNavigationController *nac = [[RTRootNavigationController alloc] initWithRootViewControllerNoWrapping:vc];
+        nac.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         [self presentViewController:nac animated:YES completion:nil];
         vc.title = @"添加位置";
     }
