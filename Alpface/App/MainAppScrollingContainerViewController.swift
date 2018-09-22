@@ -481,7 +481,7 @@ extension MainAppScrollingContainerViewController: AlpVideoCameraViewControllerD
     
     func videoCameraViewController(_ viewController: AlpVideoCameraViewController, publishWithVideoURL url: URL, title: String, content: String) {
         MBProgressHUD.xy_showActivity()
-        VideoRequest.shared.upload(title: title, describe: content, videoPath: url.path, progress: { (p) in
+        VideoRequest.shared.releaseVideo(title: title, describe: content, coverStartTime: 2.5, videoPath: url.path, progress: { (p) in
             print("上传进度\(p.completedUnitCount)")
         }, success: {[weak self] (response) in
             guard let video = response as? VideoItem else { return }

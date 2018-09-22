@@ -60,5 +60,7 @@
 	<string>Alpface 将在搜索地点、查找路线及导航服务中使用您的位置信息。</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Alpface 将在搜索地点、查找路线及导航服务中使用您的位置信息。</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Alpface 需要添加相册权限</string>
 </dict>
 </plist>

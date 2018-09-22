@@ -121,8 +121,15 @@ open class VideoRequest: NSObject {
             }
         }
     }
-    
-    public func upload(title: String, describe: String, videoPath: String, progress: ALPProgressHandler?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
+    /// 发布视频
+    /// @param title 发布的标题
+    /// @param describe 发布的内容
+    /// @param videoPath 视频文件w本地路径
+    /// @param progress 进度回调
+    /// @param success 成功回调
+    /// @param failure 失败回调
+    /// @param coverStartTime 封面从某秒开始
+    public func releaseVideo(title: String, describe: String, coverStartTime: TimeInterval, videoPath: String, progress: ALPProgressHandler?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
         
         if AuthenticationManager.shared.isLogin == false {
             return
@@ -141,7 +148,10 @@ open class VideoRequest: NSObject {
         }
         parameters["title"] = title
         parameters["describe"] = describe
-        
+        // 播放封面的时间戳 默认5秒
+        parameters["coverDuration"] = 5
+        // 封面起始的时间戳
+        parameters["coverStartTime"] = coverStartTime
         
         let url = URL(string: urlString)
        Alamofire.upload(multipartFormData: { (multipartFormData) in
@@ -150,9 +160,15 @@ open class VideoRequest: NSObject {
             
             // 遍历字典
             for (key, value) in parameters {
+                var value_string: String!
+                if value is String {
+                    value_string = value as? String
+                }
+                else {
+                    value_string = "\(value)"
+                }
                 
-                let str: String = value as! String
-                let _datas: Data = str.data(using:String.Encoding.utf8)!
+                let _datas: Data = value_string.data(using:String.Encoding.utf8)!
                 multipartFormData.append(_datas, withName: key)
                 
             }

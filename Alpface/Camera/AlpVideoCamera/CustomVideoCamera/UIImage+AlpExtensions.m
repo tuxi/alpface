@@ -18,7 +18,7 @@
     
     gen.appliesPreferredTrackTransform = YES;
     
-    CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+    CMTime time = CMTimeMakeWithSeconds(1, 600);
     
     NSError *error = nil;
     
