@@ -42,6 +42,7 @@ class RegisterViewController: UIViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(chooseAvatarButtonAction),for: .touchUpInside)
         btn.backgroundColor = BaseProfileViewController.globalTint.withAlphaComponent(0.8)
+        btn.imageView?.contentMode = UIViewContentMode.scaleAspectFit
         return btn
     }()
     

@@ -18,7 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)videoCameraViewController:(AlpVideoCameraViewController *)viewController
               publishWithVideoURL:(NSURL *)url
                             title:(NSString *)title
-                          content:(NSString *)content;
+                          content:(NSString *)content
+                        longitude:(double)longitude
+                         latitude:(double)latitude
+                         poi_name:(NSString *)poi_name
+                      poi_address:(NSString *)poi_address;
 
 @end
 

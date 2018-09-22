@@ -16,6 +16,7 @@
 #import "RTRootNavigationController.h"
 #import "XYLocationManager.h"
 #import "XYLocationSearchTableViewModel.h"
+#import <CoreLocation/CoreLocation.h>
 
 typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     AlpPublishVideoPermissionTypePublic,
@@ -36,8 +37,9 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @property (nonatomic, strong) NSURL *videoURL;
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, assign) CLLocationCoordinate2D coordinate2D;
-@property (nonatomic, copy) NSString *addressTitle;
+@property (nonatomic, copy) NSString *address;
+@property (nonatomic, copy) NSString *locationName;
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 @property (nonatomic, assign) AlpPublishVideoPermissionType permissionType;
 @property (nonatomic, assign, getter=isSaveAlbum) BOOL saveAlbum;
 
@@ -360,8 +362,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         
     }
     else {
-//        CLLocation *location = [mapItm.placemark performSelector:@selector(location)];
-//        coordinate  = location.coordinate;
+        CLLocation *location = [mapItm.placemark performSelector:@selector(location)];
+        coordinate  = location.coordinate;
     }
     
     // update UI
@@ -369,6 +371,9 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     cellModel.model = mapItm;
     [self.tableView reloadData];
     [sender.navigationController dismissViewControllerAnimated:YES completion:nil];
+    self.publishModel.locationName = name;
+    self.publishModel.address = address;
+    self.publishModel.coordinate = coordinate;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -404,7 +409,15 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     }
     [hud hideAnimated:YES];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:AlpPublushVideoNotification object:nil userInfo:@{@"video": _videoURL, @"title": @"test", @"content": contentCell.textView.text}];
+    NSMutableDictionary *infoDict = @{@"video": _videoURL, @"title": @"test", @"content": contentCell.textView.text}.mutableCopy;
+    if (self.publishModel.address && self.publishModel.locationName) {
+        infoDict[@"longitude"] = @(self.publishModel.coordinate.longitude);
+        infoDict[@"latitude"] = @(self.publishModel.coordinate.latitude);
+        infoDict[@"poi_name"] = self.publishModel.locationName;
+        infoDict[@"poi_address"] = self.publishModel.address;
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:AlpPublushVideoNotification object:nil userInfo:infoDict];
 }
 
 

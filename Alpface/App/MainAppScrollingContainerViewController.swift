@@ -479,9 +479,10 @@ extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
 
 extension MainAppScrollingContainerViewController: AlpVideoCameraViewControllerDelegate {
     
-    func videoCameraViewController(_ viewController: AlpVideoCameraViewController, publishWithVideoURL url: URL, title: String, content: String) {
+    func videoCameraViewController(_ viewController: AlpVideoCameraViewController, publishWithVideoURL url: URL, title: String, content: String, longitude: Double, latitude: Double, poi_name: String, poi_address: String) {
+        
         MBProgressHUD.xy_showActivity()
-        VideoRequest.shared.releaseVideo(title: title, describe: content, coverStartTime: 2.5, videoPath: url.path, progress: { (p) in
+        VideoRequest.shared.releaseVideo(title: title, describe: content, coverStartTime: 2.5, videoPath: url.path, longitude: longitude, latitude: latitude , poi_name: poi_name, poi_address: poi_address,progress: { (p) in
             print("上传进度\(p.completedUnitCount)")
         }, success: {[weak self] (response) in
             guard let video = response as? VideoItem else { return }

@@ -28,7 +28,7 @@ struct ALPConstans {
     }
     
     struct HttpRequestURL {
-        static let ALPSiteURLString = "http://www.swift.kim:8889"
+        static let ALPSiteURLString = "http://swift.kim:8889"
         // 登录
         static let login = "\(ALPSiteURLString)" + "/account/auth/login/"
         // 注册

@@ -31,6 +31,7 @@ open class VideoItem: NSObject {
     open var video_gif: String?
     open var video_animated_webp: String?
     open var video_mp4: String?
+    open var location: LocationItem?
 //    open var rating: VideoRatingItem?
     
     func encode(with aCoder: NSCoder) {
@@ -55,6 +56,7 @@ open class VideoItem: NSObject {
         aCoder.encode(video_gif, forKey: "video_gif")
         aCoder.encode(video_animated_webp, forKey: "video_animated_webp")
         aCoder.encode(video_mp4, forKey: "video_mp4")
+        aCoder.encode(location, forKey: "location")
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -80,6 +82,7 @@ open class VideoItem: NSObject {
         video_gif = aDecoder.decodeObject(forKey: "video_gif") as? String
         video_animated_webp = aDecoder.decodeObject(forKey: "video_animated_webp") as? String
         video_mp4 = aDecoder.decodeObject(forKey: "video_mp4") as? String
+        location = aDecoder.decodeObject(forKey: "location") as? LocationItem
     }
     
     override init() {
@@ -149,6 +152,9 @@ open class VideoItem: NSObject {
         }
         if let video_mp4 = dict["video_mp4"] as? String {
             self.video_mp4 = video_mp4
+        }
+        if let location_dict = dict["location"] as? [String: Any] {
+            self.location = LocationItem(dict: location_dict)
         }
     }
     

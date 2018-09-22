@@ -71,7 +71,7 @@ public class SingleImageFetcher {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
-
+        options.isSynchronous = true// iCloud的相册需要网络许可，否则icloud中的取出为nil
         if let cropRect = cropRect {
 
             options.normalizedCropRect = cropRect

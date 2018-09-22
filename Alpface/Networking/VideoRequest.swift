@@ -129,7 +129,7 @@ open class VideoRequest: NSObject {
     /// @param success 成功回调
     /// @param failure 失败回调
     /// @param coverStartTime 封面从某秒开始
-    public func releaseVideo(title: String, describe: String, coverStartTime: TimeInterval, videoPath: String, progress: ALPProgressHandler?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
+    public func releaseVideo(title: String, describe: String, coverStartTime: TimeInterval, videoPath: String,longitude: Double = 0, latitude: Double = 0 , poi_name: String="", poi_address: String="", progress: ALPProgressHandler?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
         
         if AuthenticationManager.shared.isLogin == false {
             return
@@ -152,6 +152,16 @@ open class VideoRequest: NSObject {
         parameters["coverDuration"] = 5
         // 封面起始的时间戳
         parameters["coverStartTime"] = coverStartTime
+        
+        if longitude != 0 &&
+            latitude != 0 &&
+            poi_name.count > 0 &&
+            poi_address.count > 0 {
+            parameters["longitude"] = longitude
+            parameters["latitude"] = latitude
+            parameters["poi_name"] = poi_name
+            parameters["poi_address"] = poi_address
+        }
         
         let url = URL(string: urlString)
        Alamofire.upload(multipartFormData: { (multipartFormData) in

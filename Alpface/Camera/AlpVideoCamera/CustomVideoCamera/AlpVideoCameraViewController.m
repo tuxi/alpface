@@ -80,8 +80,8 @@
 
 - (void)publishVideoNotification:(NSNotification *)notification {
     NSDictionary *videoInfo =  notification.userInfo;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:publishWithVideoURL:title:content:)]) {
-        [self.delegate videoCameraViewController:self publishWithVideoURL:videoInfo[@"video"] title:videoInfo[@"title"] content:videoInfo[@"content"]];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:publishWithVideoURL:title:content:longitude:latitude:poi_name:poi_address:)]) {
+        [self.delegate videoCameraViewController:self publishWithVideoURL:videoInfo[@"video"] title:videoInfo[@"title"] content:videoInfo[@"content"] longitude:[videoInfo[@"longitude"] doubleValue] latitude:[videoInfo[@"latitude"] doubleValue] poi_name:videoInfo[@"poi_name"] poi_address:videoInfo[@"poi_address"]];
     }
 }
 
