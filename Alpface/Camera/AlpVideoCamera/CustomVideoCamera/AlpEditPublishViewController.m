@@ -106,6 +106,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 @property (nonatomic, strong) AlpEditPublishViewBottomView *bottomView;
 @property (nonatomic, strong) AlpEditPublishVideoModel *publishModel;
 @property (nonatomic, strong) UIButton *maskView;
+@property (nonatomic, weak) UIVisualEffectView* visualEffectView;
 @property (nonatomic, weak) NSLayoutConstraint *maskViewTopConstraint;
 @property (nonatomic, strong) NSMutableArray *cellModels;
 @property (nonatomic, strong) XYLocationSearchTableViewModel *nearbyPoiViewModel;
@@ -233,17 +234,18 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     maskViewTopConstraint.active = YES;
     _maskViewTopConstraint = maskViewTopConstraint;
     
-//    UIBlurEffect *blurEffrct =[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-//    // 毛玻璃视图
-//    UIVisualEffectView* visualEffectView = [[UIVisualEffectView alloc]initWithEffect:blurEffrct];
-//    visualEffectView.alpha = .5;
-//    [self.maskView addSubview:visualEffectView];
-//    visualEffectView.userInteractionEnabled = NO;
-//    visualEffectView.translatesAutoresizingMaskIntoConstraints = false;
-//    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    UIBlurEffect *blurEffrct =[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    // 毛玻璃视图
+    UIVisualEffectView* visualEffectView = [[UIVisualEffectView alloc]initWithEffect:blurEffrct];
+    visualEffectView.alpha = 0.8;
+    _visualEffectView = visualEffectView;
+    [self.maskView addSubview:visualEffectView];
+    visualEffectView.userInteractionEnabled = NO;
+    visualEffectView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     
 }
 
@@ -256,19 +258,25 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 }
 
 - (void)setMaskViewHidden:(BOOL)hidden animateDuration:(CGFloat)duration {
-    self.maskView.hidden = hidden;
+    
     if (hidden) {
-        self.maskViewTopConstraint.constant = 0;
+        self.visualEffectView.alpha = 0.0;
     }
     else {
-        CGFloat height = [self tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        self.maskViewTopConstraint.constant = height;
+        self.visualEffectView.hidden = hidden;
+        self.visualEffectView.alpha = 0.8;
     }
+    
     duration = fabs(duration);
     if (duration) {
         [UIView animateWithDuration:duration animations:^{
             [self.view layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            self.maskView.hidden = hidden;
         }];
+    }
+    else {
+        self.maskView.hidden = hidden;
     }
 }
 
@@ -297,6 +305,9 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AlpEditPublishTableViewCellModel *cellModel = self.cellModels[indexPath.row];
+    if (indexPath.row == 0) {
+        self.maskViewTopConstraint.constant = cellModel.cellHeight;
+    }
     return cellModel.cellHeight;
 }
 
@@ -326,16 +337,16 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 - (void) keyboardWillShow:(NSNotification *)notification {
     self.tableView.scrollEnabled = NO;
     // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
-//    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [self setMaskViewHidden:NO animateDuration:0];
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [self setMaskViewHidden:NO animateDuration:duration];
 }
 
 /// 键盘消失事件
 - (void) keyboardWillHide:(NSNotification *)notification {
     self.tableView.scrollEnabled = YES;
     // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
-//    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [self setMaskViewHidden:YES animateDuration:0];
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [self setMaskViewHidden:YES animateDuration:duration];
 }
 
 
@@ -474,7 +485,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     if (!_maskView) {
         _maskView = [UIButton new];
         _maskView.translatesAutoresizingMaskIntoConstraints = false;
-        _maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+        _maskView.backgroundColor = [UIColor clearColor];
         _maskView.hidden = YES;
         [_maskView addTarget:self action:@selector(maskViewClick:) forControlEvents:UIControlEventTouchUpInside];
     }

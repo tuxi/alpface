@@ -95,6 +95,7 @@ class FeedVideoDetailView: UIView {
         button.contentEdgeInsets = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)
         button.layer.cornerRadius = 3.0
         button.layer.masksToBounds = true
+        button.setImage(UIImage(named: "poi_bigLocationIcon_20x20_"), for: .normal)
         return button;
     }()
     

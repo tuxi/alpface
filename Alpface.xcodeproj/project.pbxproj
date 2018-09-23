@@ -266,6 +266,49 @@
 		D26AD4952067779F0047DC15 /* HttpRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */; };
 		D26AD49920677C5C0047DC15 /* ALPConstans.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD49820677C5C0047DC15 /* ALPConstans.swift */; };
 		D27615B721568F96008A9AD4 /* LocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27615B621568F96008A9AD4 /* LocationItem.swift */; };
+		D27615DE21572892008A9AD4 /* icShootingFlipped_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615B82157288F008A9AD4 /* icShootingFlipped_31x31_@2x.png */; };
+		D27615DF21572892008A9AD4 /* icShootingDelay_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615B92157288F008A9AD4 /* icShootingDelay_31x31_@2x.png */; };
+		D27615E021572892008A9AD4 /* icShootingSpeedPlanCOff_40x40_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615BA2157288F008A9AD4 /* icShootingSpeedPlanCOff_40x40_@3x.png */; };
+		D27615E121572892008A9AD4 /* poi_bigLocationIcon_20x20_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615BB2157288F008A9AD4 /* poi_bigLocationIcon_20x20_@2x.png */; };
+		D27615E221572892008A9AD4 /* icShootingAntiShakeOff_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615BC2157288F008A9AD4 /* icShootingAntiShakeOff_31x31_@2x.png */; };
+		D27615E321572892008A9AD4 /* icShootingFilter_25x25_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615BD2157288F008A9AD4 /* icShootingFilter_25x25_@2x.png */; };
+		D27615E421572892008A9AD4 /* icShootingMusicSmall_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615BE2157288F008A9AD4 /* icShootingMusicSmall_31x31_@2x.png */; };
+		D27615E521572892008A9AD4 /* icShootingLightingAuto_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615BF2157288F008A9AD4 /* icShootingLightingAuto_31x31_@3x.png */; };
+		D27615E621572892008A9AD4 /* icShootingSpeedPlanCOn_40x40_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C02157288F008A9AD4 /* icShootingSpeedPlanCOn_40x40_@3x.png */; };
+		D27615E721572892008A9AD4 /* poi_bigLocationIconBlack_14x14_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C12157288F008A9AD4 /* poi_bigLocationIconBlack_14x14_@3x.png */; };
+		D27615E821572892008A9AD4 /* icShootingMore_40x40_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C221572890008A9AD4 /* icShootingMore_40x40_@3x.png */; };
+		D27615E921572892008A9AD4 /* icShootingFlip_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C321572890008A9AD4 /* icShootingFlip_31x31_@3x.png */; };
+		D27615EA21572892008A9AD4 /* poi_bigLocationIconBlack_14x14_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C421572890008A9AD4 /* poi_bigLocationIconBlack_14x14_@2x.png */; };
+		D27615EB21572892008A9AD4 /* icShootingDelay_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C521572890008A9AD4 /* icShootingDelay_31x31_@3x.png */; };
+		D27615EC21572892008A9AD4 /* icShootingSpeedPlanCOff_40x40_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C621572890008A9AD4 /* icShootingSpeedPlanCOff_40x40_@2x.png */; };
+		D27615ED21572892008A9AD4 /* poi_bigLocationIcon_20x20_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C721572890008A9AD4 /* poi_bigLocationIcon_20x20_@3x.png */; };
+		D27615EE21572892008A9AD4 /* icShootingLightingOff_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C821572890008A9AD4 /* icShootingLightingOff_31x31_@3x.png */; };
+		D27615EF21572892008A9AD4 /* icShootingMusicCut_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615C921572890008A9AD4 /* icShootingMusicCut_31x31_@3x.png */; };
+		D27615F021572892008A9AD4 /* icShootingMore_40x40_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615CA21572890008A9AD4 /* icShootingMore_40x40_@2x.png */; };
+		D27615F121572892008A9AD4 /* icShootingFlip_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615CB21572890008A9AD4 /* icShootingFlip_31x31_@2x.png */; };
+		D27615F221572892008A9AD4 /* icShootingDelete_40x40_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615CC21572890008A9AD4 /* icShootingDelete_40x40_@3x.png */; };
+		D27615F321572892008A9AD4 /* icShootingMusicChoose_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615CD21572890008A9AD4 /* icShootingMusicChoose_31x31_@3x.png */; };
+		D27615F421572892008A9AD4 /* icShootingFlipped_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615CE21572890008A9AD4 /* icShootingFlipped_31x31_@3x.png */; };
+		D27615F521572892008A9AD4 /* icShootingLightingOn_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615CF21572891008A9AD4 /* icShootingLightingOn_31x31_@2x.png */; };
+		D27615F621572892008A9AD4 /* icShootingAntiShakeOff_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D021572891008A9AD4 /* icShootingAntiShakeOff_31x31_@3x.png */; };
+		D27615F721572892008A9AD4 /* icShootingLightingAuto_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D121572891008A9AD4 /* icShootingLightingAuto_31x31_@2x.png */; };
+		D27615F821572892008A9AD4 /* icShootingLightingOn_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D221572891008A9AD4 /* icShootingLightingOn_31x31_@3x.png */; };
+		D27615F921572892008A9AD4 /* icShootingMusicChoose_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D321572891008A9AD4 /* icShootingMusicChoose_31x31_@2x.png */; };
+		D27615FA21572892008A9AD4 /* icShootingAntiShakeOn_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D421572891008A9AD4 /* icShootingAntiShakeOn_31x31_@2x.png */; };
+		D27615FB21572892008A9AD4 /* icShootingFilter_25x25_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D521572891008A9AD4 /* icShootingFilter_25x25_@3x.png */; };
+		D27615FC21572892008A9AD4 /* icShootingAntiShakeOn_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D621572891008A9AD4 /* icShootingAntiShakeOn_31x31_@3x.png */; };
+		D27615FD21572892008A9AD4 /* icShootingMusicCut_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D721572891008A9AD4 /* icShootingMusicCut_31x31_@2x.png */; };
+		D27615FE21572892008A9AD4 /* icShootingMusicSmall_31x31_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D821572891008A9AD4 /* icShootingMusicSmall_31x31_@3x.png */; };
+		D27615FF21572892008A9AD4 /* icShootingDelete_40x40_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615D921572891008A9AD4 /* icShootingDelete_40x40_@2x.png */; };
+		D276160021572892008A9AD4 /* icShootingClose_24x24_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615DA21572891008A9AD4 /* icShootingClose_24x24_@3x.png */; };
+		D276160121572892008A9AD4 /* icShootingClose_24x24_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615DB21572891008A9AD4 /* icShootingClose_24x24_@2x.png */; };
+		D276160221572892008A9AD4 /* icShootingLightingOff_31x31_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615DC21572892008A9AD4 /* icShootingLightingOff_31x31_@2x.png */; };
+		D276160321572892008A9AD4 /* icShootingSpeedPlanCOn_40x40_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D27615DD21572892008A9AD4 /* icShootingSpeedPlanCOn_40x40_@2x.png */; };
+		D2761606215731D6008A9AD4 /* AlpVideoCameraOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2761605215731D6008A9AD4 /* AlpVideoCameraOptionsView.m */; };
+		D276160921574C7F008A9AD4 /* im_ori_select_20x20_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160721574C7F008A9AD4 /* im_ori_select_20x20_@3x.png */; };
+		D276160A21574C7F008A9AD4 /* im_ori_select_20x20_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160821574C7F008A9AD4 /* im_ori_select_20x20_@2x.png */; };
+		D276160D21574CAC008A9AD4 /* record_button_open_65x65_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */; };
+		D276160E21574CAC008A9AD4 /* record_button_open_65x65_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160C21574CAB008A9AD4 /* record_button_open_65x65_@3x.png */; };
 		D27D6CE0208397BF0095425A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CDF208397BF0095425A /* SettingsViewController.swift */; };
 		D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE120839B690095425A /* SettingsTableViewCell.swift */; };
 		D27D6CE420839E520095425A /* SettingsTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */; };
@@ -612,6 +655,50 @@
 		D26AD4942067779F0047DC15 /* HttpRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpRequestHelper.swift; sourceTree = "<group>"; };
 		D26AD49820677C5C0047DC15 /* ALPConstans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALPConstans.swift; sourceTree = "<group>"; };
 		D27615B621568F96008A9AD4 /* LocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationItem.swift; sourceTree = "<group>"; };
+		D27615B82157288F008A9AD4 /* icShootingFlipped_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingFlipped_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615B92157288F008A9AD4 /* icShootingDelay_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingDelay_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615BA2157288F008A9AD4 /* icShootingSpeedPlanCOff_40x40_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingSpeedPlanCOff_40x40_@3x.png"; sourceTree = "<group>"; };
+		D27615BB2157288F008A9AD4 /* poi_bigLocationIcon_20x20_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poi_bigLocationIcon_20x20_@2x.png"; sourceTree = "<group>"; };
+		D27615BC2157288F008A9AD4 /* icShootingAntiShakeOff_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingAntiShakeOff_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615BD2157288F008A9AD4 /* icShootingFilter_25x25_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingFilter_25x25_@2x.png"; sourceTree = "<group>"; };
+		D27615BE2157288F008A9AD4 /* icShootingMusicSmall_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingMusicSmall_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615BF2157288F008A9AD4 /* icShootingLightingAuto_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingLightingAuto_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615C02157288F008A9AD4 /* icShootingSpeedPlanCOn_40x40_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingSpeedPlanCOn_40x40_@3x.png"; sourceTree = "<group>"; };
+		D27615C12157288F008A9AD4 /* poi_bigLocationIconBlack_14x14_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poi_bigLocationIconBlack_14x14_@3x.png"; sourceTree = "<group>"; };
+		D27615C221572890008A9AD4 /* icShootingMore_40x40_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingMore_40x40_@3x.png"; sourceTree = "<group>"; };
+		D27615C321572890008A9AD4 /* icShootingFlip_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingFlip_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615C421572890008A9AD4 /* poi_bigLocationIconBlack_14x14_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poi_bigLocationIconBlack_14x14_@2x.png"; sourceTree = "<group>"; };
+		D27615C521572890008A9AD4 /* icShootingDelay_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingDelay_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615C621572890008A9AD4 /* icShootingSpeedPlanCOff_40x40_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingSpeedPlanCOff_40x40_@2x.png"; sourceTree = "<group>"; };
+		D27615C721572890008A9AD4 /* poi_bigLocationIcon_20x20_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poi_bigLocationIcon_20x20_@3x.png"; sourceTree = "<group>"; };
+		D27615C821572890008A9AD4 /* icShootingLightingOff_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingLightingOff_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615C921572890008A9AD4 /* icShootingMusicCut_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingMusicCut_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615CA21572890008A9AD4 /* icShootingMore_40x40_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingMore_40x40_@2x.png"; sourceTree = "<group>"; };
+		D27615CB21572890008A9AD4 /* icShootingFlip_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingFlip_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615CC21572890008A9AD4 /* icShootingDelete_40x40_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingDelete_40x40_@3x.png"; sourceTree = "<group>"; };
+		D27615CD21572890008A9AD4 /* icShootingMusicChoose_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingMusicChoose_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615CE21572890008A9AD4 /* icShootingFlipped_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingFlipped_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615CF21572891008A9AD4 /* icShootingLightingOn_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingLightingOn_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615D021572891008A9AD4 /* icShootingAntiShakeOff_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingAntiShakeOff_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615D121572891008A9AD4 /* icShootingLightingAuto_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingLightingAuto_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615D221572891008A9AD4 /* icShootingLightingOn_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingLightingOn_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615D321572891008A9AD4 /* icShootingMusicChoose_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingMusicChoose_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615D421572891008A9AD4 /* icShootingAntiShakeOn_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingAntiShakeOn_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615D521572891008A9AD4 /* icShootingFilter_25x25_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingFilter_25x25_@3x.png"; sourceTree = "<group>"; };
+		D27615D621572891008A9AD4 /* icShootingAntiShakeOn_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingAntiShakeOn_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615D721572891008A9AD4 /* icShootingMusicCut_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingMusicCut_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615D821572891008A9AD4 /* icShootingMusicSmall_31x31_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingMusicSmall_31x31_@3x.png"; sourceTree = "<group>"; };
+		D27615D921572891008A9AD4 /* icShootingDelete_40x40_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingDelete_40x40_@2x.png"; sourceTree = "<group>"; };
+		D27615DA21572891008A9AD4 /* icShootingClose_24x24_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingClose_24x24_@3x.png"; sourceTree = "<group>"; };
+		D27615DB21572891008A9AD4 /* icShootingClose_24x24_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingClose_24x24_@2x.png"; sourceTree = "<group>"; };
+		D27615DC21572892008A9AD4 /* icShootingLightingOff_31x31_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingLightingOff_31x31_@2x.png"; sourceTree = "<group>"; };
+		D27615DD21572892008A9AD4 /* icShootingSpeedPlanCOn_40x40_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icShootingSpeedPlanCOn_40x40_@2x.png"; sourceTree = "<group>"; };
+		D2761604215731D6008A9AD4 /* AlpVideoCameraOptionsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpVideoCameraOptionsView.h; sourceTree = "<group>"; };
+		D2761605215731D6008A9AD4 /* AlpVideoCameraOptionsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpVideoCameraOptionsView.m; sourceTree = "<group>"; };
+		D276160721574C7F008A9AD4 /* im_ori_select_20x20_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "im_ori_select_20x20_@3x.png"; sourceTree = "<group>"; };
+		D276160821574C7F008A9AD4 /* im_ori_select_20x20_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "im_ori_select_20x20_@2x.png"; sourceTree = "<group>"; };
+		D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_button_open_65x65_@2x.png"; sourceTree = "<group>"; };
+		D276160C21574CAB008A9AD4 /* record_button_open_65x65_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_button_open_65x65_@3x.png"; sourceTree = "<group>"; };
 		D27D6CDF208397BF0095425A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D27D6CE120839B690095425A /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCellModel.swift; sourceTree = "<group>"; };
@@ -927,6 +1014,8 @@
 				D26A92BC214E13AA00C118CA /* UIImage+AlpExtensions.h */,
 				D26A92BD214E13AA00C118CA /* AlpEditVideoViewController.h */,
 				D26A92BE214E13AA00C118CA /* ALPVideoCameraView.m */,
+				D2761604215731D6008A9AD4 /* AlpVideoCameraOptionsView.h */,
+				D2761605215731D6008A9AD4 /* AlpVideoCameraOptionsView.m */,
 				D26A92CE214E13AA00C118CA /* AlpVideoCameraUtils.m */,
 				D26A92F6214E13AA00C118CA /* AlpMusicItemCollectionViewCell.h */,
 				D26A92F8214E13AA00C118CA /* AlpVideoCameraViewController.h */,
@@ -1025,6 +1114,48 @@
 		D26A92CF214E13AA00C118CA /* cammerImg */ = {
 			isa = PBXGroup;
 			children = (
+				D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */,
+				D276160C21574CAB008A9AD4 /* record_button_open_65x65_@3x.png */,
+				D276160821574C7F008A9AD4 /* im_ori_select_20x20_@2x.png */,
+				D276160721574C7F008A9AD4 /* im_ori_select_20x20_@3x.png */,
+				D27615BC2157288F008A9AD4 /* icShootingAntiShakeOff_31x31_@2x.png */,
+				D27615D021572891008A9AD4 /* icShootingAntiShakeOff_31x31_@3x.png */,
+				D27615D421572891008A9AD4 /* icShootingAntiShakeOn_31x31_@2x.png */,
+				D27615D621572891008A9AD4 /* icShootingAntiShakeOn_31x31_@3x.png */,
+				D27615DB21572891008A9AD4 /* icShootingClose_24x24_@2x.png */,
+				D27615DA21572891008A9AD4 /* icShootingClose_24x24_@3x.png */,
+				D27615B92157288F008A9AD4 /* icShootingDelay_31x31_@2x.png */,
+				D27615C521572890008A9AD4 /* icShootingDelay_31x31_@3x.png */,
+				D27615D921572891008A9AD4 /* icShootingDelete_40x40_@2x.png */,
+				D27615CC21572890008A9AD4 /* icShootingDelete_40x40_@3x.png */,
+				D27615BD2157288F008A9AD4 /* icShootingFilter_25x25_@2x.png */,
+				D27615D521572891008A9AD4 /* icShootingFilter_25x25_@3x.png */,
+				D27615CB21572890008A9AD4 /* icShootingFlip_31x31_@2x.png */,
+				D27615C321572890008A9AD4 /* icShootingFlip_31x31_@3x.png */,
+				D27615B82157288F008A9AD4 /* icShootingFlipped_31x31_@2x.png */,
+				D27615CE21572890008A9AD4 /* icShootingFlipped_31x31_@3x.png */,
+				D27615D121572891008A9AD4 /* icShootingLightingAuto_31x31_@2x.png */,
+				D27615BF2157288F008A9AD4 /* icShootingLightingAuto_31x31_@3x.png */,
+				D27615DC21572892008A9AD4 /* icShootingLightingOff_31x31_@2x.png */,
+				D27615C821572890008A9AD4 /* icShootingLightingOff_31x31_@3x.png */,
+				D27615CF21572891008A9AD4 /* icShootingLightingOn_31x31_@2x.png */,
+				D27615D221572891008A9AD4 /* icShootingLightingOn_31x31_@3x.png */,
+				D27615CA21572890008A9AD4 /* icShootingMore_40x40_@2x.png */,
+				D27615C221572890008A9AD4 /* icShootingMore_40x40_@3x.png */,
+				D27615D321572891008A9AD4 /* icShootingMusicChoose_31x31_@2x.png */,
+				D27615CD21572890008A9AD4 /* icShootingMusicChoose_31x31_@3x.png */,
+				D27615D721572891008A9AD4 /* icShootingMusicCut_31x31_@2x.png */,
+				D27615C921572890008A9AD4 /* icShootingMusicCut_31x31_@3x.png */,
+				D27615BE2157288F008A9AD4 /* icShootingMusicSmall_31x31_@2x.png */,
+				D27615D821572891008A9AD4 /* icShootingMusicSmall_31x31_@3x.png */,
+				D27615C621572890008A9AD4 /* icShootingSpeedPlanCOff_40x40_@2x.png */,
+				D27615BA2157288F008A9AD4 /* icShootingSpeedPlanCOff_40x40_@3x.png */,
+				D27615DD21572892008A9AD4 /* icShootingSpeedPlanCOn_40x40_@2x.png */,
+				D27615C02157288F008A9AD4 /* icShootingSpeedPlanCOn_40x40_@3x.png */,
+				D27615BB2157288F008A9AD4 /* poi_bigLocationIcon_20x20_@2x.png */,
+				D27615C721572890008A9AD4 /* poi_bigLocationIcon_20x20_@3x.png */,
+				D27615C421572890008A9AD4 /* poi_bigLocationIconBlack_14x14_@2x.png */,
+				D27615C12157288F008A9AD4 /* poi_bigLocationIconBlack_14x14_@3x.png */,
 				D26A95D521526F2200C118CA /* icSearshSugbarSearch_24x24_@2x.png */,
 				D26A95D621526F2200C118CA /* icSearshSugbarSearch_24x24_@3x.png */,
 				D26A95D121526BE300C118CA /* icSearch_24x24_@2x.png */,
@@ -1560,6 +1691,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D27615F021572892008A9AD4 /* icShootingMore_40x40_@2x.png in Resources */,
 				D26A9433214E13AA00C118CA /* beautyOFF@3x.png in Resources */,
 				D26A93ED214E13AA00C118CA /* stickers536.jpg in Resources */,
 				D26A93EB214E13AA00C118CA /* stickers535.jpg in Resources */,
@@ -1570,40 +1702,54 @@
 				D26A93FC214E13AA00C118CA /* stickers541.jpg in Resources */,
 				D26A941A214E13AA00C118CA /* icon_weixin_pyq@3x.png in Resources */,
 				D26A93E6214E13AA00C118CA /* stickers529.jpg in Resources */,
+				D276160D21574CAC008A9AD4 /* record_button_open_65x65_@2x.png in Resources */,
+				D27615E921572892008A9AD4 /* icShootingFlip_31x31_@3x.png in Resources */,
 				D26A9541214E953B00C118CA /* 6536.jpeg in Resources */,
+				D276160E21574CAC008A9AD4 /* record_button_open_65x65_@3x.png in Resources */,
 				D26A952A214E953B00C118CA /* 6427.mp3 in Resources */,
 				D26A9435214E13AA00C118CA /* complete@2x.png in Resources */,
 				D26A9524214E953B00C118CA /* 6401.jpeg in Resources */,
+				D27615E521572892008A9AD4 /* icShootingLightingAuto_31x31_@3x.png in Resources */,
 				D26A953C214E953B00C118CA /* 6472.mp3 in Resources */,
 				D26A93EF214E13AA00C118CA /* stickers550.jpg in Resources */,
 				D26A941F214E13AA00C118CA /* iconBeautyOn2_40x40_@2x.png in Resources */,
+				D276160A21574C7F008A9AD4 /* im_ori_select_20x20_@2x.png in Resources */,
+				D27615E121572892008A9AD4 /* poi_bigLocationIcon_20x20_@2x.png in Resources */,
 				D26A9415214E13AA00C118CA /* GiftCheckmarkIcon@2x.png in Resources */,
 				D26A9421214E13AA00C118CA /* closeTabView@2x.png in Resources */,
 				D26A95B82151414100C118CA /* arrow_alert_more_18x18_@3x.png in Resources */,
 				D26A95CD21514E2700C118CA /* icon_send_save_yes_12x12_@3x.png in Resources */,
 				D26A9528214E953B00C118CA /* musics.json in Resources */,
+				D276160321572892008A9AD4 /* icShootingSpeedPlanCOn_40x40_@2x.png in Resources */,
 				D26A93F1214E13AA00C118CA /* stickers545.jpg in Resources */,
 				D26A93E8214E13AA00C118CA /* stickers532.jpg in Resources */,
 				D26A95B52151414100C118CA /* icon_publicVideoImage_20x20_@2x.png in Resources */,
 				D26A93EE214E13AA00C118CA /* stickers537.jpg in Resources */,
 				D26A95BF2151479D00C118CA /* icPoiNewPublishLocation_20x20_@2x.png in Resources */,
+				D27615E321572892008A9AD4 /* icShootingFilter_25x25_@2x.png in Resources */,
 				D26A953F214E953B00C118CA /* 6513.mp3 in Resources */,
+				D27615F721572892008A9AD4 /* icShootingLightingAuto_31x31_@2x.png in Resources */,
 				D26A9414214E13AA00C118CA /* icon_weixin_pyq_selected@2x.png in Resources */,
 				D26A93E1214E13AA00C118CA /* stickers549.jpg in Resources */,
 				D26A954A214E953B00C118CA /* 6404.mp3 in Resources */,
 				D26A9539214E953B00C118CA /* 6540.jpeg in Resources */,
+				D27615FA21572892008A9AD4 /* icShootingAntiShakeOn_31x31_@2x.png in Resources */,
 				D26A95BC2151414100C118CA /* arrow_alert_more_18x18_@2x.png in Resources */,
 				D26A9424214E13AA00C118CA /* beautyON@3x.png in Resources */,
 				D26A942B214E13AA00C118CA /* del@3x.png in Resources */,
+				D27615FE21572892008A9AD4 /* icShootingMusicSmall_31x31_@3x.png in Resources */,
 				D26A942A214E13AA00C118CA /* del@2x.png in Resources */,
 				D26A95BA2151414100C118CA /* icon_location_20x20_@3x.png in Resources */,
 				D26A93FB214E13AA00C118CA /* stickers555.jpg in Resources */,
+				D27615F521572892008A9AD4 /* icShootingLightingOn_31x31_@2x.png in Resources */,
 				D26A9418214E13AA00C118CA /* cammera@2x.png in Resources */,
 				D26A95B72151414100C118CA /* arrow_learn_more_15x15_@3x.png in Resources */,
 				D26A95CF21514E2700C118CA /* icon_draft_20x20_@2x.png in Resources */,
+				D27615F621572892008A9AD4 /* icShootingAntiShakeOff_31x31_@3x.png in Resources */,
 				D26A9434214E13AA00C118CA /* complete@3x.png in Resources */,
 				D26A9451214E269D00C118CA /* LICENSE in Resources */,
 				D26A9547214E953B00C118CA /* 6401.mp3 in Resources */,
+				D27615F121572892008A9AD4 /* icShootingFlip_31x31_@2x.png in Resources */,
 				D26A9431214E13AA00C118CA /* beautyON@2x.png in Resources */,
 				D26A942E214E13AA00C118CA /* iconBeautyOff2_40x40_@3x.png in Resources */,
 				D26A9436214E13AA00C118CA /* beautyOFF@2x.png in Resources */,
@@ -1617,30 +1763,40 @@
 				D26A9407214E13AA00C118CA /* GPUImageSepiaFilter.png in Resources */,
 				D26A95D321526BE300C118CA /* icSearch_24x24_@2x.png in Resources */,
 				D26A9454214E269D00C118CA /* README_1.md in Resources */,
+				D27615FB21572892008A9AD4 /* icShootingFilter_25x25_@3x.png in Resources */,
 				D26A95C02151479D00C118CA /* icPoiNewPublishLocation_20x20_@3x.png in Resources */,
 				D26A9540214E953B00C118CA /* 6473.jpeg in Resources */,
 				D26A9535214E953B00C118CA /* 6534.jpeg in Resources */,
+				D27615EE21572892008A9AD4 /* icShootingLightingOff_31x31_@3x.png in Resources */,
 				D26A9429214E13AA00C118CA /* nilMusic.png in Resources */,
+				D27615EA21572892008A9AD4 /* poi_bigLocationIconBlack_14x14_@2x.png in Resources */,
 				D26A93DF214E13AA00C118CA /* stickers560.jpg in Resources */,
 				D26A952C214E953B00C118CA /* 6535.mp3 in Resources */,
+				D27615E721572892008A9AD4 /* poi_bigLocationIconBlack_14x14_@3x.png in Resources */,
 				D26A93DA214E13AA00C118CA /* stickers559.jpg in Resources */,
 				D26A941C214E13AA00C118CA /* music.png in Resources */,
 				D26A952D214E953B00C118CA /* 12161.jpeg in Resources */,
 				D26A9430214E13AA00C118CA /* record_ico_input_1@2x.png in Resources */,
 				D26A93E9214E13AA00C118CA /* stickers530.jpg in Resources */,
 				D26A93DC214E13AA00C118CA /* stickers558.jpg in Resources */,
+				D27615F421572892008A9AD4 /* icShootingFlipped_31x31_@3x.png in Resources */,
+				D27615FF21572892008A9AD4 /* icShootingDelete_40x40_@2x.png in Resources */,
 				D26A942D214E13AA00C118CA /* BackToVideoCammer@3x.png in Resources */,
 				D26A940E214E13AA00C118CA /* GPUImageSaturationFilter0.png in Resources */,
 				D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */,
 				D26A9422214E13AA00C118CA /* cammera@3x.png in Resources */,
 				D26A9545214E953B00C118CA /* 5192.jpeg in Resources */,
 				D26A93F6214E13AA00C118CA /* stickers546.jpg in Resources */,
+				D276160021572892008A9AD4 /* icShootingClose_24x24_@3x.png in Resources */,
 				D26A9526214E953B00C118CA /* 6533.jpeg in Resources */,
 				D26A954B214E953B00C118CA /* 6402.jpeg in Resources */,
+				D27615E021572892008A9AD4 /* icShootingSpeedPlanCOff_40x40_@3x.png in Resources */,
 				D26A941E214E13AA00C118CA /* BackToHome@3x.png in Resources */,
 				D26A95B42151414100C118CA /* icon_location_20x20_@2x.png in Resources */,
 				D26A93E4214E13AA00C118CA /* stickers538.jpg in Resources */,
+				D27615DF21572892008A9AD4 /* icShootingDelay_31x31_@2x.png in Resources */,
 				D26A9546214E953B00C118CA /* 12186.jpeg in Resources */,
+				D27615DE21572892008A9AD4 /* icShootingFlipped_31x31_@2x.png in Resources */,
 				D26A93F0214E13AA00C118CA /* stickers544.jpg in Resources */,
 				D26A93E0214E13AA00C118CA /* stickers548.jpg in Resources */,
 				D26A9538214E953B00C118CA /* 12186.mp3 in Resources */,
@@ -1658,6 +1814,7 @@
 				D26A95B92151414100C118CA /* icon_publicVideoImage_20x20_@3x.png in Resources */,
 				D26A952F214E953B00C118CA /* 6535.jpeg in Resources */,
 				D26A93F5214E13AA00C118CA /* stickers552.jpg in Resources */,
+				D27615EC21572892008A9AD4 /* icShootingSpeedPlanCOff_40x40_@2x.png in Resources */,
 				D26A9404214E13AA00C118CA /* GPUImageAmatorkaFilter.png in Resources */,
 				D26A93F8214E13AA00C118CA /* stickers556.jpg in Resources */,
 				D2D663302082E83C0044E2A7 /* README.md in Resources */,
@@ -1666,6 +1823,7 @@
 				D26A9548214E953B00C118CA /* 6429.mp3 in Resources */,
 				D26A9533214E953B00C118CA /* 6533.mp3 in Resources */,
 				D26A940D214E13AA00C118CA /* GPUImageMissEtikateFilter.png in Resources */,
+				D27615EB21572892008A9AD4 /* icShootingDelay_31x31_@3x.png in Resources */,
 				D26A9531214E953B00C118CA /* 6534.mp3 in Resources */,
 				D26A952B214E953B00C118CA /* 6302.jpeg in Resources */,
 				D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */,
@@ -1676,6 +1834,7 @@
 				D26A940A214E13AA00C118CA /* GPUImageSoftEleganceFilter.png in Resources */,
 				D20093272078EEC50079AD8B /* CameraViewAssets.xcassets in Resources */,
 				D26A9542214E953B00C118CA /* 6302.mp3 in Resources */,
+				D276160221572892008A9AD4 /* icShootingLightingOff_31x31_@2x.png in Resources */,
 				D26A941B214E13AA00C118CA /* BackToHome@2x.png in Resources */,
 				D26A93F9214E13AA00C118CA /* stickers557.jpg in Resources */,
 				D26A95BB2151414100C118CA /* arrow_learn_more_15x15_@2x.png in Resources */,
@@ -1689,39 +1848,53 @@
 				D26A9408214E13AA00C118CA /* lookup_amatorka.png in Resources */,
 				D26A9543214E953B00C118CA /* 5192.mp3 in Resources */,
 				D26A953D214E953B00C118CA /* 6404.jpeg in Resources */,
+				D27615ED21572892008A9AD4 /* poi_bigLocationIcon_20x20_@3x.png in Resources */,
 				D26A9432214E13AA00C118CA /* 96.png in Resources */,
 				D26A93F2214E13AA00C118CA /* stickers551.jpg in Resources */,
 				D26A93E5214E13AA00C118CA /* stickers.json in Resources */,
 				D26A93F7214E13AA00C118CA /* stickers542.jpg in Resources */,
 				D26A9419214E13AA00C118CA /* iconBeautyOn2_40x40_@3x.png in Resources */,
 				D26A9532214E953B00C118CA /* 6536.mp3 in Resources */,
+				D27615E421572892008A9AD4 /* icShootingMusicSmall_31x31_@2x.png in Resources */,
 				D07748AF215334CD0080610A /* XYLocationSearch.bundle in Resources */,
+				D276160921574C7F008A9AD4 /* im_ori_select_20x20_@3x.png in Resources */,
 				D26A93FA214E13AA00C118CA /* stickers543.jpg in Resources */,
 				D26A9527214E953B00C118CA /* 6476.jpeg in Resources */,
 				D26A93F3214E13AA00C118CA /* stickers547.jpg in Resources */,
 				D26A93F4214E13AA00C118CA /* stickers553.jpg in Resources */,
 				D26A9428214E13AA00C118CA /* iconBeauty_27x27_@2x.png in Resources */,
+				D27615F821572892008A9AD4 /* icShootingLightingOn_31x31_@3x.png in Resources */,
 				D26A93FE214E13AA00C118CA /* stickers554.jpg in Resources */,
 				D26A953A214E953B00C118CA /* 6476.mp3 in Resources */,
+				D276160121572892008A9AD4 /* icShootingClose_24x24_@2x.png in Resources */,
 				D26A9549214E953B00C118CA /* 6475.jpeg in Resources */,
 				D26A93FD214E13AA00C118CA /* stickers540.jpg in Resources */,
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
 				D26A95D821526F2200C118CA /* icSearshSugbarSearch_24x24_@3x.png in Resources */,
+				D27615FD21572892008A9AD4 /* icShootingMusicCut_31x31_@2x.png in Resources */,
 				D26A9405214E13AA00C118CA /* LFGPUImageEmptyFilter.png in Resources */,
 				D26AD450206690E60047DC15 /* .gitkeep in Resources */,
 				D26A9427214E13AA00C118CA /* BackToVideoCammer@2x.png in Resources */,
 				D26A9406214E13AA00C118CA /* GPUImageToonFilter.png in Resources */,
 				D26A954C214E953B00C118CA /* 6455.jpeg in Resources */,
+				D27615F221572892008A9AD4 /* icShootingDelete_40x40_@3x.png in Resources */,
 				D26A941D214E13AA00C118CA /* icon_weixin_pyq@2x.png in Resources */,
+				D27615F921572892008A9AD4 /* icShootingMusicChoose_31x31_@2x.png in Resources */,
 				D26A940F214E13AA00C118CA /* lookup_miss_etikate.png in Resources */,
 				D20093332078EEC50079AD8B /* CameraView.strings in Resources */,
+				D27615F321572892008A9AD4 /* icShootingMusicChoose_31x31_@3x.png in Resources */,
+				D27615E221572892008A9AD4 /* icShootingAntiShakeOff_31x31_@2x.png in Resources */,
 				D26A93DB214E13AA00C118CA /* stickers564.jpg in Resources */,
 				D26A9417214E13AA00C118CA /* icon_weixin_selected@3x.png in Resources */,
 				D20093382078EEC50079AD8B /* ConfirmViewController.xib in Resources */,
 				D26A9534214E953B00C118CA /* 12161.mp3 in Resources */,
 				D26A953E214E953B00C118CA /* 6473.mp3 in Resources */,
 				D26A9416214E13AA00C118CA /* icon_weixin@3x.png in Resources */,
+				D27615E621572892008A9AD4 /* icShootingSpeedPlanCOn_40x40_@3x.png in Resources */,
+				D27615FC21572892008A9AD4 /* icShootingAntiShakeOn_31x31_@3x.png in Resources */,
 				D26A93E2214E13AA00C118CA /* stickers561.jpg in Resources */,
+				D27615EF21572892008A9AD4 /* icShootingMusicCut_31x31_@3x.png in Resources */,
+				D27615E821572892008A9AD4 /* icShootingMore_40x40_@3x.png in Resources */,
 				D26A93EA214E13AA00C118CA /* stickers531.jpg in Resources */,
 				D26A952E214E953B00C118CA /* 6427.jpeg in Resources */,
 			);
@@ -1883,6 +2056,7 @@
 				D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */,
 				D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */,
 				D26A9453214E269D00C118CA /* RTRootNavigationController.m in Sources */,
+				D2761606215731D6008A9AD4 /* AlpVideoCameraOptionsView.m in Sources */,
 				D2D6632E208245F30044E2A7 /* AppUtils.swift in Sources */,
 				D26A97452152916000C118CA /* AlpVideoCameraPermissionView.m in Sources */,
 				D200932E2078EEC50079AD8B /* VolumeControl.swift in Sources */,
