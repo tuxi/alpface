@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objc(ALPVideoRatingItem)
 class VideoRatingItem: NSObject {
     public var count: Int64 = 0
     

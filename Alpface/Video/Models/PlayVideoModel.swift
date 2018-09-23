@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objc(ALPPlayVideoModel)
 class PlayVideoModel: BaseCellModel {
     fileprivate var _isAllowPlay = false
     

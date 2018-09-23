@@ -15,8 +15,8 @@ extension NSNotification.Name {
 
 @objc(ALPLoginViewControllerDelegate)
 protocol LoginViewControllerDelegate : NSObjectProtocol {
-    @objc optional func loginViewController(loginSuccess user: User) -> Void
-    @objc optional func loginViewController(loginFailure error: Error) -> Void
+    @objc optional func loginViewController(controller: LoginViewController?, loginSuccess user: User) -> Void
+    @objc optional func loginViewController(controller: LoginViewController?, loginFailure error: Error) -> Void
 }
 
 @objc(ALPLoginViewController)
@@ -113,14 +113,11 @@ class LoginViewController: UIViewController {
                 NotificationCenter.default.post(name: NSNotification.Name.ALPLoginSuccess, object: nil, userInfo: [ALPConstans.AuthKeys.ALPAuthenticationUserKey: user])
                 // 登录成功
                 sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: {
-                    self?.dismiss(animated: true, completion: {
-                        
-                    })
                     guard let delegate = self?.delegate else {
                         return
                     }
-                    if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(loginSuccess:))) {
-                        delegate.loginViewController!(loginSuccess: user)
+                    if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(controller:loginSuccess:))) {
+                        delegate.loginViewController!(controller: self, loginSuccess: user)
                     }
                     
                 })
@@ -146,9 +143,9 @@ class LoginViewController: UIViewController {
                 guard let delegate = self?.delegate else {
                     return
                 }
-                if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(loginFailure:))) {
+                if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(controller:loginFailure:))) {
                     if let error = error {
-                        delegate.loginViewController!(loginFailure: error)
+                        delegate.loginViewController!(controller: self, loginFailure: error)
                     }
                 }
             })

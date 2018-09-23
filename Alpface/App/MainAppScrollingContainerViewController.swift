@@ -468,11 +468,15 @@ extension MainAppScrollingContainerViewController {
 
 
 extension MainAppScrollingContainerViewController: LoginViewControllerDelegate {
-    func loginViewController(loginSuccess user: User) {
-      
+    func loginViewController(controller: LoginViewController?, loginSuccess user: User) {
+        
+        controller?.dismiss(animated: true, completion: {
+            
+        })
     }
     
-    func loginViewController(loginFailure error: Error) {
+    func loginViewController(controller: LoginViewController?, loginFailure error: Error) {
+        
         
     }
 }

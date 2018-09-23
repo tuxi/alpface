@@ -25,6 +25,8 @@ class FeedVideoDetailView: UIView {
             describeButton.text = videoItem?.title
             musicButton.text = videoItem?.describe
             avatarButton.sd_setImage(with: videoItem?.user?.getAvatarURL(), for: .normal)
+            locationButton.isHidden = videoItem?.location == nil
+            locationButton.setTitle(videoItem?.location?.name, for: .normal)
         }
     }
 
@@ -85,6 +87,17 @@ class FeedVideoDetailView: UIView {
         return view
     }()
     
+    fileprivate lazy var locationButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
+        button.contentEdgeInsets = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)
+        button.layer.cornerRadius = 3.0
+        button.layer.masksToBounds = true
+        return button;
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -104,6 +117,7 @@ class FeedVideoDetailView: UIView {
         addSubview(titleButton)
         addSubview(describeButton)
         addSubview(musicButton)
+        addSubview(locationButton)
         musicAvatarButton.isHidden = true
         
         avatarButton.translatesAutoresizingMaskIntoConstraints = false
@@ -114,6 +128,7 @@ class FeedVideoDetailView: UIView {
         titleButton.translatesAutoresizingMaskIntoConstraints = false
         describeButton.translatesAutoresizingMaskIntoConstraints = false
         musicButton.translatesAutoresizingMaskIntoConstraints = false
+        locationButton.translatesAutoresizingMaskIntoConstraints = false
         
         let width: CGFloat = 49.0
         let padding: CGFloat = 10.0
@@ -139,6 +154,9 @@ class FeedVideoDetailView: UIView {
         musicAvatarButton.topAnchor.constraint(equalTo: forwardButton.bottomAnchor, constant: 25.0).isActive = true
         musicAvatarButton.centerXAnchor.constraint(equalTo: avatarButton.centerXAnchor, constant: 0.0).isActive = true
         
+        locationButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10.0).isActive = true
+        locationButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -160.0).isActive = true
+        locationButton.bottomAnchor.constraint(equalTo: self.titleButton.topAnchor, constant: -10.0).isActive = true
         
         titleButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10.0).isActive = true
         titleButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -160.0).isActive = true

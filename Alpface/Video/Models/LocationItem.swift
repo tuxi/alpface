@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objc(AlpLocationItem)
 open class LocationItem: NSObject {
     /// 经度
     open var longitude: Double?
