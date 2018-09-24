@@ -31,7 +31,7 @@ class MainAppScrollingContainerViewController: UIViewController {
         pageViewController.view.backgroundColor = UIColor.black
         return pageViewController
     }()
-
+    
     /// 记录上次选中tabbarItem的时间，做双击刷新功能
     fileprivate var lastSelectedTabbarItemDate: Date?
     private lazy var collectionSection: CollectionViewSection = {
@@ -444,11 +444,27 @@ extension MainAppScrollingContainerViewController: UIPageViewControllerDelegate 
         }
         
         currentIndex = index
-        
+        if viewController == userProfileController {
+            self.updateUserProfile()
+        }
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3) {
                 UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
             }
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        if pendingViewControllers.first == userProfileController {
+            self.updateUserProfile()
+        }
+    }
+    
+    func updateUserProfile() -> Void {
+        // 进入用户页面
+        if let video = self.homeFeedController.displayVideoItem() {
+            userProfileController?.user = video.user
+            userProfileController?.mainScrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
         }
     }
 }
