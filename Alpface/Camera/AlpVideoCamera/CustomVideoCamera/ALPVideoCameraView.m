@@ -36,24 +36,31 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 };
 
 
-@interface ALPVideoCameraView ()<TZImagePickerControllerDelegate>
-{
+@interface ALPVideoCameraView ()<TZImagePickerControllerDelegate> {
+    // 摄像头
     GPUImageVideoCamera *_videoCamera;
     GPUImageOutput<GPUImageInput> *_filter;
+    // 录制器
     GPUImageMovieWriter *_movieWriter;
     NSString *_pathToMovie;
     CALayer *_focusLayer;
     NSDate *_fromdate;
     CGRect _mainScreenFrame;
-    float _totalTime; //允许录制视频的最大长度 默认20秒
-    float _currentTime; //当前视频长度
-    float _lastTime; //记录上次时间
+    // 允许录制视频的最大长度 默认20秒
+    float _totalTime;
+    // 当前视频长度
+    float _currentTime;
+    // 记录上次时间
+    float _lastTime;
     NSTimer *_myTimer;
     
-    float _preLayerWidth;//镜头宽
-    float _preLayerHeight;//镜头高
-    float _preLayerHWRate; //高，宽比
-    MBProgressHUD* _HUD;
+    // 镜头宽
+    float _preLayerWidth;
+    // 镜头高
+    float _preLayerHeight;
+    // 高，宽比
+    float _preLayerHWRate;
+    MBProgressHUD *_HUD;
 }
 
 @property (nonatomic, assign) CameraManagerDevicePosition position;
@@ -101,17 +108,16 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     /// 检查相机权限
     AVAuthorizationStatus cameraStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (cameraStatus == AVAuthorizationStatusAuthorized) {
+        // 当用户开启相机权限时再创建相机
+        // 此时会显示权限视图
         [self createVideoCamera];
     }
     
     [self setupUI];
-    UITapGestureRecognizer *singleFingerOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cameraViewTapAction:)];
-    singleFingerOne.numberOfTouchesRequired = 1; //手指数
-    singleFingerOne.numberOfTapsRequired = 1; //tap次数
-    [self.filteredVideoView addGestureRecognizer:singleFingerOne];
-    [self addSubview:self.filteredVideoView];
+    
 }
 
+// 创建摄像头
 - (void)createVideoCamera {
     if (_videoCamera) {
         return;
@@ -136,7 +142,9 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     
     _position = CameraManagerDevicePositionBack;
     //    videoCamera.frameRate = 10;
+    // 输出图像旋转方式
     _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+    // 该句可防止允许声音通过的情况下，避免录制第一帧黑屏闪屏(====)
     [_videoCamera addAudioInputsAndOutputs];
     _videoCamera.horizontallyMirrorFrontFacingCamera = YES;
     _videoCamera.horizontallyMirrorRearFacingCamera = NO;
@@ -152,11 +160,28 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 #pragma mark - UI
 ////////////////////////////////////////////////////////////////////////
 - (void)setupUI {
+    UITapGestureRecognizer *singleFingerOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cameraViewTapAction:)];
+    singleFingerOne.numberOfTouchesRequired = 1; //手指数
+    singleFingerOne.numberOfTapsRequired = 1; //tap次数
+    [self.filteredVideoView addGestureRecognizer:singleFingerOne];
+    [self addSubview:self.filteredVideoView];
+    self.filteredVideoView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:self.filteredVideoView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.filteredVideoView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+
+    [NSLayoutConstraint constraintWithItem:self.filteredVideoView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.filteredVideoView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    
     //    253 91 73
     [self.filteredVideoView addSubview:self.optionsView];
     self.optionsView.translatesAutoresizingMaskIntoConstraints = false;
-    [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    if (@available(iOS 11.0, *)) {
+        [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    } else {
+        [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    }
     [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     
@@ -189,13 +214,17 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
         sender.selected = YES;
         _pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"tmp/Movie%lu.mov",(unsigned long)self.urlArray.count]];
         unlink([_pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
+         // 配置录制器
         NSURL *movieURL = [NSURL fileURLWithPath:_pathToMovie];
         _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(720.0, 1280.0)];
 //        _movieWriter.isNeedBreakAudioWhiter = YES;
         _movieWriter.encodingLiveVideo = YES;
         _movieWriter.shouldPassthroughAudio = YES;
+        
+        // 设置录制视频滤镜
         [_filter addTarget:_movieWriter];
         _videoCamera.audioEncodingTarget = _movieWriter;
+        // 开始录制
         [_movieWriter startRecording];
         _isRecoding = YES;
         _fromdate = [NSDate date];
@@ -650,7 +679,12 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 
 - (GPUImageView *)filteredVideoView {
     if (!_filteredVideoView) {
+        // 创建摄像头显示视图
         _filteredVideoView = [[GPUImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        // 显示模式充满整个边框
+        _filteredVideoView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
+        _filteredVideoView.clipsToBounds = YES;
+        [_filteredVideoView.layer setMasksToBounds:YES];
     }
     return _filteredVideoView;
 }

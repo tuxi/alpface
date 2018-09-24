@@ -46,10 +46,16 @@
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
         CGRect frame = [[UIScreen mainScreen] bounds];
         ALPVideoCameraView *videoCameraView = [[ALPVideoCameraView alloc] initWithFrame:frame];
+        videoCameraView.translatesAutoresizingMaskIntoConstraints = false;
+        [self.view addSubview:videoCameraView];
+        [NSLayoutConstraint constraintWithItem:videoCameraView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:videoCameraView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:videoCameraView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:videoCameraView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+       
         videoCameraView.delegate = self;
         AlpEditVideoParameter *videoOptions = [[AlpEditVideoParameter alloc] initWithBitRate:bit frameRate:framRate];
         videoCameraView.videoOptions = videoOptions;
-        [self.view addSubview:videoCameraView];
     }
 }
 
