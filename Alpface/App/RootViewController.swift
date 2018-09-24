@@ -75,6 +75,9 @@ class RootViewController: UIViewController {
     }
     
     override var prefersStatusBarHidden: Bool {
+        if AppUtils.isIPhoneX() {
+            return false
+        }
         return appViewController.prefersStatusBarHidden
     }
     

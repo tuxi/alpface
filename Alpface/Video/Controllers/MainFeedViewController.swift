@@ -141,8 +141,16 @@ class MainFeedViewController: UIViewController {
         }
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        // iPhone x 系列 底部内容显示在安全区域以上
+        // 其他系列 底部内容显示在屏幕底部以上，tabBar透明显示，可以看到全屏内容
+        if #available(iOS 11.0, *), AppUtils.isIPhoneX() {
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        } else {
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        }
         
         collectionView.refreshControl = refreshControl
         setupNavigation()

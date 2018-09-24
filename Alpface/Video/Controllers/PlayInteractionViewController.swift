@@ -204,15 +204,15 @@ extension PlayInteractionViewController {
         view.addSubview(progressView)
         progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        progressView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -49.0).isActive = true
-        progressView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        progressView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        progressView.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
         
         view.addSubview(timeLabel)
         timeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20.0).isActive = true
         timeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20.0).isActive = true
         
         view.addSubview(detailView)
-        detailView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -50.0).isActive = true
+        detailView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0.0).isActive = true
         detailView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
         detailView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
          detailView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.6, constant: 0.0).isActive = true

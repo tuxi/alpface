@@ -80,7 +80,7 @@ class PlayVideoViewController: UIViewController {
         containerView.backgroundColor = UIColor.black
         containerView.translatesAutoresizingMaskIntoConstraints = false
         let playerLayer = containerView.layer as! AVPlayerLayer
-        playerLayer.videoGravity = .resizeAspect //视频填充模式
+        playerLayer.videoGravity = .resizeAspectFill //视频填充模式 填充整个view 完美视频iPhonex
         return containerView
     }()
     

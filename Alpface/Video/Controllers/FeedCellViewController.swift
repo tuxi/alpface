@@ -100,8 +100,13 @@ class FeedCellViewController: UIViewController {
         view.addSubview(interactionController.view)
         interactionController.view.leadingAnchor.constraint(equalTo: playVideoVc.view.leadingAnchor).isActive = true
         interactionController.view.trailingAnchor.constraint(equalTo: playVideoVc.view.trailingAnchor).isActive = true
-        interactionController.view.bottomAnchor.constraint(equalTo: playVideoVc.view.bottomAnchor).isActive = true
         interactionController.view.topAnchor.constraint(equalTo: playVideoVc.view.topAnchor).isActive = true
+        
+        if #available(iOS 11.0, *), AppUtils.isIPhoneX() {
+            interactionController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        } else {
+            interactionController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -49.0).isActive = true
+        }
         
     }
     
