@@ -309,6 +309,7 @@
 		D276160A21574C7F008A9AD4 /* im_ori_select_20x20_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160821574C7F008A9AD4 /* im_ori_select_20x20_@2x.png */; };
 		D276160D21574CAC008A9AD4 /* record_button_open_65x65_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */; };
 		D276160E21574CAC008A9AD4 /* record_button_open_65x65_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160C21574CAB008A9AD4 /* record_button_open_65x65_@3x.png */; };
+		D276161321589E7D008A9AD4 /* MainCameraNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D276161221589E7D008A9AD4 /* MainCameraNavigationController.swift */; };
 		D27D6CE0208397BF0095425A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CDF208397BF0095425A /* SettingsViewController.swift */; };
 		D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE120839B690095425A /* SettingsTableViewCell.swift */; };
 		D27D6CE420839E520095425A /* SettingsTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */; };
@@ -699,6 +700,7 @@
 		D276160821574C7F008A9AD4 /* im_ori_select_20x20_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "im_ori_select_20x20_@2x.png"; sourceTree = "<group>"; };
 		D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_button_open_65x65_@2x.png"; sourceTree = "<group>"; };
 		D276160C21574CAB008A9AD4 /* record_button_open_65x65_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_button_open_65x65_@3x.png"; sourceTree = "<group>"; };
+		D276161221589E7D008A9AD4 /* MainCameraNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCameraNavigationController.swift; sourceTree = "<group>"; };
 		D27D6CDF208397BF0095425A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D27D6CE120839B690095425A /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCellModel.swift; sourceTree = "<group>"; };
@@ -1378,6 +1380,7 @@
 				D26AD42420668F140047DC15 /* MainTabBarController.swift */,
 				D26AD42520668F140047DC15 /* RootViewController.swift */,
 				D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */,
+				D276161221589E7D008A9AD4 /* MainCameraNavigationController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -1978,6 +1981,7 @@
 				D26A9410214E13AA00C118CA /* AlpVideoCameraUtils.m in Sources */,
 				D2B38C57208B25BB00CA3908 /* VideoDetailListViewController.swift in Sources */,
 				D0B47A1E2150A1A300E78B90 /* AlpEditVideoNavigationBar.m in Sources */,
+				D276161321589E7D008A9AD4 /* MainCameraNavigationController.swift in Sources */,
 				D28953692076A4EE0029CE92 /* HitTestScrollView.swift in Sources */,
 				D20093392078EEC50079AD8B /* CameraView.swift in Sources */,
 				D20093352078EEC50079AD8B /* PhotoLibraryViewController.swift in Sources */,

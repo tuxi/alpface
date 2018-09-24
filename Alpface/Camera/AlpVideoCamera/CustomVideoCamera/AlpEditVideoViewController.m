@@ -23,22 +23,16 @@
 #import "AlpEditVideoParameter.h"
 
 @interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate, AlpEditVideoNavigationBarDelegate>
+
 @property (nonatomic, strong) AVPlayer *audioPlayer;
-
 @property (nonatomic, strong) AlpEditVideoBar *editVideoBar;
-
 @property (nonatomic, strong) UIButton *musicBtn;
 @property (nonatomic, strong) NSString *filtClassName;
 @property (nonatomic, assign) BOOL isdoing;
-
 @property (nonatomic, strong) AlpVideoCameraResourceItem *resourceItem;
-
 @property (nonatomic, strong) GPUImageView *filterView;
-
 @property (nonatomic, assign) float saturationValue;
-
 @property (nonatomic, strong) UIImageView *bgImageView;
-
 @property (nonatomic, strong) UIImageView *stickersImgView;
 @property (nonatomic, weak) NSLayoutConstraint *editVideoBarBottomConstraint;
 
@@ -46,12 +40,12 @@
 
 @implementation AlpEditVideoViewController {
     GPUImageMovie *_movieFile;
-    GPUImageMovie* _endMovieFile;
+    GPUImageMovie *_endMovieFile;
     GPUImageOutput<GPUImageInput> *_filter;
     
     AVPlayerItem *_audioPlayerItem;
     UIImageView* _playImg;
-    MBProgressHUD*_HUD;
+    MBProgressHUD *_HUD;
     
     AVPlayer *_mainPlayer;
     AVPlayerLayer *_playerLayer;
@@ -80,7 +74,7 @@
     _playerItem = [[AVPlayerItem alloc] initWithURL:_videoURL];
     [_mainPlayer replaceCurrentItemWithPlayerItem:_playerItem];
     _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_mainPlayer];
-    
+    _playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     
     _movieFile = [[GPUImageMovie alloc] initWithPlayerItem:_playerItem];
     _movieFile.runBenchmark = YES;
@@ -90,12 +84,12 @@
     
     _filtClassName = @"LFGPUImageEmptyFilter";
     [_movieFile addTarget:_filter];
+    // 创建摄像头显示视图
     _filterView = [[GPUImageView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:_filterView];
     [_filter addTarget:_filterView];
-    
+    _filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
     _bgImageView = [[UIImageView alloc] init];
-    //    _bgImageView.image = [[AppDelegate appDelegate].cmImageSize getImage:[[videoURL absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
     [self.view addSubview:_bgImageView];
     _bgImageView.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:_bgImageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
@@ -131,9 +125,14 @@
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
     headerBar.delegate = self;
     [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
+    headerBar.backgroundColor = [UIColor clearColor];
     [self.view addSubview:headerBar];
     headerBar.translatesAutoresizingMaskIntoConstraints = false;
-    [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    if (@available(iOS 11.0, *)) {
+        [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    } else {
+        [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    }
      [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
      [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:44.0].active = YES;
@@ -143,12 +142,11 @@
     _editVideoBar.resourceItem = _resourceItem;
     [self.view addSubview:_editVideoBar];
     _editVideoBar.translatesAutoresizingMaskIntoConstraints = false;
-    NSLayoutConstraint *editVideoBarBottomConstraint = [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
+    NSLayoutConstraint *editVideoBarBottomConstraint = editVideoBarBottomConstraint = [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
     editVideoBarBottomConstraint.active = YES;
     _editVideoBarBottomConstraint = editVideoBarBottomConstraint;
     [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:160.0].active = YES;
 
     _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     _HUD.hidden = YES;
@@ -325,255 +323,10 @@
     
     if (self.editVideoBar.audioPath) {
         [self mixAudioAndVidoWithInputURL2:inputURL];
-    }else
-    {
+    }
+    else {
         [self mixAudioAndVidoWithInputURL1:inputURL];
     }
-    //    //    audio529
-    //
-    //    // 路径
-    //    HUD.labelText = @"音乐合成中...";
-    //    NSString *documents = [NSHomeDirectory() stringByAppendingPathComponent:@"tmp"];
-    //
-    //    // 声音来源
-    //
-    //    //    NSURL *audioInputUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"audio529" ofType:@"mp3"]];
-    //
-    //    NSURL *audioInputUrl = [NSURL fileURLWithPath:_audioPath];
-    //
-    //    // 视频来源
-    //
-    //    NSURL *videoInputUrl = inputURL;
-    //
-    //    // 最终合成输出路径
-    //
-    ////    NSString *outPutFilePath = [documents stringByAppendingPathComponent:@"videoandoudio.mov"];
-    //
-    //    // 添加合成路径
-    //
-    //
-    //
-    //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    //    formatter.dateFormat = @"yyyyMMddHHmmss";
-    //    NSString *nowTimeStr = [formatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]];
-    //    NSString *fileName = [[documents stringByAppendingPathComponent:nowTimeStr] stringByAppendingString:@"merge.mp4"];
-    //
-    //
-    //
-    //    //    NSURL *outputFileUrl = [NSURL fileURLWithPath:outPutFilePath];
-    //    NSURL *outputFileUrl = [NSURL fileURLWithPath:fileName];
-    //
-    //    // 时间起点
-    //
-    //    CMTime nextClistartTime = kCMTimeZero;
-    //
-    //    // 创建可变的音视频组合
-    //
-    //    AVMutableComposition *comosition = [AVMutableComposition composition];
-    //
-    //    // 视频采集
-    //    NSDictionary* options = @{AVURLAssetPreferPreciseDurationAndTimingKey:@YES};
-    //    AVURLAsset *videoAsset = [[AVURLAsset alloc] initWithURL:videoInputUrl options:options];
-    //
-    //    // 视频时间范围
-    //
-    //    CMTimeRange videoTimeRange = CMTimeRangeMake(kCMTimeZero, videoAsset.duration);
-    //
-    //    // 视频通道 枚举 kCMPersistentTrackID_Invalid = 0
-    //
-    //    AVMutableCompositionTrack *videoTrack = [comosition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-    //
-    //    // 视频采集通道
-    //
-    //    AVAssetTrack *videoAssetTrack = [[videoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
-    //
-    //    //  把采集轨道数据加入到可变轨道之中
-    //
-    //    [videoTrack insertTimeRange:videoTimeRange ofTrack:videoAssetTrack atTime:nextClistartTime error:nil];
-    //
-    //    // 声音采集
-    //
-    //    AVURLAsset *audioAsset = [[AVURLAsset alloc] initWithURL:audioInputUrl options:options];
-    //
-    //    // 因为视频短这里就直接用视频长度了,如果自动化需要自己写判断
-    //
-    //    CMTimeRange audioTimeRange = videoTimeRange;
-    //
-    //    // 音频通道
-    //
-    //    AVMutableCompositionTrack *audioTrack = [comosition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-    //
-    //    // 音频采集通道
-    //
-    //    AVAssetTrack *audioAssetTrack = [[audioAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
-    //
-    //    // 加入合成轨道之中
-    //
-    //    [audioTrack insertTimeRange:audioTimeRange ofTrack:audioAssetTrack atTime:nextClistartTime error:nil];
-    //
-    //
-    //
-    ///*
-    //    //调整视频音量
-    //    AVMutableAudioMix *mutableAudioMix = [AVMutableAudioMix audioMix];
-    //    // Create the audio mix input parameters object.
-    //    AVMutableAudioMixInputParameters *mixParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:audioTrack];
-    //    // Set the volume ramp to slowly fade the audio out over the duration of the composition.
-    ////    [mixParameters setVolumeRampFromStartVolume:1.f toEndVolume:0.f timeRange:CMTimeRangeMake(kCMTimeZero, mutableComposition.duration)];
-    //    [mixParameters setVolume:.05f atTime:kCMTimeZero];
-    //    // Attach the input parameters to the audio mix.
-    //    mutableAudioMix.inputParameters = @[mixParameters];
-    // */
-    //
-    //
-    //    // 原音频轨道
-    ////    AVMutableCompositionTrack *audioTrack2 = [comosition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-    ////     AVAssetTrack *audioAssetTrack2 = [[videoAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
-    ////    [audioTrack2 insertTimeRange:audioTimeRange ofTrack:audioAssetTrack2 atTime:nextClistartTime error:nil];
-    //
-    //
-    //    if (!_editTheOriginaBtn.selected) {
-    //        AVMutableAudioMix *mutableAudioMix = [AVMutableAudioMix audioMix];
-    //        // Create the audio mix input parameters object.
-    //        AVMutableAudioMixInputParameters *mixParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:audioTrack];
-    //        // Set the volume ramp to slowly fade the audio out over the duration of the composition.
-    //        //    [mixParameters setVolumeRampFromStartVolume:1.f toEndVolume:0.f timeRange:CMTimeRangeMake(kCMTimeZero, mutableComposition.duration)];
-    //        [mixParameters setVolume:.5f atTime:kCMTimeZero];
-    //        // Attach the input parameters to the audio mix.
-    //        mutableAudioMix.inputParameters = @[mixParameters];
-    //
-    //        AVMutableCompositionTrack *audioTrack2 = [comosition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-    //         AVAssetTrack *audioAssetTrack2 = [[videoAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
-    //        [audioTrack2 insertTimeRange:audioTimeRange ofTrack:audioAssetTrack2 atTime:nextClistartTime error:nil];
-    //
-    //
-    //        //视频贴图
-    //        CGSize videoSize = [videoTrack naturalSize];
-    //        CALayer* aLayer = [CALayer layer];
-    //        UIImage* waterImg = _stickersImgView.image;
-    //        aLayer.contents = (id)waterImg.CGImage;
-    //
-    //        float bili = 720/ScreenWidth;
-    //
-    //
-    //        aLayer.frame = CGRectMake(_stickersImgView.frame.origin.x * bili,1280 - _stickersImgView.frame.origin.y *bili - 150*bili, 150*bili, 150*bili);
-    //        aLayer.opacity = 1;
-    //
-    //        CALayer *parentLayer = [CALayer layer];
-    //        CALayer *videoLayer = [CALayer layer];
-    //        parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-    //        videoLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-    //        [parentLayer addSublayer:videoLayer];
-    //        [parentLayer addSublayer:aLayer];
-    //        AVMutableVideoComposition* videoComp = [AVMutableVideoComposition videoComposition];
-    //        videoComp.renderSize = videoSize;
-    //
-    //
-    //        videoComp.frameDuration = CMTimeMake(1, 30);
-    //        videoComp.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
-    //        AVMutableVideoCompositionInstruction* instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    //
-    //        instruction.timeRange = CMTimeRangeMake(kCMTimeZero, [comosition duration]);
-    //        AVAssetTrack* mixVideoTrack = [[comosition tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    //        AVMutableVideoCompositionLayerInstruction* layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:mixVideoTrack];
-    //        instruction.layerInstructions = [NSArray arrayWithObject:layerInstruction];
-    //        videoComp.instructions = [NSArray arrayWithObject: instruction];
-    //
-    //        AVAssetExportSession *assetExport = [[AVAssetExportSession alloc] initWithAsset:comosition presetName:AVAssetExportPreset1280x720];
-    //
-    //        assetExport.audioMix = mutableAudioMix;
-    //
-    //        assetExport.videoComposition = videoComp;
-    //        // 输出类型
-    //
-    //        assetExport.outputFileType = AVFileTypeMPEG4;
-    //
-    //        // 输出地址
-    //
-    //        assetExport.outputURL = outputFileUrl;
-    //
-    //        // 优化
-    //
-    //        assetExport.shouldOptimizeForNetworkUse = YES;
-    //
-    //        // 合成完毕
-    //
-    //        [assetExport exportAsynchronouslyWithCompletionHandler:^{
-    //
-    //            // 回到主线程
-    //
-    //            dispatch_async(dispatch_get_main_queue(), ^{
-    //
-    //                [self compressVideoWithInputVideoUrl:outputFileUrl];
-    //
-    //            });
-    //        }];
-    //    }else
-    //    {
-    //
-    //        //视频贴图
-    //        CGSize videoSize = [videoTrack naturalSize];
-    //        CALayer* aLayer = [CALayer layer];
-    //        UIImage* waterImg = _stickersImgView.image;
-    //        aLayer.contents = (id)waterImg.CGImage;
-    //        float bili = 720/ScreenWidth;
-    //        aLayer.frame = CGRectMake(_stickersImgView.frame.origin.x * bili,1280 - _stickersImgView.frame.origin.y *bili - 150*bili, 150*bili, 150*bili);
-    //        aLayer.opacity = 1;
-    //
-    //        CALayer *parentLayer = [CALayer layer];
-    //        CALayer *videoLayer = [CALayer layer];
-    //        parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-    //        videoLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-    //        [parentLayer addSublayer:videoLayer];
-    //        [parentLayer addSublayer:aLayer];
-    //        AVMutableVideoComposition* videoComp = [AVMutableVideoComposition videoComposition];
-    //        videoComp.renderSize = videoSize;
-    //
-    //
-    //        videoComp.frameDuration = CMTimeMake(1, 30);
-    //        videoComp.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
-    //        AVMutableVideoCompositionInstruction* instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    //
-    //        instruction.timeRange = CMTimeRangeMake(kCMTimeZero, [comosition duration]);
-    //        AVAssetTrack* mixVideoTrack = [[comosition tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    //        AVMutableVideoCompositionLayerInstruction* layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:mixVideoTrack];
-    //        instruction.layerInstructions = [NSArray arrayWithObject:layerInstruction];
-    //        videoComp.instructions = [NSArray arrayWithObject: instruction];
-    //
-    //        // 创建一个输出
-    //
-    //        AVAssetExportSession *assetExport = [[AVAssetExportSession alloc] initWithAsset:comosition presetName:AVAssetExportPreset1280x720];
-    //
-    //        assetExport.videoComposition = videoComp;
-    //        //    assetExport.audioMix = mutableAudioMix;
-    //        // 输出类型
-    //
-    //        assetExport.outputFileType = AVFileTypeMPEG4;
-    //
-    //        // 输出地址
-    //
-    //        assetExport.outputURL = outputFileUrl;
-    //
-    //        // 优化
-    //
-    //        assetExport.shouldOptimizeForNetworkUse = YES;
-    //
-    //        // 合成完毕
-    //
-    //        [assetExport exportAsynchronouslyWithCompletionHandler:^{
-    //
-    //            // 回到主线程
-    //
-    //            dispatch_async(dispatch_get_main_queue(), ^{
-    //
-    //                [self compressVideoWithInputVideoUrl:outputFileUrl];
-    //
-    //            });
-    //        }];
-    //
-    //    }
-    
-    
     
 }
 

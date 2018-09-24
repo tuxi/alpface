@@ -14,6 +14,7 @@
 
 @interface AlpVideoCameraViewController () <ALPVideoCameraViewDelegate>
 
+@property (nonatomic, weak) ALPVideoCameraView *videoCameraView;
 
 @end
 
@@ -26,9 +27,14 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNeedsStatusBarAppearanceUpdate];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     [self setupViewCameraView];
+    [_videoCameraView startCameraCapture];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_videoCameraView stopCameraCapture];
 }
 
 - (void)setupViewCameraView {
@@ -36,13 +42,7 @@
         bit = 2500000;
         framRate = 30;
     }
-    BOOL needNewVideoCamera = YES;
-    for (UIView* subView in self.view.subviews) {
-        if ([subView isKindOfClass:[ALPVideoCameraView class]]) {
-            needNewVideoCamera = NO;
-        }
-    }
-    if (needNewVideoCamera) {
+    if (!_videoCameraView) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
         CGRect frame = [[UIScreen mainScreen] bounds];
         ALPVideoCameraView *videoCameraView = [[ALPVideoCameraView alloc] initWithFrame:frame];
@@ -54,9 +54,18 @@
         [NSLayoutConstraint constraintWithItem:videoCameraView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
        
         videoCameraView.delegate = self;
+        _videoCameraView = videoCameraView;
         AlpEditVideoParameter *videoOptions = [[AlpEditVideoParameter alloc] initWithBitRate:bit frameRate:framRate];
         videoCameraView.videoOptions = videoOptions;
+        if ([self.delegate respondsToSelector:@selector(hiddenBackButtonForVideoCameraViewController:)]) {
+            videoCameraView.optionsView.backBtn.hidden = [self.delegate hiddenBackButtonForVideoCameraViewController:self];
+        }
     }
+}
+
+- (void)removeCamerView {
+    [_videoCameraView removeFromSuperview];
+    _videoCameraView = nil;
 }
 
 - (BOOL)prefersStatusBarHidden {

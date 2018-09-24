@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlpVideoCameraOptionsView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<ALPVideoCameraViewDelegate> delegate;
 @property (nonatomic, strong) AlpEditVideoParameter *videoOptions;
+@property (nonatomic, strong, readonly) AlpVideoCameraOptionsView *optionsView;
+
+- (void)stopCameraCapture;
+- (void)startCameraCapture;
 
 @end
 

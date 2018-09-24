@@ -22,8 +22,8 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
 @property (nonatomic, strong) UICollectionView *filterCollectionView;
 @property (nonatomic, strong) UICollectionView *stickersCollectionView;
 @property (nonatomic, strong) UIVisualEffectView *visualEffectView;
-@property (nonatomic, strong) UIButton *cancleBtn;
-@property (nonatomic, strong) UIButton *okBtn;
+@property (nonatomic, strong) UIButton *filterButton;
+@property (nonatomic, strong) UIButton *musicButton;
 @property (nonatomic, strong) UIButton *stickersBtn;
 @property (nonatomic, strong) UISwitch *editTheOriginaSwitch;
 @property (nonatomic, strong) UIButton *editTheOriginaBtn;
@@ -68,41 +68,36 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     [NSLayoutConstraint constraintWithItem:_visualEffectView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_visualEffectView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     
-    _cancleBtn = [[UIButton alloc] init];
-    [_cancleBtn setTitle:@"滤镜" forState:UIControlStateNormal];
-    [_cancleBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [_cancleBtn setTitleColor:[UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1] forState:UIControlStateSelected];
-    [_cancleBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    _cancleBtn.backgroundColor = [UIColor clearColor];
-    [_cancleBtn addTarget:self action:@selector(clickCancleBtn) forControlEvents:UIControlEventTouchUpInside];
-     _cancleBtn.translatesAutoresizingMaskIntoConstraints = false;
-    [self addSubview:_cancleBtn];
-    [NSLayoutConstraint constraintWithItem:_cancleBtn attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_cancleBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:45.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_cancleBtn attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_cancleBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:SCREEN_LayoutScaleBaseOnIPHEN6(83)].active = YES;
+    _filterButton = [[UIButton alloc] init];
+    [_filterButton setTitle:@"滤镜" forState:UIControlStateNormal];
+    [_filterButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [_filterButton setTitleColor:[UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1] forState:UIControlStateSelected];
+    [_filterButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    _filterButton.backgroundColor = [UIColor clearColor];
+    [_filterButton addTarget:self action:@selector(clickCancleBtn) forControlEvents:UIControlEventTouchUpInside];
+     _filterButton.translatesAutoresizingMaskIntoConstraints = false;
+    [self addSubview:_filterButton];
+    [NSLayoutConstraint constraintWithItem:_filterButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_filterButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:45.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_filterButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_filterButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:SCREEN_LayoutScaleBaseOnIPHEN6(83)].active = YES;
    
-//    [_cancleBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.left.equalTo(_editVideoBar);
-//        make.height.equalTo(@(45));
-//        make.width.equalTo(@(SCREEN_LayoutScaleBaseOnIPHEN6(83)));
-//    }];
-    _cancleBtn.selected = YES;
+    _filterButton.selected = YES;
     self.chooseEditType = AlpChooseEditTypeFilter;
     
-    _okBtn = [[UIButton alloc] init];
-    [_okBtn setTitle:@"音乐" forState:UIControlStateNormal];
-    [_okBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [_okBtn setTitleColor:[UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1] forState:UIControlStateSelected];
-    [_okBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    _okBtn.backgroundColor = [UIColor clearColor];
-    [_okBtn addTarget:self action:@selector(clickOKBtn) forControlEvents:UIControlEventTouchUpInside];
-    _okBtn.translatesAutoresizingMaskIntoConstraints = false;
-    [self addSubview:_okBtn];
-    [NSLayoutConstraint constraintWithItem:_okBtn attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_okBtn attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_okBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeHeight multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_okBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeWidth multiplier:1.0 constant:.0].active = YES;
+    _musicButton = [[UIButton alloc] init];
+    [_musicButton setTitle:@"音乐" forState:UIControlStateNormal];
+    [_musicButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [_musicButton setTitleColor:[UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1] forState:UIControlStateSelected];
+    [_musicButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    _musicButton.backgroundColor = [UIColor clearColor];
+    [_musicButton addTarget:self action:@selector(clickOKBtn) forControlEvents:UIControlEventTouchUpInside];
+    _musicButton.translatesAutoresizingMaskIntoConstraints = false;
+    [self addSubview:_musicButton];
+    [NSLayoutConstraint constraintWithItem:_musicButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_musicButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_filterButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_musicButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_filterButton attribute:NSLayoutAttributeHeight multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_musicButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_filterButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:.0].active = YES;
     
     
     _stickersBtn = [[UIButton alloc] init];
@@ -115,16 +110,16 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     [self addSubview:_stickersBtn];
     _stickersBtn.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_okBtn attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeHeight multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeWidth multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_musicButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_filterButton attribute:NSLayoutAttributeHeight multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_stickersBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_filterButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:.0].active = YES;
     
     _editTheOriginaSwitch = [[UISwitch alloc] init];
     _editTheOriginaSwitch.onTintColor = [UIColor colorWithRed:253.0 / 255 green:215.0 / 255 blue:4.0 / 255 alpha:1.0];
     [_editTheOriginaSwitch addTarget:self action:@selector(clickEditOriginalBtn) forControlEvents:UIControlEventTouchUpInside];
     _editTheOriginaSwitch.translatesAutoresizingMaskIntoConstraints = false;
     [self addSubview:_editTheOriginaSwitch];
-    [NSLayoutConstraint constraintWithItem:_editTheOriginaSwitch attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_okBtn attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_editTheOriginaSwitch attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_musicButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaSwitch attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-8.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaSwitch attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaSwitch attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
@@ -141,8 +136,8 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     _editTheOriginaBtn.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_editTheOriginaSwitch attribute:NSLayoutAttributeLeading multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeHeight multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_cancleBtn attribute:NSLayoutAttributeWidth multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_filterButton attribute:NSLayoutAttributeHeight multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_editTheOriginaBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_filterButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:.0].active = YES;
     _editTheOriginaBtn.hidden = YES;
     
     
@@ -151,7 +146,7 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     lineView.backgroundColor = [UIColor grayColor];
     [self addSubview:lineView];
     lineView.translatesAutoresizingMaskIntoConstraints = false;
-    [NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_okBtn attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_musicButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:.5].active = YES;
@@ -181,6 +176,17 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     
     
     _filterCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH, 115) collectionViewLayout:layout];
+    [self addSubview:_filterCollectionView];
+    _filterCollectionView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:_filterCollectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:lineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_filterCollectionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_filterCollectionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_filterCollectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:115.0].active = YES;
+    if (@available(iOS 11.0, *)) {
+        [NSLayoutConstraint constraintWithItem:_filterCollectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    } else {
+        [NSLayoutConstraint constraintWithItem:_filterCollectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    }
     
     //设置背景颜色
     _filterCollectionView.backgroundColor = [UIColor clearColor];
@@ -202,7 +208,6 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     //设置是否需要弹簧效果
     _filterCollectionView.bounces = YES;
     
-    [self addSubview:_filterCollectionView];
     
     //collectionView
     UICollectionViewFlowLayout* layout2 = [[UICollectionViewFlowLayout alloc] init];
@@ -229,6 +234,17 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     
     
     _musicCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH, 115) collectionViewLayout:layout2];
+    [self addSubview:_musicCollectionView];
+    _musicCollectionView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:_musicCollectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:lineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_musicCollectionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_musicCollectionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_musicCollectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:115.0].active = YES;
+    if (@available(iOS 11.0, *)) {
+        [NSLayoutConstraint constraintWithItem:_musicCollectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    } else {
+        [NSLayoutConstraint constraintWithItem:_musicCollectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    }
     
     //设置背景颜色
     _musicCollectionView.backgroundColor = [UIColor clearColor];
@@ -249,9 +265,6 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     
     //设置是否需要弹簧效果
     _musicCollectionView.bounces = YES;
-    
-    [self addSubview:_musicCollectionView];
-    
     _musicCollectionView.hidden = YES;
     
     
@@ -281,7 +294,17 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     
     
     _stickersCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH, 115) collectionViewLayout:layout3];
-    
+    [self addSubview:_stickersCollectionView];
+    _stickersCollectionView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:_stickersCollectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:lineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_stickersCollectionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_stickersCollectionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_stickersCollectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:115.0].active = YES;
+    if (@available(iOS 11.0, *)) {
+        [NSLayoutConstraint constraintWithItem:_stickersCollectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    } else {
+        [NSLayoutConstraint constraintWithItem:_stickersCollectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    }
     //设置背景颜色
     _stickersCollectionView.backgroundColor = [UIColor clearColor];
     
@@ -301,8 +324,6 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     
     //设置是否需要弹簧效果
     _stickersCollectionView.bounces = YES;
-    
-    [self addSubview:_stickersCollectionView];
     
     _stickersCollectionView.hidden = YES;
     
@@ -325,14 +346,13 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     else {
         self.chooseEditType = AlpChooseEditTypeFilter;
         
-        _okBtn.selected = NO;
-        _cancleBtn.selected = YES;
+        _musicButton.selected = NO;
+        _filterButton.selected = YES;
         _stickersBtn.selected = NO;
         _filterCollectionView.hidden = NO;
         _musicCollectionView.hidden = YES;
         _stickersCollectionView.hidden = YES;
-        
-        
+        [_filterCollectionView reloadData];
     }
 }
 
@@ -345,8 +365,8 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     else {
         self.chooseEditType = AlpChooseEditTypeMusic;
         
-        _okBtn.selected = YES;
-        _cancleBtn.selected = NO;
+        _musicButton.selected = YES;
+        _filterButton.selected = NO;
         _stickersBtn.selected = NO;
         _filterCollectionView.hidden = YES;
         _musicCollectionView.hidden = NO;
@@ -370,8 +390,8 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
     else {
         self.chooseEditType = AlpChooseEditTypeStickers;
         
-        _okBtn.selected = NO;
-        _cancleBtn.selected = NO;
+        _musicButton.selected = NO;
+        _filterButton.selected = NO;
         _stickersBtn.selected = YES;
         _filterCollectionView.hidden = YES;
         _musicCollectionView.hidden = YES;

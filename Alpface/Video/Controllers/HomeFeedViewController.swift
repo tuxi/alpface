@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class HomeFeedViewController: MainFeedViewController {
 
@@ -67,7 +68,8 @@ extension HomeFeedViewController {
                 self?.updatePlayControl()
             }
         }) { (error) in
-            print(error?.localizedDescription ?? "请求随机视频失败!")
+            let errorStr = error?.localizedDescription ?? "请求随机视频失败，" + "双击底部[首页]按钮可刷新页面！"
+            MBProgressHUD.xy_show(errorStr)
         }
     }
 }

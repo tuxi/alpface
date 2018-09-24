@@ -68,6 +68,7 @@ class MainAppScrollingContainerViewController: UIViewController {
     public var homeFeedController: HomeFeedViewController!
     public var mainTabbarController: MainTabBarController!
     public var userProfileController: UserProfileViewController!
+    public var cameraController: AlpVideoCameraViewController!
     
     fileprivate var backgroundViewTopC: NSLayoutConstraint!
     fileprivate var backgroundViewTopC1: NSLayoutConstraint!
@@ -111,10 +112,11 @@ class MainAppScrollingContainerViewController: UIViewController {
             switch i {
             case 0:
                 // 创建故事
-                let createVc = StoryCreationViewController()
-                createVc.delegate = self as StoryCreationViewControllerDelegate
-                let nav = MainNavigationController(rootViewController: createVc)
-                item.model = nav
+                let cameraVc = AlpVideoCameraViewController()
+                cameraVc.delegate = self
+                let nac = MainCameraNavigationController(rootViewControllerNoWrapping: cameraVc)
+                item.model = nac
+                cameraController = cameraVc
                 break
             case 1:
                 // 主页
@@ -499,5 +501,12 @@ extension MainAppScrollingContainerViewController: AlpVideoCameraViewControllerD
             MBProgressHUD.xy_hide()
             MBProgressHUD.xy_show("请重新登录")
         }
+    }
+    
+    func hiddenBackButton(for viewController: AlpVideoCameraViewController) -> Bool {
+        if viewController == cameraController {
+            return true
+        }
+        return false
     }
 }

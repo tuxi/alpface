@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol AlpVideoCameraViewControllerDelegate <NSObject>
 
 @optional
+
+/// 点击发布视频按钮的回调
 - (void)videoCameraViewController:(AlpVideoCameraViewController *)viewController
               publishWithVideoURL:(NSURL *)url
                             title:(NSString *)title
@@ -23,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
                          latitude:(double)latitude
                          poi_name:(NSString *)poi_name
                       poi_address:(NSString *)poi_address;
+
+/// 是否隐藏返回按钮
+- (BOOL)hiddenBackButtonForVideoCameraViewController:(AlpVideoCameraViewController *)viewController;
 
 @end
 

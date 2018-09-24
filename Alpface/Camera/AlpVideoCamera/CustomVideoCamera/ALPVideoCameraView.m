@@ -24,7 +24,6 @@
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraUtils.h"
 #import "AlpEditVideoParameter.h"
-#import "AlpVideoCameraOptionsView.h"
 
 /**
  @note GPUImageVideoCamera录制视频 有时第一帧是黑屏 待解决
@@ -154,6 +153,13 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [_filter addTarget:self.filteredVideoView];
     [_videoCamera startCameraCapture];
     
+}
+
+- (void)stopCameraCapture {
+    [_videoCamera stopCameraCapture];
+}
+- (void)startCameraCapture {
+     [_videoCamera startCameraCapture];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -698,6 +704,8 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 
 - (void)dealloc {
     NSLog(@"%@释放了",self.class);
+    [_videoCamera stopCameraCapture];
+    _videoCamera = nil;
 }
 @end
 
