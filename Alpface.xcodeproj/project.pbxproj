@@ -310,6 +310,8 @@
 		D276160D21574CAC008A9AD4 /* record_button_open_65x65_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */; };
 		D276160E21574CAC008A9AD4 /* record_button_open_65x65_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D276160C21574CAB008A9AD4 /* record_button_open_65x65_@3x.png */; };
 		D276161321589E7D008A9AD4 /* MainCameraNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D276161221589E7D008A9AD4 /* MainCameraNavigationController.swift */; };
+		D27616162158D61B008A9AD4 /* AlpEditPublishTableViewCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D27616152158D61B008A9AD4 /* AlpEditPublishTableViewCellModel.m */; };
+		D27616192158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D27616182158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m */; };
 		D27D6CE0208397BF0095425A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CDF208397BF0095425A /* SettingsViewController.swift */; };
 		D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE120839B690095425A /* SettingsTableViewCell.swift */; };
 		D27D6CE420839E520095425A /* SettingsTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */; };
@@ -701,6 +703,10 @@
 		D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_button_open_65x65_@2x.png"; sourceTree = "<group>"; };
 		D276160C21574CAB008A9AD4 /* record_button_open_65x65_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_button_open_65x65_@3x.png"; sourceTree = "<group>"; };
 		D276161221589E7D008A9AD4 /* MainCameraNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCameraNavigationController.swift; sourceTree = "<group>"; };
+		D27616142158D61B008A9AD4 /* AlpEditPublishTableViewCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditPublishTableViewCellModel.h; sourceTree = "<group>"; };
+		D27616152158D61B008A9AD4 /* AlpEditPublishTableViewCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditPublishTableViewCellModel.m; sourceTree = "<group>"; };
+		D27616172158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditPublishLocationListTableViewCellModel.h; sourceTree = "<group>"; };
+		D27616182158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditPublishLocationListTableViewCellModel.m; sourceTree = "<group>"; };
 		D27D6CDF208397BF0095425A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D27D6CE120839B690095425A /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCellModel.swift; sourceTree = "<group>"; };
@@ -1044,6 +1050,10 @@
 				D26A95A92151275300C118CA /* AlpEditPublishViewController.m */,
 				D26A97432152916000C118CA /* AlpVideoCameraPermissionView.h */,
 				D26A97442152916000C118CA /* AlpVideoCameraPermissionView.m */,
+				D27616142158D61B008A9AD4 /* AlpEditPublishTableViewCellModel.h */,
+				D27616152158D61B008A9AD4 /* AlpEditPublishTableViewCellModel.m */,
+				D27616172158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.h */,
+				D27616182158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -2058,6 +2068,7 @@
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
 				D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */,
 				D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */,
+				D27616192158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m in Sources */,
 				D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */,
 				D26A9453214E269D00C118CA /* RTRootNavigationController.m in Sources */,
 				D2761606215731D6008A9AD4 /* AlpVideoCameraOptionsView.m in Sources */,
@@ -2098,6 +2109,7 @@
 				D20093372078EEC50079AD8B /* CameraViewController.swift in Sources */,
 				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,
 				D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */,
+				D27616162158D61B008A9AD4 /* AlpEditPublishTableViewCellModel.m in Sources */,
 				D26AD48020672E120047DC15 /* SpinerLayer.swift in Sources */,
 				D200932B2078EEC50079AD8B /* SingleImageFetcher.swift in Sources */,
 				D20093442078F16E0079AD8B /* PCLBlurEffectAlert+TransitionAnimator.swift in Sources */,

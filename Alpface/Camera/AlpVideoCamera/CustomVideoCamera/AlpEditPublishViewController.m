@@ -17,21 +17,14 @@
 #import "XYLocationManager.h"
 #import "XYLocationSearchTableViewModel.h"
 #import <CoreLocation/CoreLocation.h>
+#import "AlpEditPublishLocationListTableViewCellModel.h"
+#import <AddressBookUI/AddressBookUI.h>
 
 typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     AlpPublishVideoPermissionTypePublic,
     AlpPublishVideoPermissionTypePrivate,
     AlpPublishVideoPermissionTypeFriend,
 };
-
-@interface AlpEditPublishTableViewCellModel : NSObject
-
-@property (nonatomic) Class cellClass;
-@property (nonatomic, assign) CGFloat cellHeight;
-@property (nonatomic, strong) id model;
-@property (nonatomic, assign) BOOL cellShouldHighlight;
-
-@end
 
 @interface AlpEditPublishVideoModel : NSObject
 
@@ -80,7 +73,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @interface AlpEditPublishViewLocationListCell : UITableViewCell <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (nonatomic, strong) AlpEditPublishTableViewCellModel *cellModel;
+@property (nonatomic, strong) AlpEditPublishLocationListTableViewCellModel *cellModel;
 @property (nonatomic, strong) UIButton *searchButton;
 @property (nonatomic, strong) UICollectionView *collectionView;
 
@@ -143,7 +136,9 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 }
 
 - (void)initData {
+    
     {
+        // 标题cell
         AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
         m.cellClass = [AlpEditPublishViewContentCell class];
         m.model = self.videoURL;
@@ -151,20 +146,42 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         m.cellShouldHighlight = NO;
         [self.cellModels addObject:m];
     }
+    
     {
+        // 添加位置cell
         AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
         m.cellClass = [AlpEditPublishViewSelectLocationCell class];
         m.cellHeight = 60.0;
         [self.cellModels addObject:m];
     }
     {
-        AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
+        // 位置列表cell
+        AlpEditPublishLocationListTableViewCellModel *m = [AlpEditPublishLocationListTableViewCellModel new];
         m.cellClass = [AlpEditPublishViewLocationListCell class];
         m.cellHeight = 40.0;
         m.cellShouldHighlight = NO;
+        __weak typeof(self) weakSelf = self;
+        m.selectMapItemBlock = ^(AlpEditPublishLocationModel *  _Nonnull location) {
+            AlpEditPublishLocationListTableViewCellModel *locationListCellModel = weakSelf.cellModels[2];
+            for (AlpEditPublishLocationModel *location in (NSArray *)locationListCellModel.model) {
+                location.selected = NO;
+            }
+            location.selected = YES;
+            
+            // update UI
+            AlpEditPublishTableViewCellModel *cellModel = weakSelf.cellModels[1];
+            cellModel.model = location.item;
+            [weakSelf.tableView reloadData];
+            weakSelf.publishModel.locationName = location.item.name;
+            NSString *address = ABCreateStringWithAddressDictionary(location.item.placemark.addressDictionary, NO);
+            address = [address stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+            weakSelf.publishModel.address = address;
+            weakSelf.publishModel.coordinate = location.item.placemark.coordinate;
+        };
         [self.cellModels addObject:m];
     }
     {
+        // 查看权限cell
         AlpEditPublishTableViewCellModel *m = [AlpEditPublishTableViewCellModel new];
         m.cellClass = [AlpEditPublishViewPermissionCell class];
         m.cellHeight = 60.0;
@@ -186,8 +203,20 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 - (void)updateLocationsNotification {
     __weak typeof(self) weakSelf = self;
     [self.nearbyPoiViewModel fetchNearbyInfoCompletionHandler:^(NSArray<MKMapItem *> *searchResult, NSError *error) {
-        AlpEditPublishTableViewCellModel *m = weakSelf.cellModels[2];
-        m.model = searchResult;
+        AlpEditPublishLocationListTableViewCellModel *m = weakSelf.cellModels[2];
+        NSMutableArray *array = @[].mutableCopy;
+        for (MKMapItem *map in searchResult) {
+            AlpEditPublishLocationModel *location = [AlpEditPublishLocationModel new];
+            location.item = map;
+            location.clickLocationButtonBlock = ^(AlpEditPublishLocationModel * _Nonnull model) {
+                
+                if (m.selectMapItemBlock) {
+                    m.selectMapItemBlock(model);
+                }
+            };
+            [array addObject:location];
+        }
+        m.model = array;
         [weakSelf.tableView reloadData];
     }];
 }
@@ -952,10 +981,11 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @interface AlpEditPublishViewLocationListCellCollectionCell : UICollectionViewCell
 @property (nonatomic, strong) UIButton *titleButton;
+@property (nonatomic) AlpEditPublishLocationModel *locationModel;
 @end
 
 @implementation AlpEditPublishViewLocationListCell {
-    NSArray<MKMapItem *> *_pois;
+    NSArray<AlpEditPublishLocationModel *> *_pois;
     NSLayoutConstraint *_searchButtonWidthConstraint;
 }
 
@@ -1016,7 +1046,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     return _collectionView;
 }
 
-- (void)setCellModel:(AlpEditPublishTableViewCellModel *)cellModel {
+- (void)setCellModel:(AlpEditPublishLocationListTableViewCellModel *)cellModel {
     _cellModel = cellModel;
     _pois = cellModel.model;
     if (_pois) {
@@ -1039,13 +1069,21 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AlpEditPublishViewLocationListCellCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"AlpEditPublishViewLocationListCellCollection" forIndexPath:indexPath];
-    MKMapItem *item = _pois[indexPath.row];
-    [cell.titleButton setTitle:item.name forState:UIControlStateNormal];
+    AlpEditPublishLocationModel *location = _pois[indexPath.row];
+    cell.locationModel = location;
     return cell;
 }
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-}
+//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+//    AlpEditPublishLocationModel *location = _pois[indexPath.row];
+//    for (AlpEditPublishLocationModel *location in _pois) {
+//        location.selected = NO;
+//    }
+//    location.selected = YES;
+//    if (self.cellModel.selectMapItemBlock) {
+//        self.cellModel.selectMapItemBlock(location);
+//    }
+//    [collectionView reloadData];
+//}
 @end
 @implementation AlpEditPublishVideoModel
 
@@ -1060,33 +1098,23 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @end
 
-@implementation AlpEditPublishTableViewCellModel
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.cellShouldHighlight = YES;
-    }
-    return self;
-}
-
-@end
-
 @implementation AlpEditPublishViewLocationListCellCollectionCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:10.0];
         button.titleLabel.textAlignment = NSTextAlignmentCenter;
         button.titleLabel.numberOfLines = 1;
-        button.backgroundColor = [UIColor lightGrayColor];
+        button.backgroundColor = [UIColor darkGrayColor];
         button.layer.cornerRadius = 10.0;
         button.layer.masksToBounds = YES;
         [button setContentEdgeInsets:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         _titleButton = button;
         [_titleButton setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [_titleButton setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
@@ -1116,6 +1144,25 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     
     return layoutAttributes;
     
+}
+
+
+- (void)setLocationModel:(AlpEditPublishLocationModel *)locationModel {
+    _locationModel = locationModel;
+    [self.titleButton setTitle:locationModel.item.name forState:UIControlStateNormal];
+    _titleButton.selected = locationModel.isSelected;
+    if (locationModel.isSelected) {
+        _titleButton.backgroundColor = [UIColor orangeColor];
+    }
+    else {
+        _titleButton.backgroundColor = [UIColor darkGrayColor];
+    }
+}
+
+- (void)buttonClick:(UIButton *)sender {
+    if (self.locationModel.clickLocationButtonBlock) {
+        self.locationModel.clickLocationButtonBlock(self.locationModel);
+    }
 }
 
 @end
