@@ -14,6 +14,7 @@ class MainFeedViewController: UIViewController {
     public var initialPage = 0
     fileprivate lazy var refreshControl: UIRefreshControl = {
         let refresher = UIRefreshControl()
+        refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(afterRefresher), for: .valueChanged)
         return refresher
     }()
@@ -34,7 +35,7 @@ class MainFeedViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isPagingEnabled = true
-        collectionView.bounces = false
+//        collectionView.bounces = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(MainFeedViewCell.classForCoder(), forCellWithReuseIdentifier: "MainFeedViewCell")
@@ -153,7 +154,12 @@ class MainFeedViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
-        collectionView.refreshControl = refreshControl
+        if #available(iOS 10.0, *) {
+            collectionView.refreshControl = refreshControl
+        } else {
+            collectionView.addSubview(refreshControl)
+        }
+       
         setupNavigation()
     }
     
@@ -244,6 +250,19 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         if initialPage > 0 {
             show(page: initialPage, animated: false)
             initialPage = 0
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.y
+        if offset < -100 {
+            collectionView.refreshControl?.tintColor = UIColor.white
+            collectionView.refreshControl?.attributedTitle = NSAttributedString(string: "现在可以松手了", attributes: [.foregroundColor : UIColor.orange])
+            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
+        } else {
+            collectionView.refreshControl?.tintColor = UIColor.white
+            collectionView.refreshControl?.attributedTitle = NSAttributedString(string: "下拉刷新...", attributes: [.foregroundColor : UIColor.orange])
+            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
         }
     }
     

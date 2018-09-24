@@ -13,7 +13,20 @@ class MainNavigationBar: UINavigationBar {
 
     // 设置NavigationBar的高度，用于固定导航的高度，不受status bar隐藏显示的影响
     // 对于iphonex，建议设置最小高度为88或更高
-    var customHeight : CGFloat = 66.0
+    var customHeight : CGFloat {
+        if AppUtils.isIPhoneX() {
+            return 88.0
+        }
+        return 66.0
+    }
+    
+    // statusbar 高度
+    var statusBarHeight: CGFloat {
+        if AppUtils.isIPhoneX() {
+             return 44.0
+        }
+        return 20.0
+    }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         
@@ -45,9 +58,8 @@ class MainNavigationBar: UINavigationBar {
             if stringFromClass.contains("BarBackground") {
                 subview.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: customHeight)
             }
-            
             if stringFromClass.contains("BarContent") {
-                subview.frame = CGRect(x: subview.frame.origin.x, y: 20, width: subview.frame.width, height: customHeight - 20)
+                subview.frame = CGRect(x: subview.frame.origin.x, y: statusBarHeight, width: subview.frame.width, height: customHeight - statusBarHeight)
             }
         }
     }
