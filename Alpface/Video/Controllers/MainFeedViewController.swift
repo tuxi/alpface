@@ -70,7 +70,7 @@ class MainFeedViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.isVisibleInDisplay = true
         displayViewController()?.beginAppearanceTransition(true, animated: animated)
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -94,6 +94,7 @@ class MainFeedViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
        super.viewDidDisappear(animated)
         displayViewController()?.endAppearanceTransition()
+        self.isVisibleInDisplay = false
         // 所有model停止播放
         for videoItem in videoItems {
             videoItem.isAllowPlay = false

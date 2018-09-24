@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIImage{
-    class func drawTabBarIndicator(color: UIColor, size: CGSize, onTop: Bool) -> UIImage {
+    class func drawTabBarIndicator(color: UIColor, size: CGSize, onTop: Bool) -> UIImage? {
         let indicatorHeight = size.height / 30
         let yPosition = onTop ? 0 : (size.height - indicatorHeight - 5.0)
         
@@ -19,7 +19,7 @@ extension UIImage{
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return image!
+        return image
     }
 }
 

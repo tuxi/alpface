@@ -23,42 +23,29 @@ class MainAppScrollingContainerViewController: UIViewController {
         static let message = "消息"
         static let myProfile = "我的"
     }
-
-    fileprivate lazy var collectionView: GestureCoordinatingCollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 0.0
-        layout.minimumInteritemSpacing = 0.0
-        layout.scrollDirection = .horizontal
-        let collectionView = GestureCoordinatingCollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.isPagingEnabled = true
-        collectionView.bounces = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.register(ScrollingContainerCell.classForCoder(), forCellWithReuseIdentifier: "ScrollingContainerCell")
-        // 设置delaysContentTouches为false目的是为了防止UIButton快速按不产生高亮效果
-        collectionView.delaysContentTouches = false;
-        collectionView.canCancelContentTouches = true;
-        collectionView.backgroundColor = UIColor.black
-        return collectionView
-    }()
     
+    fileprivate lazy var pageController: UIPageViewController = {
+        let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageViewController.dataSource = self
+        pageViewController.delegate = self
+        pageViewController.view.backgroundColor = UIColor.black
+        return pageViewController
+    }()
+
     /// 记录上次选中tabbarItem的时间，做双击刷新功能
     fileprivate var lastSelectedTabbarItemDate: Date?
-    private lazy var collectionViewItems: [CollectionViewSection] = [CollectionViewSection]()
+    private lazy var collectionSection: CollectionViewSection = {
+        return CollectionViewSection()
+    }()
     
     public var initialPage = 0
+    public var currentIndex = NSNotFound
     public func displayViewController() -> UIViewController? {
-        let indexPath = collectionView.indexPathsForVisibleItems.first
-        guard let ip = indexPath else { return nil }
-        let vc = collectionViewItems[ip.section].items[ip.row].model as? UIViewController
+        let vc = viewControllerAtIndex(currentIndex)
         return vc
     }
     public func displayIndex() -> NSInteger {
-        let indexPath = collectionView.indexPathsForVisibleItems.first
-        guard let ip = indexPath else { return Int.min }
-        return ip.row
+        return currentIndex
     }
     
     public func isHomePageVisible() -> Bool {
@@ -73,15 +60,18 @@ class MainAppScrollingContainerViewController: UIViewController {
     fileprivate var backgroundViewTopC: NSLayoutConstraint!
     fileprivate var backgroundViewTopC1: NSLayoutConstraint!
     
-    fileprivate var showCompletion: ((_ displayController: UIViewController) -> Void)?
-    fileprivate var willShowCallBack: ((_ willAppearController: UIViewController, _ willDisappearController: UIViewController) -> Void)?
-    public func show(page index: NSInteger, animated: Bool, willShowCallBack: ((_ willAppearController: UIViewController, _ willDisappearController: UIViewController) -> Void)? = nil, completion: ((_ displayController: UIViewController) -> Void)? = nil) {
-        if collectionView.indexPathsForVisibleItems.first?.row == index {
+    public func show(page index: NSInteger, animated: Bool, completion: ((_ finished: Bool) -> Void)? = nil) {
+
+        if currentIndex == index {
             return
         }
-        self.willShowCallBack = willShowCallBack
-        self.showCompletion = completion
-        collectionView .scrollToItem(at: IndexPath.init(row: index, section: 0), at: .centeredHorizontally, animated: animated)
+        let direction: UIPageViewControllerNavigationDirection = (index > currentIndex) ? .forward : .reverse
+        
+        if let controller = collectionSection.items[index].model as? UIViewController {
+            currentIndex = index
+            pageController.setViewControllers([controller], direction: direction, animated: animated, completion: completion)
+            
+        }
         
     }
    
@@ -96,17 +86,24 @@ class MainAppScrollingContainerViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = UIColor.clear
-        collectionView.layer.cornerRadius = 3.0
-        collectionView.layer.masksToBounds = true
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
+        pageController.view.layer.cornerRadius = 3.0
+        pageController.view.layer.masksToBounds = true
+        view.addSubview(pageController.view)
+        addChildViewController(pageController)
+        pageController.didMove(toParentViewController: self)
+        pageController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: ["collectionView": pageController.view]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": pageController.view]))
+        let scrollView = pageScrollView()
+//        scrollView?.bounces = false
+        // 设置delaysContentTouches为false目的是为了防止UIButton快速按不产生高亮效果
+        scrollView?.delaysContentTouches = false;
+        scrollView?.canCancelContentTouches = true;
+        scrollView?.backgroundColor = UIColor.clear
     }
     
     private func setupCollectionViewItems() {
-        let section = CollectionViewSection()
-        collectionViewItems.append(section)
+        let section = collectionSection
         for i in 0...2 {
             let item = MainAppScrollingContainerItem()
             switch i {
@@ -167,7 +164,8 @@ class MainAppScrollingContainerViewController: UIViewController {
             section.items.append(item)
         }
         
-        collectionView.reloadData()
+//        collectionView.reloadData()
+        show(page: initialPage, animated: false)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -184,120 +182,36 @@ class MainAppScrollingContainerViewController: UIViewController {
     @objc private func openStoryCreationPage() {
         show(page: 0, animated: true, completion: nil)
     }
-
+    
+    fileprivate func pageScrollView() -> UIScrollView? {
+        for subview in pageController.view.subviews {
+            if let subview = subview as? UIScrollView {
+                return subview
+            }
+        }
+        return nil
+    }
+    
+    fileprivate func indexOfViewController(_ controller: UIViewController) -> Int {
+        var idx = 0
+        for item in collectionSection.items {
+            if let vc = item.model as? UIViewController, vc == controller {
+                return idx
+            }
+            idx += 1
+        }
+        return NSNotFound
+    }
+    
+    fileprivate func viewControllerAtIndex(_ index: Int) -> UIViewController? {
+        if self.collectionSection.items.count == 0 || index >= self.collectionSection.items.count {
+            return nil
+        }
+        
+        return self.collectionSection.items[index].model as? UIViewController
+    }
 }
 
-
-extension MainAppScrollingContainerViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return collectionViewItems.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionViewItems[section].items.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ScrollingContainerCell", for: indexPath) as! ScrollingContainerCell
-        
-        let sec = collectionViewItems[indexPath.section]
-        cell.model = sec.items[indexPath.row] as? MainAppScrollingContainerItem
-
-        
-        return cell
-    }
-    
-    /// cell 完全离开屏幕后调用
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        // 获取当前显示已经显示的控制器
-        guard let displayIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
-        guard let displayController = collectionViewItems[0].items[displayIndexPath.row].model as? UIViewController else {return}
-        homeFeedController.isVisibleInDisplay = (displayController == mainTabbarController && mainTabbarController.selectedViewController == self.homeFeedController)
-        if displayController == mainTabbarController {
-            if let nac = mainTabbarController.selectedViewController as? MainNavigationController {
-                if nac.isKind(of: MainNavigationController.classForCoder()) {
-                    if nac.visibleViewController == self.homeFeedController {
-                        self.homeFeedController.isVisibleInDisplay = true
-                    }
-                }
-            }
-        }
-        else {
-            self.homeFeedController.isVisibleInDisplay = false
-        }
-        displayController.beginAppearanceTransition(true, animated: true)
-        displayController.endAppearanceTransition()
-        if let showCompletion = self.showCompletion {
-            showCompletion(displayController)
-        }
-        // 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
-        guard let endDisplayingViewController = collectionViewItems[indexPath.section].items[indexPath.row].model as? UIViewController else {return}
-        if displayController != endDisplayingViewController {
-            // 如果完全显示的控制器和已经离开屏幕的控制器是同一个就return，防止初始化完成后是同一个
-            endDisplayingViewController.beginAppearanceTransition(false, animated: true)
-            endDisplayingViewController.endAppearanceTransition()
-        }
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.3) {
-                UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
-            }
-        }
-        
-    }
-    
-    /// cell 即将显示在屏幕时调用
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if initialPage > 0 {
-            show(page: initialPage, animated: false, completion: nil)
-            initialPage = 0
-        }
-
-        /// 获取即将显示的cell上的控制器，执行其view显示的生命周期方法
-        guard let willDisplayController = collectionViewItems[0].items[indexPath.row].model as? UIViewController else {return}
-        if willDisplayController == mainTabbarController {
-            if let nac = mainTabbarController.selectedViewController as? MainNavigationController {
-                if nac.isKind(of: MainNavigationController.classForCoder()) {
-                    if nac.visibleViewController == self.homeFeedController {
-                        self.homeFeedController.isVisibleInDisplay = true
-                    }
-                }
-            }
-        }
-        else {
-            self.homeFeedController.isVisibleInDisplay = false
-        }
-        if willDisplayController == userProfileController {
-            // 进入用户页面
-            if let video = self.homeFeedController.displayVideoItem() {
-                userProfileController?.user = video.user
-                userProfileController?.mainScrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
-            }
-        }
-        willDisplayController.beginAppearanceTransition(true, animated: true)
-        willDisplayController.endAppearanceTransition()
-        
-        /// 获取即将消失的控制器（当前collectionView显示的cell就是即将要离开屏幕的cell）
-        guard let willEndDisplayingIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
-        guard let willEndDisplayingController = collectionViewItems[0].items[willEndDisplayingIndexPath.row].model as? UIViewController else {return}
-        if let willShowCallBack = self.willShowCallBack {
-            willShowCallBack(willDisplayController, willEndDisplayingController)
-        }
-        if willEndDisplayingController != willDisplayController {
-            // 如果是同一个控制器return，防止初始化完成后是同一个
-            willEndDisplayingController.beginAppearanceTransition(false, animated: true)
-            willEndDisplayingController.endAppearanceTransition()
-        }
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return collectionViewItems[indexPath.section].items[indexPath.row].size
-    }
- 
-}
 
 extension MainAppScrollingContainerViewController: StoryCreationViewControllerDelegate {
     func storyCreationViewController(didClickBackButton button: UIButton) {
@@ -310,13 +224,15 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         /// 只有首页才支持左右滑动切换控制器，向左滑动到创建故事页面，向右滑动到我的个人主页
         if tabBarController.selectedIndex == 0 {
-            collectionView.isScrollEnabled = true
+            pageScrollView()?.isScrollEnabled = true
+//            collectionView.isScrollEnabled = true
             homeFeedController.isVisibleInDisplay = true
 //            tabBarController.tabBar.backgroundImage = UIImage()
         }
         else {
             homeFeedController.isVisibleInDisplay = false
-            collectionView.isScrollEnabled = false
+//            collectionView.isScrollEnabled = false
+            pageScrollView()?.isScrollEnabled = false
 //            tabBarController.tabBar.backgroundImage = UIImage(color: UIColor(white: 0.1, alpha: 0.8))
         }
         updateTabBarBackgroundView(tabbar: tabBarController.tabBar, selectedIndex: tabBarController.selectedIndex)
@@ -509,4 +425,60 @@ extension MainAppScrollingContainerViewController: AlpVideoCameraViewControllerD
         }
         return false
     }
+}
+
+extension MainAppScrollingContainerViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        guard completed else {
+            return
+        }
+        
+        guard let viewController = pageViewController.viewControllers?.last else {
+            return
+        }
+        
+        let index = indexOfViewController(viewController)
+        if index == NSNotFound {
+            return
+        }
+        
+        currentIndex = index
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3) {
+                UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
+            }
+        }
+    }
+}
+
+extension MainAppScrollingContainerViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    
+        var index = self.indexOfViewController(viewController)
+        
+        if (index == 0) || (index == NSNotFound) {
+            return nil
+        }
+        
+        index -= 1
+        
+        return viewControllerAtIndex(index)
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        
+        var index = self.indexOfViewController(viewController)
+        
+        if index == NSNotFound {
+            return nil
+        }
+        
+        index += 1
+        
+        return viewControllerAtIndex(index)
+    }
+    
+    
 }
