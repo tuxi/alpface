@@ -61,10 +61,12 @@ class MainTabBarController: UITabBarController {
         }
         
         let numberOfTabsFloat = CGFloat(numberOfTabs)
-        let imageSize = CGSize(width: tabBar.frame.width / numberOfTabsFloat,
+        var imageSize = CGSize(width: tabBar.frame.width / numberOfTabsFloat,
                                height: tabBar.frame.height)
         
-        
+        if #available(iOS 11.0, *) {
+            imageSize.height = imageSize.height - view.safeAreaInsets.bottom
+        }
         let indicatorImage = UIImage.drawTabBarIndicator(color: indicatorColor,
                                                          size: CGSize.init(width: imageSize.width-imageSize.width*0.6, height: imageSize.height),
                                                          onTop: onTopIndicator)
