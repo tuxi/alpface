@@ -29,7 +29,8 @@
     self = [super init];
     if (self) {
         [self cleanSearch];
-        
+        [[XYLocationManager sharedManager] getAuthorization];
+        [[XYLocationManager sharedManager] startLocation];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateLocations:) name:XYUpdateLocationsNotification object:nil];
     }
     return self;
@@ -45,9 +46,10 @@
     self.reversing = YES;
     [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error) {
          self.reversing = NO;
+        CLPlacemark *placemark = nil;
          if (!(error))
          {
-             CLPlacemark *placemark = [placemarks objectAtIndex:0];
+             placemark = [placemarks objectAtIndex:0];
              self.currentName = [placemark performSelector:@selector(name)];
              
              NSString *address = ABCreateStringWithAddressDictionary(placemark.addressDictionary, NO);
@@ -59,7 +61,10 @@
              self.currentName = @"";
              self.currentAddress = @"";
          }
-         
+        if (self.delegate && [self
+                              .delegate respondsToSelector:@selector(locationSearchTableViewModel:didUpdateCurrentLocation:currentName:address:)]) {
+            [self.delegate locationSearchTableViewModel:self didUpdateCurrentLocation:placemark currentName:self.currentName address:self.currentAddress];
+        }
      }];
 
 }

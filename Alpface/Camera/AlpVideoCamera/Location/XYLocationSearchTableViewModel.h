@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, XYLocationSearchResultType) {
 
 @optional
 - (void)locationSearchTableViewModel:(XYLocationSearchTableViewModel *)viewModel searchResultChange:(NSArray<MKMapItem *> *)searchResult error:(NSError *)error;
+- (void)locationSearchTableViewModel:(XYLocationSearchTableViewModel *)viewModel didUpdateCurrentLocation:(CLPlacemark *)placemark currentName:(NSString *)name address:(NSString *)address;
 
 @end
 

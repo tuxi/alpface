@@ -202,14 +202,22 @@
 }
 @end
 
+@interface XYLocationSearchTableSection : NSObject
+
+@property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic, copy) NSString *identifier;
+@property (nonatomic, copy) NSString *headerTitle;
+
+@end
+
 
 @interface XYLocationSearchViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UISearchBarDelegate, XYLocationSearchTableViewModelDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) XYLocationSearchTopView *topView;
 @property (nonatomic, strong) XYLocationSearchTableViewModel *viewModel;
-@property (nonatomic, strong) NSArray<MKMapItem *> *searchResults;
-
+//@property (nonatomic, strong) NSArray<MKMapItem *> *searchResults;
+@property (nonatomic, strong) NSMutableArray<XYLocationSearchTableSection *> *resultSections;
 
 @end
 
@@ -228,24 +236,85 @@
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.topView];
     [self makeConstarints];
-    [[XYLocationManager sharedManager] getAuthorization];
-    [[XYLocationManager sharedManager] startLocation];
     self.automaticallyAdjustsScrollViewInsets = NO;
     if ([[XYLocationManager sharedManager] getGpsPostion]) {
-        [self updateLocationsNotification];
+        [self updateLocations];
     }
     else {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocationsNotification) name:XYUpdateLocationsNotification object:nil];
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocations) name:XYUpdateLocationsNotification object:nil];
+    }
+    
+    [self initData];
+    
+}
+
+- (void)initData {
+    {
+        XYLocationSearchTableSection *section = [self sectionWithIdentifier:@"location"];
+        if (!section) {
+            section = [XYLocationSearchTableSection new];
+            section.identifier = @"location";
+            section.headerTitle = nil;
+            [self.resultSections addObject:section];
+        }
+    }
+    {
+        XYLocationSearchTableSection *section1 = [self sectionWithIdentifier:@"result"];
+        if (!section1) {
+            section1 = [XYLocationSearchTableSection new];
+            section1.identifier = @"result";
+            section1.headerTitle = @"搜索结果";
+            [self.resultSections addObject:section1];
+        }
+    }
+    {
+        XYLocationSearchTableSection *section2 = [self sectionWithIdentifier:@"nearby"];
+        if (!section2) {
+            section2 = [XYLocationSearchTableSection new];
+            section2.identifier = @"nearby";
+            section2.headerTitle = @"附近地点";
+            [self.resultSections addObject:section2];
+        }
     }
 }
 
-- (void)updateLocationsNotification {
+- (XYLocationSearchTableSection *)sectionWithIdentifier:(NSString *)identifier {
+    NSUInteger foundIdx = [self.resultSections indexOfObjectPassingTest:^BOOL(XYLocationSearchTableSection *  _Nonnull section, NSUInteger idx, BOOL * _Nonnull stop) {
+        BOOL res = NO;
+        if ([section.identifier isEqualToString:identifier]) {
+            res = YES;
+            *stop = YES;
+        }
+        return res;
+    }];
+    XYLocationSearchTableSection *section = nil;
+    if (foundIdx != NSNotFound) {
+        section = self.resultSections[foundIdx];
+    }
+    return section;
+}
+
+- (void)updateLocations {
     __weak typeof(self) weakSelf = self;
     [self.viewModel fetchNearbyInfoCompletionHandler:^(NSArray<MKMapItem *> *searchResult, NSError *error) {
-        weakSelf.searchResults = [searchResult mutableCopy];
+        if ([weakSelf isSearching]) {
+            return;
+        }
+        
+        // 添加附近的poi
+        XYLocationSearchTableSection *section = [weakSelf sectionWithIdentifier:@"nearby"];
+        [section.items removeAllObjects];
+        [section.items addObjectsFromArray:searchResult];
+        
+        // 移除搜索的pois
+        XYLocationSearchTableSection *result = [weakSelf sectionWithIdentifier:@"result"];
+        [result.items removeAllObjects];
         [weakSelf reloadTableData];
     }];
+}
+
+- (BOOL)isSearching {
+    return self.topView.searchBar.text.length > 0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -279,24 +348,37 @@
 ////////////////////////////////////////////////////////////////////////
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     self.viewModel.searchText = searchText;
-    [self startSearch];
+    if (searchText.length == 0) {
+        [self clearSearch];
+    }
+    else {
+        [self startSearch];
+    }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
-    [self startSearch];
+    if (searchBar.text == 0) {
+        [self clearSearch];
+    }
+    else {
+        [self startSearch];
+    }
 }
 
 - (void)startSearch {
-    self.searchResults = @[];
     [self reloadTableData];
     [self.viewModel searchFromServer];
 }
 
+- (void)clearSearch {
+    XYLocationSearchTableSection *result = [self sectionWithIdentifier:@"result"];
+    [result.items removeAllObjects];
+    [self updateLocations];
+    [self reloadTableData];
+}
+
 - (void)reloadTableData {
-    if (self.viewModel.searchResultType == XYLocationSearchResultTypeSearchPoi && !self.topView.searchBar.text.length) {
-        self.searchResults = @[];
-    }
     [self.tableView reloadData];
 }
 
@@ -317,31 +399,32 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        if ([self numberOfRowsInSection:0] == 2 && indexPath.row == 0) {
-            XYLocationStaticCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XYLocationStaticCell"];
+    XYLocationSearchTableSection *secObj = self.resultSections[indexPath.section];
+    if ([secObj.identifier isEqualToString:@"result"] ||
+        [secObj.identifier isEqualToString:@"nearby"] ) {
+        XYLocationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XYLocationCell"];
+        MKMapItem *item = nil;
+        if (indexPath.row < secObj.items.count) {
+            item = secObj.items[indexPath.row];
+        }
+        cell.item = item;
+        return cell;
+    }
+    if ([secObj.identifier isEqualToString:@"location"]) {
+        XYLocationStaticCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XYLocationStaticCell"];
+        id rowObj = secObj.items[indexPath.row];
+        if ([rowObj isKindOfClass:[NSString class]]) {
             cell.type = XYLocationStaticCellTypeUserInput;
-            [cell setTitle:self.viewModel.searchText];
-            return cell;
+            [cell setTitle:rowObj];
         }
         else {
-            XYLocationStaticCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XYLocationStaticCell"];
             cell.type = XYLocationStaticCellTypeCurrent;
             if (self.viewModel.reversing) {
                 [cell.indicator startAnimating];
             }else {
                 [cell.indicator stopAnimating];
             }
-            return cell;
         }
-    }
-    else {
-        XYLocationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XYLocationCell"];
-        MKMapItem *item = nil;
-        if (indexPath.row < self.searchResults.count) {
-           item = self.searchResults[indexPath.row];
-        }
-        cell.item = item;
         return cell;
     }
     return nil;
@@ -352,21 +435,9 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == 1) {
-        switch (self.viewModel.searchResultType) {
-            case XYLocationSearchResultTypeNearBy:
-                return @"附近地点";
-                break;
-            case XYLocationSearchResultTypeSearchPoi: {
-                return @"搜索结果";
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    else {
-        return nil;
+    XYLocationSearchTableSection *secObj = self.resultSections[section];
+    if (secObj.headerTitle.length && secObj.items.count > 0) {
+        return secObj.headerTitle;
     }
     return nil;
 }
@@ -387,61 +458,39 @@
     NSArray *nameAndAddress = nil;
     NSString *name = nil;
     NSString *address = nil;
-    MKMapItem *currentMap = nil;
-    if (indexPath.section == 0) {
-        if (indexPath.row == 0 && [self numberOfRowsInSection:0] == 2) {
-            nameAndAddress = @[self.viewModel.searchText, [NSNull null]];
-        } else {
-            // 正在解析地址，当前位置不可用
-            if (self.viewModel.reversing) {
-                return;
-            }
-            
-            if (self.viewModel.currentName.length) {
-                name = self.viewModel.currentName;
-            }
-            if (self.viewModel.currentAddress.length) {
-                address = self.viewModel.currentAddress;
-            }
-        }
-    } else {
-        nameAndAddress = [XYLocationSearchTableViewModel stringsForItem:self.searchResults[indexPath.row]];
-        currentMap = self.searchResults[indexPath.row];
+    XYLocationSearchTableSection *secObj = self.resultSections[indexPath.section];
+    MKMapItem *mapItem = secObj.items[indexPath.row];
+    if (![mapItem isKindOfClass:[MKMapItem class]]) {
+        return;
     }
-    
+    nameAndAddress = [XYLocationSearchTableViewModel stringsForItem:mapItem];
     if ([nameAndAddress.firstObject isKindOfClass:[NSString class]]) {
         name = nameAndAddress.firstObject;
     }
     if ([nameAndAddress.lastObject isKindOfClass:[NSString class]]) {
         address = nameAndAddress.lastObject;
     }
-    [self.delegate locationSearchViewController:self didSelectLocationWithName:name address:address mapItem:currentMap];
+    [self.delegate locationSearchViewController:self didSelectLocationWithName:name address:address mapItem:mapItem];
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    XYLocationSearchTableSection *section = self.resultSections[indexPath.section];
+    id rowObj = section.items[indexPath.row];
+    if ([section.identifier isEqualToString:@"location"] && ![rowObj isKindOfClass:[MKMapItem class]]) {
+        return NO;
+    }
+    return YES;
 }
 
 ////////////////////////////////////////////////////////////////////////
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSections {
-    if (self.searchResults.count > 0) {
-        return 2;
-    }
-    else {
-        return 1;
-    }
+    return self.resultSections.count;
 }
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        if (self.topView.searchBar.text.length > 0) {
-            return 2;
-        }
-        else {
-            return 1;
-        }
-    }
-    else {
-        return self.searchResults.count;
-    }
+    return self.resultSections[section].items.count;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -449,7 +498,33 @@
 ////////////////////////////////////////////////////////////////////////
 
 - (void)locationSearchTableViewModel:(XYLocationSearchTableViewModel *)viewModel searchResultChange:(NSArray *)searchResult error:(NSError *)error {
-    self.searchResults = [searchResult mutableCopy];
+    if (![self isSearching]) {
+        return;
+    }
+    // 添加附近的poi
+    XYLocationSearchTableSection *nearby = [self sectionWithIdentifier:@"nearby"];
+    [nearby.items removeAllObjects];
+    
+    // 移除搜索的pois
+    XYLocationSearchTableSection *result = [self sectionWithIdentifier:@"result"];
+    [result.items removeAllObjects];
+    [result.items addObjectsFromArray:searchResult];
+    
+    [self reloadTableData];
+}
+
+- (void)locationSearchTableViewModel:(XYLocationSearchTableViewModel *)viewModel didUpdateCurrentLocation:(CLPlacemark *)placemark currentName:(NSString *)name address:(NSString *)address {
+    XYLocationSearchTableSection *secObj = [self sectionWithIdentifier:@"location"];
+    [secObj.items removeAllObjects];
+    if (self.topView.searchBar.text.length) {
+        [secObj.items addObject:self.topView.searchBar.text];
+    }
+    if (placemark) {
+        // 将CLPlacemark转换为MKPlacemark
+        MKPlacemark *mkPlacemark = [[MKPlacemark alloc] initWithPlacemark:placemark];
+        MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:mkPlacemark];
+        [secObj.items addObject:mapItem];
+    }
     [self reloadTableData];
 }
 
@@ -490,5 +565,22 @@
     return _topView;
 }
 
+- (NSMutableArray *)resultSections {
+    if (!_resultSections) {
+        _resultSections = @[].mutableCopy;
+    }
+    return _resultSections;
+}
+
+@end
+
+@implementation XYLocationSearchTableSection
+
+- (NSMutableArray *)items {
+    if (!_items) {
+        _items = @[].mutableCopy;
+    }
+    return _items;
+}
 
 @end
