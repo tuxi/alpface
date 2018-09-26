@@ -33,7 +33,15 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     CameraManagerDevicePositionBack,
     CameraManagerDevicePositionFront,
 };
-
+///闪光灯状态
+typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
+    
+//    CameraManagerFlashModeAuto, /**<自动*/
+    
+    CameraManagerFlashModeOff, /**<关闭*/
+    
+    CameraManagerFlashModeOn /**<打开*/
+};
 
 @interface ALPVideoCameraView ()<TZImagePickerControllerDelegate> {
     // 摄像头
@@ -69,6 +77,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 @property (nonatomic, strong) NSMutableArray *lastAry;
 /// 保存录制视频的url，分段录制时保存不同的本地路径，合并时使用
 @property (nonatomic, strong) NSMutableArray<NSURL *> *urlArray;
+@property (nonatomic , assign) CameraManagerFlashMode flashMode;
 
 @end
 
@@ -198,6 +207,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     [self.optionsView.cameraChangeButton addTarget:self action:@selector(stopRecording:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.dleButton addTarget:self action:@selector(clickDleBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.inputLocalVieoBtn addTarget:self action:@selector(clickInputBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self.optionsView.shootingLightingButton addTarget:self action:@selector(changeFlashMode:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.permissionView updateHidden];
     __weak typeof(self) weakSelf = self;
     self.optionsView.permissionView.requestCameraAccessBlock = ^(BOOL granted) {
@@ -205,6 +215,10 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
             [weakSelf createVideoCamera];
         }
     };
+    
+    // 初始化闪光灯模式为Auto
+    [self setFlashMode:CameraManagerFlashModeOff];
+    [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -544,27 +558,81 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
     }
 }
 
+//设置闪光灯模式
+
+- (void)setFlashMode:(CameraManagerFlashMode)flashMode {
+    _flashMode = flashMode;
+    
+    switch (flashMode) {
+//        case CameraManagerFlashModeAuto: {
+//            NSError *error = nil;
+//            if ([_videoCamera.inputCamera hasTorch]) {
+//                BOOL locked = [_videoCamera.inputCamera lockForConfiguration:&error];
+//                if (locked) {
+//                    _videoCamera.inputCamera.torchMode = AVCaptureTorchModeAuto;
+//                    [_videoCamera.inputCamera unlockForConfiguration];
+//                }
+//            }
+//            [_videoCamera.inputCamera unlockForConfiguration];
+//        }
+//            break;
+        case CameraManagerFlashModeOff: {
+            AVCaptureDevice *device = _videoCamera.inputCamera;
+            if ([device hasTorch]) {
+                [device lockForConfiguration:nil];
+                [device setTorchMode:AVCaptureTorchModeOff];
+                [device unlockForConfiguration];
+            }
+        }
+            
+            break;
+        case CameraManagerFlashModeOn: {
+            
+            NSError *error = nil;
+            if ([_videoCamera.inputCamera hasTorch]) {
+                BOOL locked = [_videoCamera.inputCamera lockForConfiguration:&error];
+                if (locked) {
+                    _videoCamera.inputCamera.torchMode = AVCaptureTorchModeOn;
+                    [_videoCamera.inputCamera unlockForConfiguration];
+                }
+                
+            }
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+/// 改变闪光灯状态
+- (void)changeFlashMode:(UIButton *)button {
+    switch (self.flashMode) {
+//        case CameraManagerFlashModeAuto:
+//            self.flashMode = CameraManagerFlashModeOn;
+//            [button setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
+//            break;
+        case CameraManagerFlashModeOff:
+//            self.flashMode = CameraManagerFlashModeAuto;
+            self.flashMode = CameraManagerFlashModeOn;
+            [button setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
+            break;
+        case CameraManagerFlashModeOn:
+            self.flashMode = CameraManagerFlashModeOff;
+            [button setImage:[UIImage imageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 /// 录制时timer更新UI
 - (void)updateTimer:(NSTimer *)sender{
-    //    NSDateFormatter *dateFormator = [[NSDateFormatter alloc] init];
-    //    dateFormator.dateFormat = @"HH:mm:ss";
-    //    NSDate *todate = [NSDate date];
-    //    NSCalendar *calendar = [NSCalendar currentCalendar];
-    //    NSInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit |
-    //    NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-    //    NSDateComponents *comps  = [calendar components:unitFlags _fromdate:_fromdate toDate:todate options:NSCalendarWrapComponents];
-    //    //NSInteger hour = [comps hour];
-    //    //NSInteger min = [comps minute];
-    //    //NSInteger sec = [comps second];
-    //    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    //    NSDate *timer = [gregorian dateFromComponents:comps];
-    //    NSString *date = [dateFormator string_fromdate:timer];
-    
-    
+
     _currentTime += TIMER_INTERVAL;
     
-    
-    //    _timeLabel.text = [NSString stringWithFormat:@"录制 00:02%d",(int)_currentTime];
     if (_currentTime>=10) {
         [self.optionsView.timeButton setTitle:[NSString stringWithFormat:@"录制 00:%d",(int)_currentTime] forState:UIControlStateNormal];
     }

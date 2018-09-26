@@ -20,20 +20,30 @@ typedef NS_ENUM(NSInteger, AlpVideoCameraRecordState) {
     AlpVideoCameraRecordStateDone,      // 已经开始，录制完成
 };
 
-@interface AlpVideoCameraOptionsView : UIView {
-    
-}
+@interface AlpVideoCameraOptionsView : UIView 
 
+/// 显示当前录制的时间
 @property (nonatomic, strong) UIButton *timeButton;
 //@property (nonatomic, strong) UIView *btView;
+/// 开启或暂停录制按钮
 @property (nonatomic, strong) UIButton *photoCaptureButton;
+/// 录制完成按钮
 @property (nonatomic, strong) UIButton *cameraChangeButton;
+/// 删除当前已录制的视频按钮
 @property (nonatomic, strong) UIButton *dleButton;
+/// 从相册导入视频按钮
 @property (nonatomic, strong) UIButton *inputLocalVieoBtn;
+/// 返回按钮
 @property (nonatomic, strong) UIButton *backBtn;
+/// 开启关闭美颜按钮
 @property (nonatomic ,strong) UIButton *camerafilterChangeButton;
+/// 前后摄像头切换按钮
 @property (nonatomic ,strong) UIButton *cameraPositionChangeButton;
+/// 闪光灯按钮
+@property (nonatomic, strong) UIButton *shootingLightingButton;
+/// 录制的进度
 @property (nonatomic, strong) OSProgressView *progressPreView;
+/// 相机及麦克风权限关闭时显示此权限视图
 @property (nonatomic, strong) AlpVideoCameraPermissionView *permissionView;
 /// 视频录制的状态，根据此状态更新UI
 @property (nonatomic, assign) AlpVideoCameraRecordState recordState;

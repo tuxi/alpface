@@ -10,6 +10,10 @@
 #import "AlpVideoCameraDefine.h"
 #import "UIView+Tools.h"
 
+@interface AlpVideoCameraOptionsViewButton : UIButton
+
+@end
+
 @implementation AlpVideoCameraOptionsView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -67,10 +71,11 @@
     [self addSubview:self.dleButton];
     [self addSubview:self.inputLocalVieoBtn];
     [self addSubview:self.progressPreView];
+    [self addSubview:self.shootingLightingButton];
     
     self.timeButton.hidden = YES;
     self.timeButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    self.btView.translatesAutoresizingMaskIntoConstraints = NO;
+    //    self.btView.translatesAutoresizingMaskIntoConstraints = NO;
     self.photoCaptureButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.backBtn.translatesAutoresizingMaskIntoConstraints = NO;
     self.cameraPositionChangeButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -79,6 +84,7 @@
     self.dleButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.inputLocalVieoBtn.translatesAutoresizingMaskIntoConstraints = NO;
     self.progressPreView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.shootingLightingButton.translatesAutoresizingMaskIntoConstraints = NO;
     
     [NSLayoutConstraint constraintWithItem:self.timeButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:20.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.timeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-20.0].active = YES;
@@ -93,17 +99,23 @@
     [NSLayoutConstraint constraintWithItem:self.backBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.backBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.backBtn attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
     
+    CGFloat padding = 30.0;
+    
     // 切换前后摄像头
     [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.backBtn attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-20.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-padding].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
     
     // 打开和关闭美颜按钮
-    [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:padding].active = YES;
     [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0].active = YES;
+    
+    // 打开和关闭闪光灯按钮
+    [NSLayoutConstraint constraintWithItem:self.shootingLightingButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.camerafilterChangeButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:padding].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.shootingLightingButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.shootingLightingButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
+    
     
     
     // 完成录制按钮
@@ -218,22 +230,32 @@
 - (UIButton *)cameraPositionChangeButton {
     if (!_cameraPositionChangeButton) {
         // 前后摄像头切换按钮
-        _cameraPositionChangeButton = [[UIButton alloc] initWithFrame:CGRectZero];
+        _cameraPositionChangeButton = (id)[[AlpVideoCameraOptionsViewButton alloc] initWithFrame:CGRectZero];
         UIImage* img2 = [UIImage imageNamed:@"icShootingFlip_31x31_"];
         [_cameraPositionChangeButton setImage:img2 forState:UIControlStateNormal];
+        [_cameraPositionChangeButton setTitle:@"翻转" forState:UIControlStateNormal];
     }
     return _cameraPositionChangeButton;
 }
 
 - (UIButton *)camerafilterChangeButton {
     if (!_camerafilterChangeButton) {
-        _camerafilterChangeButton = [[UIButton alloc] init];
+        _camerafilterChangeButton = (id)[[AlpVideoCameraOptionsViewButton alloc] init];
         _camerafilterChangeButton.frame = CGRectMake(_cameraPositionChangeButton.frame.origin.x, _cameraPositionChangeButton.frame.origin.y + 80, 30, 30);
         UIImage* img = [UIImage imageNamed:@"iconBeautyOff2_40x40_"];
         [_camerafilterChangeButton setImage:img forState:UIControlStateNormal];
         [_camerafilterChangeButton setImage:[UIImage imageNamed:@"iconBeautyOn2_40x40_"] forState:UIControlStateSelected];
+        [_camerafilterChangeButton setTitle:@"美化" forState:UIControlStateNormal];
     }
     return _camerafilterChangeButton;
+}
+
+- (UIButton *)shootingLightingButton {
+    if (!_shootingLightingButton) {
+        _shootingLightingButton = (id)[[AlpVideoCameraOptionsViewButton alloc] init];
+        [_shootingLightingButton setTitle:@"闪光灯" forState:UIControlStateNormal];
+    }
+    return _shootingLightingButton;
 }
 
 - (UIButton *)cameraChangeButton {
@@ -267,6 +289,36 @@
         [_inputLocalVieoBtn setImage:img5 forState:UIControlStateNormal];
     }
     return _inputLocalVieoBtn;
+}
+
+@end
+
+@implementation AlpVideoCameraOptionsViewButton
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.titleLabel.textAlignment = NSTextAlignmentCenter;
+        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.titleLabel.font = [UIFont systemFontOfSize:11.0];
+        [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    return self;
+}
+
+// imageRectForContentRect:和titleRectForContentRect:不能互相调用imageView和titleLael,不然会死循环
+- (CGRect)imageRectForContentRect:(CGRect)bounds {
+    CGRect imageRect = [super imageRectForContentRect:bounds];
+    CGFloat x = (bounds.size.width - imageRect.size.width) * 0.5;
+    return CGRectMake(x, 0.0, imageRect.size.width, imageRect.size.height);
+}
+
+- (CGRect)titleRectForContentRect:(CGRect)contentRect {
+    CGRect titleRect = [super titleRectForContentRect:contentRect];
+    CGFloat x = (self.bounds.size.width - contentRect.size.width) * 0.5;
+    return CGRectMake(x, self.imageView.bounds.size.height, contentRect.size.width, titleRect.size.height);
+    
 }
 
 @end
