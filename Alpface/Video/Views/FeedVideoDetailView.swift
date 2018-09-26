@@ -156,11 +156,11 @@ class FeedVideoDetailView: UIView {
         musicAvatarButton.centerXAnchor.constraint(equalTo: avatarButton.centerXAnchor, constant: 0.0).isActive = true
         
         locationButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10.0).isActive = true
-        locationButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -160.0).isActive = true
+        locationButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -60.0).isActive = true
         locationButton.bottomAnchor.constraint(equalTo: self.titleButton.topAnchor, constant: -10.0).isActive = true
         
         titleButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10.0).isActive = true
-        titleButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -160.0).isActive = true
+        titleButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -60.0).isActive = true
         titleButton.bottomAnchor.constraint(equalTo: self.describeButton.topAnchor, constant: -5.0).isActive = true
         
         describeButton.leadingAnchor.constraint(equalTo: titleButton.leadingAnchor, constant: 0.0).isActive = true
@@ -168,7 +168,7 @@ class FeedVideoDetailView: UIView {
         describeButton.bottomAnchor.constraint(equalTo: self.musicButton.topAnchor, constant: -5.0).isActive = true
         
         musicButton.leadingAnchor.constraint(equalTo: titleButton.leadingAnchor, constant: 0.0).isActive = true
-        musicButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -160.0).isActive = true
+        musicButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -60.0).isActive = true
         musicButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10.0).isActive = true
         
         avatarButton.setBackgroundImage(UIImage.init(named: "icon"), for: .normal)
