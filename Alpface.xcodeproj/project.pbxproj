@@ -11,6 +11,7 @@
 		D02D2A2721534758004B49FF /* XYLocationSearchTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = D02D2A2621534758004B49FF /* XYLocationSearchTopView.m */; };
 		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
 		D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868D213E83000009682C /* MCGCDTimer.swift */; };
+		D06FEAB6215CB5620005FAF5 /* AlpEditCoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D06FEAB5215CB5620005FAF5 /* AlpEditCoverViewController.m */; };
 		D07748AF215334CD0080610A /* XYLocationSearch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D07748A6215334CD0080610A /* XYLocationSearch.bundle */; };
 		D07748B0215334CD0080610A /* XYMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D07748A9215334CD0080610A /* XYMapViewController.m */; };
 		D07748B1215334CD0080610A /* XYLocationSearchTableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D07748AB215334CD0080610A /* XYLocationSearchTableViewModel.m */; };
@@ -374,6 +375,8 @@
 		D02D2A2621534758004B49FF /* XYLocationSearchTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYLocationSearchTopView.m; sourceTree = "<group>"; };
 		D06F868A213E80E20009682C /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
 		D06F868D213E83000009682C /* MCGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCGCDTimer.swift; sourceTree = "<group>"; };
+		D06FEAB4215CB5620005FAF5 /* AlpEditCoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditCoverViewController.h; sourceTree = "<group>"; };
+		D06FEAB5215CB5620005FAF5 /* AlpEditCoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditCoverViewController.m; sourceTree = "<group>"; };
 		D07748A6215334CD0080610A /* XYLocationSearch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = XYLocationSearch.bundle; sourceTree = "<group>"; };
 		D07748A7215334CD0080610A /* XYLocationSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYLocationSearchViewController.h; sourceTree = "<group>"; };
 		D07748A8215334CD0080610A /* XYLocationSearchTableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYLocationSearchTableViewModel.h; sourceTree = "<group>"; };
@@ -1054,6 +1057,8 @@
 				D27616152158D61B008A9AD4 /* AlpEditPublishTableViewCellModel.m */,
 				D27616172158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.h */,
 				D27616182158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m */,
+				D06FEAB4215CB5620005FAF5 /* AlpEditCoverViewController.h */,
+				D06FEAB5215CB5620005FAF5 /* AlpEditCoverViewController.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -1940,7 +1945,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/DeviceKit/DeviceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
@@ -1961,7 +1966,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Alpface/Pods-Alpface-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2067,6 +2072,7 @@
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
 				D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */,
+				D06FEAB6215CB5620005FAF5 /* AlpEditCoverViewController.m in Sources */,
 				D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */,
 				D27616192158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m in Sources */,
 				D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */,

@@ -7,7 +7,6 @@
 //
 
 #import "AlpVideoCameraUtils.h"
-#import <AVFoundation/AVFoundation.h>
 #import "AlpVideoCameraDefine.h"
 
 @implementation AlpVideoCameraUtils
@@ -194,4 +193,44 @@
     }
 }
 
++ (void)getImagesByVideoURL:(NSURL *)videoURL
+         numberOfCoverFrame:(NSInteger)numberOfCoverFrame
+                   callBack:(void (^)(CMTime  time, NSArray<UIImage *> *images, NSError *error))callBack {
+    
+    NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+    AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoURL options:opts];
+    CMTime  time = [urlAsset duration];
+    
+    if (time.value < 1) {
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:@{@"info": [NSString stringWithFormat:@"[%@]读取的视频总帧数为0", videoURL]}];
+        if (callBack) {
+            callBack(time, nil, error);
+        }
+        return;
+    }
+    
+    AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+    generator.appliesPreferredTrackTransform = YES;
+    
+    // 封面的数量 = 总帧数/ 每个封面的帧数
+    long long baseCount = time.value / numberOfCoverFrame;
+    NSMutableArray *images = [NSMutableArray array] ;
+    for (NSInteger i = 0 ; i < numberOfCoverFrame; i++) {
+        
+        NSError *error = nil;
+        CGImageRef img = [generator copyCGImageAtTime:CMTimeMake(i * baseCount, time.timescale) actualTime:NULL error:&error];
+        {
+            if (!error) {
+                UIImage *image = [UIImage imageWithCGImage:img];
+                [images addObject:image];
+            }
+            else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }
+    }
+    if (callBack) {
+        callBack(time, images, nil);
+    }
+}
 @end

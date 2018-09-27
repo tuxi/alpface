@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,6 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGPoint)convertToPointOfInterestFromViewCoordinates:(CGPoint)viewCoordinates frameSize:(CGSize)frameSize;
 
 + (void)createVideoFolderIfNotExist;
+
+/// 根据视频的路径取出图片存放到数组 图片的数量 = 总帧数/封面展示的帧数
+/// @param videoURL 视频的URL
+/// @param numberOfCoverFrame 每一个封面展示的帧数
++ (void)getImagesByVideoURL:(NSURL *)videoURL
+         numberOfCoverFrame:(NSInteger)numberOfCoverFrame
+                   callBack:(void (^)(CMTime  time, NSArray<UIImage *> *images, NSError *error))callBack;
 
 @end
 

@@ -21,6 +21,7 @@
 #import "AlpEditVideoBar.h"
 #import "AlpEditVideoNavigationBar.h"
 #import "AlpEditVideoParameter.h"
+#import "AlpEditCoverViewController.h"
 
 @interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate, AlpEditVideoNavigationBarDelegate>
 
@@ -44,7 +45,6 @@
     GPUImageOutput<GPUImageInput> *_filter;
     
     AVPlayerItem *_audioPlayerItem;
-    UIImageView* _playImg;
     MBProgressHUD *_HUD;
     
     AVPlayer *_mainPlayer;
@@ -65,10 +65,6 @@
     //    [self playMusic];
     
     self.view.backgroundColor = [UIColor blackColor];
-    self.title = @"预览";
-    
-    float videoWidth = self.view.frame.size.width;
-    
     
     _mainPlayer = [[AVPlayer alloc] init];
     _playerItem = [[AVPlayerItem alloc] initWithURL:_videoURL];
@@ -105,13 +101,7 @@
     [NSLayoutConstraint constraintWithItem:playImgeView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_bgImageView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:playImgeView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:SCREEN_LayoutScaleBaseOnIPHEN6(60)].active = YES;
     [NSLayoutConstraint constraintWithItem:playImgeView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:SCREEN_LayoutScaleBaseOnIPHEN6(60)].active = YES;
-    
-    _playImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-    _playImg.center = CGPointMake(videoWidth/2, videoWidth/2);
-    [_playImg setImage:[UIImage imageNamed:@"videoPlay"]];
-    [_playerLayer addSublayer:_playImg.layer];
-    _playImg.hidden = YES;
-    
+
     _stickersImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 150, 150)];
     _stickersImgView.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
     _stickersImgView.hidden = YES;
@@ -125,6 +115,7 @@
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
     headerBar.delegate = self;
     [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
+    headerBar.titleLabel.text = @"编辑";
     headerBar.backgroundColor = [UIColor clearColor];
     [self.view addSubview:headerBar];
     headerBar.translatesAutoresizingMaskIntoConstraints = false;
@@ -151,6 +142,14 @@
     _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     _HUD.hidden = YES;
     
+    UIButton *editCoverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [editCoverButton setTitle:@"编辑封面" forState:UIControlStateNormal];
+    [self.view addSubview:editCoverButton];
+    editCoverButton.translatesAutoresizingMaskIntoConstraints = NO;
+    editCoverButton.backgroundColor = [UIColor blackColor];
+    [editCoverButton addTarget:self action:@selector(editCoverClick) forControlEvents:UIControlEventTouchUpInside];
+    [NSLayoutConstraint constraintWithItem:editCoverButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:editCoverButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -734,16 +733,6 @@
     [_audioPlayer play];
 }
 
-- (void)playOrPause{
-    if (_playImg.isHidden) {
-        _playImg.hidden = NO;
-        [_mainPlayer pause];
-        
-    }else{
-        _playImg.hidden = YES;
-        [_mainPlayer play];
-    }
-}
 
 /// 重新播放
 - (void)replayVideo {
@@ -753,6 +742,12 @@
         [_audioPlayerItem seekToTime:kCMTimeZero];
         [_audioPlayer play];
     }
+}
+
+- (void)editCoverClick {
+    AlpEditCoverViewController *vc = [AlpEditCoverViewController new];
+    vc.videoURL = self.videoURL;
+    [self.rt_navigationController pushViewController:vc animated:YES complete:nil];
 }
 
 ////////////////////////////////////////////////////////////////////////
