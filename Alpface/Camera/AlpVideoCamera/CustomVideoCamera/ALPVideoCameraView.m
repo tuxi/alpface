@@ -408,14 +408,15 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
                         [_HUD hide:YES afterDelay:1.5];
                     }
                     else {
-                        AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
-                        cor.videoURL = url;
-                        
+                        AlpEditVideoViewController *vc = [AlpEditVideoViewController  new];
+//                        AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
+                        vc.videoURL = url;
+                        vc.videoOptions = weakSelf.videoOptions;
                         [[NSNotificationCenter defaultCenter] removeObserver:self];
                         [_videoCamera stopCameraCapture];
                         //                     [[AppDelegate appDelegate] pushViewController:cor animated:YES];
                         if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
-                            [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:cor];
+                            [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:vc];
                         }
                         [weakSelf removeFromSuperview];
                         
