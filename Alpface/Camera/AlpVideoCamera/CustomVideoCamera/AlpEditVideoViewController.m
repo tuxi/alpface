@@ -157,6 +157,8 @@
     [_audioPlayer pause];
     [_mainPlayer pause];
     [_movieFile endProcessing];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
