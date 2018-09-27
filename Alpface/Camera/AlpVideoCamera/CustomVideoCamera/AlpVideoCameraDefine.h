@@ -31,7 +31,7 @@ static NSNotificationName const AlpVideoCameraCloseNotification = @"AlpVideoCame
 /// 允许录制视频的最大时间
 static NSTimeInterval const AlpVideoRecordingMaxTime = 20.0;
 /// 选择的视频最大支持的大小,MB
-static CGFloat const AlpVideoCameraMaxVideoSize = 8.0;
+static CGFloat const AlpVideoCameraMaxVideoSize = 10.0;
 static CGFloat const TIMER_INTERVAL = 0.05;
 
 static NSString * const AlpContentTextFieldPlaceholder = @"点击添加描述(最多20个字)";

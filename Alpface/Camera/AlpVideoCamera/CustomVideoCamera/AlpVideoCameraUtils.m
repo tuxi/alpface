@@ -193,13 +193,83 @@
     }
 }
 
-+ (void)getImagesByVideoURL:(NSURL *)videoURL
++ (void)convertMovTypeIntoMp4TypeWithSourceUrl:(NSURL *)sourceUrl convertSuccess:(void (^)(NSURL *path))convertSuccess {
+    
+    [self createVideoFolderIfNotExist];
+    
+    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:sourceUrl options:nil];
+    
+    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
+    
+    //    BWJLog(@"%@",compatiblePresets);
+    
+    if ([compatiblePresets containsObject:AVAssetExportPresetHighestQuality]) {
+        
+        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetHighestQuality];
+        
+        
+        NSString * resultPath = [self getVideoMergeFilePathString];
+        
+        NSLog(@"resultPath = %@",resultPath);
+        
+        
+        exportSession.outputURL = [NSURL fileURLWithPath:resultPath];
+        
+        exportSession.outputFileType = AVFileTypeMPEG4;
+        
+        exportSession.shouldOptimizeForNetworkUse = YES;
+        
+        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (exportSession.status == AVAssetExportSessionStatusCompleted) {
+                    if (convertSuccess) {
+                        convertSuccess([NSURL fileURLWithPath:resultPath]);
+                    }
+                } else {
+                    
+                    
+                }
+            });
+            
+        }];
+    }
+}
+
++ (NSDictionary *)getLocalVideoSizeAndTimeWithSourcePath:(NSString *)path{
+    AVURLAsset * asset = [AVURLAsset assetWithURL:[NSURL fileURLWithPath:path]];
+    CMTime   time = [asset duration];
+    int seconds = ceil(time.value/time.timescale);
+    
+    NSInteger fileSize = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil].fileSize;
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    dic[@"size"] = @(fileSize);
+    dic[@"duration"] = @(seconds);
+    return dic;
+}
+
++ (void)getCoversByVideoURL:(NSURL *)videoURL
+               coverSeconds:(NSInteger)coverSeconds
+                   callBack:(void (^)(CMTime, NSArray<AlpVideoCameraCover *> * _Nonnull, NSError * _Nonnull))callBack {
+    
+    AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
+    CMTime time = [urlAsset duration];
+    CMTimeValue coverFrame = time.timescale * coverSeconds;
+    [self getCoversByVideoURL:videoURL numberOfCoverFrame:coverFrame callBack:callBack];
+}
+
+
+
++ (void)getCoversByVideoURL:(NSURL *)videoURL
          numberOfCoverFrame:(NSInteger)numberOfCoverFrame
-                   callBack:(void (^)(CMTime  time, NSArray<UIImage *> *images, NSError *error))callBack {
+                   callBack:(void (^)(CMTime  time, NSArray<AlpVideoCameraCover *> *images, NSError *error))callBack {
     
     NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
     AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoURL options:opts];
     CMTime  time = [urlAsset duration];
+    
+    // 输出视频的时间
+    CMTimeShow(time);
     
     if (time.value < 1) {
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:@{@"info": [NSString stringWithFormat:@"[%@]读取的视频总帧数为0", videoURL]}];
@@ -209,28 +279,124 @@
         return;
     }
     
+    // 要求：每个封面截取5秒的帧数
+    // 一秒的帧数= time.timescale
+    // 视频的帧数= time.value
+    // 视频的秒数= time.value/time.timescale
+    // 一个封面5秒的帧数 = 5 * time.timescale
+    
     AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
     generator.appliesPreferredTrackTransform = YES;
-    
     // 封面的数量 = 总帧数/ 每个封面的帧数
     long long baseCount = time.value / numberOfCoverFrame;
     NSMutableArray *images = [NSMutableArray array] ;
-    for (NSInteger i = 0 ; i < numberOfCoverFrame; i++) {
-        
-        NSError *error = nil;
-        CGImageRef img = [generator copyCGImageAtTime:CMTimeMake(i * baseCount, time.timescale) actualTime:NULL error:&error];
-        {
-            if (!error) {
-                UIImage *image = [UIImage imageWithCGImage:img];
-                [images addObject:image];
+    @autoreleasepool {
+        for (NSInteger i = 0 ; i < baseCount; i++) {
+            
+            NSError *error = nil;
+            CMTime coverTime = CMTimeMake(i * numberOfCoverFrame, time.timescale);
+            CGImageRef img = [generator copyCGImageAtTime:coverTime actualTime:NULL error:&error];
+            {
+                if (!error) {
+                    UIImage *image = [UIImage imageWithCGImage:img];
+                    AlpVideoCameraCover *imageObj = [AlpVideoCameraCover new];
+                    imageObj.firstFrameImage = image;
+                    imageObj.coverTime = coverTime;
+                    [images addObject:imageObj];
+                }
+                else {
+                    NSLog(@"%@", error.localizedDescription);
+                }
             }
-            else {
-                NSLog(@"%@", error.localizedDescription);
-            }
+            CGImageRelease(img);
         }
     }
+    
     if (callBack) {
         callBack(time, images, nil);
     }
 }
+
++ (void)getCoversByVideoURL:(NSURL *)videoURL
+                 photoCount:(NSInteger)photoCount
+                   callBack:(void (^)(CMTime  time, NSArray<AlpVideoCameraCover *> *images, NSError *error))callBack {
+    NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+    AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoURL options:opts];
+    CMTime  time = [urlAsset duration];
+    
+    // 输出视频的时间
+    CMTimeShow(time);
+    
+    if (time.value < 1) {
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:@{@"info": [NSString stringWithFormat:@"[%@]读取的视频总帧数为0", videoURL]}];
+        if (callBack) {
+            callBack(time, nil, error);
+        }
+        return;
+    }
+    
+    // 要求：每个封面截取5秒的帧数
+    // 一秒的帧数= time.timescale
+    // 视频的帧数= time.value
+    // 视频的秒数= time.value/time.timescale
+    // 一个封面5秒的帧数 = 5 * time.timescale
+    
+    AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+    generator.appliesPreferredTrackTransform = YES;
+    // 每个封面的帧数 = 总帧数/ 图片的数量
+    long long coverFrameCount = time.value / photoCount;
+    NSMutableArray *images = [NSMutableArray array] ;
+    @autoreleasepool {
+        for (NSInteger i = 0 ; i < photoCount; i++) {
+            
+            NSError *error = nil;
+            CMTime coverTime = CMTimeMake(i * coverFrameCount, time.timescale);
+            CGImageRef img = [generator copyCGImageAtTime:coverTime actualTime:NULL error:&error];
+            {
+                if (!error) {
+                    UIImage *image = [UIImage imageWithCGImage:img];
+                    AlpVideoCameraCover *imageObj = [AlpVideoCameraCover new];
+                    imageObj.firstFrameImage = image;
+                    imageObj.coverTime = coverTime;
+                    [images addObject:imageObj];
+                }
+                else {
+                    NSLog(@"%@", error.localizedDescription);
+                }
+            }
+            CGImageRelease(img);
+        }
+    }
+    
+    if (callBack) {
+        callBack(time, images, nil);
+    }
+}
+
++ (void)getCoverByVideoURL:(NSURL *)videoURL timeValue:(CMTimeValue)value callBack:(void (^)(AlpVideoCameraCover *image))callBack {
+    @autoreleasepool {
+        NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+        AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoURL options:opts];
+        CMTime videoTime = [urlAsset duration];
+        AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+        generator.appliesPreferredTrackTransform = YES;
+        NSError *error = nil;
+        CMTime coverTime = CMTimeMake(value, videoTime.timescale);
+        CGImageRef img = [generator copyCGImageAtTime:coverTime actualTime:NULL error:&error];
+        UIImage *image = [UIImage imageWithCGImage:img];
+        CGImageRelease(img);
+        AlpVideoCameraCover *cover = [AlpVideoCameraCover new];
+        cover.firstFrameImage = image;
+        cover.coverTime = coverTime;
+        if (callBack) {
+            callBack(cover);
+        }
+    }
+}
+@end
+
+@implementation AlpVideoCameraCover
+
+
+
 @end

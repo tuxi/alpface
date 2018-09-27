@@ -235,17 +235,19 @@ class PlayVideoViewController: UIViewController {
     
     /// 开始播放
     open func play() {
-        if player == nil {
-            guard let url = url else { return }
-            preparePlayback(url: url)
+        if UIApplication.shared.applicationState == .active {
+            if player == nil {
+                guard let url = url else { return }
+                preparePlayback(url: url)
+            }
+            removeObserver(playerItem: playerItem)
+            addObserver()
+            if state != .playing && state != .stopped { // 如果是继续播放时，就不重置为buffering
+                state = .buffering
+            }
+            player?.play()
+            isPauseByUser = false
         }
-        removeObserver(playerItem: playerItem)
-        addObserver()
-        if state != .playing && state != .stopped { // 如果是继续播放时，就不重置为buffering
-            state = .buffering
-        }
-        player?.play()
-        isPauseByUser = false
     }
     
     /// 暂停播放

@@ -9,6 +9,11 @@
 #import "AlpEditCoverViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "AlpVideoCameraUtils.h"
+#import "UIImage+AlpExtensions.h"
+
+// 底部显示的个数
+#define PHOTO_COUNT  6
+#define COLLECTION_VIEW_LEFT 20
 
 @interface AlpCoverImageCollectionViewCell : UICollectionViewCell
 
@@ -20,8 +25,9 @@
 @property(nonatomic,strong)UIImageView *coverImage;
 @property(nonatomic,strong)UICollectionView *coverImageCollectionView;
 ///照片数组
-@property (nonatomic, strong) NSMutableArray *photoArrays;
+@property (nonatomic, strong) NSMutableArray<AlpVideoCameraCover *> *photoArrays;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic, strong) UISlider *slider;
 
 @end
 
@@ -33,10 +39,10 @@
     self.view.backgroundColor = [UIColor blackColor];
     self.selectedIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     self.photoArrays = [[NSMutableArray alloc] init];
-    [self initView];
+    [self setupUI];
     [self getVideoTotalValueAndScale];
 }
-- (void)initView {
+- (void)setupUI {
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton setBackgroundColor:[UIColor blackColor]];
@@ -97,36 +103,47 @@
     [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:20.0].active = YES;
     [self.view addSubview:self.coverImageCollectionView];
     _coverImageCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:20.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:COLLECTION_VIEW_LEFT].active = YES;
     [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-(80+34)].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:-40.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-COLLECTION_VIEW_LEFT].active = YES;
     [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:80.0].active = YES;
+    
+    
+    UIImage *selected = [UIImage imageNamed:@"btn_p_cover"];
+    UIImage *deselected = [UIImage imageNamed:@"btn_n_cover"];
+    
+    UISlider *slider = [[UISlider alloc] init];
+    [self.view addSubview:slider];
+    slider.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+  
+    
+    [slider setThumbImage:deselected forState:UIControlStateNormal];
+    [slider setThumbImage:selected forState:UIControlStateHighlighted];
+    //透明的图片
+    UIImage *image = [UIImage imageWithColor:[UIColor clearColor] size:CGSizeMake(1, 1)];
+    
+    [slider setMinimumTrackImage:image forState:UIControlStateNormal];
+    [slider setMaximumTrackImage:image forState:UIControlStateNormal];
+    _slider = slider;
+    slider.minimumValue = 0;
+    [slider addTarget:self action:@selector(slidValueChange:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:slider];
+    
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
 }
-#pragma mark-methods
--(void)clickButton:(UIButton *)button
-{
-    if (button.tag == 1) {
-        //取消
-        [self.navigationController popViewControllerAnimated:YES];
-    }else
-    {
-        //确定
-//        PublishVideoViewController *vc = [[PublishVideoViewController alloc] init];
-//        vc.videoPath = self.videoPath;
-//        vc.coverImage = self.coverImage.image;
-//        [self.navigationController pushViewController:vc animated:YES];
-    }
-}
-
 
 
 - (void)getVideoTotalValueAndScale {
     
-    [AlpVideoCameraUtils getImagesByVideoURL:self.videoURL numberOfCoverFrame:10 callBack:^(CMTime time, NSArray<UIImage *> * _Nonnull images, NSError * _Nonnull error) {
+    [AlpVideoCameraUtils getCoversByVideoURL:self.videoURL photoCount:PHOTO_COUNT callBack:^(CMTime time, NSArray<AlpVideoCameraCover *> * _Nonnull images, NSError * _Nonnull error) {
+        self.slider.maximumValue = time.value;
         if (time.value < 1) {
             
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -134,9 +151,44 @@
         }
         [self.photoArrays removeAllObjects];
         [self.photoArrays addObjectsFromArray:images];
+        // 默认选择第一帧
+        [self chooseWithTime:0];
     }];
 }
 
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Actions
+////////////////////////////////////////////////////////////////////////
+
+- (void)slidValueChange:(UISlider *)slider {
+    
+    int timeValue = slider.value;
+    
+    [self chooseWithTime:timeValue];
+}
+
+
+- (void)chooseWithTime:(CMTimeValue)value {
+    [AlpVideoCameraUtils getCoverByVideoURL:self.videoURL timeValue:value callBack:^(AlpVideoCameraCover * _Nonnull image) {
+        self.coverImage.image = image.firstFrameImage;
+    }];
+    
+}
+
+- (void)clickButton:(UIButton *)button
+{
+    if (button.tag == 1) {
+        //取消
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else {
+        //确定
+        //        PublishVideoViewController *vc = [[PublishVideoViewController alloc] init];
+        //        vc.videoPath = self.videoPath;
+        //        vc.coverImage = self.coverImage.image;
+        //        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
 
 #pragma mark-collectionview
 
@@ -149,16 +201,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AlpCoverImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"AlpCoverImageCollectionViewCell" forIndexPath:indexPath];
     
-    cell.imageView.image = _photoArrays[indexPath.item];
-    if ([self.selectedIndexPath isEqual:indexPath]) {
-        cell.imageView.layer.cornerRadius = 2.0;
-        cell.imageView.layer.borderWidth = 1.0;
-        _coverImage.image = _photoArrays[indexPath.item];
-    }
-    else {
-        cell.imageView.layer.cornerRadius = 0.0;
-        cell.imageView.layer.borderWidth = 0.0;
-    }
+    cell.imageView.image = _photoArrays[indexPath.item].firstFrameImage;
     return cell;
 }
 
@@ -182,10 +225,16 @@
     [_coverImageCollectionView reloadData];
 }
 
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Getter
+////////////////////////////////////////////////////////////////////////
+
 - (UICollectionView *)coverImageCollectionView {
     if (!_coverImageCollectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize = CGSizeMake(60, 80);
+        CGFloat width = ([UIScreen mainScreen].bounds.size.width - COLLECTION_VIEW_LEFT*2)/PHOTO_COUNT;
+        flowLayout.itemSize = CGSizeMake(width, 80);
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         flowLayout.sectionInset = UIEdgeInsetsMake(0, 0,0 ,0 );
         flowLayout.minimumInteritemSpacing = 0;

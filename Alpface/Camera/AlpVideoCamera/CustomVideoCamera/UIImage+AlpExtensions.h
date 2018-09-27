@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 根据视频本地路径截取缩略图
 + (UIImage *)getThumbnailByVideoPath:(NSString *)videoPath;
-
+/// 颜色转换图片
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
 @end
 
 NS_ASSUME_NONNULL_END
