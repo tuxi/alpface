@@ -191,17 +191,18 @@
 }
 
 - (void)addTimeObserver {
-    [_mainPlayer removeTimeObserver:_timeObserver];
-    // 视频播放进度
-    __weak typeof(self) weakSelf = self;
-    _timeObserver = [_mainPlayer addPeriodicTimeObserverForInterval:CMTimeMake(1,1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        if (time.value >= AlpVideoCameraCoverSliderMaxRange(weakSelf.slider.range)) {
-            // 当播放超出封面时，回到c封面起始位置重新播放
-            [weakSelf.mainPlayer pause];
-            [weakSelf.mainPlayer seekToTime:weakSelf.coverTime];
-            [weakSelf.mainPlayer play];
-        }
-    }];
+//    [_mainPlayer removeTimeObserver:_timeObserver];
+//    // 视频播放进度
+//    __weak typeof(self) weakSelf = self;
+//    _timeObserver = [_mainPlayer addPeriodicTimeObserverForInterval:CMTimeMake(1, self.videoTime.timescale) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+//        NSLog(@"%lld", time.value);
+//        if (time.value >= AlpVideoCameraCoverSliderMaxRange(weakSelf.slider.range)) {
+//            // 当播放超出封面时，回到c封面起始位置重新播放
+//            [weakSelf.mainPlayer pause];
+//            [weakSelf.mainPlayer seekToTime:weakSelf.coverTime];
+//            [weakSelf.mainPlayer play];
+//        }
+//    }];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -240,6 +241,7 @@
 - (void)chooseWithTime:(CMTimeValue)value {
     CMTime coverTime = CMTimeMake(value, self.videoTime.timescale);
     self.coverTime = coverTime;
+    [self addTimeObserver];
     [_playerItem seekToTime:self.coverTime];
     [_mainPlayer play];
 //    [self addTimeObserver];
