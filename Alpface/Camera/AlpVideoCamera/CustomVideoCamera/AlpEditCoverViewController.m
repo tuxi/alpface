@@ -16,6 +16,12 @@
 #define PHOTO_COUNT  6
 #define COLLECTION_VIEW_LEFT 20
 
+@interface AlpVideoCameraCoverPlayerView : UIView
+
+
+
+@end
+
 @interface AlpCoverImageCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImageView *imageView;
@@ -23,17 +29,21 @@
 @end
 
 @interface AlpEditCoverViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
-@property(nonatomic,strong)UIImageView *coverImage;
+@property(nonatomic,strong)AlpVideoCameraCoverPlayerView *coverPlayerView;
 @property(nonatomic,strong)UICollectionView *coverImageCollectionView;
 ///照片数组
 @property (nonatomic, strong) NSMutableArray<AlpVideoCameraCover *> *photoArrays;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic, strong) AlpVideoCameraCoverSlider *slider;
+@property (nonatomic, assign) CMTime coverTime;
+@property (nonatomic, assign) CMTime videoTime;
 
 @end
 
-@implementation AlpEditCoverViewController
-
+@implementation AlpEditCoverViewController {
+    AVPlayer *_mainPlayer;
+    AVPlayerItem *_playerItem;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -79,15 +89,15 @@
     [sureButton addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
     
     //选定的封面图
-    _coverImage = [[UIImageView alloc] init];
-    _coverImage.contentMode = UIViewContentModeScaleAspectFill;
-    _coverImage.clipsToBounds  = YES;
-    [self.view addSubview:_coverImage];
-    _coverImage.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint constraintWithItem:_coverImage attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:0.6 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_coverImage attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:0.6 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_coverImage attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_coverImage attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:-50.0].active = YES;
+    _coverPlayerView = [[AlpVideoCameraCoverPlayerView alloc] init];
+//    _coverImage.contentMode = UIViewContentModeScaleAspectFill;
+    _coverPlayerView.clipsToBounds  = YES;
+    [self.view addSubview:_coverPlayerView];
+    _coverPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:0.6 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:0.6 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:-50.0].active = YES;
     
     UILabel *label = [[UILabel alloc] init];
         label.backgroundColor = [UIColor blackColor];
@@ -122,16 +132,45 @@
     [slider addTarget:self action:@selector(slidValueChange:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:slider];
     
+    [self setupPlayer];
+    
 }
+
+- (void)setupPlayer {
+    _mainPlayer = [[AVPlayer alloc] init];
+    _playerItem = [[AVPlayerItem alloc] initWithURL:_videoURL];
+    [_mainPlayer replaceCurrentItemWithPlayerItem:_playerItem];
+    _mainPlayer.volume = 0; // 静音
+    AVPlayerLayer *playerLayer = (id)_coverPlayerView.layer;
+    playerLayer.player = _mainPlayer;
+    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_mainPlayer play];
+    });
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playingEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_mainPlayer pause];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
 - (void)getVideoTotalValueAndScale {
     
     [AlpVideoCameraUtils getCoversByVideoURL:self.videoURL photoCount:PHOTO_COUNT callBack:^(CMTime time, NSArray<AlpVideoCameraCover *> * _Nonnull images, NSError * _Nonnull error) {
+        self.videoTime = time;
+        self.coverTime = CMTimeMake(0, time.timescale);
         AlpVideoCameraCoverSliderRange range = AlpVideoCameraCoverSliderMakeRange(0, time.value/images.count);
         self.slider.maximumValue = time.value;
         self.slider.range = range;
@@ -148,6 +187,27 @@
 }
 
 ////////////////////////////////////////////////////////////////////////
+#pragma mark - Notification methods
+////////////////////////////////////////////////////////////////////////
+
+- (void)playingEnd:(NSNotification *)notification {
+    [self replayVideo];
+}
+/// 重新播放
+- (void)replayVideo {
+    [_playerItem seekToTime:self.coverTime];
+    [_mainPlayer play];
+}
+- (void)onApplicationWillResignActive {
+    [_mainPlayer pause];
+}
+
+- (void)onApplicationDidBecomeActive {
+    [_playerItem seekToTime:self.coverTime];
+    [_mainPlayer play];
+}
+
+////////////////////////////////////////////////////////////////////////
 #pragma mark - Actions
 ////////////////////////////////////////////////////////////////////////
 
@@ -160,9 +220,13 @@
 
 
 - (void)chooseWithTime:(CMTimeValue)value {
-    [AlpVideoCameraUtils getCoverByVideoURL:self.videoURL timeValue:value callBack:^(AlpVideoCameraCover * _Nonnull image) {
-        self.coverImage.image = image.firstFrameImage;
-    }];
+    CMTime coverTime = CMTimeMake(value, self.videoTime.timescale);
+    self.coverTime = coverTime;
+    [_playerItem seekToTime:self.coverTime];
+    [_mainPlayer play];
+//    [AlpVideoCameraUtils getCoverByVideoURL:self.videoURL timeValue:value callBack:^(AlpVideoCameraCover * _Nonnull image) {
+//        self.coverImage.image = image.firstFrameImage;
+//    }];
     
 }
 
@@ -265,6 +329,14 @@
         self.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
     }
     return self;
+}
+
+@end
+
+@implementation AlpVideoCameraCoverPlayerView
+
++ (Class)layerClass {
+    return [AVPlayerLayer class];
 }
 
 @end
