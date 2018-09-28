@@ -38,12 +38,13 @@
 @property (nonatomic, assign) CMTime coverTime;
 @property (nonatomic, assign) CMTime videoTime;
 
+@property (nonatomic, strong) AVPlayer *mainPlayer;
+@property (nonatomic, strong)  AVPlayerItem *playerItem;
+@property (nonatomic, strong)  id timeObserver;
+
 @end
 
-@implementation AlpEditCoverViewController {
-    AVPlayer *_mainPlayer;
-    AVPlayerItem *_playerItem;
-}
+@implementation AlpEditCoverViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -156,12 +157,15 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playingEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [self addTimeObserver];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [_mainPlayer pause];
-    
+    [_mainPlayer removeTimeObserver:_timeObserver];
+    _timeObserver = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -183,6 +187,20 @@
         [self.photoArrays addObjectsFromArray:images];
         // 默认选择第一帧
         [self chooseWithTime:0];
+    }];
+}
+
+- (void)addTimeObserver {
+    [_mainPlayer removeTimeObserver:_timeObserver];
+    // 视频播放进度
+    __weak typeof(self) weakSelf = self;
+    _timeObserver = [_mainPlayer addPeriodicTimeObserverForInterval:CMTimeMake(1,1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        if (time.value >= AlpVideoCameraCoverSliderMaxRange(weakSelf.slider.range)) {
+            // 当播放超出封面时，回到c封面起始位置重新播放
+            [weakSelf.mainPlayer pause];
+            [weakSelf.mainPlayer seekToTime:weakSelf.coverTime];
+            [weakSelf.mainPlayer play];
+        }
     }];
 }
 
@@ -224,6 +242,7 @@
     self.coverTime = coverTime;
     [_playerItem seekToTime:self.coverTime];
     [_mainPlayer play];
+//    [self addTimeObserver];
 //    [AlpVideoCameraUtils getCoverByVideoURL:self.videoURL timeValue:value callBack:^(AlpVideoCameraCover * _Nonnull image) {
 //        self.coverImage.image = image.firstFrameImage;
 //    }];
