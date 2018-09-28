@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "AlpVideoCameraUtils.h"
 #import "UIImage+AlpExtensions.h"
+#import "AlpVideoCameraCoverSlider.h"
 
 // 底部显示的个数
 #define PHOTO_COUNT  6
@@ -27,7 +28,7 @@
 ///照片数组
 @property (nonatomic, strong) NSMutableArray<AlpVideoCameraCover *> *photoArrays;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
-@property (nonatomic, strong) UISlider *slider;
+@property (nonatomic, strong) AlpVideoCameraCoverSlider *slider;
 
 @end
 
@@ -109,10 +110,7 @@
     [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:80.0].active = YES;
     
     
-    UIImage *selected = [UIImage imageNamed:@"btn_p_cover"];
-    UIImage *deselected = [UIImage imageNamed:@"btn_n_cover"];
-    
-    UISlider *slider = [[UISlider alloc] init];
+    AlpVideoCameraCoverSlider *slider = [[AlpVideoCameraCoverSlider alloc] init];
     [self.view addSubview:slider];
     slider.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
@@ -120,16 +118,7 @@
     [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
   
-    
-    [slider setThumbImage:deselected forState:UIControlStateNormal];
-    [slider setThumbImage:selected forState:UIControlStateHighlighted];
-    //透明的图片
-    UIImage *image = [UIImage imageWithColor:[UIColor clearColor] size:CGSizeMake(1, 1)];
-    
-    [slider setMinimumTrackImage:image forState:UIControlStateNormal];
-    [slider setMaximumTrackImage:image forState:UIControlStateNormal];
     _slider = slider;
-    slider.minimumValue = 0;
     [slider addTarget:self action:@selector(slidValueChange:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:slider];
     
@@ -143,7 +132,9 @@
 - (void)getVideoTotalValueAndScale {
     
     [AlpVideoCameraUtils getCoversByVideoURL:self.videoURL photoCount:PHOTO_COUNT callBack:^(CMTime time, NSArray<AlpVideoCameraCover *> * _Nonnull images, NSError * _Nonnull error) {
+        AlpVideoCameraCoverSliderRange range = AlpVideoCameraCoverSliderMakeRange(0, time.value/images.count);
         self.slider.maximumValue = time.value;
+        self.slider.range = range;
         if (time.value < 1) {
             
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -160,9 +151,9 @@
 #pragma mark - Actions
 ////////////////////////////////////////////////////////////////////////
 
-- (void)slidValueChange:(UISlider *)slider {
+- (void)slidValueChange:(AlpVideoCameraCoverSlider *)slider {
     
-    int timeValue = slider.value;
+    CGFloat timeValue = slider.range.location;
     
     [self chooseWithTime:timeValue];
 }
