@@ -44,11 +44,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 };
 
 @interface ALPVideoCameraView ()<TZImagePickerControllerDelegate> {
-    // 摄像头
-    GPUImageVideoCamera *_videoCamera;
-    GPUImageOutput<GPUImageInput> *_filter;
-    // 录制器
-    GPUImageMovieWriter *_movieWriter;
+    
     NSString *_pathToMovie;
     CALayer *_focusLayer;
     NSDate *_fromdate;
@@ -78,7 +74,11 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 /// 保存录制视频的url，分段录制时保存不同的本地路径，合并时使用
 @property (nonatomic, strong) NSMutableArray<NSURL *> *urlArray;
 @property (nonatomic , assign) CameraManagerFlashMode flashMode;
-
+/// 相机
+@property (nonatomic, strong) GPUImageVideoCamera *videoCamera;
+@property (nonatomic, strong) GPUImageOutput<GPUImageInput> *filter;
+// 录制器
+@property (nonatomic, strong) GPUImageMovieWriter *movieWriter;
 @end
 
 @implementation ALPVideoCameraView
@@ -152,8 +152,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     //    videoCamera.frameRate = 10;
     // 输出图像旋转方式
     _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
-    // 该句可防止允许声音通过的情况下，避免录制第一帧黑屏闪屏(====)
-    [_videoCamera addAudioInputsAndOutputs];
     _videoCamera.horizontallyMirrorFrontFacingCamera = YES;
     _videoCamera.horizontallyMirrorRearFacingCamera = NO;
     
@@ -161,7 +159,11 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     [_videoCamera addTarget:_filter];
     [_filter addTarget:self.filteredVideoView];
     [_videoCamera startCameraCapture];
-    
+    AVAuthorizationStatus audioStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    if (audioStatus == AVAuthorizationStatusAuthorized) {
+        // 音频状态允许时，才添加视频的输入和输出
+        [_videoCamera addAudioInputsAndOutputs];
+    }
 }
 
 - (void)stopCameraCapture {
@@ -210,9 +212,17 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     [self.optionsView.shootingLightingButton addTarget:self action:@selector(changeFlashMode:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.permissionView updateHidden];
     __weak typeof(self) weakSelf = self;
+    // 请求相机权限的回调，只有摄像头权限允许访问时，才创建相机
     self.optionsView.permissionView.requestCameraAccessBlock = ^(BOOL granted) {
         if (granted) {        
             [weakSelf createVideoCamera];
+        }
+    };
+    // 请求麦克风权限的回调，只有麦克风权限允许时才添加音频的输入和输出
+    self.optionsView.permissionView.requestAudioAccessBlock = ^(BOOL granted) {
+        if (granted) {
+            // 该句可防止允许声音通过的情况下，避免录制第一帧黑屏闪屏(====)
+            [weakSelf.videoCamera addAudioInputsAndOutputs];
         }
     };
     
