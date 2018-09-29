@@ -34,18 +34,17 @@
     if (_recordState == AlpVideoCameraRecordStateNotStart) {
         _inputLocalVieoBtn.hidden = NO;
         [self.progressPreView cancelProgress];
+        _rightView.hidden = NO;
     }
     else if (_recordState == AlpVideoCameraRecordStateStart) {
         _inputLocalVieoBtn.hidden = YES;
-        _camerafilterChangeButton.hidden = YES;
-        _cameraPositionChangeButton.hidden = YES;
+        _rightView.hidden = YES;
         self.timeButton.hidden = NO;
         _dleButton.hidden = YES;
     }
     else if (_recordState == AlpVideoCameraRecordStatePause) {
         _inputLocalVieoBtn.hidden = YES;
-        _camerafilterChangeButton.hidden = NO;
-        _cameraPositionChangeButton.hidden = NO;
+        _rightView.hidden = NO;
     }
     else if (_recordState == AlpVideoCameraRecordStateDone) {
         _inputLocalVieoBtn.hidden = YES;
@@ -57,16 +56,17 @@
 
 - (void)setupUI {
     self.backgroundColor = UIColor.clearColor;
+    [self addSubview:self.rightView];
     [self addSubview:self.timeButton];
     [self addSubview:self.photoCaptureButton];
     [self addSubview:self.backBtn];
-    [self addSubview:self.cameraPositionChangeButton];
-    [self addSubview:self.camerafilterChangeButton];
+    [self.rightView addSubview:self.cameraPositionChangeButton];
+    [self.rightView addSubview:self.camerafilterChangeButton];
+    [self.rightView addSubview:self.shootingLightingButton];
     [self addSubview:self.cameraChangeButton];
     [self addSubview:self.dleButton];
     [self addSubview:self.inputLocalVieoBtn];
     [self addSubview:self.progressPreView];
-    [self addSubview:self.shootingLightingButton];
     
     self.timeButton.hidden = YES;
     self.timeButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -79,6 +79,7 @@
     self.inputLocalVieoBtn.translatesAutoresizingMaskIntoConstraints = NO;
     self.progressPreView.translatesAutoresizingMaskIntoConstraints = NO;
     self.shootingLightingButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.rightView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [NSLayoutConstraint constraintWithItem:self.timeButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:20.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.timeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-20.0].active = YES;
@@ -95,20 +96,25 @@
     
     CGFloat padding = 30.0;
     
+    [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.backBtn attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-padding].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+     [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
+    
     // 切换前后摄像头
-    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.backBtn attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-padding].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.rightView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.rightView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.rightView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     
     // 打开和关闭美颜按钮
     [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:padding].active = YES;
     [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.camerafilterChangeButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.rightView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     
     // 打开和关闭闪光灯按钮
     [NSLayoutConstraint constraintWithItem:self.shootingLightingButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.camerafilterChangeButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:padding].active = YES;
     [NSLayoutConstraint constraintWithItem:self.shootingLightingButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.shootingLightingButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.cameraPositionChangeButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.shootingLightingButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.rightView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     
     
     
@@ -273,6 +279,14 @@
         [_inputLocalVieoBtn setImage:img5 forState:UIControlStateNormal];
     }
     return _inputLocalVieoBtn;
+}
+
+- (UIView *)rightView {
+    if (!_rightView) {
+        _rightView = [UIView new];
+        _rightView.backgroundColor = [UIColor clearColor];
+    }
+    return _rightView;
 }
 
 @end
