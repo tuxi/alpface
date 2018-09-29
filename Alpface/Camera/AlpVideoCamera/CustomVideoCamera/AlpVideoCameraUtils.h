@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIImage *firstFrameImage;
 @property (nonatomic, assign) CMTime coverTime;
+@property (nonatomic, copy) NSURL *videoURL;
 
 @end
 
@@ -64,10 +65,14 @@ NS_ASSUME_NONNULL_BEGIN
                photoCount:(NSInteger)photoCount
                    callBack:(void (^)(CMTime  time, NSArray<AlpVideoCameraCover *> *images, NSError *error))callBack;
 
+/// 根据视频的路径取出图片存放到数组 图片的数量 = 总帧数/封面展示的帧数
+//+ (void)getImagesByCover:(AlpVideoCameraCover *)cover callBack:(void (^)(NSArray<UIImage *> *images))callBack;
+
 /// 根据timeValue帧s获取视频的封面
 + (void)getCoverByVideoURL:(NSURL *)videoURL
                  timeValue:(CMTimeValue)value
                   callBack:(void (^)(AlpVideoCameraCover *image))callBack;
+
 @end
 
 NS_ASSUME_NONNULL_END

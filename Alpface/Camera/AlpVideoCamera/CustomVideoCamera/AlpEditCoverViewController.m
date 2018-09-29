@@ -19,7 +19,6 @@
 @interface AlpVideoCameraCoverPlayerView : UIView
 
 
-
 @end
 
 @interface AlpCoverImageCollectionViewCell : UICollectionViewCell
@@ -41,6 +40,9 @@
 @property (nonatomic, strong) AVPlayer *mainPlayer;
 @property (nonatomic, strong)  AVPlayerItem *playerItem;
 @property (nonatomic, strong)  id timeObserver;
+
+@property (nonatomic, strong) AVPlayer *thumbPlayer;
+@property (nonatomic, strong)  AVPlayerItem *thumbPlayerItem;
 
 @end
 
@@ -89,9 +91,8 @@
     [cancelButton addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
     [sureButton addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    //选定的封面图
+    // 选定的封面
     _coverPlayerView = [[AlpVideoCameraCoverPlayerView alloc] init];
-//    _coverImage.contentMode = UIViewContentModeScaleAspectFill;
     _coverPlayerView.clipsToBounds  = YES;
     [self.view addSubview:_coverPlayerView];
     _coverPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -145,6 +146,14 @@
     AVPlayerLayer *playerLayer = (id)_coverPlayerView.layer;
     playerLayer.player = _mainPlayer;
     playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    
+    _thumbPlayer = [[AVPlayer alloc] init];
+    _thumbPlayerItem = [[AVPlayerItem alloc] initWithURL:_videoURL];
+    [_thumbPlayer replaceCurrentItemWithPlayerItem:_thumbPlayerItem];
+    _thumbPlayer.volume = 0; // 静音
+    AVPlayerLayer *thumbPlayerLayer = (id)_slider.rangeThumbView.layer;
+    thumbPlayerLayer.player = _thumbPlayer;
+    thumbPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -167,6 +176,8 @@
     [_mainPlayer removeTimeObserver:_timeObserver];
     _timeObserver = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [_thumbPlayer pause];
 }
 
 
@@ -214,16 +225,18 @@
 }
 /// 重新播放
 - (void)replayVideo {
-    [_playerItem seekToTime:self.coverTime];
+    [_mainPlayer seekToTime:self.coverTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [_thumbPlayer seekToTime:self.coverTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     [_mainPlayer play];
+    [_thumbPlayer pause];
 }
 - (void)onApplicationWillResignActive {
     [_mainPlayer pause];
+    [_thumbPlayer pause];
 }
 
 - (void)onApplicationDidBecomeActive {
-    [_playerItem seekToTime:self.coverTime];
-    [_mainPlayer play];
+    [self replayVideo];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -242,8 +255,10 @@
     CMTime coverTime = CMTimeMake(value, self.videoTime.timescale);
     self.coverTime = coverTime;
     [self addTimeObserver];
-    [_playerItem seekToTime:self.coverTime];
+    [_mainPlayer seekToTime:self.coverTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [_thumbPlayer seekToTime:self.coverTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     [_mainPlayer play];
+    [_thumbPlayer play];
 //    [self addTimeObserver];
 //    [AlpVideoCameraUtils getCoverByVideoURL:self.videoURL timeValue:value callBack:^(AlpVideoCameraCover * _Nonnull image) {
 //        self.coverImage.image = image.firstFrameImage;

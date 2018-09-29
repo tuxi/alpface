@@ -24,7 +24,6 @@ typedef NS_ENUM(NSInteger, AlpVideoCameraRecordState) {
 
 /// 显示当前录制的时间
 @property (nonatomic, strong) UIButton *timeButton;
-//@property (nonatomic, strong) UIView *btView;
 /// 开启或暂停录制按钮
 @property (nonatomic, strong) UIButton *photoCaptureButton;
 /// 录制完成按钮
@@ -47,7 +46,6 @@ typedef NS_ENUM(NSInteger, AlpVideoCameraRecordState) {
 @property (nonatomic, strong) AlpVideoCameraPermissionView *permissionView;
 /// 视频录制的状态，根据此状态更新UI
 @property (nonatomic, assign) AlpVideoCameraRecordState recordState;
-
 
 @end
 

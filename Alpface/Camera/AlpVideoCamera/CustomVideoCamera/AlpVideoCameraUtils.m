@@ -8,6 +8,7 @@
 
 #import "AlpVideoCameraUtils.h"
 #import "AlpVideoCameraDefine.h"
+//#import <YYImage/YYImageCoder.h>
 
 @implementation AlpVideoCameraUtils
 
@@ -302,6 +303,7 @@
                     AlpVideoCameraCover *imageObj = [AlpVideoCameraCover new];
                     imageObj.firstFrameImage = image;
                     imageObj.coverTime = coverTime;
+                    imageObj.videoURL = videoURL;
                     [images addObject:imageObj];
                 }
                 else {
@@ -358,6 +360,7 @@
                     AlpVideoCameraCover *imageObj = [AlpVideoCameraCover new];
                     imageObj.firstFrameImage = image;
                     imageObj.coverTime = coverTime;
+                    imageObj.videoURL = videoURL;
                     [images addObject:imageObj];
                 }
                 else {
@@ -372,6 +375,7 @@
         callBack(time, images, nil);
     }
 }
+
 
 + (void)getCoverByVideoURL:(NSURL *)videoURL timeValue:(CMTimeValue)value callBack:(void (^)(AlpVideoCameraCover *image))callBack {
     @autoreleasepool {
@@ -388,11 +392,65 @@
         AlpVideoCameraCover *cover = [AlpVideoCameraCover new];
         cover.firstFrameImage = image;
         cover.coverTime = coverTime;
+        cover.videoURL = videoURL;
         if (callBack) {
             callBack(cover);
         }
     }
 }
+
+//+ (void)getImagesByCover:(AlpVideoCameraCover *)cover callBack:(void (^)(NSArray<UIImage *> * _Nonnull))callBack {
+//    
+//}
+//
+//+ (NSData * )webpDataByVideoPath:(NSURL *)videoUrl {
+//    //    NSString * filePath = [self createWebpFilePath];
+//    YYImageEncoder *gifEncoder = [[YYImageEncoder alloc] initWithType:YYImageTypeWebP];
+//    gifEncoder.loopCount = 0;
+//    gifEncoder.quality = 0.8;
+//
+//    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:videoUrl options:nil];
+//    int64_t value = asset.duration.value;
+//    int64_t scale = asset.duration.timescale;
+//
+//    AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+//    generator.appliesPreferredTrackTransform = YES;
+//    //下面两个值设为0表示精确取帧，否则系统会有优化取出来的帧时间间隔不对等
+//    generator.requestedTimeToleranceAfter = kCMTimeZero;
+//    generator.requestedTimeToleranceBefore = kCMTimeZero;
+//    @autoreleasepool {
+//        for (NSInteger i = 0; i <=4; i++) {
+//            CGFloat starttime = i*0.1+0.5;
+//            CMTime time = CMTimeMakeWithSeconds(starttime, (int)scale);
+//            NSError *error = nil;
+//            CMTime actualTime;
+//            CGImageRef image = [generator copyCGImageAtTime:time actualTime:&actualTime error:&error];
+//            UIImage * img = [UIImage imageWithCGImage:image];
+//            //        img = [self resizeToMaxHeight:480 img:img];
+//            [gifEncoder addImage:img duration:0.1];
+//            CGImageRelease(image);
+//        }
+//        for (NSInteger i=3; i>=0; i--) {
+//            CGFloat starttime = i*0.1+0.5;
+//            CMTime time = CMTimeMakeWithSeconds(starttime, (int)scale);
+//            NSError *error = nil;
+//            CMTime actualTime;
+//            CGImageRef image = [generator copyCGImageAtTime:time actualTime:&actualTime error:&error];
+//            UIImage * img = [UIImage imageWithCGImage:image];
+//            [gifEncoder addImage:img duration:0.1];
+//            CGImageRelease(image);
+//        }
+//
+//    }
+//
+//
+//    //    [gifEncoder encodeToFile:filePath];
+//    NSData *webpData = [gifEncoder encode];
+//    NSLog(@"生成webp成功!");
+//    return webpData;
+//}
+
+
 @end
 
 @implementation AlpVideoCameraCover

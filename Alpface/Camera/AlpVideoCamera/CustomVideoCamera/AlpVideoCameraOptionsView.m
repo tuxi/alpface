@@ -14,6 +14,10 @@
 
 @end
 
+@interface AlpVideoCameraOptionsView ()
+
+@end
+
 @implementation AlpVideoCameraOptionsView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -37,24 +41,16 @@
         _cameraPositionChangeButton.hidden = YES;
         self.timeButton.hidden = NO;
         _dleButton.hidden = YES;
-        
-//        _photoCaptureButton.backgroundColor = [UIColor colorWithRed:(float)0xfd/256.0 green:(float)0xd8/256.0 blue:(float)0x54/256.0 alpha:1];
-//        _btView.backgroundColor = [UIColor colorWithRed:(float)0xfd/256.0 green:(float)0xd8/256.0 blue:(float)0x54/256.0 alpha:1];
     }
     else if (_recordState == AlpVideoCameraRecordStatePause) {
         _inputLocalVieoBtn.hidden = YES;
         _camerafilterChangeButton.hidden = NO;
         _cameraPositionChangeButton.hidden = NO;
-//        _btView.backgroundColor = [UIColor colorWithRed:(float)0xfe/256.0 green:(float)0x65/256.0 blue:(float)0x53/256.0 alpha:1];
-//        _photoCaptureButton.backgroundColor = [UIColor colorWithRed:(float)0xfe/256.0 green:(float)0x65/256.0 blue:(float)0x53/256.0 alpha:1];
-        //        UISaveVideoAtPathToSavedPhotosAlbum(_pathToMovie, nil, nil, nil);
     }
     else if (_recordState == AlpVideoCameraRecordStateDone) {
         _inputLocalVieoBtn.hidden = YES;
         self.dleButton.hidden = YES;
         [self.progressPreView cancelProgress];
-//        self.btView.backgroundColor = [UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1];
-//        self.photoCaptureButton.backgroundColor = [UIColor colorWithRed:250/256.0 green:211/256.0 blue:75/256.0 alpha:1];
         self.cameraChangeButton.hidden = YES;
     }
 }
@@ -62,7 +58,6 @@
 - (void)setupUI {
     self.backgroundColor = UIColor.clearColor;
     [self addSubview:self.timeButton];
-//    [self addSubview:self.btView];
     [self addSubview:self.photoCaptureButton];
     [self addSubview:self.backBtn];
     [self addSubview:self.cameraPositionChangeButton];
@@ -75,7 +70,6 @@
     
     self.timeButton.hidden = YES;
     self.timeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    //    self.btView.translatesAutoresizingMaskIntoConstraints = NO;
     self.photoCaptureButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.backBtn.translatesAutoresizingMaskIntoConstraints = NO;
     self.cameraPositionChangeButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -196,22 +190,12 @@
     return _timeButton;
 }
 
-//- (UIView *)btView {
-//    if (!_btView) {
-//        _btView = [[UIView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 36.5, SCREEN_HEIGHT - 125, 73, 73)];
-//        [_btView makeCornerRadius:36.5 borderColor:nil borderWidth:0];
-//        _btView.backgroundColor = [UIColor colorWithRed:(float)0xfe/256.0 green:(float)0x65/256.0 blue:(float)0x53/256.0 alpha:1];
-//    }
-//    return _btView;
-//}
 
 - (UIButton *)photoCaptureButton {
     if (!_photoCaptureButton) {
         _photoCaptureButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 31.5, SCREEN_HEIGHT- 120, 63, 63)];
         _photoCaptureButton.backgroundColor = [UIColor clearColor];
-//        _photoCaptureButton.backgroundColor = [UIColor colorWithRed:(float)0xfe/256.0 green:(float)0x65/256.0 blue:(float)0x53/256.0 alpha:1];
         [_photoCaptureButton setImage:[UIImage imageNamed:@"record_button_open_65x65_"] forState:UIControlStateNormal];
-//        [_photoCaptureButton makeCornerRadius:31.5 borderColor:[UIColor blackColor] borderWidth:1.5];
     }
     return _photoCaptureButton;
 }

@@ -8,14 +8,15 @@
 
 #import "AlpVideoCameraCoverSlider.h"
 #import <float.h>
+#import <AVFoundation/AVFoundation.h>
 
-static CGFloat const kShadowVerticalOffset = 1.0;
+@interface AlpRangeThumbView : UIView
 
-static CGFloat const kThumbDimension = 24.0;
+@end
 
 @interface AlpVideoCameraCoverSlider ()
 
-@property (nonatomic) UIImageView *rangeThumbView;
+@property (nonatomic) AlpRangeThumbView *rangeThumbView;
 
 @property (nonatomic) NSLayoutConstraint *rangeThumbViewLeftConstraint;
 @property (nonatomic) NSLayoutConstraint *rangeThumbViewWidthConstraint;
@@ -138,7 +139,7 @@ static CGFloat const kThumbDimension = 24.0;
 - (void)tintColorDidChange {
     [super tintColorDidChange];
     
-    //    [self updateThumbImages];
+
 }
 
 - (void)setup {
@@ -147,9 +148,13 @@ static CGFloat const kThumbDimension = 24.0;
     _maximumValue = 1;
     
     
-    self.rangeThumbView = [[UIImageView alloc] initWithImage:nil];
+    self.rangeThumbView = [[AlpRangeThumbView alloc] init];
     self.rangeThumbView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.rangeThumbView.backgroundColor = [UIColor redColor];
+    self.rangeThumbView.userInteractionEnabled = NO;
+    self.rangeThumbView.layer.cornerRadius = 2.0;
+    self.rangeThumbView.layer.masksToBounds = YES;
+    self.rangeThumbView.layer.borderWidth = 2.0;
+    self.rangeThumbView.layer.borderColor = [UIColor redColor].CGColor;
     
     [self addSubview:self.rangeThumbView];
     
@@ -163,7 +168,6 @@ static CGFloat const kThumbDimension = 24.0;
     
     self.rangeThumbViewLeftConstraint.active = YES;
     
-    //    [self updateThumbImages];
 }
 
 #pragma mark - Accessors
@@ -203,11 +207,6 @@ static CGFloat const kThumbDimension = 24.0;
 }
 
 
-- (void)setThumbImage:(UIImage *)thumbImage {
-    _thumbImage = thumbImage;
-    self.rangeThumbView.image = thumbImage;
-}
-
 - (void)updateRangeWithTouch:(UITouch *)touch {
     // 当前手指所在的位置
     CGPoint point = [touch locationInView:self];
@@ -242,42 +241,6 @@ static CGFloat const kThumbDimension = 24.0;
 
 - (void)updateWithRange:(AlpVideoCameraCoverSliderRange)range {
     
-}
-
-#pragma mark - Asset generator
-#pragma mark -
-
-- (void)updateThumbImages {
-    UIImage *thumbImage = self.thumbImage;
-    if (!thumbImage) {
-        thumbImage = [self thumbImageWithFillColor:self.tintColor];
-    }
-    self.rangeThumbView.image = thumbImage;
-}
-
-- (UIImage *)thumbImageWithFillColor:(UIColor *)fillColor {
-    CGSize size = CGSizeMake(kThumbDimension, kThumbDimension);
-    CGFloat radius = size.width * 0.5;
-    CGFloat shadowBlur = 2.0;
-    UIColor *shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    
-    size.width += shadowBlur * 2;
-    size.height += shadowBlur * 2 + kShadowVerticalOffset;
-    
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
-    
-    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(size.width * 0.5, size.height * 0.5) radius:radius startAngle:0 endAngle:M_PI * 2 clockwise:YES];
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetShadowWithColor(context, CGSizeMake(0, kShadowVerticalOffset), shadowBlur, shadowColor.CGColor);
-    
-    [fillColor setFill];
-    [bezierPath fill];
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
 }
 
 
@@ -323,5 +286,13 @@ static CGFloat const kThumbDimension = 24.0;
     
 }
 
+
+@end
+
+@implementation AlpRangeThumbView
+
++ (Class)layerClass {
+    return [AVPlayerLayer class];
+}
 
 @end

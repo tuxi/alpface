@@ -33,6 +33,7 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable CGFloat maximumValue;
 @property (nonatomic) IBInspectable UIImage *thumbImage;
 @property (nonatomic) IBInspectable AlpVideoCameraCoverSliderRange range;
+@property (nonatomic, readonly) UIView *rangeThumbView;
 
 @end
 
