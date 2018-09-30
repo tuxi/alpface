@@ -114,10 +114,10 @@
 - (void)updateConstraints {
     [super updateConstraints];
     
-    CGFloat multiplier = self.range.location / self.maximumValue ;
+    CGFloat multiplier = self.range.location / (self.maximumValue * 1.0) ;
     CGFloat rangeLeft = self.frame.size.width * multiplier;
     self.rangeThumbViewLeftConstraint.constant = rangeLeft;
-    CGFloat rangeMultiplier = self.range.length / self.maximumValue;
+    CGFloat rangeMultiplier = self.range.length / (self.maximumValue * 1.0);
     CGFloat rangeWidth = rangeMultiplier * self.frame.size.width;
     
     self.rangeThumbViewWidthConstraint.constant = rangeWidth;
@@ -126,11 +126,10 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat multiplier = self.range.location / self.maximumValue ;
+    CGFloat multiplier = self.range.location / (self.maximumValue * 1.0) ;
     CGFloat rangeLeft = self.frame.size.width * multiplier;
     self.rangeThumbViewLeftConstraint.constant = rangeLeft;
-    
-    CGFloat rangeMultiplier = self.range.length / self.maximumValue;
+    CGFloat rangeMultiplier = self.range.length / (self.maximumValue * 1.0);
     CGFloat rangeWidth = rangeMultiplier * self.frame.size.width;
     
     self.rangeThumbViewWidthConstraint.constant = rangeWidth;
@@ -174,13 +173,13 @@
 #pragma mark -
 
 
-- (void)setMaximumValue:(CGFloat)maximumValue {
+- (void)setMaximumValue:(NSInteger)maximumValue {
     if(self.shouldCaptureRuntimeAttributes) {
         self.runtimeAttributes[NSStringFromSelector(@selector(value))] = @(maximumValue);
         return;
     }
     
-    if( fabs(_maximumValue) < FLT_EPSILON ) {
+    if( labs(_maximumValue) < FLT_EPSILON ) {
         return;
     }
     
@@ -197,8 +196,8 @@
         return;
     }
     
-    if( fabs(range.location - _range.location) < FLT_EPSILON &&
-       fabs(AlpVideoCameraCoverSliderMaxRange(range) - AlpVideoCameraCoverSliderMaxRange(_range)) < FLT_EPSILON ) {
+    if( labs(range.location - _range.location) < FLT_EPSILON &&
+       labs(AlpVideoCameraCoverSliderMaxRange(range) - AlpVideoCameraCoverSliderMaxRange(_range)) < FLT_EPSILON ) {
         return;
     }
     _range = range;
@@ -220,7 +219,6 @@
     
     CGFloat multiplier = rangThumbViewLeft / self.frame.size.width;
     _range.location = multiplier * self.maximumValue;
-    NSLog(@"%2.f", _range.location);
 }
 
 

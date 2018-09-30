@@ -11,6 +11,7 @@
 #import "AlpVideoCameraUtils.h"
 #import "UIImage+AlpExtensions.h"
 #import "AlpVideoCameraCoverSlider.h"
+#import "AlpEditPublishViewController.h"
 
 // 底部显示的个数
 #define PHOTO_COUNT  6
@@ -38,15 +39,26 @@
 @property (nonatomic, assign) CMTime videoTime;
 
 @property (nonatomic, strong) AVPlayer *mainPlayer;
-@property (nonatomic, strong)  AVPlayerItem *playerItem;
-@property (nonatomic, strong)  id timeObserver;
+@property (nonatomic, strong) AVPlayerItem *playerItem;
 
 @property (nonatomic, strong) AVPlayer *thumbPlayer;
-@property (nonatomic, strong)  AVPlayerItem *thumbPlayerItem;
-
+@property (nonatomic, strong) AVPlayerItem *thumbPlayerItem;
+@property (nonatomic, strong) CADisplayLink *displayLink;
+@property (nonatomic, assign) CGFloat videoPlaybackPosition;
 @end
 
 @implementation AlpEditCoverViewController
+
+- (void)dealloc {
+    
+    NSLog(@"%s", __func__);
+    [_mainPlayer pause];
+    _mainPlayer = nil;
+    [_thumbPlayer pause];
+    _thumbPlayer = nil;
+    [self stopPlaybackTimeChecker];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -153,90 +165,121 @@
     _thumbPlayer.volume = 0; // 静音
     AVPlayerLayer *thumbPlayerLayer = (id)_slider.rangeThumbView.layer;
     thumbPlayerLayer.player = _thumbPlayer;
-    thumbPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    thumbPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [_thumbPlayer pause];
+    [self play];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_mainPlayer play];
-    });
+    [self play];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playingEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
-    [self addTimeObserver];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [_mainPlayer pause];
-    [_mainPlayer removeTimeObserver:_timeObserver];
-    _timeObserver = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [_thumbPlayer pause];
+    [self pause];
 }
 
+////////////////////////////////////////////////////////////////////////
+#pragma mark -
+////////////////////////////////////////////////////////////////////////
 
 - (void)getVideoTotalValueAndScale {
     
     [AlpVideoCameraUtils getCoversByVideoURL:self.videoURL photoCount:PHOTO_COUNT callBack:^(CMTime time, NSArray<AlpVideoCameraCover *> * _Nonnull images, NSError * _Nonnull error) {
-        self.videoTime = time;
-        self.coverTime = CMTimeMake(0, time.timescale);
-        AlpVideoCameraCoverSliderRange range = AlpVideoCameraCoverSliderMakeRange(0, time.value/images.count);
-        self.slider.maximumValue = time.value;
-        self.slider.range = range;
-        if (time.value < 1) {
-            
-            [self dismissViewControllerAnimated:YES completion:nil];
-            return;
-        }
+        
         [self.photoArrays removeAllObjects];
         [self.photoArrays addObjectsFromArray:images];
-        // 默认选择第一帧
-        [self chooseWithTime:0];
+        
     }];
 }
 
-- (void)addTimeObserver {
-//    [_mainPlayer removeTimeObserver:_timeObserver];
-//    // 视频播放进度
-//    __weak typeof(self) weakSelf = self;
-//    _timeObserver = [_mainPlayer addPeriodicTimeObserverForInterval:CMTimeMake(1, self.videoTime.timescale) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-//        NSLog(@"%lld", time.value);
-//        if (time.value >= AlpVideoCameraCoverSliderMaxRange(weakSelf.slider.range)) {
-//            // 当播放超出封面时，回到c封面起始位置重新播放
-//            [weakSelf.mainPlayer pause];
-//            [weakSelf.mainPlayer seekToTime:weakSelf.coverTime];
-//            [weakSelf.mainPlayer play];
-//        }
-//    }];
+- (void)updateRange {
+    if (self.videoTime.value == 0) {
+        // 将总的time转换为当前player的timescale相同的time
+        CMTime time = self.playerItem.duration;
+        CMTimeScale scale = self.mainPlayer.currentTime.timescale;
+        CMTime newTime = CMTimeConvertScale(time, scale, kCMTimeRoundingMethod_RoundTowardZero);
+        self.videoTime = newTime;
+        self.coverTime = CMTimeMake(0, scale);
+        AlpVideoCameraCoverSliderRange range = AlpVideoCameraCoverSliderMakeRange(0, self.videoTime.value/self.photoArrays.count);
+        self.slider.maximumValue = self.videoTime.value;
+        self.slider.range = range;
+        // 默认选择第一帧
+        [self chooseWithTime:0];
+    }
+}
+
+- (void)play {
+    [_mainPlayer play];
+    [self startPlaybackTimeChecker];
+}
+
+- (void)pause {
+    [_mainPlayer pause];
+    [self stopPlaybackTimeChecker];
 }
 
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - Notification methods
 ////////////////////////////////////////////////////////////////////////
 
-- (void)playingEnd:(NSNotification *)notification {
-    [self replayVideo];
-}
-/// 重新播放
-- (void)replayVideo {
-    [_mainPlayer seekToTime:self.coverTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-    [_thumbPlayer seekToTime:self.coverTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-    [_mainPlayer play];
-    [_thumbPlayer pause];
-}
 - (void)onApplicationWillResignActive {
-    [_mainPlayer pause];
-    [_thumbPlayer pause];
+    [self pause];
 }
 
 - (void)onApplicationDidBecomeActive {
-    [self replayVideo];
+    [self play];
+}
+
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - 视频播放时间的检测
+////////////////////////////////////////////////////////////////////////
+- (void)stopPlaybackTimeChecker {
+    if (self.displayLink) {
+        [self.displayLink invalidate];
+        self.displayLink = nil;
+    }
+}
+
+- (void)startPlaybackTimeChecker {
+    
+    [self stopPlaybackTimeChecker]; // 停止检测
+    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onPlaybackTimeCheckerTimer)];
+    [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)onPlaybackTimeCheckerTimer {
+//    CMTimeShow(self.mainPlayer.currentTime);
+    CMTime currentTime = self.mainPlayer.currentTime;
+    if (currentTime.value <= 0) {
+        return;
+    }
+    [self updateRange];
+    self.videoPlaybackPosition = CMTimeGetSeconds(currentTime);
+    CGFloat startSeconds = CMTimeGetSeconds(self.coverTime);
+    CMTime stopTime = CMTimeMake(AlpVideoCameraCoverSliderMaxRange(self.slider.range), self.coverTime.timescale);
+    CGFloat stopSeconds = CMTimeGetSeconds(stopTime);
+    // 当视频播放完后，重置开始时间
+    if (self.videoPlaybackPosition >= stopSeconds) {
+        self.videoPlaybackPosition = startSeconds;
+        [self seekVideoToPos:startSeconds];
+    }
+}
+
+- (void)seekVideoToPos:(CGFloat)pos {
+    
+    self.videoPlaybackPosition = pos;
+    CMTime time = CMTimeMakeWithSeconds(self.videoPlaybackPosition, self.coverTime.timescale);
+    [self.mainPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [self.thumbPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [self.mainPlayer play];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -245,7 +288,7 @@
 
 - (void)slidValueChange:(AlpVideoCameraCoverSlider *)slider {
     
-    CGFloat timeValue = slider.range.location;
+    NSInteger timeValue = slider.range.location;
     
     [self chooseWithTime:timeValue];
 }
@@ -254,30 +297,20 @@
 - (void)chooseWithTime:(CMTimeValue)value {
     CMTime coverTime = CMTimeMake(value, self.videoTime.timescale);
     self.coverTime = coverTime;
-    [self addTimeObserver];
-    [_mainPlayer seekToTime:self.coverTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-    [_thumbPlayer seekToTime:self.coverTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-    [_mainPlayer play];
-    [_thumbPlayer play];
-//    [self addTimeObserver];
-//    [AlpVideoCameraUtils getCoverByVideoURL:self.videoURL timeValue:value callBack:^(AlpVideoCameraCover * _Nonnull image) {
-//        self.coverImage.image = image.firstFrameImage;
-//    }];
-    
+    CGFloat seconds = CMTimeGetSeconds(coverTime);
+    [self seekVideoToPos:seconds];
 }
 
-- (void)clickButton:(UIButton *)button
-{
+- (void)clickButton:(UIButton *)button {
     if (button.tag == 1) {
         //取消
         [self.navigationController popViewControllerAnimated:YES];
     }
     else {
         //确定
-        //        PublishVideoViewController *vc = [[PublishVideoViewController alloc] init];
-        //        vc.videoPath = self.videoPath;
-        //        vc.coverImage = self.coverImage.image;
-        //        [self.navigationController pushViewController:vc animated:YES];
+        AlpEditPublishViewController *vc = [AlpEditPublishViewController new];
+        vc.videoURL = self.videoURL;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -286,7 +319,6 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
     return _photoArrays.count;
-    
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {

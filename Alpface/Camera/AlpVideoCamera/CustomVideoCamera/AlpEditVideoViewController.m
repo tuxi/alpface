@@ -113,6 +113,8 @@
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
     [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
     headerBar.titleLabel.text = @"编辑";
+    [headerBar.rightButton addTarget:self action:@selector(didClickNextButton) forControlEvents:UIControlEventTouchUpInside];
+    [headerBar.leftButton addTarget:self action:@selector(didClickBackButton) forControlEvents:UIControlEventTouchUpInside];
     headerBar.backgroundColor = [UIColor clearColor];
     [self.view addSubview:headerBar];
     headerBar.translatesAutoresizingMaskIntoConstraints = false;

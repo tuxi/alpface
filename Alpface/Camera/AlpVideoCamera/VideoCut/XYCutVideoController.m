@@ -61,7 +61,7 @@
     headerBar.backgroundColor = [UIColor clearColor];
     headerBar.rightButton.contentEdgeInsets = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0);
     [headerBar.rightButton addTarget:self action:@selector(didClickNextButton) forControlEvents:UIControlEventTouchUpInside];
-    [headerBar.rightButton addTarget:self action:@selector(didClickBackButton) forControlEvents:UIControlEventTouchUpInside];
+    [headerBar.leftButton addTarget:self action:@selector(didClickBackButton) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:headerBar];
     headerBar.translatesAutoresizingMaskIntoConstraints = false;
     if (@available(iOS 11.0, *)) {
@@ -258,8 +258,6 @@
         [self.displayLink invalidate];
         self.displayLink = nil;
     }
-    
-    NSLog(@"%@", self.displayLink);
 }
 
 - (void)startPlaybackTimeChecker {
@@ -335,5 +333,7 @@
 - (void)dealloc {
 
     NSLog(@"%s", __func__);
+    [self pause];
+    _player = nil;
 }
 @end
