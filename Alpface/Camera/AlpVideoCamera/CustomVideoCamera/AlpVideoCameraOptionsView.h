@@ -46,6 +46,7 @@ typedef NS_ENUM(NSInteger, AlpVideoCameraRecordState) {
 @property (nonatomic, strong) AlpVideoCameraPermissionView *permissionView;
 /// 视频录制的状态，根据此状态更新UI
 @property (nonatomic, assign) AlpVideoCameraRecordState recordState;
+@property (nonatomic, strong) UIView *rightView;
 
 @end
 
