@@ -13,7 +13,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "XYLocationSearchViewController.h"
-#import "RTRootNavigationController.h"
 #import "XYLocationManager.h"
 #import "XYLocationSearchTableViewModel.h"
 #import <CoreLocation/CoreLocation.h>
@@ -354,7 +353,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         XYLocationSearchViewController *vc = [XYLocationSearchViewController new];
         vc.delegate = self;
         // modal 半透明样式
-        RTRootNavigationController *nac = [[RTRootNavigationController alloc] initWithRootViewControllerNoWrapping:vc];
+        UINavigationController *nac = [[UINavigationController alloc] initWithRootViewController:vc];
         nac.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         [self presentViewController:nac animated:YES completion:nil];
         vc.title = @"添加位置";

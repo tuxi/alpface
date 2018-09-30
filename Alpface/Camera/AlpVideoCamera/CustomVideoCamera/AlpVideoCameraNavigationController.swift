@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AlpVideoCameraNavigationController: RTRootNavigationController {
+class AlpVideoCameraNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

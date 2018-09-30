@@ -171,10 +171,6 @@
 		D26A9437214E13AA00C118CA /* UIView+Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92F9214E13AA00C118CA /* UIView+Tools.m */; };
 		D26A9439214E13AA00C118CA /* AlpEditVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */; };
 		D26A943A214E13AA00C118CA /* UIImage+AlpExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92FE214E13AA00C118CA /* UIImage+AlpExtensions.m */; };
-		D26A9451214E269D00C118CA /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D26A9449214E269C00C118CA /* LICENSE */; };
-		D26A9452214E269D00C118CA /* UIViewController+RTRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A944C214E269C00C118CA /* UIViewController+RTRootNavigationController.m */; };
-		D26A9453214E269D00C118CA /* RTRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A944F214E269C00C118CA /* RTRootNavigationController.m */; };
-		D26A9454214E269D00C118CA /* README_1.md in Resources */ = {isa = PBXBuildFile; fileRef = D26A9450214E269C00C118CA /* README_1.md */; };
 		D26A9456214E2FA600C118CA /* AlpVideoCameraNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */; };
 		D26A9524214E953B00C118CA /* 6401.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D26A94FB214E953B00C118CA /* 6401.jpeg */; };
 		D26A9525214E953B00C118CA /* 6513.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D26A94FC214E953B00C118CA /* 6513.jpeg */; };
@@ -576,12 +572,6 @@
 		D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoViewController.m; sourceTree = "<group>"; };
 		D26A92FE214E13AA00C118CA /* UIImage+AlpExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AlpExtensions.m"; sourceTree = "<group>"; };
 		D26A92FF214E13AA00C118CA /* SDAVAssetExportSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAVAssetExportSession.h; sourceTree = "<group>"; };
-		D26A9449214E269C00C118CA /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		D26A944C214E269C00C118CA /* UIViewController+RTRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RTRootNavigationController.m"; sourceTree = "<group>"; };
-		D26A944D214E269C00C118CA /* RTRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTRootNavigationController.h; sourceTree = "<group>"; };
-		D26A944E214E269C00C118CA /* UIViewController+RTRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RTRootNavigationController.h"; sourceTree = "<group>"; };
-		D26A944F214E269C00C118CA /* RTRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTRootNavigationController.m; sourceTree = "<group>"; };
-		D26A9450214E269C00C118CA /* README_1.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_1.md; sourceTree = "<group>"; };
 		D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlpVideoCameraNavigationController.swift; sourceTree = "<group>"; };
 		D26A94FB214E953B00C118CA /* 6401.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6401.jpeg; sourceTree = "<group>"; };
 		D26A94FC214E953B00C118CA /* 6513.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6513.jpeg; sourceTree = "<group>"; };
@@ -1041,7 +1031,6 @@
 		D26A90EB214E13A900C118CA /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				D26A9448214E269C00C118CA /* RTRootNavigationController */,
 				D26A9249214E13AA00C118CA /* AlpVideoCamera */,
 			);
 			path = Camera;
@@ -1298,35 +1287,6 @@
 				D26A92F5214E13AA00C118CA /* beautyOFF@2x.png */,
 			);
 			path = cammerImg;
-			sourceTree = "<group>";
-		};
-		D26A9448214E269C00C118CA /* RTRootNavigationController */ = {
-			isa = PBXGroup;
-			children = (
-				D26A9449214E269C00C118CA /* LICENSE */,
-				D26A944A214E269C00C118CA /* RTRootNavigationController */,
-				D26A9450214E269C00C118CA /* README_1.md */,
-			);
-			path = RTRootNavigationController;
-			sourceTree = "<group>";
-		};
-		D26A944A214E269C00C118CA /* RTRootNavigationController */ = {
-			isa = PBXGroup;
-			children = (
-				D26A944B214E269C00C118CA /* Classes */,
-			);
-			path = RTRootNavigationController;
-			sourceTree = "<group>";
-		};
-		D26A944B214E269C00C118CA /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				D26A944C214E269C00C118CA /* UIViewController+RTRootNavigationController.m */,
-				D26A944D214E269C00C118CA /* RTRootNavigationController.h */,
-				D26A944E214E269C00C118CA /* UIViewController+RTRootNavigationController.h */,
-				D26A944F214E269C00C118CA /* RTRootNavigationController.m */,
-			);
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		D26A94FA214E953B00C118CA /* music */ = {
@@ -1828,7 +1788,6 @@
 				D26A95CF21514E2700C118CA /* icon_draft_20x20_@2x.png in Resources */,
 				D27615F621572892008A9AD4 /* icShootingAntiShakeOff_31x31_@3x.png in Resources */,
 				D26A9434214E13AA00C118CA /* complete@3x.png in Resources */,
-				D26A9451214E269D00C118CA /* LICENSE in Resources */,
 				D26A9547214E953B00C118CA /* 6401.mp3 in Resources */,
 				D27615F121572892008A9AD4 /* icShootingFlip_31x31_@2x.png in Resources */,
 				D26A9431214E13AA00C118CA /* beautyON@2x.png in Resources */,
@@ -1843,7 +1802,6 @@
 				D26A9525214E953B00C118CA /* 6513.jpeg in Resources */,
 				D26A9407214E13AA00C118CA /* GPUImageSepiaFilter.png in Resources */,
 				D26A95D321526BE300C118CA /* icSearch_24x24_@2x.png in Resources */,
-				D26A9454214E269D00C118CA /* README_1.md in Resources */,
 				D27615FB21572892008A9AD4 /* icShootingFilter_25x25_@3x.png in Resources */,
 				D26A95C02151479D00C118CA /* icPoiNewPublishLocation_20x20_@3x.png in Resources */,
 				D26A9540214E953B00C118CA /* 6473.jpeg in Resources */,
@@ -2120,7 +2078,6 @@
 				D2B165F0208C4F4F00FA5F05 /* CornerBarNaviController.swift in Sources */,
 				D289536D2076A5A60029CE92 /* UserProfileChildCollectionViewController.swift in Sources */,
 				D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */,
-				D26A9452214E269D00C118CA /* UIViewController+RTRootNavigationController.m in Sources */,
 				D26A95A2214FD2FD00C118CA /* OSProgressView.m in Sources */,
 				D2BCBA47206F33F2008409B3 /* BaseCellModel.swift in Sources */,
 				D26A93AD214E13AA00C118CA /* LFGPUImageEmptyFilter.m in Sources */,
@@ -2147,7 +2104,6 @@
 				D038701C2160BA00002023F8 /* ICGVideoTrimmerView.m in Sources */,
 				D27616192158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m in Sources */,
 				D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */,
-				D26A9453214E269D00C118CA /* RTRootNavigationController.m in Sources */,
 				D2761606215731D6008A9AD4 /* AlpVideoCameraOptionsView.m in Sources */,
 				D2D6632E208245F30044E2A7 /* AppUtils.swift in Sources */,
 				D26A97452152916000C118CA /* AlpVideoCameraPermissionView.m in Sources */,

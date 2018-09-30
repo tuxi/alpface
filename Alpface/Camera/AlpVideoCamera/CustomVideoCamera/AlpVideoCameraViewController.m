@@ -8,7 +8,6 @@
 
 #import "AlpVideoCameraViewController.h"
 #import "ALPVideoCameraView.h"
-#import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpEditVideoParameter.h"
 
@@ -22,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.navigationController.navigationBarHidden = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publishVideoNotification:) name:AlpPublushVideoNotification object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -77,7 +76,7 @@
 ////////////////////////////////////////////////////////////////////////
 
 - (void)videoCamerView:(ALPVideoCameraView *)view pushViewCotroller:(UIViewController *)viewController {
-    [self.rt_navigationController pushViewController:viewController animated:YES complete:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)videoCamerView:(ALPVideoCameraView *)view presentViewCotroller:(UIViewController *)viewController {

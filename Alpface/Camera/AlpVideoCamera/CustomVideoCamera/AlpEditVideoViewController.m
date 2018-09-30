@@ -14,7 +14,6 @@
 #import "GPUImage.h"
 #import "LFGPUImageEmptyFilter.h"
 #import "AlpEditPublishViewController.h"
-#import "RTRootNavigationController.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraResourceItem.h"
 #import "AlpEditVideoBar.h"
@@ -225,7 +224,7 @@
                          [[NSNotificationCenter defaultCenter] removeObserver:self];
                          AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
                          cor.videoURL = compressionEncoder.outputURL;
-                         [self.rt_navigationController pushViewController:cor animated:YES complete:nil];
+                         [self.navigationController pushViewController:cor animated:YES];
                          
                      });
                      
@@ -735,7 +734,7 @@
 - (void)editCoverClick {
     AlpEditCoverViewController *vc = [AlpEditCoverViewController new];
     vc.videoURL = self.videoURL;
-    [self.rt_navigationController pushViewController:vc animated:YES complete:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 ////////////////////////////////////////////////////////////////////////

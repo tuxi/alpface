@@ -13,7 +13,7 @@ public typealias ALPHttpResponseBlock = (Any?) -> Void
 public typealias ALPHttpErrorBlock = (_ error: Error?) -> ()
 public typealias ALPProgressHandler = (Progress) -> Void
 open class VideoRequest: NSObject {
-    static open let shared = VideoRequest()
+    static public let shared = VideoRequest()
     
     public func getRadomVideos(success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
         

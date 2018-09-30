@@ -9,7 +9,7 @@
 import UIKit
 
 @objc(AlpMainCameraNavigationController)
-class MainCameraNavigationController: RTRootNavigationController {
+class MainCameraNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

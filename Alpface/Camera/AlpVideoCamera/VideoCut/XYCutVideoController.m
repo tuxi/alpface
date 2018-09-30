@@ -11,7 +11,6 @@
 #import "MBProgressHUD+XYHUD.h"
 #import "AlpEditVideoNavigationBar.h"
 #import "AlpEditVideoViewController.h"
-#import "RTRootNavigationController.h"
 
 @interface XYCutVideoController () <ICGVideoTrimmerDelegate, AlpEditVideoNavigationBarDelegate>
 
@@ -42,8 +41,6 @@
     
     XYCutVideoView *view = [[XYCutVideoView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.view = view;
-    self.view.cutView = view.cutView;
-    self.view.videoPlayerView = view.videoPlayerView;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -58,8 +55,12 @@
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
     headerBar.delegate = self;
     [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
-    headerBar.titleLabel.text = @"剪辑视频";
+    headerBar.titleLabel.text = @"";
+    headerBar.rightButton.backgroundColor = [UIColor redColor];
+    headerBar.rightButton.layer.cornerRadius = 3.0;
+    headerBar.rightButton.layer.masksToBounds = YES;
     headerBar.backgroundColor = [UIColor clearColor];
+    headerBar.rightButton.contentEdgeInsets = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0);
     [self.view addSubview:headerBar];
     headerBar.translatesAutoresizingMaskIntoConstraints = false;
     if (@available(iOS 11.0, *)) {
@@ -105,7 +106,9 @@
     [playerLayer setPlayer:player];
     
     // 设置视频播放的拉伸效果\等比例拉伸
-    playerLayer.contentsGravity = AVLayerVideoGravityResizeAspect;
+//    playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    // 填充
+    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;;
     // 当播放完成时不做任何事情
     player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     
@@ -202,7 +205,7 @@
                         AlpEditVideoViewController *vc = [AlpEditVideoViewController new];
                         vc.videoURL = movieURL;
                         vc.videoOptions = weakSelf.videoOptions;
-                        [weakSelf.rt_navigationController pushViewController:vc animated:YES complete:nil];
+                        [weakSelf.navigationController pushViewController:vc animated:YES];
                         // 保存相册
 //                        UISaveVideoAtPathToSavedPhotosAlbum([movieURL relativePath], self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
                     });

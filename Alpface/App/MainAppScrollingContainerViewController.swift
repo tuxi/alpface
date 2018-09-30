@@ -111,7 +111,7 @@ class MainAppScrollingContainerViewController: UIViewController {
                 // 创建故事
                 let cameraVc = AlpVideoCameraViewController()
                 cameraVc.delegate = self
-                let nac = MainCameraNavigationController(rootViewControllerNoWrapping: cameraVc)
+                let nac =  MainCameraNavigationController.init(rootViewController: cameraVc)
                 item.model = nac
                 cameraController = cameraVc
                 break
@@ -374,11 +374,11 @@ extension MainAppScrollingContainerViewController {
     fileprivate func presentSelectMusic() {
         let cameraVc = AlpVideoCameraViewController()
         cameraVc.delegate = self
-        let nac = AlpVideoCameraNavigationController(rootViewControllerNoWrapping: cameraVc)
-        nac?.modalPresentationStyle =  UIModalPresentationStyle.custom
+        let nac = AlpVideoCameraNavigationController.init(rootViewController: cameraVc)
+        nac.modalPresentationStyle =  UIModalPresentationStyle.custom
 //        nac?.zf_usingCustomModalTransitioningAnimator()
 //        nac?.zf_modalAnimator.topViewScale = ZFModalTransitonSizeScale.init(widthScale: 1.0, heightScale: 1.0)
-        self.present(nac!, animated: true, completion: nil)
+        self.present(nac, animated: true, completion: nil)
     
     }
     
@@ -411,7 +411,7 @@ extension MainAppScrollingContainerViewController: AlpVideoCameraViewControllerD
             NotificationCenter.default.post(name: NSNotification.Name.PublushVideoSuccess, object: self, userInfo: ["video": video])
             MBProgressHUD.xy_hide()
             MBProgressHUD.xy_show("视频上传完成")
-            viewController.rt_navigationController.dismiss(animated: true, completion: nil)
+            viewController.navigationController?.dismiss(animated: true, completion: nil)
             
         }) { (error) in
             MBProgressHUD.xy_hide()

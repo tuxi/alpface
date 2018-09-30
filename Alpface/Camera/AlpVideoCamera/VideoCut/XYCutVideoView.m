@@ -15,40 +15,33 @@
     if (self = [super initWithFrame:frame]) {
         
         XYVideoPlayerView *videoPlayerView = [[XYVideoPlayerView alloc] init];
-        videoPlayerView.backgroundColor = [UIColor colorWithRed:56/255.0 green:55/255.0 blue:53/255.0 alpha:1.0];
+        videoPlayerView.backgroundColor = [UIColor clearColor];
         [self addSubview:videoPlayerView];
         self.videoPlayerView = videoPlayerView;
         
         ICGVideoTrimmerView *cutView = [ICGVideoTrimmerView thrimmerViewWithAsset:nil];
         [self addSubview:cutView];
         self.cutView = cutView;
-        cutView.rightOverlayViewColor = [videoPlayerView.backgroundColor colorWithAlphaComponent:0.5];
-        cutView.leftOverlayViewColor = [videoPlayerView.backgroundColor colorWithAlphaComponent:0.5];
+        cutView.rightOverlayViewColor = [UIColor colorWithRed:56/255.0 green:55/255.0 blue:53/255.0 alpha:0.5];
+        cutView.leftOverlayViewColor = [UIColor colorWithRed:56/255.0 green:55/255.0 blue:53/255.0 alpha:0.5];
         
         self.videoPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
         self.cutView.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        if (@available(iOS 11.0, *)) {
-            [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-            [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
-            [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
-        } else {
-            [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-            [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
-            [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
-        }
+        [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:_videoPlayerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
         
         if (@available(iOS 11.0, *)) {
             [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-10.0].active = YES;
-            [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.0].active = YES;
-            [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-10.0].active = YES;
+            [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeLeading multiplier:1.0 constant:30.0].active = YES;
+            [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-30.0].active = YES;
         } else {
             [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-10.0].active = YES;
-            [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.0].active = YES;
-            [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-10.0].active = YES;
+            [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:30.0].active = YES;
+            [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-30.0].active = YES;
         }
-        [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_videoPlayerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20.0].active = YES;
-        [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:100.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:_cutView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:60.0].active = YES;
     }
     return self;
 }
