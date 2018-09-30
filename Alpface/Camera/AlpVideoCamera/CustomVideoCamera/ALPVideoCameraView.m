@@ -12,18 +12,18 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "AlpEditVideoViewController.h"
-#import "MBProgressHUD.h"
 #import "UIView+Tools.h"
 #import "SDAVAssetExportSession.h"
 #import "TZImagePickerController.h"
 #import "TZImageManager.h"
-#import "AlpEditPublishViewController.h"
 #import <Photos/Photos.h>
 #import <Photos/PHImageManager.h>
 #import "GPUImage.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraUtils.h"
 #import "AlpEditVideoParameter.h"
+#import "XYCutVideoController.h"
+#import "MBProgressHUD+XYHUD.h"
 
 /**
  @note GPUImageVideoCamera录制视频 有时第一帧是黑屏 待解决
@@ -63,7 +63,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     float _preLayerHeight;
     // 高，宽比
     float _preLayerHWRate;
-    MBProgressHUD *_HUD;
 }
 
 @property (nonatomic, assign) CameraManagerDevicePosition position;
@@ -323,8 +322,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     [self.optionsView.timeButton setTitle:@"录制 00:00" forState:UIControlStateNormal];
     [_myTimer invalidate];
     _myTimer = nil;
-    _HUD = [MBProgressHUD showHUDAddedTo:self animated:YES];
-    _HUD.label.text = @"视频生成中...";
+    [MBProgressHUD xy_showActivityMessage:@"视频生成中..."];
     
     
     // 添加分段录制的视频url
@@ -395,8 +393,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     imagePickerVc.sortAscendingByModificationDate = YES;
     __weak typeof(self) weakSelf = self;
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage,id asset) {
-        _HUD = [MBProgressHUD showHUDAddedTo:self animated:YES];
-        _HUD.label.text = @"视频导出中...";
+        [MBProgressHUD xy_showActivityMessage:@"视频导出中..."];
         if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0f) {
             PHAsset* myasset = asset;
             PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
@@ -414,17 +411,15 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
                     NSURL *url = urlAsset.URL;
                     NSData* videoData = [NSData dataWithContentsOfFile:[[url absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
                     if (videoData.length/1024/1024>AlpVideoCameraMaxVideoSize) {
-                        _HUD.label.text = @"所选视频大于8M,请重新选择";
-                        [_HUD hide:YES afterDelay:1.5];
+                        [MBProgressHUD xy_showMessage:[NSString stringWithFormat:@"所选视频大于%fM,请重新选择", AlpVideoCameraMaxVideoSize] delayTime:1.5];
                     }
                     else {
-                        AlpEditVideoViewController *vc = [AlpEditVideoViewController  new];
-//                        AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
+                        [MBProgressHUD xy_hideHUD];
+                        XYCutVideoController *vc = [XYCutVideoController  new];
                         vc.videoURL = url;
                         vc.videoOptions = weakSelf.videoOptions;
                         [[NSNotificationCenter defaultCenter] removeObserver:self];
                         [_videoCamera stopCameraCapture];
-                        //                     [[AppDelegate appDelegate] pushViewController:cor animated:YES];
                         if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
                             [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:vc];
                         }
@@ -442,27 +437,23 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
                 NSURL *url = videoURL;
                 NSData* videoData = [NSData dataWithContentsOfFile:[[url absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
                 if (videoData.length/1024/1024>AlpVideoCameraMaxVideoSize) {
-                    _HUD.label.text = [NSString stringWithFormat:@"所选视频大于%fM,请重新选择", AlpVideoCameraMaxVideoSize];
-                    [_HUD hide:YES afterDelay:1.5];
+                    [MBProgressHUD xy_showMessage:[NSString stringWithFormat:@"所选视频大于%fM,请重新选择", AlpVideoCameraMaxVideoSize] delayTime:1.5];
                 }
                 else {
-                    AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
-                    cor.videoURL = url;
-                    
+                    [MBProgressHUD xy_hideHUD];
+                    XYCutVideoController *vc = [XYCutVideoController  new];
+                    vc.videoURL = url;
+                    vc.videoOptions = weakSelf.videoOptions;
                     [[NSNotificationCenter defaultCenter] removeObserver:self];
                     [_videoCamera stopCameraCapture];
-                    //                    [[AppDelegate appDelegate] pushViewController:cor animated:YES];
                     if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
-                        [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:cor];
+                        [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:vc];
                     }
                     [weakSelf removeFromSuperview];
                 }
                 
             });
         }
-        
-        
-        NSLog(@"选择结束");
         
     }];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];

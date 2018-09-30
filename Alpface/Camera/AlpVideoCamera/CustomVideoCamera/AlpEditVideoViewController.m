@@ -10,7 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UIView+Tools.h"
 #import "AlpMusicItemCollectionViewCell.h"
-#import "MBProgressHUD.h"
 #import "SDAVAssetExportSession.h"
 #import "GPUImage.h"
 #import "LFGPUImageEmptyFilter.h"
@@ -22,6 +21,7 @@
 #import "AlpEditVideoNavigationBar.h"
 #import "AlpEditVideoParameter.h"
 #import "AlpEditCoverViewController.h"
+#import "MBProgressHUD+XYHUD.h"
 
 @interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate, AlpEditVideoNavigationBarDelegate>
 
@@ -36,6 +36,7 @@
 @property (nonatomic, strong) UIImageView *bgImageView;
 @property (nonatomic, strong) UIImageView *stickersImgView;
 @property (nonatomic, weak) NSLayoutConstraint *editVideoBarBottomConstraint;
+@property (nonatomic, copy) NSString *showActivityMessage;
 
 @end
 
@@ -45,7 +46,6 @@
     GPUImageOutput<GPUImageInput> *_filter;
     
     AVPlayerItem *_audioPlayerItem;
-    MBProgressHUD *_HUD;
     
     AVPlayer *_mainPlayer;
     AVPlayerLayer *_playerLayer;
@@ -138,9 +138,6 @@
     _editVideoBarBottomConstraint = editVideoBarBottomConstraint;
     [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
-
-    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    _HUD.hidden = YES;
     
     UIButton *editCoverButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [editCoverButton setTitle:@"编辑封面" forState:UIControlStateNormal];
@@ -204,8 +201,7 @@
         AVVideoCodecKey: AVVideoCodecH264,
         AVVideoWidthKey: @720,   //Set your resolution width here
         AVVideoHeightKey: @1280,  //set your resolution height here
-        AVVideoCompressionPropertiesKey: @
-            {
+        AVVideoCompressionPropertiesKey: @{
                 //2000*1000  建议800*1000-5000*1000
                 //AVVideoAverageBitRateKey: @2500000, // Give your bitrate here for lower size give low values
             AVVideoAverageBitRateKey: @(weakSelf.videoOptions.bitRate),
@@ -213,45 +209,36 @@
             AVVideoAverageNonDroppableFrameRateKey: @(weakSelf.videoOptions.frameRate),
             },
         };
-        compressionEncoder.audioSettings = @
-        {
+        compressionEncoder.audioSettings = @{
         AVFormatIDKey: @(kAudioFormatMPEG4AAC),
         AVNumberOfChannelsKey: @2,
         AVSampleRateKey: @44100,
         AVEncoderBitRateKey: @128000,
         };
-        [compressionEncoder exportAsynchronouslyWithCompletionHandler:^
-         {
+        [compressionEncoder exportAsynchronouslyWithCompletionHandler:^{
              dispatch_async(dispatch_get_main_queue(), ^{
                  //更新UI操作
                  //.....
-                 if (compressionEncoder.status == AVAssetExportSessionStatusCompleted)
-                 {
+                 if (compressionEncoder.status == AVAssetExportSessionStatusCompleted) {
                      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                         _HUD.hidden = YES;
+                         [MBProgressHUD xy_hideHUD];
                          [[NSNotificationCenter defaultCenter] removeObserver:self];
                          AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
                          cor.videoURL = compressionEncoder.outputURL;
-                         //                         [[AppDelegate appDelegate] pushViewController:cor animated:YES];
                          [self.rt_navigationController pushViewController:cor animated:YES complete:nil];
                          
                      });
                      
-                 }
-                 else if (compressionEncoder.status == AVAssetExportSessionStatusCancelled)
-                 {
-                     //                     HUD.labelText = @"Compression Failed";
-                     _HUD.label.text = @"Compression Failed";
+                 } else if (compressionEncoder.status == AVAssetExportSessionStatusCancelled) {
+                     [MBProgressHUD xy_showMessage:@"Compression Failed" delayTime:1.5];
                      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                          [[NSNotificationCenter defaultCenter] removeObserver:self];
                          //                         [[NSNotificationCenter defaultCenter] postNotificationName:kTabBarHiddenNONotification object:self];
                          [self.navigationController popToRootViewControllerAnimated:YES];
                          
                      });
-                 }
-                 else
-                 {
-                     _HUD.label.text = @"ompression Failed";
+                 } else {
+                     [MBProgressHUD xy_showMessage:@"Compression Failed" delayTime:1.5];
                      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                          [[NSNotificationCenter defaultCenter] removeObserver:self];
                          //                         [[NSNotificationCenter defaultCenter] postNotificationName:kTabBarHiddenNONotification object:self];
@@ -266,8 +253,7 @@
 
 
 - (void)mixFiltWithVideoAndInputVideoURL:(NSURL*)inputURL {
-    
-    _HUD.label.text = @"滤镜合成中...";
+    self.showActivityMessage = @"滤镜合成中...";
     _isdoing = YES;
     NSURL *sampleURL = inputURL;
     _endMovieFile = [[GPUImageMovie alloc] initWithURL:sampleURL];
@@ -335,7 +321,7 @@
 - (void)mixAudioAndVidoWithInputURL1:(NSURL*)inputURL {
     
     // 路径
-    _HUD.label.text = @"贴纸合成中...";
+    self.showActivityMessage = @"贴纸合成中...";
     NSString *documents = [NSHomeDirectory() stringByAppendingPathComponent:@"tmp"];
     
     
@@ -458,7 +444,7 @@
     //    audio529
     
     // 路径
-    _HUD.label.text = @"音乐合成中...";
+    self.showActivityMessage = @"音乐合成中...";
     NSString *documents = [NSHomeDirectory() stringByAppendingPathComponent:@"tmp"];
     
     // 声音来源
@@ -766,7 +752,7 @@
     if (_isdoing) {
         [_movieWriter cancelRecording];
         [_endMovieFile endProcessing];
-        _HUD.hidden = YES;
+        [MBProgressHUD xy_hideHUD];
     }
 }
 
@@ -803,7 +789,7 @@
 #pragma mark - AlpEditVideoNavigationBarDelegate
 ////////////////////////////////////////////////////////////////////////
 - (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickNextButton:(UIButton *)nextButton {
-    _HUD.hidden = NO;
+    [MBProgressHUD xy_showActivityMessage:@"奋力处理中..."];
     if ([_filtClassName isEqualToString:@"LFGPUImageEmptyFilter"]) {
         //无滤镜效果
         if (self.editVideoBar.audioPath||!_stickersImgView.hidden) {
@@ -811,7 +797,6 @@
             [self mixAudioAndVidoWithInputURL:_videoURL];
         }
         else {
-            _HUD.label.text = @"视频处理中...";
             [self compressVideoWithInputVideoUrl:_videoURL];
             
         }

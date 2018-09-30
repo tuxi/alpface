@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		17B0454459EAD0F7C5571E1C /* Pods_Alpface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */; };
 		D02D2A2721534758004B49FF /* XYLocationSearchTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = D02D2A2621534758004B49FF /* XYLocationSearchTopView.m */; };
+		D038701A2160BA00002023F8 /* XYVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D038700C2160BA00002023F8 /* XYVideoPlayerView.m */; };
+		D038701B2160BA00002023F8 /* ICGRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870112160BA00002023F8 /* ICGRulerView.m */; };
+		D038701C2160BA00002023F8 /* ICGVideoTrimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870122160BA00002023F8 /* ICGVideoTrimmerView.m */; };
+		D038701D2160BA00002023F8 /* ICGThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870142160BA00002023F8 /* ICGThumbView.m */; };
+		D038701E2160BA00002023F8 /* XYCutVideoController.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870172160BA00002023F8 /* XYCutVideoController.m */; };
+		D038701F2160BA00002023F8 /* XYCutVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870192160BA00002023F8 /* XYCutVideoView.m */; };
+		D03870352160BD47002023F8 /* MBProgressHUD+XYHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870342160BD47002023F8 /* MBProgressHUD+XYHUD.m */; };
+		D03870382160BEB7002023F8 /* UIViewController+XYExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870372160BEB7002023F8 /* UIViewController+XYExtensions.m */; };
 		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
 		D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868D213E83000009682C /* MCGCDTimer.swift */; };
 		D06FEAB6215CB5620005FAF5 /* AlpEditCoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D06FEAB5215CB5620005FAF5 /* AlpEditCoverViewController.m */; };
@@ -374,6 +382,23 @@
 		BDFDA0C2D6581C9D18243E45 /* Pods_Alpface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D02D2A2521534758004B49FF /* XYLocationSearchTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYLocationSearchTopView.h; sourceTree = "<group>"; };
 		D02D2A2621534758004B49FF /* XYLocationSearchTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYLocationSearchTopView.m; sourceTree = "<group>"; };
+		D038700C2160BA00002023F8 /* XYVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYVideoPlayerView.m; sourceTree = "<group>"; };
+		D038700D2160BA00002023F8 /* XYCutVideoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYCutVideoController.h; sourceTree = "<group>"; };
+		D038700E2160BA00002023F8 /* XYCutVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYCutVideoView.h; sourceTree = "<group>"; };
+		D03870102160BA00002023F8 /* ICGThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGThumbView.h; sourceTree = "<group>"; };
+		D03870112160BA00002023F8 /* ICGRulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGRulerView.m; sourceTree = "<group>"; };
+		D03870122160BA00002023F8 /* ICGVideoTrimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGVideoTrimmerView.m; sourceTree = "<group>"; };
+		D03870132160BA00002023F8 /* ICGVideoTrimmer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGVideoTrimmer.h; sourceTree = "<group>"; };
+		D03870142160BA00002023F8 /* ICGThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGThumbView.m; sourceTree = "<group>"; };
+		D03870152160BA00002023F8 /* ICGRulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGRulerView.h; sourceTree = "<group>"; };
+		D03870162160BA00002023F8 /* ICGVideoTrimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGVideoTrimmerView.h; sourceTree = "<group>"; };
+		D03870172160BA00002023F8 /* XYCutVideoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYCutVideoController.m; sourceTree = "<group>"; };
+		D03870182160BA00002023F8 /* XYVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYVideoPlayerView.h; sourceTree = "<group>"; };
+		D03870192160BA00002023F8 /* XYCutVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYCutVideoView.m; sourceTree = "<group>"; };
+		D03870332160BD47002023F8 /* MBProgressHUD+XYHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XYHUD.h"; sourceTree = "<group>"; };
+		D03870342160BD47002023F8 /* MBProgressHUD+XYHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+XYHUD.m"; sourceTree = "<group>"; };
+		D03870362160BEB6002023F8 /* UIViewController+XYExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+XYExtensions.h"; sourceTree = "<group>"; };
+		D03870372160BEB7002023F8 /* UIViewController+XYExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+XYExtensions.m"; sourceTree = "<group>"; };
 		D06F868A213E80E20009682C /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
 		D06F868D213E83000009682C /* MCGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCGCDTimer.swift; sourceTree = "<group>"; };
 		D06FEAB4215CB5620005FAF5 /* AlpEditCoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditCoverViewController.h; sourceTree = "<group>"; };
@@ -792,6 +817,34 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		D038700B2160BA00002023F8 /* VideoCut */ = {
+			isa = PBXGroup;
+			children = (
+				D038700C2160BA00002023F8 /* XYVideoPlayerView.m */,
+				D038700D2160BA00002023F8 /* XYCutVideoController.h */,
+				D038700E2160BA00002023F8 /* XYCutVideoView.h */,
+				D038700F2160BA00002023F8 /* Source */,
+				D03870172160BA00002023F8 /* XYCutVideoController.m */,
+				D03870182160BA00002023F8 /* XYVideoPlayerView.h */,
+				D03870192160BA00002023F8 /* XYCutVideoView.m */,
+			);
+			path = VideoCut;
+			sourceTree = "<group>";
+		};
+		D038700F2160BA00002023F8 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				D03870102160BA00002023F8 /* ICGThumbView.h */,
+				D03870112160BA00002023F8 /* ICGRulerView.m */,
+				D03870122160BA00002023F8 /* ICGVideoTrimmerView.m */,
+				D03870132160BA00002023F8 /* ICGVideoTrimmer.h */,
+				D03870142160BA00002023F8 /* ICGThumbView.m */,
+				D03870152160BA00002023F8 /* ICGRulerView.h */,
+				D03870162160BA00002023F8 /* ICGVideoTrimmerView.h */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		D06F8689213E80E20009682C /* SwiftyTimer */ = {
 			isa = PBXGroup;
 			children = (
@@ -997,6 +1050,7 @@
 		D26A9249214E13AA00C118CA /* AlpVideoCamera */ = {
 			isa = PBXGroup;
 			children = (
+				D038700B2160BA00002023F8 /* VideoCut */,
 				D07748A5215334CD0080610A /* Location */,
 				D26A924A214E13AA00C118CA /* Filters */,
 				D26A924F214E13AA00C118CA /* CustomVideoCamera */,
@@ -1034,6 +1088,8 @@
 				D26A92F6214E13AA00C118CA /* AlpMusicItemCollectionViewCell.h */,
 				D26A92F8214E13AA00C118CA /* AlpVideoCameraViewController.h */,
 				D26A92B9214E13AA00C118CA /* AlpVideoCameraViewController.m */,
+				D03870332160BD47002023F8 /* MBProgressHUD+XYHUD.h */,
+				D03870342160BD47002023F8 /* MBProgressHUD+XYHUD.m */,
 				D26A92B8214E13AA00C118CA /* UIView+Tools.h */,
 				D26A92F9214E13AA00C118CA /* UIView+Tools.m */,
 				D26A92FB214E13AA00C118CA /* AlpVideoCameraDefine.h */,
@@ -1064,6 +1120,8 @@
 				D06FEAB5215CB5620005FAF5 /* AlpEditCoverViewController.m */,
 				D24DA0B3215E661800C8440A /* AlpVideoCameraCoverSlider.h */,
 				D24DA0B4215E661800C8440A /* AlpVideoCameraCoverSlider.m */,
+				D03870362160BEB6002023F8 /* UIViewController+XYExtensions.h */,
+				D03870372160BEB7002023F8 /* UIViewController+XYExtensions.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -1999,6 +2057,7 @@
 				D2B165F4208C596300FA5F05 /* PercentDrivenInteractiveTransition.swift in Sources */,
 				D24DA0B5215E661900C8440A /* AlpVideoCameraCoverSlider.m in Sources */,
 				D289536B2076A5480029CE92 /* UserProfileViewController.swift in Sources */,
+				D03870352160BD47002023F8 /* MBProgressHUD+XYHUD.m in Sources */,
 				D26A9410214E13AA00C118CA /* AlpVideoCameraUtils.m in Sources */,
 				D2B38C57208B25BB00CA3908 /* VideoDetailListViewController.swift in Sources */,
 				D0B47A1E2150A1A300E78B90 /* AlpEditVideoNavigationBar.m in Sources */,
@@ -2010,8 +2069,10 @@
 				D20093292078EEC50079AD8B /* Utilities.swift in Sources */,
 				D2D6632A208185510044E2A7 /* MBProgressHUD+XYExtension.swift in Sources */,
 				D07748B1215334CD0080610A /* XYLocationSearchTableViewModel.m in Sources */,
+				D03870382160BEB7002023F8 /* UIViewController+XYExtensions.m in Sources */,
 				D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */,
 				D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */,
+				D038701F2160BA00002023F8 /* XYCutVideoView.m in Sources */,
 				D2B165F8208C720B00FA5F05 /* TabbarPlaceholderViewController.swift in Sources */,
 				D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
@@ -2034,6 +2095,7 @@
 				D2BCBA48206F33F2008409B3 /* CollectionViewSection.swift in Sources */,
 				D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */,
 				D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */,
+				D038701B2160BA00002023F8 /* ICGRulerView.m in Sources */,
 				D26A9439214E13AA00C118CA /* AlpEditVideoViewController.m in Sources */,
 				D2DC5748206FB1F300458F54 /* VideoRequest.swift in Sources */,
 				D27D6CE0208397BF0095425A /* SettingsViewController.swift in Sources */,
@@ -2065,6 +2127,8 @@
 				D26A9437214E13AA00C118CA /* UIView+Tools.m in Sources */,
 				D200932C2078EEC50079AD8B /* CameraShot.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
+				D038701E2160BA00002023F8 /* XYCutVideoController.m in Sources */,
+				D038701A2160BA00002023F8 /* XYVideoPlayerView.m in Sources */,
 				D26A95AA2151275300C118CA /* AlpEditPublishViewController.m in Sources */,
 				D26A95A7214FDCD600C118CA /* AlpEditVideoBar.m in Sources */,
 				D2BCBA53206FA737008409B3 /* VideoRatingItem.swift in Sources */,
@@ -2080,6 +2144,7 @@
 				D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */,
 				D06FEAB6215CB5620005FAF5 /* AlpEditCoverViewController.m in Sources */,
 				D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */,
+				D038701C2160BA00002023F8 /* ICGVideoTrimmerView.m in Sources */,
 				D27616192158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m in Sources */,
 				D289536F20771A230029CE92 /* MyReleaseViewController.swift in Sources */,
 				D26A9453214E269D00C118CA /* RTRootNavigationController.m in Sources */,
@@ -2092,6 +2157,7 @@
 				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,
 				D0E8AB18214FA69D00247B5E /* AlpVideoCameraResourceItem.m in Sources */,
 				D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */,
+				D038701D2160BA00002023F8 /* ICGThumbView.m in Sources */,
 				D200932D2078EEC50079AD8B /* SingleImageSaver.swift in Sources */,
 				D26AD4872067334E0047DC15 /* UIButton+Attributes.swift in Sources */,
 				D200930C2078C51E0079AD8B /* RegisterViewController.swift in Sources */,
