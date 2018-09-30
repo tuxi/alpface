@@ -7,7 +7,6 @@
 //
 
 #import "AlpMusicItemCollectionViewCell.h"
-#import "UIView+Tools.h"
 
 @implementation AlpMusicItemCollectionViewCell
 
@@ -37,8 +36,8 @@
     [NSLayoutConstraint constraintWithItem:self.iconImgView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:70.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.iconImgView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_iconImgView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
     
-    [_iconImgView makeCornerRadius:35 borderColor:nil borderWidth:0];
-    
+    _iconImgView.layer.cornerRadius = 35.0;
+    _iconImgView.layer.masksToBounds = YES;
 
     [self.contentView addSubview:self.nameLabel];
     [NSLayoutConstraint constraintWithItem:self.nameLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;

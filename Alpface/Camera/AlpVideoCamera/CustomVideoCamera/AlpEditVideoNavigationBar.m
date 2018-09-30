@@ -36,44 +36,19 @@
     [nextBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _rightButton = nextBtn;
     [nextBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [nextBtn addTarget:self action:@selector(clickNextBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:nextBtn];
     nextBtn.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:nextBtn attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-10.0].active = YES;
     [NSLayoutConstraint constraintWithItem:nextBtn attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:nextBtn attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:nextBtn attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:nextBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:80.0].active = YES;
-    
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setImage:[UIImage imageNamed:@"BackToVideoCammer"] forState:UIControlStateNormal];
     _leftButton = backButton;
-    [backButton addTarget:self action:@selector(clickBackBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:backButton];
     backButton.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.0].active = YES;
     [NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:nextBtn attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-//    [NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:60.0].active = YES;
-    
     [NSLayoutConstraint constraintWithItem:titleLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationLessThanOrEqual toItem:nextBtn attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-5.0].active = YES;
 }
 
-////////////////////////////////////////////////////////////////////////
-#pragma mark - Actions
-////////////////////////////////////////////////////////////////////////
-
-- (void)clickNextBtn:(UIButton *)btn {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(editVideoNavigationBar:didClickNextButton:)]) {
-        [self.delegate editVideoNavigationBar:self didClickNextButton:btn];
-    }
-}
-
-- (void)clickBackBtn:(UIButton *)btn {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(editVideoNavigationBar:didClickBackButton:)]) {
-        [self.delegate editVideoNavigationBar:self didClickBackButton:btn];
-    }
-}
 
 @end

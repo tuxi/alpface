@@ -168,7 +168,6 @@
 		D26A9434214E13AA00C118CA /* complete@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26A92F3214E13AA00C118CA /* complete@3x.png */; };
 		D26A9435214E13AA00C118CA /* complete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26A92F4214E13AA00C118CA /* complete@2x.png */; };
 		D26A9436214E13AA00C118CA /* beautyOFF@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26A92F5214E13AA00C118CA /* beautyOFF@2x.png */; };
-		D26A9437214E13AA00C118CA /* UIView+Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92F9214E13AA00C118CA /* UIView+Tools.m */; };
 		D26A9439214E13AA00C118CA /* AlpEditVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */; };
 		D26A943A214E13AA00C118CA /* UIImage+AlpExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A92FE214E13AA00C118CA /* UIImage+AlpExtensions.m */; };
 		D26A9456214E2FA600C118CA /* AlpVideoCameraNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26A9455214E2FA600C118CA /* AlpVideoCameraNavigationController.swift */; };
@@ -505,7 +504,6 @@
 		D26A92B5214E13AA00C118CA /* stickers541.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stickers541.jpg; sourceTree = "<group>"; };
 		D26A92B6214E13AA00C118CA /* stickers540.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stickers540.jpg; sourceTree = "<group>"; };
 		D26A92B7214E13AA00C118CA /* stickers554.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stickers554.jpg; sourceTree = "<group>"; };
-		D26A92B8214E13AA00C118CA /* UIView+Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Tools.h"; sourceTree = "<group>"; };
 		D26A92B9214E13AA00C118CA /* AlpVideoCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpVideoCameraViewController.m; sourceTree = "<group>"; };
 		D26A92BB214E13AA00C118CA /* SDAVAssetExportSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAVAssetExportSession.m; sourceTree = "<group>"; };
 		D26A92BC214E13AA00C118CA /* UIImage+AlpExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AlpExtensions.h"; sourceTree = "<group>"; };
@@ -566,7 +564,6 @@
 		D26A92F5214E13AA00C118CA /* beautyOFF@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "beautyOFF@2x.png"; sourceTree = "<group>"; };
 		D26A92F6214E13AA00C118CA /* AlpMusicItemCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpMusicItemCollectionViewCell.h; sourceTree = "<group>"; };
 		D26A92F8214E13AA00C118CA /* AlpVideoCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpVideoCameraViewController.h; sourceTree = "<group>"; };
-		D26A92F9214E13AA00C118CA /* UIView+Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Tools.m"; sourceTree = "<group>"; };
 		D26A92FB214E13AA00C118CA /* AlpVideoCameraDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpVideoCameraDefine.h; sourceTree = "<group>"; };
 		D26A92FC214E13AA00C118CA /* ALPVideoCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALPVideoCameraView.h; sourceTree = "<group>"; };
 		D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoViewController.m; sourceTree = "<group>"; };
@@ -1079,8 +1076,6 @@
 				D26A92B9214E13AA00C118CA /* AlpVideoCameraViewController.m */,
 				D03870332160BD47002023F8 /* MBProgressHUD+XYHUD.h */,
 				D03870342160BD47002023F8 /* MBProgressHUD+XYHUD.m */,
-				D26A92B8214E13AA00C118CA /* UIView+Tools.h */,
-				D26A92F9214E13AA00C118CA /* UIView+Tools.m */,
 				D26A92FB214E13AA00C118CA /* AlpVideoCameraDefine.h */,
 				D26A92FC214E13AA00C118CA /* ALPVideoCameraView.h */,
 				D26A92FD214E13AA00C118CA /* AlpEditVideoViewController.m */,
@@ -2081,7 +2076,6 @@
 				D26A95A2214FD2FD00C118CA /* OSProgressView.m in Sources */,
 				D2BCBA47206F33F2008409B3 /* BaseCellModel.swift in Sources */,
 				D26A93AD214E13AA00C118CA /* LFGPUImageEmptyFilter.m in Sources */,
-				D26A9437214E13AA00C118CA /* UIView+Tools.m in Sources */,
 				D200932C2078EEC50079AD8B /* CameraShot.swift in Sources */,
 				D26AD43C20668F140047DC15 /* MainAppScrollingContainerItem.swift in Sources */,
 				D038701E2160BA00002023F8 /* XYCutVideoController.m in Sources */,

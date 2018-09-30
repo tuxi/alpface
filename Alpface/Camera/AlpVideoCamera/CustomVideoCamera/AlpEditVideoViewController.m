@@ -8,7 +8,6 @@
 
 #import "AlpEditVideoViewController.h"
 #import <AVFoundation/AVFoundation.h>
-#import "UIView+Tools.h"
 #import "AlpMusicItemCollectionViewCell.h"
 #import "SDAVAssetExportSession.h"
 #import "GPUImage.h"
@@ -22,7 +21,7 @@
 #import "AlpEditCoverViewController.h"
 #import "MBProgressHUD+XYHUD.h"
 
-@interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate, AlpEditVideoNavigationBarDelegate>
+@interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate>
 
 @property (nonatomic, strong) AVPlayer *audioPlayer;
 @property (nonatomic, strong) AlpEditVideoBar *editVideoBar;
@@ -112,7 +111,6 @@
     
     
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
-    headerBar.delegate = self;
     [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
     headerBar.titleLabel.text = @"编辑";
     headerBar.backgroundColor = [UIColor clearColor];
@@ -785,9 +783,9 @@
 }
 
 ////////////////////////////////////////////////////////////////////////
-#pragma mark - AlpEditVideoNavigationBarDelegate
+#pragma mark - Actions
 ////////////////////////////////////////////////////////////////////////
-- (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickNextButton:(UIButton *)nextButton {
+- (void)didClickNextButton {
     [MBProgressHUD xy_showActivityMessage:@"奋力处理中..."];
     if ([_filtClassName isEqualToString:@"LFGPUImageEmptyFilter"]) {
         //无滤镜效果
@@ -806,11 +804,10 @@
     }
 }
 
-- (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickBackButton:(UIButton *)backButton {
+- (void)didClickBackButton {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.navigationController popViewControllerAnimated:YES];
 }
-
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - AlpEditVideoBarDelegate
 ////////////////////////////////////////////////////////////////////////

@@ -8,7 +8,6 @@
 
 #import "AlpVideoCameraOptionsView.h"
 #import "AlpVideoCameraDefine.h"
-#import "UIView+Tools.h"
 
 @interface AlpVideoCameraOptionsViewButton : UIButton
 
@@ -138,7 +137,8 @@
     [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.dleButton attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0].active = YES;
     
     // 录制的进度条
-    [self.progressPreView makeCornerRadius:2 borderColor:nil borderWidth:0];
+    self.progressPreView.layer.cornerRadius = 2.0;
+    self.progressPreView.layer.masksToBounds = YES;
     [NSLayoutConstraint constraintWithItem:self.progressPreView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:5.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.progressPreView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:5.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.progressPreView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;

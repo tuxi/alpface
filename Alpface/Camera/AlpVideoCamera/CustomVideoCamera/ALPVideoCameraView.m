@@ -12,7 +12,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "AlpEditVideoViewController.h"
-#import "UIView+Tools.h"
 #import "SDAVAssetExportSession.h"
 #import "TZImagePickerController.h"
 #import "TZImageManager.h"

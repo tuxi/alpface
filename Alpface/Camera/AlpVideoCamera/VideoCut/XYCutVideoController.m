@@ -12,7 +12,7 @@
 #import "AlpEditVideoNavigationBar.h"
 #import "AlpEditVideoViewController.h"
 
-@interface XYCutVideoController () <ICGVideoTrimmerDelegate, AlpEditVideoNavigationBarDelegate>
+@interface XYCutVideoController () <ICGVideoTrimmerDelegate>
 
 @property (nonatomic, assign) BOOL isPlaying;
 @property (nonatomic, assign) CGFloat startTime;
@@ -53,7 +53,6 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
-    headerBar.delegate = self;
     [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
     headerBar.titleLabel.text = @"";
     headerBar.rightButton.backgroundColor = [UIColor redColor];
@@ -61,6 +60,8 @@
     headerBar.rightButton.layer.masksToBounds = YES;
     headerBar.backgroundColor = [UIColor clearColor];
     headerBar.rightButton.contentEdgeInsets = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0);
+    [headerBar.rightButton addTarget:self action:@selector(didClickNextButton) forControlEvents:UIControlEventTouchUpInside];
+    [headerBar.rightButton addTarget:self action:@selector(didClickBackButton) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:headerBar];
     headerBar.translatesAutoresizingMaskIntoConstraints = false;
     if (@available(iOS 11.0, *)) {
@@ -318,14 +319,14 @@
     }
 }
 ////////////////////////////////////////////////////////////////////////
-#pragma mark - AlpEditVideoNavigationBarDelegate
+#pragma mark - Actions
 ////////////////////////////////////////////////////////////////////////
-- (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickNextButton:(UIButton *)nextButton {
+- (void)didClickNextButton {
     [MBProgressHUD xy_showActivityMessage:@"奋力处理中..."];
     [self exportVideoWithPressName:AVAssetExportPreset1280x720];
 }
 
-- (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickBackButton:(UIButton *)backButton {
+- (void)didClickBackButton {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.navigationController popViewControllerAnimated:YES];
 }

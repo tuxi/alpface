@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 @end
 
-@interface AlpEditPublishViewController () <UITableViewDelegate, UITableViewDataSource, AlpEditVideoNavigationBarDelegate, XYLocationSearchViewControllerDelegate>
+@interface AlpEditPublishViewController () <UITableViewDelegate, UITableViewDataSource, XYLocationSearchViewControllerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) AlpEditVideoNavigationBar *navigationBar;
@@ -487,7 +487,6 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 - (AlpEditVideoNavigationBar *)navigationBar {
     if (!_navigationBar) {
         _navigationBar = [AlpEditVideoNavigationBar new];
-        _navigationBar.delegate = self;
     }
     return _navigationBar;
 }
