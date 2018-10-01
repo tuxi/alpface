@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
 ///闪光灯状态
 typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     
-//    CameraManagerFlashModeAuto, /**<自动*/
+    //    CameraManagerFlashModeAuto, /**<自动*/
     
     CameraManagerFlashModeOff, /**<关闭*/
     
@@ -174,7 +174,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     [_videoCamera stopCameraCapture];
 }
 - (void)startCameraCapture {
-     [_videoCamera startCameraCapture];
+    [_videoCamera startCameraCapture];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -189,7 +189,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     self.filteredVideoView.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:self.filteredVideoView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.filteredVideoView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
-
+    
     [NSLayoutConstraint constraintWithItem:self.filteredVideoView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.filteredVideoView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     
@@ -218,7 +218,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     __weak typeof(self) weakSelf = self;
     // 请求相机权限的回调，只有摄像头权限允许访问时，才创建相机
     self.optionsView.permissionView.requestCameraAccessBlock = ^(BOOL granted) {
-        if (granted) {        
+        if (granted) {
             [weakSelf createVideoCamera];
         }
     };
@@ -248,10 +248,10 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         sender.selected = YES;
         _pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"tmp/Movie%lu.mov",(unsigned long)self.urlArray.count]];
         unlink([_pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
-         // 配置录制器
+        // 配置录制器
         NSURL *movieURL = [NSURL fileURLWithPath:_pathToMovie];
         _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(720.0, 1280.0)];
-//        _movieWriter.isNeedBreakAudioWhiter = YES;
+        //        _movieWriter.isNeedBreakAudioWhiter = YES;
         _movieWriter.encodingLiveVideo = YES;
         _movieWriter.shouldPassthroughAudio = YES;
         
@@ -264,10 +264,10 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         _fromdate = [NSDate date];
         [_myTimer invalidate];
         _myTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_INTERVAL
-                                                   target:self
-                                                 selector:@selector(updateTimer:)
-                                                 userInfo:nil
-                                                  repeats:YES];
+                                                    target:self
+                                                  selector:@selector(updateTimer:)
+                                                  userInfo:nil
+                                                   repeats:YES];
         
     }
     else {
@@ -346,15 +346,15 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
             vc.videoOptions = weakSelf.videoOptions;
             vc.videoURL = outLocalURL;
             [[NSNotificationCenter defaultCenter] removeObserver:weakSelf];
-            //            [[AppDelegate sharedAppDelegate] pushViewController:view animated:YES];
+            [MBProgressHUD xy_hideHUD];
             if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
                 [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:vc];
             }
             [weakSelf removeFromSuperview];
         }];
-
+        
         [self.urlArray removeAllObjects];
-        [self->_lastAry removeAllObjects];
+        [self.lastAry removeAllObjects];
         self->_currentTime = 0;
         self->_lastTime = 0;
         self.optionsView.recordState = AlpVideoCameraRecordStateDone;
@@ -365,7 +365,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     
     //    http://blog.csdn.net/ismilesky/article/details/51920113  视频与音乐合成
     //    http://www.jianshu.com/p/0f9789a6d99a 视频与音乐合成
-    
     
     //[_movieWriter cancelRecording];
 }
@@ -466,6 +465,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         
     }];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [MBProgressHUD xy_hideHUD];
     if (self.delegate&&[self.delegate respondsToSelector:@selector(videoCamerView:presentViewCotroller:)]) {
         [self.delegate videoCamerView:self presentViewCotroller:imagePickerVc];
     }
@@ -498,20 +498,15 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
             if (_videoCamera.cameraPosition == AVCaptureDevicePositionBack) {
                 [_videoCamera pauseCameraCapture];
                 _position = CameraManagerDevicePositionFront;
-                //                dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 [_videoCamera rotateCamera];
                 [_videoCamera resumeCameraCapture];
                 
                 sender.selected = YES;
                 [_videoCamera removeAllTargets];
-                //        filter = [[GPUImageBeautifyFilter alloc] init];
-//                _camerafilterChangeButton.selected = YES;
                 _filter = [[GPUImageBeautifyFilter alloc] init];
                 [_videoCamera addTarget:_filter];
                 [_filter addTarget:_filteredVideoView];
                 
-                
-                //                });
             }
         }
             break;
@@ -519,18 +514,14 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
             if (_videoCamera.cameraPosition == AVCaptureDevicePositionFront) {
                 [_videoCamera pauseCameraCapture];
                 _position = CameraManagerDevicePositionBack;
-                
-                //                dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 [_videoCamera rotateCamera];
                 [_videoCamera resumeCameraCapture];
                 
                 sender.selected = NO;
                 [_videoCamera removeAllTargets];
-//                _camerafilterChangeButton.selected = NO;
                 _filter = [[LFGPUImageEmptyFilter alloc] init];
                 [_videoCamera addTarget:_filter];
                 [_filter addTarget:_filteredVideoView];
-                //                });
             }
         }
             break;
@@ -542,8 +533,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         [_videoCamera.inputCamera setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
         [_videoCamera.inputCamera unlockForConfiguration];
     }
-    
-    
     
 }
 
@@ -575,18 +564,18 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     _flashMode = flashMode;
     
     switch (flashMode) {
-//        case CameraManagerFlashModeAuto: {
-//            NSError *error = nil;
-//            if ([_videoCamera.inputCamera hasTorch]) {
-//                BOOL locked = [_videoCamera.inputCamera lockForConfiguration:&error];
-//                if (locked) {
-//                    _videoCamera.inputCamera.torchMode = AVCaptureTorchModeAuto;
-//                    [_videoCamera.inputCamera unlockForConfiguration];
-//                }
-//            }
-//            [_videoCamera.inputCamera unlockForConfiguration];
-//        }
-//            break;
+            //        case CameraManagerFlashModeAuto: {
+            //            NSError *error = nil;
+            //            if ([_videoCamera.inputCamera hasTorch]) {
+            //                BOOL locked = [_videoCamera.inputCamera lockForConfiguration:&error];
+            //                if (locked) {
+            //                    _videoCamera.inputCamera.torchMode = AVCaptureTorchModeAuto;
+            //                    [_videoCamera.inputCamera unlockForConfiguration];
+            //                }
+            //            }
+            //            [_videoCamera.inputCamera unlockForConfiguration];
+            //        }
+            //            break;
         case CameraManagerFlashModeOff: {
             AVCaptureDevice *device = _videoCamera.inputCamera;
             if ([device hasTorch]) {
@@ -620,12 +609,12 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 /// 改变闪光灯状态
 - (void)changeFlashMode:(UIButton *)button {
     switch (self.flashMode) {
-//        case CameraManagerFlashModeAuto:
-//            self.flashMode = CameraManagerFlashModeOn;
-//            [button setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
-//            break;
+            //        case CameraManagerFlashModeAuto:
+            //            self.flashMode = CameraManagerFlashModeOn;
+            //            [button setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
+            //            break;
         case CameraManagerFlashModeOff:
-//            self.flashMode = CameraManagerFlashModeAuto;
+            //            self.flashMode = CameraManagerFlashModeAuto;
             self.flashMode = CameraManagerFlashModeOn;
             [button setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
             break;
@@ -641,7 +630,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 
 /// 录制时timer更新UI
 - (void)updateTimer:(NSTimer *)sender{
-
+    
     _currentTime += TIMER_INTERVAL;
     
     if (_currentTime>=10) {
