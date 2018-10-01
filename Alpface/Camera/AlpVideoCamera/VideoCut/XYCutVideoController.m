@@ -44,14 +44,18 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBarHidden = YES;
+    
     self.tempVideoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"tempVideo.mov"];
     self.view.backgroundColor = [UIColor colorWithRed:56/255.0 green:55/255.0 blue:53/255.0 alpha:1];
     
     [self initMedia];
+    [self setupNavigationBar];
+}
+
+- (void)setupNavigationBar {
     // 禁止系统手势
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-    
+    self.navigationController.navigationBarHidden = YES;
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
     [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
     headerBar.titleLabel.text = @"";
@@ -72,7 +76,6 @@
     [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:44.0].active = YES;
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -86,10 +89,10 @@
 - (void)viewWillAppear:(BOOL)animated {
 
     [super viewWillAppear:animated];
-    [self play];
+    [self tapOnVideoPlayerView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector() name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 
@@ -139,9 +142,9 @@
     [self pause];
 }
 
-- (void)onApplicationDidBecomeActive {
-    [self play];
-}
+//- (void)onApplicationDidBecomeActive {
+//    [self play];
+//}
 
 #pragma mark - ICGVideoTrimmerDelegate
 - (void)trimmerView:(ICGVideoTrimmerView *)trimmerView didChangeLeftPosition:(CGFloat)startTime rightPosition:(CGFloat)endTime {

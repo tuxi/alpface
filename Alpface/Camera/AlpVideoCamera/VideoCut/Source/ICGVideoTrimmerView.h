@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)thrimmerViewWithAsset:(nullable AVAsset *)asset;
 
-// 寻求时间
+// 修剪到时间
 - (void)seekToTime:(CGFloat)startTime;
 
 // 隐藏跟踪器

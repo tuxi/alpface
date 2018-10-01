@@ -12,6 +12,7 @@
 #import "UIImage+AlpExtensions.h"
 #import "AlpVideoCameraCoverSlider.h"
 #import "AlpEditPublishViewController.h"
+#import "AlpEditVideoNavigationBar.h"
 
 // 底部显示的个数
 #define PHOTO_COUNT  6
@@ -45,6 +46,8 @@
 @property (nonatomic, strong) AVPlayerItem *thumbPlayerItem;
 @property (nonatomic, strong) CADisplayLink *displayLink;
 @property (nonatomic, assign) CGFloat videoPlaybackPosition;
+@property (nonatomic, strong) AlpEditVideoNavigationBar *navigationBar;
+
 @end
 
 @implementation AlpEditCoverViewController
@@ -68,68 +71,68 @@
     [self setupUI];
     [self getVideoTotalValueAndScale];
 }
+
+- (void)setupNavigationBar {
+    // 禁止系统手势
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    self.navigationController.navigationBarHidden = YES;
+    AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
+    _navigationBar = headerBar;
+    [headerBar.rightButton setTitle:@"确定" forState:UIControlStateNormal];
+    [headerBar.leftButton setTitle:@"取消" forState:UIControlStateNormal];
+    [headerBar.leftButton setImage:nil forState:UIControlStateNormal];
+    headerBar.titleLabel.text = @"";
+    headerBar.rightButton.backgroundColor = [UIColor redColor];
+    headerBar.rightButton.layer.cornerRadius = 3.0;
+    headerBar.rightButton.layer.masksToBounds = YES;
+    headerBar.backgroundColor = [UIColor clearColor];
+    headerBar.rightButton.contentEdgeInsets = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0);
+    [headerBar.rightButton addTarget:self action:@selector(didClickNextButton) forControlEvents:UIControlEventTouchUpInside];
+    [headerBar.leftButton addTarget:self action:@selector(didClickBackButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:headerBar];
+    headerBar.translatesAutoresizingMaskIntoConstraints = false;
+    if (@available(iOS 11.0, *)) {
+        [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    } else {
+        [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    }
+    [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:headerBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:44.0].active = YES;
+}
+
 - (void)setupUI {
-    
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelButton setBackgroundColor:[UIColor blackColor]];
-    [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-    [cancelButton setTitle:@"取消" forState:UIControlStateSelected];
-    [cancelButton setTitleColor:[UIColor whiteColor] forState:0];
-    [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-    cancelButton.titleLabel.font = [UIFont systemFontOfSize:16.0];
-    cancelButton.tag = 1;
-    [self.view addSubview:cancelButton];
-    cancelButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint constraintWithItem:cancelButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:cancelButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:cancelButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:20.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:cancelButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:30.0].active = YES;
-    
-    UIButton *sureButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sureButton setBackgroundColor:[UIColor blackColor]];
-    [sureButton setTitle:@"确定" forState:UIControlStateNormal];
-    [sureButton setTitle:@"确定" forState:UIControlStateSelected];
-    [sureButton setTitleColor:[UIColor whiteColor] forState:0];
-    [sureButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-    sureButton.titleLabel.font = [UIFont systemFontOfSize:16.0];
-    sureButton.tag = 2;
-    [self.view addSubview:sureButton];
-    sureButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint constraintWithItem:sureButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:sureButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:sureButton attribute:NSLayoutAttributeTrailing    relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-20.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:sureButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:30.0].active = YES;
-    
-    [cancelButton addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
-    [sureButton addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
-    
+    [self setupNavigationBar];
     // 选定的封面
     _coverPlayerView = [[AlpVideoCameraCoverPlayerView alloc] init];
     _coverPlayerView.clipsToBounds  = YES;
     [self.view addSubview:_coverPlayerView];
     _coverPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:0.6 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:0.6 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:35.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:-50.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.navigationBar attribute:NSLayoutAttributeBottom multiplier:1.0 constant:10.0].active = YES;
     
     UILabel *label = [[UILabel alloc] init];
         label.backgroundColor = [UIColor blackColor];
     label.textColor = [UIColor whiteColor];
-    label.text = @"选择封面图";
+    label.text = @"已选封面";
     label.numberOfLines = 0;
     label.textAlignment = NSTextAlignmentLeft;
     label.font = [UIFont systemFontOfSize:14];
     [self.view addSubview:label];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:20.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-140].active = YES;
-    [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:200.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_coverPlayerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:10.0].active = YES;
     [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:20.0].active = YES;
     [self.view addSubview:self.coverImageCollectionView];
     _coverImageCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:COLLECTION_VIEW_LEFT].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-(80+34)].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:label attribute:NSLayoutAttributeBottom multiplier:1.0 constant:10.0].active = YES;
+    if (@available(iOS 11.0, *)) {
+        [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    } else {
+        [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    }
     [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-COLLECTION_VIEW_LEFT].active = YES;
     [NSLayoutConstraint constraintWithItem:self.coverImageCollectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:80.0].active = YES;
     
@@ -176,7 +179,7 @@
     [self play];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -301,17 +304,13 @@
     [self seekVideoToPos:seconds];
 }
 
-- (void)clickButton:(UIButton *)button {
-    if (button.tag == 1) {
-        //取消
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else {
-        //确定
-        AlpEditPublishViewController *vc = [AlpEditPublishViewController new];
-        vc.videoURL = self.videoURL;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+- (void)didClickNextButton {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)didClickBackButton {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark-collectionview
