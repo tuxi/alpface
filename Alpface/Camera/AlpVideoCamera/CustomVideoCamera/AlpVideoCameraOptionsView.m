@@ -80,7 +80,7 @@
     self.shootingLightingButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.rightView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [NSLayoutConstraint constraintWithItem:self.timeButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:20.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.timeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-20.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.timeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-20.0].active = YES;
     
     [NSLayoutConstraint constraintWithItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0].active = YES;
@@ -96,7 +96,7 @@
     CGFloat padding = 30.0;
     
     [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.backBtn attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-padding].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-15.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
      [NSLayoutConstraint constraintWithItem:self.rightView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
     
@@ -118,23 +118,26 @@
     
     
     // 完成录制按钮
-    [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:50].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:52.6].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
-    
-    // 删除录制按钮
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-50.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:50].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:52.6].active = YES;
     [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
     
+    // 删除录制按钮
+    [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-50.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
+    
     // 从相册中导入视频按钮
-//    CGRectMake( 50 , SCREEN_HEIGHT - 105.0, 50, 50.0);
-    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.cameraChangeButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.dleButton attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.dleButton attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.dleButton attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.dleButton attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.dleButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
+    self.inputLocalVieoBtn.layer.cornerRadius = 3.0;
+    self.inputLocalVieoBtn.layer.masksToBounds = YES;
+    self.inputLocalVieoBtn.layer.borderWidth = 1.0;
+    self.inputLocalVieoBtn.layer.borderColor = [UIColor whiteColor].CGColor;
     
     // 录制的进度条
     self.progressPreView.layer.cornerRadius = 2.0;
@@ -211,7 +214,7 @@
         // 返回按钮
         UIButton* backBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, 25, 30, 30)];
         backBtn.showsTouchWhenHighlighted = YES;
-        [backBtn setImage:[UIImage imageNamed:@"BackToHome"] forState:UIControlStateNormal];
+        [backBtn setImage:[UIImage imageNamed:@"icon-white-close_24x24_"] forState:UIControlStateNormal];
         _backBtn = backBtn;
     }
     return _backBtn;

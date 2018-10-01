@@ -47,6 +47,7 @@
     backButton.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.0].active = YES;
     [NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:nextBtn attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:35.0].active = YES;
     [NSLayoutConstraint constraintWithItem:titleLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationLessThanOrEqual toItem:nextBtn attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-5.0].active = YES;
 }
 

@@ -227,6 +227,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     [self.view addSubview:self.navigationBar];
     self.navigationBar.titleLabel.text = @"发布";
     self.navigationBar.translatesAutoresizingMaskIntoConstraints = false;
+    [self.navigationBar.leftButton addTarget:self action:@selector(didClickBackButton) forControlEvents:UIControlEventTouchUpInside];
     if (@available(iOS 11.0, *)) {
         [NSLayoutConstraint constraintWithItem:self.navigationBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
     } else {
@@ -387,10 +388,10 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 
 
 ////////////////////////////////////////////////////////////////////////
-#pragma mark - AlpEditVideoNavigationBarDelegate
+#pragma mark - Actions
 ////////////////////////////////////////////////////////////////////////
 
-- (void)editVideoNavigationBar:(AlpEditVideoNavigationBar *)bar didClickBackButton:(UIButton *)backButton {
+- (void)didClickBackButton {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.navigationController popViewControllerAnimated:YES];
 }

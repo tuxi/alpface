@@ -69,6 +69,8 @@
 		D22FD056207A65A2003E08B9 /* RuntimeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */; };
 		D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D902084F73B00588BEC /* PublishViewController.swift */; };
 		D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D932084FD7F00588BEC /* VideoFile.swift */; };
+		D23770F32161A9FC003555F5 /* icon-white-close_24x24_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D23770F12161A9FC003555F5 /* icon-white-close_24x24_@3x.png */; };
+		D23770F42161A9FC003555F5 /* icon-white-close_24x24_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D23770F22161A9FC003555F5 /* icon-white-close_24x24_@2x.png */; };
 		D24DA0B5215E661900C8440A /* AlpVideoCameraCoverSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = D24DA0B4215E661800C8440A /* AlpVideoCameraCoverSlider.m */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
@@ -455,6 +457,8 @@
 		D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuntimeExtensions.swift; sourceTree = "<group>"; };
 		D2371D902084F73B00588BEC /* PublishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishViewController.swift; sourceTree = "<group>"; };
 		D2371D932084FD7F00588BEC /* VideoFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFile.swift; sourceTree = "<group>"; };
+		D23770F12161A9FC003555F5 /* icon-white-close_24x24_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-white-close_24x24_@3x.png"; sourceTree = "<group>"; };
+		D23770F22161A9FC003555F5 /* icon-white-close_24x24_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-white-close_24x24_@2x.png"; sourceTree = "<group>"; };
 		D24DA0B3215E661800C8440A /* AlpVideoCameraCoverSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpVideoCameraCoverSlider.h; sourceTree = "<group>"; };
 		D24DA0B4215E661800C8440A /* AlpVideoCameraCoverSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpVideoCameraCoverSlider.m; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1178,6 +1182,8 @@
 		D26A92CF214E13AA00C118CA /* cammerImg */ = {
 			isa = PBXGroup;
 			children = (
+				D23770F22161A9FC003555F5 /* icon-white-close_24x24_@2x.png */,
+				D23770F12161A9FC003555F5 /* icon-white-close_24x24_@3x.png */,
 				D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */,
 				D276160C21574CAB008A9AD4 /* record_button_open_65x65_@3x.png */,
 				D276160821574C7F008A9AD4 /* im_ori_select_20x20_@2x.png */,
@@ -1764,6 +1770,7 @@
 				D26A95BF2151479D00C118CA /* icPoiNewPublishLocation_20x20_@2x.png in Resources */,
 				D27615E321572892008A9AD4 /* icShootingFilter_25x25_@2x.png in Resources */,
 				D26A953F214E953B00C118CA /* 6513.mp3 in Resources */,
+				D23770F32161A9FC003555F5 /* icon-white-close_24x24_@3x.png in Resources */,
 				D27615F721572892008A9AD4 /* icShootingLightingAuto_31x31_@2x.png in Resources */,
 				D26A9414214E13AA00C118CA /* icon_weixin_pyq_selected@2x.png in Resources */,
 				D26A93E1214E13AA00C118CA /* stickers549.jpg in Resources */,
@@ -1780,6 +1787,7 @@
 				D27615F521572892008A9AD4 /* icShootingLightingOn_31x31_@2x.png in Resources */,
 				D26A9418214E13AA00C118CA /* cammera@2x.png in Resources */,
 				D26A95B72151414100C118CA /* arrow_learn_more_15x15_@3x.png in Resources */,
+				D23770F42161A9FC003555F5 /* icon-white-close_24x24_@2x.png in Resources */,
 				D26A95CF21514E2700C118CA /* icon_draft_20x20_@2x.png in Resources */,
 				D27615F621572892008A9AD4 /* icShootingAntiShakeOff_31x31_@3x.png in Resources */,
 				D26A9434214E13AA00C118CA /* complete@3x.png in Resources */,

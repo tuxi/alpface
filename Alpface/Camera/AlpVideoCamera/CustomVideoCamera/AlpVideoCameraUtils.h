@@ -73,6 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
                  timeValue:(CMTimeValue)value
                   callBack:(void (^)(AlpVideoCameraCover *image))callBack;
 
+/// 获取系统相册最后一个视频缩略图
++ (void)getLatestAssetFromAlbum:(void (^)(UIImage *image))callBack;
 @end
 
 NS_ASSUME_NONNULL_END

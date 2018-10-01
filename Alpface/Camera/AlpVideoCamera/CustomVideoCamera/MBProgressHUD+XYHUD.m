@@ -235,10 +235,10 @@ static const CGFloat BBToastDefaultDuration = 2.0;
 
 + (void)xy_hideHUD {
     UIView *windowView = (UIView *)[UIApplication sharedApplication].delegate.window;
-    [self hideAllHUDsForView:windowView animated:YES];
-//    [self hideHUDForView:windowView animated:YES];
-    [self hideAllHUDsForView:[UIViewController xy_topViewController].view animated:YES];
-//    [self hideHUDForView:[UIViewController xy_topViewController].view animated:YES];
+    [self hideHUDForView:[UIViewController xy_topViewController].view animated:YES];
+    [self hideHUDForView:windowView animated:YES];
+    //    [self hideAllHUDsForView:windowView animated:YES];
+//    [self hideAllHUDsForView:[UIViewController xy_topViewController].view animated:YES];
 }
 
 

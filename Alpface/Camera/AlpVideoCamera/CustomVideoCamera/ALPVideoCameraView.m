@@ -121,6 +121,12 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     
     [self setupUI];
     
+    [AlpVideoCameraUtils getLatestAssetFromAlbum:^(UIImage * _Nonnull image) {
+        if (!image) {
+            return;
+        }
+        [self.optionsView.inputLocalVieoBtn setImage:image forState:UIControlStateNormal];
+    }];
 }
 
 // 创建摄像头
@@ -321,6 +327,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     [self.optionsView.timeButton setTitle:@"录制 00:00" forState:UIControlStateNormal];
     [_myTimer invalidate];
     _myTimer = nil;
+    [MBProgressHUD xy_hideHUD];
     [MBProgressHUD xy_showActivityMessage:@"视频生成中..."];
     
     
@@ -392,6 +399,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     imagePickerVc.sortAscendingByModificationDate = YES;
     __weak typeof(self) weakSelf = self;
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage,id asset) {
+        [MBProgressHUD xy_hideHUD];
         [MBProgressHUD xy_showActivityMessage:@"视频导出中..."];
         if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0f) {
             PHAsset* myasset = asset;
@@ -410,7 +418,8 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
                     NSURL *url = urlAsset.URL;
                     NSData* videoData = [NSData dataWithContentsOfFile:[[url absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
                     if (videoData.length/1024/1024>AlpVideoCameraMaxVideoSize) {
-                        [MBProgressHUD xy_showMessage:[NSString stringWithFormat:@"所选视频大于%fM,请重新选择", AlpVideoCameraMaxVideoSize] delayTime:1.5];
+                        [MBProgressHUD xy_hideHUD];
+                        [MBProgressHUD xy_showMessage:[NSString stringWithFormat:@"所选视频大于%1.fM,请重新选择", AlpVideoCameraMaxVideoSize] delayTime:1.5];
                     }
                     else {
                         [MBProgressHUD xy_hideHUD];
@@ -436,7 +445,8 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
                 NSURL *url = videoURL;
                 NSData* videoData = [NSData dataWithContentsOfFile:[[url absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""]];
                 if (videoData.length/1024/1024>AlpVideoCameraMaxVideoSize) {
-                    [MBProgressHUD xy_showMessage:[NSString stringWithFormat:@"所选视频大于%fM,请重新选择", AlpVideoCameraMaxVideoSize] delayTime:1.5];
+                    [MBProgressHUD xy_hideHUD];
+                    [MBProgressHUD xy_showMessage:[NSString stringWithFormat:@"所选视频大于%1.fM,请重新选择", AlpVideoCameraMaxVideoSize] delayTime:1.5];
                 }
                 else {
                     [MBProgressHUD xy_hideHUD];

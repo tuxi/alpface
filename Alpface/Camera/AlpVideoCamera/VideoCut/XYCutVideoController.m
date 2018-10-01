@@ -162,6 +162,7 @@
  AVAssetExportPreset1920x1080 超清c导出
  */
 - (void)exportVideoWithPressName:(NSString *)pressName {
+    [MBProgressHUD xy_hideHUD];
     [MBProgressHUD xy_showActivityMessage:@"努力奋斗中..."];
     // 删除缓存中的临时视频文件
     [self deleteTempVideoFile];
@@ -320,6 +321,7 @@
 #pragma mark - Actions
 ////////////////////////////////////////////////////////////////////////
 - (void)didClickNextButton {
+    [MBProgressHUD xy_hideHUD];
     [MBProgressHUD xy_showActivityMessage:@"奋力处理中..."];
     [self exportVideoWithPressName:AVAssetExportPreset1280x720];
 }

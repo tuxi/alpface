@@ -8,6 +8,7 @@
 
 #import "AlpVideoCameraUtils.h"
 #import "AlpVideoCameraDefine.h"
+#import <Photos/Photos.h>
 //#import <YYImage/YYImageCoder.h>
 
 @implementation AlpVideoCameraUtils
@@ -450,6 +451,58 @@
 //    return webpData;
 //}
 
+
+/// 获取系统相册最后一个视频缩略图
++ (void)getLatestAssetFromAlbum:(void (^)(UIImage *image))callBack {
+    if (![self isCanUsePhotos]) {
+        if (callBack) {
+            callBack(nil);
+        }
+        return;
+    }
+    // 获取所有资源的集合，并按资源的创建时间排序
+    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    options.sortDescriptors = @[[NSSortDescriptor
+                                 sortDescriptorWithKey:@"creationDate"
+                                 ascending:YES]];
+    options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld",
+                                         PHAssetMediaTypeVideo];
+    
+    PHFetchResult *assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
+    // 在资源的集合中获取第一个集合，并获取其中的图片
+    // 修复获取图片时出现的瞬间内存过高问题
+    PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
+    option.resizeMode = PHImageRequestOptionsResizeModeFast;
+    PHCachingImageManager *imageManager = [[PHCachingImageManager alloc] init];
+    PHAsset *asset = [assetsFetchResults lastObject];
+    if (!asset) {
+        if (callBack) {
+            callBack(nil);
+        }
+        return;
+    }
+    [imageManager requestImageForAsset:asset targetSize:CGSizeMake(100.0, 100.0)
+                           contentMode:PHImageContentModeAspectFill options:option resultHandler:^(UIImage *result, NSDictionary *info) {
+                               if (callBack) {
+                                   callBack(result);
+                               }
+                           }];
+    
+    
+    
+    
+    
+}
++ (BOOL)isCanUsePhotos {
+    
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if (status == PHAuthorizationStatusRestricted ||
+        status == PHAuthorizationStatusDenied) {
+        //无权限
+        return NO;
+    }
+    return YES;
+}
 
 @end
 
