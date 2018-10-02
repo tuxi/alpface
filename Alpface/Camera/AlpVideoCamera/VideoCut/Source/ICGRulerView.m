@@ -31,6 +31,14 @@
     return self;
 }
 
+- (void)setBounds:(CGRect)bounds {
+    CGRect oldBlounds = self.bounds;
+    if (!CGRectEqualToRect(oldBlounds, bounds)) {
+        [self setNeedsDisplay];
+    }
+    [super setBounds:bounds];
+}
+
 
 - (void)drawRect:(CGRect)rect
 {

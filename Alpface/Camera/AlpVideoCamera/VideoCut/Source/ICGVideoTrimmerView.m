@@ -35,6 +35,8 @@
 @property (nonatomic) CGPoint rightStartPoint;
 @property (nonatomic) CGFloat overlayWidth;
 
+@property (nonatomic, strong) ICGRulerView *rulerView;
+
 @end
 
 @implementation ICGVideoTrimmerView
@@ -130,6 +132,11 @@
     }
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+
+}
+
 /// 重置子视图，当bounds发生改变时会重置子视图，
 /// 以便适应autolayout或者frame的布局，对于屏幕旋转时bounds发生改变进行处理
 - (void)resetSubviews
@@ -138,84 +145,74 @@
 
 //    [self setBackgroundColor:[UIColor blackColor]];
 
-    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+//    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 //    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    // 添加子控件
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
-    
-    [self addSubview:self.scrollView];
-    [self.scrollView setDelegate:self];
-    [self.scrollView setShowsHorizontalScrollIndicator:NO];
-    
-    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.scrollView.frame), CGRectGetHeight(self.scrollView.frame))];
+    // 更新布局
+    self.scrollView.frame = self.bounds;
+    self.contentView.frame = self.bounds;
     [self.scrollView setContentSize:self.contentView.frame.size];
-    [self.scrollView addSubview:self.contentView];
+
     
     CGFloat ratio = self.showsRulerView ? 0.7 : 1.0;
-    self.frameView = [[UIView alloc] initWithFrame:CGRectMake(self.thumbWidth, 0, CGRectGetWidth(self.contentView.frame)-2*self.thumbWidth, CGRectGetHeight(self.contentView.frame)*ratio)];
-    [self.frameView.layer setMasksToBounds:YES];
-    [self.contentView addSubview:self.frameView];
+    self.frameView.frame = CGRectMake(self.thumbWidth, 0, CGRectGetWidth(self.contentView.frame)-2*self.thumbWidth, CGRectGetHeight(self.contentView.frame)*ratio);
     
     // 添加每一帧的视频作为图片展示在frameView上
     [self addFrames];
     
     if (self.showsRulerView) {
         CGRect rulerFrame = CGRectMake(0, CGRectGetHeight(self.contentView.frame)*0.7, CGRectGetWidth(self.contentView.frame)+self.thumbWidth, CGRectGetHeight(self.contentView.frame)*0.3);
-        ICGRulerView *rulerView = [[ICGRulerView alloc] initWithFrame:rulerFrame widthPerSecond:self.widthPerSecond themeColor:self.themeColor];
-        [self.contentView addSubview:rulerView];
+        self.rulerView.frame = rulerFrame;
     }
-    
+    else {
+        [_rulerView removeFromSuperview];
+        _rulerView = nil;
+    }
     // add borders
-    self.topBorder = [[UIView alloc] init];
-    [self.topBorder setBackgroundColor:self.themeColor];
-    [self addSubview:self.topBorder];
-    
-    self.bottomBorder = [[UIView alloc] init];
-    [self.bottomBorder setBackgroundColor:self.themeColor];
-    [self addSubview:self.bottomBorder];
+//    self.topBorder = [[UIView alloc] init];
+//    [self.topBorder setBackgroundColor:self.themeColor];
+//    [self addSubview:self.topBorder];
+//
+//    self.bottomBorder = [[UIView alloc] init];
+//    [self.bottomBorder setBackgroundColor:self.themeColor];
+//    [self addSubview:self.bottomBorder];
     
     // width for left and right overlay views
     self.overlayWidth =  CGRectGetWidth(self.frame) - (self.minLength * self.widthPerSecond);
 
     // add left overlay view
-    self.leftOverlayView = [[UIView alloc] initWithFrame:CGRectMake(self.thumbWidth - self.overlayWidth, 0, self.overlayWidth, CGRectGetHeight(self.frameView.frame))];
+    self.leftOverlayView.frame = CGRectMake(self.thumbWidth - self.overlayWidth, 0, self.overlayWidth, CGRectGetHeight(self.frameView.frame));
     CGRect leftThumbFrame = CGRectMake(self.overlayWidth-self.thumbWidth, 0, self.thumbWidth, CGRectGetHeight(self.frameView.frame));
+    self.leftThumbView.frame = leftThumbFrame;
+    self.leftThumbView.isRight = NO;
     if (self.leftThumbImage) {
-        self.leftThumbView = [[ICGThumbView alloc] initWithFrame:leftThumbFrame thumbImage:self.leftThumbImage];
+        self.leftThumbView.thumbImage = self.leftThumbImage;
+        self.leftThumbView.color = nil;
     } else {
-        self.leftThumbView = [[ICGThumbView alloc] initWithFrame:leftThumbFrame color:self.themeColor right:NO];
+        self.leftThumbView.color = self.themeColor;
     }
     
-    self.trackerView = [[UIView alloc] initWithFrame:CGRectMake(self.thumbWidth, -5, 3, CGRectGetHeight(self.frameView.frame) + 10)];
+    self.trackerView.frame = CGRectMake(self.thumbWidth, -5, 3, CGRectGetHeight(self.frameView.frame) + 10);
     self.trackerView.backgroundColor = self.trackerColor;
-    self.trackerView.layer.masksToBounds = true;
-    self.trackerView.layer.cornerRadius = 2;
-    [self addSubview:self.trackerView];
+    [self bringSubviewToFront:self.trackerView];
 
-    [self.leftThumbView.layer setMasksToBounds:YES];
-    [self.leftOverlayView addSubview:self.leftThumbView];
-    [self.leftOverlayView setUserInteractionEnabled:YES];
-    UIPanGestureRecognizer *leftPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveLeftOverlayView:)];
-    [self.leftOverlayView addGestureRecognizer:leftPanGestureRecognizer];
     [self.leftOverlayView setBackgroundColor:self.leftOverlayViewColor];
-    [self addSubview:self.leftOverlayView];
+    
 
     // add right overlay view
     CGFloat rightViewFrameX = CGRectGetWidth(self.frameView.frame) < CGRectGetWidth(self.frame) ? CGRectGetMaxX(self.frameView.frame) : CGRectGetWidth(self.frame) - self.thumbWidth;
-    self.rightOverlayView = [[UIView alloc] initWithFrame:CGRectMake(rightViewFrameX, 0, self.overlayWidth, CGRectGetHeight(self.frameView.frame))];
+    self.rightOverlayView.frame = CGRectMake(rightViewFrameX, 0, self.overlayWidth, CGRectGetHeight(self.frameView.frame));
+    self.rightThumbView.frame = CGRectMake(0, 0, self.thumbWidth, CGRectGetHeight(self.frameView.frame));
     if (self.rightThumbImage) {
-        self.rightThumbView = [[ICGThumbView alloc] initWithFrame:CGRectMake(0, 0, self.thumbWidth, CGRectGetHeight(self.frameView.frame)) thumbImage:self.rightThumbImage];
+        self.rightThumbView.thumbImage = self.rightThumbImage;
+        self.rightThumbView.color = nil;
+        
     } else {
-        self.rightThumbView = [[ICGThumbView alloc] initWithFrame:CGRectMake(0, 0, self.thumbWidth, CGRectGetHeight(self.frameView.frame)) color:self.themeColor right:YES];
+        self.rightThumbView.color = self.themeColor;
+        self.rightThumbView.isRight = YES;
     }
-    [self.rightThumbView.layer setMasksToBounds:YES];
-    [self.rightOverlayView addSubview:self.rightThumbView];
-    [self.rightOverlayView setUserInteractionEnabled:YES];
-    UIPanGestureRecognizer *rightPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveRightOverlayView:)];
-    [self.rightOverlayView addGestureRecognizer:rightPanGestureRecognizer];
     [self.rightOverlayView setBackgroundColor:self.rightOverlayViewColor];
-    [self addSubview:self.rightOverlayView];
+    
     
     [self updateBorderFrames];
     [self notifyDelegate];
@@ -330,6 +327,7 @@
 
 - (void)addFrames
 {
+    [self.frameView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.asset];
     self.imageGenerator.appliesPreferredTrackTransform = YES;
     if ([self isRetina]){
@@ -448,5 +446,112 @@
 }
 
 
+////////////////////////////////////////////////////////////////////////
+#pragma mark - lazy
+////////////////////////////////////////////////////////////////////////
 
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [UIScrollView new];
+        [self addSubview:_scrollView];
+        [_scrollView setDelegate:self];
+        [_scrollView setShowsHorizontalScrollIndicator:NO];
+        [_scrollView addSubview:self.contentView];
+    }
+    return _scrollView;
+}
+
+- (UIView *)contentView {
+    if (!_contentView) {
+        _contentView = [[UIView alloc] initWithFrame:CGRectZero];
+    }
+    return _contentView;
+}
+
+- (UIView *)frameView {
+    if (!_frameView) {
+        _frameView = [[UIView alloc] initWithFrame:CGRectZero];
+        [_frameView.layer setMasksToBounds:YES];
+        [self.contentView addSubview:_frameView];
+    }
+    return _frameView;
+}
+
+- (ICGRulerView *)rulerView {
+    if (!_rulerView) {
+        _rulerView = [[ICGRulerView alloc] initWithFrame:CGRectZero widthPerSecond:self.widthPerSecond themeColor:self.themeColor];
+        [self.contentView addSubview:_rulerView];
+        
+    }
+    return _rulerView;
+}
+- (UIView *)topBorder {
+    if (!_topBorder) {
+        _topBorder = [[UIView alloc] init];
+        [_topBorder setBackgroundColor:self.themeColor];
+        [self addSubview:_topBorder];
+    }
+    return _topBorder;
+}
+
+- (UIView *)bottomBorder {
+    if (!_bottomBorder) {
+        _bottomBorder = [[UIView alloc] init];
+        [_bottomBorder setBackgroundColor:self.themeColor];
+        [self addSubview:_bottomBorder];
+    }
+    return _bottomBorder;
+}
+
+- (UIView *)leftOverlayView {
+    if (!_leftOverlayView) {
+        _leftOverlayView = [[UIView alloc] initWithFrame:CGRectZero];
+        [self addSubview:_leftOverlayView];
+        UIPanGestureRecognizer *leftPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveLeftOverlayView:)];
+        [_leftOverlayView addGestureRecognizer:leftPanGestureRecognizer];
+        [_leftOverlayView addSubview:self.leftThumbView];
+        [_leftOverlayView setUserInteractionEnabled:YES];
+    }
+    return _leftOverlayView;
+}
+
+- (ICGThumbView *)leftThumbView {
+    if (!_leftThumbView) {
+        _leftThumbView = [[ICGThumbView alloc] init];
+        [_leftThumbView.layer setMasksToBounds:YES];
+        _leftThumbView.clipsToBounds = YES;
+    }
+    return _leftThumbView;
+}
+
+- (UIView *)trackerView {
+    if (!_trackerView) {
+        _trackerView = [[UIView alloc] initWithFrame:CGRectZero];
+        _trackerView.layer.masksToBounds = true;
+        _trackerView.layer.cornerRadius = 2;
+        [self addSubview:_trackerView];
+    }
+    return _trackerView;
+}
+
+- (UIView *)rightOverlayView {
+    if (!_rightOverlayView) {
+        _rightOverlayView = [[UIView alloc] initWithFrame:CGRectZero];
+        [self addSubview:_rightOverlayView];
+        [_rightOverlayView addSubview:self.rightThumbView];
+        [_rightOverlayView setUserInteractionEnabled:YES];
+        UIPanGestureRecognizer *rightPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveRightOverlayView:)];
+        [_rightOverlayView addGestureRecognizer:rightPanGestureRecognizer];
+    }
+    return _rightOverlayView;
+}
+
+- (ICGThumbView *)rightThumbView {
+    if (!_rightThumbView) {
+        _rightThumbView = [[ICGThumbView alloc] initWithFrame:CGRectZero];
+        [_rightThumbView.layer setMasksToBounds:YES];
+        _rightThumbView.clipsToBounds = YES;
+    }
+    return _rightThumbView;
+}
 @end

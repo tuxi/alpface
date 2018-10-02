@@ -10,42 +10,39 @@
 
 @interface ICGThumbView()
 
-@property (nonatomic) BOOL isRight;
-@property (strong, nonatomic) UIImage *thumbImage;
-
 @end
 
 @implementation ICGThumbView
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    NSAssert(NO, nil);
-    @throw nil;
+- (void)setIsRight:(BOOL)isRight {
+    if (_isRight != isRight) {
+        _isRight = isRight;
+        [self setNeedsDisplay];
+    }
 }
 
-- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    return [super initWithCoder:aDecoder];
+- (void)setThumbImage:(UIImage *)thumbImage {
+    if (_thumbImage != thumbImage) {
+        _thumbImage = thumbImage;
+        [self setNeedsDisplay];
+    }
 }
 
-- (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color right:(BOOL)flag
-{
-    self = [super initWithFrame:frame];
-    if (self) {
+- (void)setColor:(UIColor *)color {
+    if (_color != color) {
         _color = color;
-        _isRight = flag;
+        [self setNeedsDisplay];
     }
-    return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame thumbImage:(UIImage *)image
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.thumbImage = image;
+- (void)setBounds:(CGRect)bounds {
+    CGRect oldBlounds = self.bounds;
+    if (!CGRectEqualToRect(oldBlounds, bounds)) {
+        [self setNeedsDisplay];
     }
-    return self;
+    [super setBounds:bounds];
 }
+
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {

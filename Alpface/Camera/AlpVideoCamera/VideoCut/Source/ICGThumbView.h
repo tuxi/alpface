@@ -14,13 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic, nullable) UIColor *color;
 
-- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE; // 不可用
+@property (nonatomic) BOOL isRight;
+@property (strong, nonatomic, nullable) UIImage *thumbImage;
 
-- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color right:(BOOL)flag NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)initWithFrame:(CGRect)frame thumbImage:(UIImage *)image NS_DESIGNATED_INITIALIZER;
 
 @end
 

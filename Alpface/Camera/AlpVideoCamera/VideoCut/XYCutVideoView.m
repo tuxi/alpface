@@ -21,9 +21,10 @@
         
         ICGVideoTrimmerView *cutView = [ICGVideoTrimmerView thrimmerViewWithAsset:nil];
         [self addSubview:cutView];
+        cutView.showsRulerView = YES;
         self.cutView = cutView;
-        cutView.rightOverlayViewColor = [UIColor colorWithRed:56/255.0 green:55/255.0 blue:53/255.0 alpha:0.5];
-        cutView.leftOverlayViewColor = [UIColor colorWithRed:56/255.0 green:55/255.0 blue:53/255.0 alpha:0.5];
+        cutView.rightOverlayViewColor = [UIColor clearColor];
+        cutView.leftOverlayViewColor = [UIColor clearColor];
         
         self.videoPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
         self.cutView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -45,21 +46,6 @@
     }
     return self;
 }
-
-
-#pragma mark - Private Method
-// 绘制一个渐变的颜色，作为背景色。定义一个配置函数
--(void)setupCAGradientLayer:(CAGradientLayer *)gradient{
-    UIColor *colorOne = [UIColor colorWithRed:60/255.0 green:59/255.0 blue:65/255.0 alpha:1.0];
-    UIColor *colorTwo = [UIColor colorWithRed:57/255.0 green:80/255.0 blue:96/255.0 alpha:1.0];
-    NSArray *colors = [NSArray arrayWithObjects:(id)colorOne.CGColor, (id)colorTwo.CGColor, nil];
-    NSNumber *stopOne = [NSNumber numberWithFloat:0.0];
-    NSNumber *stopTwo = [NSNumber numberWithFloat:1.0];
-    NSArray *locations = [NSArray arrayWithObjects:stopOne, stopTwo, nil];
-    gradient.colors = colors;
-    gradient.locations = locations;
-}
-
 
 - (void)dealloc {
 
