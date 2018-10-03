@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     float _preLayerHWRate;
 }
 
-@property (nonatomic, assign) CameraManagerDevicePosition position;
+@property (nonatomic, assign) CameraManagerDevicePosition cameraPosition;
 @property (nonatomic, assign) BOOL isRecoding;
 @property (nonatomic, strong) GPUImageView *filteredVideoView;
 @property (nonatomic, strong) AlpVideoCameraOptionsView *optionsView;
@@ -152,7 +152,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         [_videoCamera.inputCamera unlockForConfiguration];
     }
     
-    _position = CameraManagerDevicePositionBack;
+    self.cameraPosition = CameraManagerDevicePositionBack;
     //    videoCamera.frameRate = 10;
     // 输出图像旋转方式
     _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
@@ -493,11 +493,11 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 /// 切换前后摄像头
 - (void)changeCameraPositionBtn:(UIButton*)sender{
     
-    switch (_position) {
+    switch (self.cameraPosition) {
         case CameraManagerDevicePositionBack: {
             if (_videoCamera.cameraPosition == AVCaptureDevicePositionBack) {
                 [_videoCamera pauseCameraCapture];
-                _position = CameraManagerDevicePositionFront;
+                self.cameraPosition = CameraManagerDevicePositionFront;
                 [_videoCamera rotateCamera];
                 [_videoCamera resumeCameraCapture];
                 
@@ -513,7 +513,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         case CameraManagerDevicePositionFront: {
             if (_videoCamera.cameraPosition == AVCaptureDevicePositionFront) {
                 [_videoCamera pauseCameraCapture];
-                _position = CameraManagerDevicePositionBack;
+                self.cameraPosition = CameraManagerDevicePositionBack;
                 [_videoCamera rotateCamera];
                 [_videoCamera resumeCameraCapture];
                 
@@ -577,6 +577,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
             //        }
             //            break;
         case CameraManagerFlashModeOff: {
+            [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
             AVCaptureDevice *device = _videoCamera.inputCamera;
             if ([device hasTorch]) {
                 [device lockForConfiguration:nil];
@@ -587,7 +588,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
             
             break;
         case CameraManagerFlashModeOn: {
-            
+            [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
             NSError *error = nil;
             if ([_videoCamera.inputCamera hasTorch]) {
                 BOOL locked = [_videoCamera.inputCamera lockForConfiguration:&error];
@@ -616,11 +617,9 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         case CameraManagerFlashModeOff:
             //            self.flashMode = CameraManagerFlashModeAuto;
             self.flashMode = CameraManagerFlashModeOn;
-            [button setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
             break;
         case CameraManagerFlashModeOn:
             self.flashMode = CameraManagerFlashModeOff;
-            [button setImage:[UIImage imageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
             break;
             
         default:
@@ -664,6 +663,17 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     [_filteredVideoView.layer addSublayer:layer];
     _focusLayer = layer;
     
+}
+
+- (void)setCameraPosition:(CameraManagerDevicePosition)cameraPosition {
+    _cameraPosition = cameraPosition;
+    self.flashMode = CameraManagerFlashModeOff;
+    if (cameraPosition == CameraManagerDevicePositionFront) {
+        self.optionsView.shootingLightingButton.hidden = YES;
+    }
+    else {
+        self.optionsView.shootingLightingButton.hidden = NO;
+    }
 }
 
 - (void)layerAnimationWithPoint:(CGPoint)point {
