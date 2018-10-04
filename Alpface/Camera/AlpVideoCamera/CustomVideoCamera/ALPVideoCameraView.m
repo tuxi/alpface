@@ -46,8 +46,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     
     NSString *_pathToMovie;
     CALayer *_focusLayer;
-    NSDate *_fromdate;
-    CGRect _mainScreenFrame;
     // 允许录制视频的最大长度 默认20秒
     float _totalTime;
     // 当前视频长度
@@ -64,19 +62,25 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     float _preLayerHWRate;
 }
 
-@property (nonatomic, assign) CameraManagerDevicePosition cameraPosition;
-@property (nonatomic, assign) BOOL isRecoding;
 @property (nonatomic, strong) GPUImageView *filteredVideoView;
 @property (nonatomic, strong) AlpVideoCameraOptionsView *optionsView;
 @property (nonatomic, strong) NSMutableArray *lastAry;
 /// 保存录制视频的url，分段录制时保存不同的本地路径，合并时使用
 @property (nonatomic, strong) NSMutableArray<NSURL *> *urlArray;
-@property (nonatomic , assign) CameraManagerFlashMode flashMode;
 /// 相机
 @property (nonatomic, strong) GPUImageVideoCamera *videoCamera;
 @property (nonatomic, strong) GPUImageOutput<GPUImageInput> *filter;
 // 录制器
 @property (nonatomic, strong) GPUImageMovieWriter *movieWriter;
+// 是否开启美颜，默认打开
+@property (nonatomic, assign) BOOL isOpenBeautifyFilter;
+// 闪光灯状态，默认是关闭的，当切换到前置摄像头时关闭闪光灯
+@property (nonatomic , assign) CameraManagerFlashMode flashMode;
+// 是否在录制中
+@property (nonatomic, assign) BOOL isRecoding;
+// 前后摄像头状态
+@property (nonatomic, assign) CameraManagerDevicePosition cameraPosition;
+
 @end
 
 @implementation ALPVideoCameraView
@@ -110,7 +114,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     _preLayerHWRate =_preLayerHeight/_preLayerWidth;
     _lastAry = [[NSMutableArray alloc] init];
     [AlpVideoCameraUtils createVideoFolderIfNotExist];
-    _mainScreenFrame = self.frame;
     /// 检查相机权限
     AVAuthorizationStatus cameraStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (cameraStatus == AVAuthorizationStatusAuthorized) {
@@ -168,6 +171,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         // 音频状态允许时，才添加视频的输入和输出
         [_videoCamera addAudioInputsAndOutputs];
     }
+    self.isOpenBeautifyFilter = YES;
 }
 
 - (void)stopCameraCapture {
@@ -261,7 +265,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         // 开始录制
         [_movieWriter startRecording];
         _isRecoding = YES;
-        _fromdate = [NSDate date];
         [_myTimer invalidate];
         _myTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_INTERVAL
                                                     target:self
@@ -491,8 +494,8 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 }
 
 /// 切换前后摄像头
-- (void)changeCameraPositionBtn:(UIButton*)sender{
-    
+- (void)changeCameraPositionBtn:(UIButton*)sender {
+    sender.selected = !sender.isSelected;
     switch (self.cameraPosition) {
         case CameraManagerDevicePositionBack: {
             if (_videoCamera.cameraPosition == AVCaptureDevicePositionBack) {
@@ -500,13 +503,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
                 self.cameraPosition = CameraManagerDevicePositionFront;
                 [_videoCamera rotateCamera];
                 [_videoCamera resumeCameraCapture];
-                
-                sender.selected = YES;
-                [_videoCamera removeAllTargets];
-                _filter = [[GPUImageBeautifyFilter alloc] init];
-                [_videoCamera addTarget:_filter];
-                [_filter addTarget:_filteredVideoView];
-                
             }
         }
             break;
@@ -516,12 +512,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
                 self.cameraPosition = CameraManagerDevicePositionBack;
                 [_videoCamera rotateCamera];
                 [_videoCamera resumeCameraCapture];
-                
-                sender.selected = NO;
-                [_videoCamera removeAllTargets];
-                _filter = [[LFGPUImageEmptyFilter alloc] init];
-                [_videoCamera addTarget:_filter];
-                [_filter addTarget:_filteredVideoView];
             }
         }
             break;
@@ -534,23 +524,25 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         [_videoCamera.inputCamera unlockForConfiguration];
     }
     
+    // 重置下美颜
+    self.isOpenBeautifyFilter = self.isOpenBeautifyFilter;
 }
 
 /// 打开或关闭美颜功能
-- (void)changebeautifyFilterBtn:(UIButton*)sender{
-    if (!sender.selected) {
-        
-        sender.selected = YES;
+- (void)changebeautifyFilterBtn:(UIButton*)sender {
+    sender.selected = !sender.isSelected;
+    self.isOpenBeautifyFilter = !sender.isSelected;
+}
+
+- (void)setisOpenBeautifyFilter:(BOOL)isOpenBeautifyFilter {
+    _isOpenBeautifyFilter = isOpenBeautifyFilter;
+    if (isOpenBeautifyFilter) {
         [_videoCamera removeAllTargets];
-        //        filter = [[GPUImageBeautifyFilter alloc] init];
         _filter = [[GPUImageBeautifyFilter alloc] init];
         [_videoCamera addTarget:_filter];
         [_filter addTarget:_filteredVideoView];
-        
-        
     }
     else {
-        sender.selected = NO;
         [_videoCamera removeAllTargets];
         _filter = [[LFGPUImageEmptyFilter alloc] init];
         [_videoCamera addTarget:_filter];
