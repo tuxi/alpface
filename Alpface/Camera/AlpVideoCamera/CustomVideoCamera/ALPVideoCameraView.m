@@ -24,6 +24,15 @@
 #import "XYCutVideoController.h"
 #import "MBProgressHUD+XYHUD.h"
 
+@interface AlpSegmentedVideo : NSObject
+
+@property (nonatomic, copy) NSURL *videoURL;
+@property (nonatomic, assign) CGFloat progress;
+@property (nonatomic, assign) float time;
+@property (nonatomic, strong) UIView *thumbView;
+
+@end
+
 /**
  @note GPUImageVideoCamera录制视频 有时第一帧是黑屏 待解决
  */
@@ -50,23 +59,11 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     float _totalTime;
     // 当前视频长度
     float _currentTime;
-    // 记录上次时间
-    float _lastTime;
     NSTimer *_myTimer;
-    
-    // 镜头宽
-    float _preLayerWidth;
-    // 镜头高
-    float _preLayerHeight;
-    // 高，宽比
-    float _preLayerHWRate;
 }
 
 @property (nonatomic, strong) GPUImageView *filteredVideoView;
 @property (nonatomic, strong) AlpVideoCameraOptionsView *optionsView;
-@property (nonatomic, strong) NSMutableArray *lastAry;
-/// 保存录制视频的url，分段录制时保存不同的本地路径，合并时使用
-@property (nonatomic, strong) NSMutableArray<NSURL *> *urlArray;
 /// 相机
 @property (nonatomic, strong) GPUImageVideoCamera *videoCamera;
 @property (nonatomic, strong) GPUImageOutput<GPUImageInput> *filter;
@@ -80,6 +77,8 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 @property (nonatomic, assign) BOOL isRecoding;
 // 前后摄像头状态
 @property (nonatomic, assign) CameraManagerDevicePosition cameraPosition;
+/// 保存录制视频的url，分段录制时保存不同的本地路径，合并时使用
+@property (nonatomic, strong) NSMutableArray *segmentedVideos;
 
 @end
 
@@ -108,11 +107,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeVideoCameraNotification) name:AlpVideoCameraCloseNotification object:nil];
     
-    _lastTime = 0;
-    _preLayerWidth = SCREEN_WIDTH;
-    _preLayerHeight = SCREEN_HEIGHT;
-    _preLayerHWRate =_preLayerHeight/_preLayerWidth;
-    _lastAry = [[NSMutableArray alloc] init];
     [AlpVideoCameraUtils createVideoFolderIfNotExist];
     /// 检查相机权限
     AVAuthorizationStatus cameraStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
@@ -245,12 +239,10 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 
 /// 开始录制视频
 - (void)startRecording:(UIButton*)sender {
+    sender.selected = !sender.isSelected;
     if (!sender.selected) {
         self.optionsView.recordState = AlpVideoCameraRecordStateStart;
-        _lastTime = _currentTime;
-        [_lastAry addObject:[NSString stringWithFormat:@"%f",_lastTime]];
-        sender.selected = YES;
-        _pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"tmp/Movie%lu.mov",(unsigned long)self.urlArray.count]];
+        _pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"tmp/Movie%lu.mov",(unsigned long)self.segmentedVideos.count]];
         unlink([_pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
         // 配置录制器
         NSURL *movieURL = [NSURL fileURLWithPath:_pathToMovie];
@@ -275,7 +267,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     }
     else {
         self.optionsView.recordState = AlpVideoCameraRecordStatePause;
-        sender.selected = NO;
         _videoCamera.audioEncodingTarget = nil;
         NSLog(@"Path %@",_pathToMovie);
         if (_pathToMovie == nil) {
@@ -291,7 +282,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         }
         [_myTimer invalidate];
         _myTimer = nil;
-        if (self.urlArray.count) {
+        if (self.segmentedVideos.count) {
             self.optionsView.dleButton.hidden = NO;
         }
     }
@@ -300,15 +291,34 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 // 添加分段录制的url
 // 防止重复添加分段录制的url，当photoCaptureButton.isSelected==NO时为暂停录制，此时已经将暂停的那一段添加到url了
 - (void)addVideoURL:(NSURL *)url {
-    NSUInteger foundIdxInURLArray = [self.urlArray indexOfObjectPassingTest:^BOOL(NSURL *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        BOOL flag = [obj.absoluteString isEqualToString:url.absoluteString];
+    NSAssert(url != nil, @"视频路径不能为nil");
+    NSUInteger foundIdxInURLArray = [self.segmentedVideos indexOfObjectPassingTest:^BOOL(AlpSegmentedVideo *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        BOOL flag = [obj.videoURL.absoluteString isEqualToString:url.absoluteString];
         if (flag) {
             *stop = YES;
         }
         return flag;
     }];
     if (foundIdxInURLArray == NSNotFound) {
-        [self.urlArray addObject:url];
+        AlpSegmentedVideo *video = [AlpSegmentedVideo new];
+        video.time = _currentTime;
+        video.progress = self.optionsView.progressPreView.progress;
+        video.videoURL = url;
+        [self.segmentedVideos addObject:video];
+        
+        // 在进度跳上创建一个标识，作为当前这段视频的结尾
+        UIView *view = [UIView new];
+        view.backgroundColor = [UIColor redColor];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.optionsView.progressPreView addSubview:view];
+        video.thumbView = view;
+        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.optionsView.progressPreView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.optionsView.progressPreView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+        CGFloat viewWidth = 2.0;
+        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth].active = YES;
+        CGFloat progressWidth = self.optionsView.progressPreView.bounds.size.width * video.progress;
+        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.optionsView.progressPreView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:progressWidth-viewWidth].active = YES;
+        
     }
 }
 
@@ -342,7 +352,13 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         __weak typeof(self) weakSelf = self;
         __weak typeof(self->_videoCamera) weakVideoCamera = self->_videoCamera;
-        [AlpVideoCameraUtils mergeVideos:self.urlArray exportPath:outPath watermarkImg: nil/*[UIImage imageNamed:@"icon_watermark"]*/ completion:^(NSURL * _Nonnull outLocalURL) {
+        NSMutableArray *urls = @[].mutableCopy;
+        for (AlpSegmentedVideo *video in self.segmentedVideos) {
+            [urls addObject:video.videoURL];
+        }
+        
+        
+        [AlpVideoCameraUtils mergeVideos:urls exportPath:outPath watermarkImg: nil/*[UIImage imageNamed:@"icon_watermark"]*/ completion:^(NSURL * _Nonnull outLocalURL) {
             [weakVideoCamera stopCameraCapture];
             
             AlpEditVideoViewController* vc = [[AlpEditVideoViewController alloc]init];
@@ -353,13 +369,10 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
             if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
                 [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:vc];
             }
+            [self removeAllSegmentedVideos];
             [weakSelf removeFromSuperview];
         }];
         
-        [self.urlArray removeAllObjects];
-        [self.lastAry removeAllObjects];
-        self->_currentTime = 0;
-        self->_lastTime = 0;
         self.optionsView.recordState = AlpVideoCameraRecordStateDone;
     });
     
@@ -374,20 +387,41 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 
 /// 删除当前已经录制的内容
 - (void)clickDleBtn:(UIButton*)sender {
-    self.optionsView.recordState = AlpVideoCameraRecordStateNotStart;
-    _currentTime = [_lastAry.lastObject floatValue];
     [self.optionsView.timeButton setTitle:[NSString stringWithFormat:@"录制 00:0%.0f",_currentTime] forState:UIControlStateNormal];
-    if (self.urlArray.count) {
-        [self.urlArray removeLastObject];
-        [_lastAry removeLastObject];
-        if (self.urlArray.count == 0) {
-            self.optionsView.dleButton.hidden = YES;
-        }
-        if (_currentTime < 3) {
-            self.optionsView.cameraChangeButton.hidden = YES;
-        }
+    [self removeLastSegementedVideo];
+}
+
+- (void)removeLastSegementedVideo {
+    AlpSegmentedVideo *video = [self.segmentedVideos lastObject];
+    if (!video) {
+        self.optionsView.dleButton.hidden = YES;
+        self.optionsView.cameraChangeButton.hidden = YES;
+        _currentTime = 0.0;
+        [self.optionsView.progressPreView cancelProgress];
+        self.optionsView.recordState = AlpVideoCameraRecordStateNotStart;
+        return;
+    }
+    [video.thumbView removeFromSuperview];
+    [self.optionsView.progressPreView removeConstraints:video.thumbView.constraints];
+    [self.segmentedVideos removeObject:video];
+    
+    // 更新当前时间
+    AlpSegmentedVideo *lastVideo = [self.segmentedVideos lastObject];
+    _currentTime = lastVideo.time;
+    [self.optionsView.progressPreView setProgress:lastVideo.progress animated:YES];
+    if (_currentTime < 3) {
+        self.optionsView.cameraChangeButton.hidden = YES;
     }
     
+    if (!lastVideo) {
+        self.optionsView.recordState = AlpVideoCameraRecordStateNotStart;
+    }
+}
+
+- (void)removeAllSegmentedVideos {
+    for (NSInteger i = 0; i < self.segmentedVideos.count; i++) {
+        [self removeLastSegementedVideo];
+    }
 }
 
 /// 从相册中导入视频
@@ -765,17 +799,21 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     return _filteredVideoView;
 }
 
-- (NSMutableArray<NSURL *> *)urlArray {
-    if (!_urlArray) {
-        _urlArray = @[].mutableCopy;
+- (NSMutableArray *)segmentedVideos {
+    if (!_segmentedVideos) {
+        _segmentedVideos = @[].mutableCopy;
     }
-    return _urlArray;
+    return _segmentedVideos;
 }
 
 - (void)dealloc {
     NSLog(@"%@释放了",self.class);
     [_videoCamera stopCameraCapture];
     _videoCamera = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end
 
+
+@implementation AlpSegmentedVideo
+@end

@@ -34,6 +34,7 @@
         _inputLocalVieoBtn.hidden = NO;
         [self.progressPreView cancelProgress];
         _rightView.hidden = NO;
+        _dleButton.hidden = YES;
     }
     else if (_recordState == AlpVideoCameraRecordStateStart) {
         _inputLocalVieoBtn.hidden = YES;
@@ -44,6 +45,7 @@
     else if (_recordState == AlpVideoCameraRecordStatePause) {
         _inputLocalVieoBtn.hidden = YES;
         _rightView.hidden = NO;
+        _dleButton.hidden = NO;
     }
     else if (_recordState == AlpVideoCameraRecordStateDone) {
         _inputLocalVieoBtn.hidden = YES;
