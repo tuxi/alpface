@@ -240,7 +240,6 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
 
 /// 开始录制视频
 - (void)startRecording:(UIButton*)sender {
-    sender.selected = !sender.isSelected;
     if (!sender.selected) {
         self.optionsView.recordState = AlpVideoCameraRecordStateStart;
         _pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"tmp/Movie%lu.mov",(unsigned long)self.segmentedVideos.count]];
@@ -287,6 +286,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
             self.optionsView.dleButton.hidden = NO;
         }
     }
+    sender.selected = !sender.isSelected;
 }
 
 // 添加分段录制的url
@@ -532,7 +532,6 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
 
 /// 切换前后摄像头
 - (void)changeCameraPositionBtn:(UIButton*)sender {
-    sender.selected = !sender.isSelected;
     switch (self.cameraPosition) {
         case AlpCameraDevicePositionBack: {
             if (_videoCamera.cameraPosition == AVCaptureDevicePositionBack) {
@@ -563,6 +562,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     
     // 重置下美颜
     self.isOpenBeautifyFilter = self.isOpenBeautifyFilter;
+    sender.selected = !sender.isSelected;
 }
 
 /// 打开或关闭美颜功能
