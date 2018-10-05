@@ -24,6 +24,11 @@
 #import "XYCutVideoController.h"
 #import "MBProgressHUD+XYHUD.h"
 
+/**
+ @note GPUImageVideoCamera录制视频 有时第一帧是黑屏 待解决
+ */
+
+// 记录分段录制-每录制的视频的数据
 @interface AlpSegmentedVideo : NSObject
 
 @property (nonatomic, copy) NSURL *videoURL;
@@ -33,22 +38,18 @@
 
 @end
 
-/**
- @note GPUImageVideoCamera录制视频 有时第一帧是黑屏 待解决
- */
-
-typedef NS_ENUM(NSInteger, CameraManagerDevicePosition) {
-    CameraManagerDevicePositionBack,
-    CameraManagerDevicePositionFront,
+typedef NS_ENUM(NSInteger, AlpCameraDevicePosition) {
+    AlpCameraDevicePositionBack,
+    AlpCameraDevicePositionFront,
 };
 ///闪光灯状态
-typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
+typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     
-    //    CameraManagerFlashModeAuto, /**<自动*/
+    //    AlpCameraFlashModeAuto, /**<自动*/
     
-    CameraManagerFlashModeOff, /**<关闭*/
+    AlpCameraFlashModeOff, /**<关闭*/
     
-    CameraManagerFlashModeOn /**<打开*/
+    AlpCameraFlashModeOn /**<打开*/
 };
 
 @interface ALPVideoCameraView ()<TZImagePickerControllerDelegate> {
@@ -72,12 +73,12 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 // 是否开启美颜，默认打开
 @property (nonatomic, assign) BOOL isOpenBeautifyFilter;
 // 闪光灯状态，默认是关闭的，当切换到前置摄像头时关闭闪光灯
-@property (nonatomic , assign) CameraManagerFlashMode flashMode;
+@property (nonatomic , assign) AlpCameraFlashMode flashMode;
 // 是否在录制中
 @property (nonatomic, assign) BOOL isRecoding;
 // 前后摄像头状态
-@property (nonatomic, assign) CameraManagerDevicePosition cameraPosition;
-/// 保存录制视频的url，分段录制时保存不同的本地路径，合并时使用
+@property (nonatomic, assign) AlpCameraDevicePosition cameraPosition;
+/// 分段录制时保存录制视频的url，合并时使用
 @property (nonatomic, strong) NSMutableArray *segmentedVideos;
 
 @end
@@ -149,7 +150,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         [_videoCamera.inputCamera unlockForConfiguration];
     }
     
-    self.cameraPosition = CameraManagerDevicePositionBack;
+    self.cameraPosition = AlpCameraDevicePositionBack;
     //    videoCamera.frameRate = 10;
     // 输出图像旋转方式
     _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
@@ -229,7 +230,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     };
     
     // 初始化闪光灯模式为Auto
-    [self setFlashMode:CameraManagerFlashModeOff];
+    [self setFlashMode:AlpCameraFlashModeOff];
     [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
 }
 
@@ -369,8 +370,8 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
             if (weakSelf.delegate&&[weakSelf.delegate respondsToSelector:@selector(videoCamerView:pushViewCotroller:)]) {
                 [weakSelf.delegate videoCamerView:weakSelf pushViewCotroller:vc];
             }
-            [self removeAllSegmentedVideos];
             [weakSelf removeFromSuperview];
+            [self removeAllSegmentedVideos];
         }];
         
         self.optionsView.recordState = AlpVideoCameraRecordStateDone;
@@ -387,7 +388,6 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 
 /// 删除当前已经录制的内容
 - (void)clickDleBtn:(UIButton*)sender {
-    [self.optionsView.timeButton setTitle:[NSString stringWithFormat:@"录制 00:0%.0f",_currentTime] forState:UIControlStateNormal];
     [self removeLastSegementedVideo];
 }
 
@@ -399,23 +399,25 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         _currentTime = 0.0;
         [self.optionsView.progressPreView cancelProgress];
         self.optionsView.recordState = AlpVideoCameraRecordStateNotStart;
-        return;
     }
-    [video.thumbView removeFromSuperview];
-    [self.optionsView.progressPreView removeConstraints:video.thumbView.constraints];
-    [self.segmentedVideos removeObject:video];
-    
-    // 更新当前时间
-    AlpSegmentedVideo *lastVideo = [self.segmentedVideos lastObject];
-    _currentTime = lastVideo.time;
-    [self.optionsView.progressPreView setProgress:lastVideo.progress animated:YES];
-    if (_currentTime < 3) {
-        self.optionsView.cameraChangeButton.hidden = YES;
+    else {
+        [video.thumbView removeFromSuperview];
+        [self.optionsView.progressPreView removeConstraints:video.thumbView.constraints];
+        [self.segmentedVideos removeObject:video];
+        
+        // 更新当前时间
+        AlpSegmentedVideo *lastVideo = [self.segmentedVideos lastObject];
+        _currentTime = lastVideo.time;
+        [self.optionsView.progressPreView setProgress:lastVideo.progress animated:YES];
+        if (_currentTime < 3) {
+            self.optionsView.cameraChangeButton.hidden = YES;
+        }
+        
+        if (!lastVideo) {
+            self.optionsView.recordState = AlpVideoCameraRecordStateNotStart;
+        }
     }
-    
-    if (!lastVideo) {
-        self.optionsView.recordState = AlpVideoCameraRecordStateNotStart;
-    }
+    [self.optionsView.timeButton setTitle:[NSString stringWithFormat:@"录制 00:0%.0f",_currentTime] forState:UIControlStateNormal];
 }
 
 - (void)removeAllSegmentedVideos {
@@ -531,19 +533,19 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 - (void)changeCameraPositionBtn:(UIButton*)sender {
     sender.selected = !sender.isSelected;
     switch (self.cameraPosition) {
-        case CameraManagerDevicePositionBack: {
+        case AlpCameraDevicePositionBack: {
             if (_videoCamera.cameraPosition == AVCaptureDevicePositionBack) {
                 [_videoCamera pauseCameraCapture];
-                self.cameraPosition = CameraManagerDevicePositionFront;
+                self.cameraPosition = AlpCameraDevicePositionFront;
                 [_videoCamera rotateCamera];
                 [_videoCamera resumeCameraCapture];
             }
         }
             break;
-        case CameraManagerDevicePositionFront: {
+        case AlpCameraDevicePositionFront: {
             if (_videoCamera.cameraPosition == AVCaptureDevicePositionFront) {
                 [_videoCamera pauseCameraCapture];
-                self.cameraPosition = CameraManagerDevicePositionBack;
+                self.cameraPosition = AlpCameraDevicePositionBack;
                 [_videoCamera rotateCamera];
                 [_videoCamera resumeCameraCapture];
             }
@@ -586,11 +588,11 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 
 //设置闪光灯模式
 
-- (void)setFlashMode:(CameraManagerFlashMode)flashMode {
+- (void)setFlashMode:(AlpCameraFlashMode)flashMode {
     _flashMode = flashMode;
     
     switch (flashMode) {
-            //        case CameraManagerFlashModeAuto: {
+            //        case AlpCameraFlashModeAuto: {
             //            NSError *error = nil;
             //            if ([_videoCamera.inputCamera hasTorch]) {
             //                BOOL locked = [_videoCamera.inputCamera lockForConfiguration:&error];
@@ -602,7 +604,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
             //            [_videoCamera.inputCamera unlockForConfiguration];
             //        }
             //            break;
-        case CameraManagerFlashModeOff: {
+        case AlpCameraFlashModeOff: {
             [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
             AVCaptureDevice *device = _videoCamera.inputCamera;
             if ([device hasTorch]) {
@@ -613,7 +615,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
         }
             
             break;
-        case CameraManagerFlashModeOn: {
+        case AlpCameraFlashModeOn: {
             [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
             NSError *error = nil;
             if ([_videoCamera.inputCamera hasTorch]) {
@@ -636,16 +638,16 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
 /// 改变闪光灯状态
 - (void)changeFlashMode:(UIButton *)button {
     switch (self.flashMode) {
-            //        case CameraManagerFlashModeAuto:
-            //            self.flashMode = CameraManagerFlashModeOn;
+            //        case AlpCameraFlashModeAuto:
+            //            self.flashMode = AlpCameraFlashModeOn;
             //            [button setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
             //            break;
-        case CameraManagerFlashModeOff:
-            //            self.flashMode = CameraManagerFlashModeAuto;
-            self.flashMode = CameraManagerFlashModeOn;
+        case AlpCameraFlashModeOff:
+            //            self.flashMode = AlpCameraFlashModeAuto;
+            self.flashMode = AlpCameraFlashModeOn;
             break;
-        case CameraManagerFlashModeOn:
-            self.flashMode = CameraManagerFlashModeOff;
+        case AlpCameraFlashModeOn:
+            self.flashMode = AlpCameraFlashModeOff;
             break;
             
         default:
@@ -659,8 +661,7 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     _currentTime += TIMER_INTERVAL;
     
     if (_currentTime>=10) {
-        [self.optionsView.timeButton setTitle:[NSString stringWithFormat:@"录制 00:%d",(int)_currentTime] forState:UIControlStateNormal];
-    }
+        [self.optionsView.timeButton setTitle:[NSString stringWithFormat:@"录制 00:%d",(int)_currentTime] forState:UIControlStateNormal];     }
     else {
         [self.optionsView.timeButton setTitle:[NSString stringWithFormat:@"录制 00:0%.0f",_currentTime] forState:UIControlStateNormal];
     }
@@ -691,10 +692,10 @@ typedef NS_ENUM(NSInteger, CameraManagerFlashMode) {
     
 }
 
-- (void)setCameraPosition:(CameraManagerDevicePosition)cameraPosition {
+- (void)setCameraPosition:(AlpCameraDevicePosition)cameraPosition {
     _cameraPosition = cameraPosition;
-    self.flashMode = CameraManagerFlashModeOff;
-    if (cameraPosition == CameraManagerDevicePositionFront) {
+    self.flashMode = AlpCameraFlashModeOff;
+    if (cameraPosition == AlpCameraDevicePositionFront) {
         self.optionsView.shootingLightingButton.hidden = YES;
     }
     else {

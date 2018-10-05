@@ -577,23 +577,21 @@
         
         AVAssetExportSession *assetExport = [[AVAssetExportSession alloc] initWithAsset:comosition presetName:AVAssetExportPreset1280x720];
         
+        // 音频
         assetExport.audioMix = mutableAudioMix;
         
         assetExport.videoComposition = videoComp;
-        // 输出类型
         
+        // 输出类型
         assetExport.outputFileType = AVFileTypeMPEG4;
         
         // 输出地址
-        
         assetExport.outputURL = outputFileUrl;
         
         // 优化
-        
         assetExport.shouldOptimizeForNetworkUse = YES;
         
         // 合成完毕
-        
         [assetExport exportAsynchronouslyWithCompletionHandler:^{
             
             // 回到主线程
