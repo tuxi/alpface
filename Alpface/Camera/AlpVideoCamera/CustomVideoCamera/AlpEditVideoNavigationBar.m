@@ -24,7 +24,6 @@
     self.backgroundColor = [UIColor blackColor];
     UILabel *titleLabel = [[UILabel alloc] init];
     _titleLabel = titleLabel;
-    titleLabel.text = @"编辑";
     titleLabel.textColor = [UIColor whiteColor];
     [self addSubview:titleLabel];
     titleLabel.translatesAutoresizingMaskIntoConstraints = false;

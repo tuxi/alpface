@@ -8,7 +8,6 @@
 
 #import "AlpEditVideoViewController.h"
 #import <AVFoundation/AVFoundation.h>
-#import "AlpMusicItemCollectionViewCell.h"
 #import "SDAVAssetExportSession.h"
 #import "GPUImage.h"
 #import "LFGPUImageEmptyFilter.h"
@@ -20,6 +19,7 @@
 #import "AlpEditVideoParameter.h"
 #import "AlpEditCoverViewController.h"
 #import "MBProgressHUD+XYHUD.h"
+#import "AlpEditVideoBottomView.h"
 
 @interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate>
 
@@ -34,7 +34,7 @@
 @property (nonatomic, strong) UIImageView *stickersImgView;
 @property (nonatomic, weak) NSLayoutConstraint *editVideoBarBottomConstraint;
 @property (nonatomic, copy) NSString *showActivityMessage;
-//@property (nonatomic, assign) BOOL isPlaying;
+@property (nonatomic, strong) AlpEditVideoBottomView *bottomView;
 
 @end
 
@@ -92,16 +92,11 @@
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [_stickersImgView addGestureRecognizer:panGestureRecognizer];
     
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnVideoPlayerView)];
-//    [self.view addGestureRecognizer:tap];
     [self setupUI];
 }
 
 - (void)setupUI {
     AlpEditVideoNavigationBar *headerBar = [[AlpEditVideoNavigationBar alloc] init];
-    [headerBar.rightButton setTitle:@"下一步" forState:UIControlStateNormal];
-    headerBar.titleLabel.text = @"编辑";
-    [headerBar.rightButton addTarget:self action:@selector(didClickNextButton) forControlEvents:UIControlEventTouchUpInside];
     [headerBar.leftButton addTarget:self action:@selector(didClickBackButton) forControlEvents:UIControlEventTouchUpInside];
     headerBar.backgroundColor = [UIColor clearColor];
     [self.view addSubview:headerBar];
@@ -118,6 +113,7 @@
     _editVideoBar = [AlpEditVideoBar new];
     _editVideoBar.delegate = self;
     _editVideoBar.resourceItem = _resourceItem;
+    _editVideoBar.hidden = YES;
     [self.view addSubview:_editVideoBar];
     _editVideoBar.translatesAutoresizingMaskIntoConstraints = false;
     NSLayoutConstraint *editVideoBarBottomConstraint = editVideoBarBottomConstraint = [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
@@ -125,15 +121,19 @@
     _editVideoBarBottomConstraint = editVideoBarBottomConstraint;
     [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:_editVideoBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
+    [self hideEditBar];
+
+    _bottomView = [AlpEditVideoBottomView new];
+    [self.view addSubview:_bottomView];
+    [_bottomView.chooseCoverButton addTarget:self action:@selector(editCoverClick) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView.filterButton addTarget:self action:@selector(filterButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView.nextButton addTarget:self action:@selector(didClickNextButton) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView.specialEffectsButton addTarget:self action:@selector(specialEffectsButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    _bottomView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint constraintWithItem:_bottomView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_bottomView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:_bottomView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     
-    UIButton *editCoverButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [editCoverButton setTitle:@"编辑封面" forState:UIControlStateNormal];
-    [self.view addSubview:editCoverButton];
-    editCoverButton.translatesAutoresizingMaskIntoConstraints = NO;
-    editCoverButton.backgroundColor = [UIColor blackColor];
-    [editCoverButton addTarget:self action:@selector(editCoverClick) forControlEvents:UIControlEventTouchUpInside];
-    [NSLayoutConstraint constraintWithItem:editCoverButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:editCoverButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -154,7 +154,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playingEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -274,7 +273,6 @@
     [_movieWriter startRecording];
     [_endMovieFile startProcessing];
     __weak GPUImageMovieWriter *weakmovieWriter = _movieWriter;
-    //    __weak MBProgressHUD *weakHUD = HUD;
     typeof(self) __weak weakself = self;
     [_movieWriter setCompletionBlock:^{
         [endFilter removeTarget:weakmovieWriter];
@@ -672,21 +670,39 @@
 
 - (void)showEditMusicBar:(UIButton*)sender {
     if (!sender.selected) {
-        sender.selected = YES;
+        [self showEditBar];
+        
+    }
+    else {
+        [self hideEditBar];
+    }
+    sender.selected = !sender.isSelected;
+}
+
+- (void)showEditBar {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.bottomView.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        self.editVideoBar.hidden = NO;
         _editVideoBarBottomConstraint.constant = 0.0;
         // 更新约束
         [UIView animateWithDuration:.3 animations:^{
             [self.view layoutIfNeeded];
         }];
-    }
-    else {
-        _editVideoBarBottomConstraint.constant = 160.0;
-        // 更新约束
-        [UIView animateWithDuration:.3 animations:^{
-            [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)hideEditBar {
+    _editVideoBarBottomConstraint.constant = self.editVideoBar.frame.size.height?:160.0;
+    // 更新约束
+    [UIView animateWithDuration:.3 animations:^{
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        self.editVideoBar.hidden = YES;
+        [UIView animateWithDuration:0.1 animations:^{
+           self.bottomView.alpha = 1.0;
         }];
-        sender.selected = NO;
-    }
+    }];
 }
 
 - (void)playMusic {
@@ -718,6 +734,10 @@
     AlpEditCoverViewController *vc = [AlpEditCoverViewController new];
     vc.videoURL = self.videoURL;
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)filterButtonClick {
+    [self showEditBar];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -794,6 +814,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)specialEffectsButtonClick {
+    [MBProgressHUD xy_showMessage:@"特效功能未完成，敬请期待中..."];
+}
+
 // 点按videoLayer的手势
 //- (void)tapOnVideoPlayerView {
 //
@@ -867,6 +891,17 @@
 - (void)editVideoBar:(AlpEditVideoBar *)bar didSelectSticker:(AlpStickersData *)stickerData {
     _stickersImgView.image = [UIImage imageWithContentsOfFile:stickerData.StickersImgPaht];
     _stickersImgView.hidden = NO;
+}
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark -
+////////////////////////////////////////////////////////////////////////
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [super touchesEnded:touches withEvent:event];
+    if (!self.editVideoBar.isHidden) {
+        [self hideEditBar];
+    }
 }
 
 - (void)dealloc {

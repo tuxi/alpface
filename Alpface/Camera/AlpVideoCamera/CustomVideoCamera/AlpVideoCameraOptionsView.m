@@ -8,10 +8,7 @@
 
 #import "AlpVideoCameraOptionsView.h"
 #import "AlpVideoCameraDefine.h"
-
-@interface AlpVideoCameraOptionsViewButton : UIButton
-
-@end
+#import "AlpVideoCameraButton.h"
 
 @interface AlpVideoCameraOptionsView ()
 
@@ -118,14 +115,13 @@
     [NSLayoutConstraint constraintWithItem:self.shootingLightingButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.rightView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     
     
-    
-    // 完成录制按钮
+    // 删除录制按钮
     [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:50].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:52.6].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40.0].active = YES;
     
-    // 删除录制按钮
+    // 完成录制按钮
     [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-50.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
@@ -225,7 +221,7 @@
 - (UIButton *)cameraPositionChangeButton {
     if (!_cameraPositionChangeButton) {
         // 前后摄像头切换按钮
-        _cameraPositionChangeButton = (id)[[AlpVideoCameraOptionsViewButton alloc] initWithFrame:CGRectZero];
+        _cameraPositionChangeButton = (id)[[AlpVideoCameraButton alloc] initWithFrame:CGRectZero];
         UIImage* img2 = [UIImage imageNamed:@"icShootingFlip_31x31_"];
         [_cameraPositionChangeButton setImage:img2 forState:UIControlStateNormal];
         [_cameraPositionChangeButton setTitle:@"翻转" forState:UIControlStateNormal];
@@ -235,7 +231,7 @@
 
 - (UIButton *)camerafilterChangeButton {
     if (!_camerafilterChangeButton) {
-        _camerafilterChangeButton = (id)[[AlpVideoCameraOptionsViewButton alloc] init];
+        _camerafilterChangeButton = (id)[[AlpVideoCameraButton alloc] init];
         _camerafilterChangeButton.frame = CGRectMake(_cameraPositionChangeButton.frame.origin.x, _cameraPositionChangeButton.frame.origin.y + 80, 30, 30);
         UIImage* img = [UIImage imageNamed:@"iconBeautyOff2_40x40_"];
         [_camerafilterChangeButton setImage:img forState:UIControlStateNormal];
@@ -247,7 +243,7 @@
 
 - (UIButton *)shootingLightingButton {
     if (!_shootingLightingButton) {
-        _shootingLightingButton = (id)[[AlpVideoCameraOptionsViewButton alloc] init];
+        _shootingLightingButton = (id)[[AlpVideoCameraButton alloc] init];
         [_shootingLightingButton setTitle:@"闪光灯" forState:UIControlStateNormal];
     }
     return _shootingLightingButton;
@@ -268,9 +264,8 @@
     if (!_dleButton) {
         _dleButton = [[UIButton alloc] init];
         _dleButton.hidden = YES;
-        _dleButton.frame = CGRectMake( 50 , SCREEN_HEIGHT - 105.0, 50, 50.0);
-        UIImage* img4 = [UIImage imageNamed:@"del"];
-        [_dleButton setImage:img4 forState:UIControlStateNormal];
+        UIImage* img = [UIImage imageNamed:@"icShootingDelete_40x40_"];
+        [_dleButton setImage:img forState:UIControlStateNormal];
     }
     return _dleButton;
 }
@@ -292,36 +287,6 @@
         _rightView.backgroundColor = [UIColor clearColor];
     }
     return _rightView;
-}
-
-@end
-
-@implementation AlpVideoCameraOptionsViewButton
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.titleLabel.textAlignment = NSTextAlignmentCenter;
-        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-        self.titleLabel.font = [UIFont systemFontOfSize:11.0];
-        [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }
-    return self;
-}
-
-// imageRectForContentRect:和titleRectForContentRect:不能互相调用imageView和titleLael,不然会死循环
-- (CGRect)imageRectForContentRect:(CGRect)bounds {
-    CGRect imageRect = [super imageRectForContentRect:bounds];
-    CGFloat x = (bounds.size.width - imageRect.size.width) * 0.5;
-    return CGRectMake(x, 0.0, imageRect.size.width, imageRect.size.height);
-}
-
-- (CGRect)titleRectForContentRect:(CGRect)contentRect {
-    CGRect titleRect = [super titleRectForContentRect:contentRect];
-    CGFloat x = (self.bounds.size.width - contentRect.size.width) * 0.5;
-    return CGRectMake(x, self.imageView.bounds.size.height, contentRect.size.width, titleRect.size.height);
-    
 }
 
 @end

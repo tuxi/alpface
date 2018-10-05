@@ -75,6 +75,16 @@
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
 		D25DDB38216701BE00530F21 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25DDB37216701BE00530F21 /* UIViewController+Extension.swift */; };
+		D25DDB3B216718D900530F21 /* AlpEditVideoBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = D25DDB3A216718D900530F21 /* AlpEditVideoBottomView.m */; };
+		D25DDB3E2167194500530F21 /* AlpVideoCameraButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D25DDB3D2167194500530F21 /* AlpVideoCameraButton.m */; };
+		D25DDB4321671C3900530F21 /* iconFilterB_40x40_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25DDB3F21671C3900530F21 /* iconFilterB_40x40_@2x.png */; };
+		D25DDB4421671C3900530F21 /* iconFilterA_40x40_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25DDB4021671C3900530F21 /* iconFilterA_40x40_@2x.png */; };
+		D25DDB4521671C3900530F21 /* iconFilterB_40x40_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25DDB4121671C3900530F21 /* iconFilterB_40x40_@3x.png */; };
+		D25DDB4621671C3900530F21 /* iconFilterA_40x40_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25DDB4221671C3900530F21 /* iconFilterA_40x40_@3x.png */; };
+		D25DDB4921671D2100530F21 /* iconSpecial2_40x40_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25DDB4721671D2100530F21 /* iconSpecial2_40x40_@2x.png */; };
+		D25DDB4A21671D2100530F21 /* iconSpecial2_40x40_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25DDB4821671D2100530F21 /* iconSpecial2_40x40_@3x.png */; };
+		D25DDB4D21671D4E00530F21 /* iconCover_40x40_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25DDB4B21671D4E00530F21 /* iconCover_40x40_@2x.png */; };
+		D25DDB4E21671D4E00530F21 /* iconCover_40x40_@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25DDB4C21671D4E00530F21 /* iconCover_40x40_@3x.png */; };
 		D26A93AC214E13AA00C118CA /* GPUImageBeautifyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A924C214E13AA00C118CA /* GPUImageBeautifyFilter.m */; };
 		D26A93AD214E13AA00C118CA /* LFGPUImageEmptyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A924E214E13AA00C118CA /* LFGPUImageEmptyFilter.m */; };
 		D26A93D9214E13AA00C118CA /* AlpMusicItemCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A9290214E13AA00C118CA /* AlpMusicItemCollectionViewCell.m */; };
@@ -467,6 +477,18 @@
 		D25188582054D3C8000147CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D251885A2054D3C8000147CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D25DDB37216701BE00530F21 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		D25DDB39216718D900530F21 /* AlpEditVideoBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditVideoBottomView.h; sourceTree = "<group>"; };
+		D25DDB3A216718D900530F21 /* AlpEditVideoBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoBottomView.m; sourceTree = "<group>"; };
+		D25DDB3C2167194500530F21 /* AlpVideoCameraButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpVideoCameraButton.h; sourceTree = "<group>"; };
+		D25DDB3D2167194500530F21 /* AlpVideoCameraButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpVideoCameraButton.m; sourceTree = "<group>"; };
+		D25DDB3F21671C3900530F21 /* iconFilterB_40x40_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconFilterB_40x40_@2x.png"; sourceTree = "<group>"; };
+		D25DDB4021671C3900530F21 /* iconFilterA_40x40_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconFilterA_40x40_@2x.png"; sourceTree = "<group>"; };
+		D25DDB4121671C3900530F21 /* iconFilterB_40x40_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconFilterB_40x40_@3x.png"; sourceTree = "<group>"; };
+		D25DDB4221671C3900530F21 /* iconFilterA_40x40_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconFilterA_40x40_@3x.png"; sourceTree = "<group>"; };
+		D25DDB4721671D2100530F21 /* iconSpecial2_40x40_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconSpecial2_40x40_@2x.png"; sourceTree = "<group>"; };
+		D25DDB4821671D2100530F21 /* iconSpecial2_40x40_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconSpecial2_40x40_@3x.png"; sourceTree = "<group>"; };
+		D25DDB4B21671D4E00530F21 /* iconCover_40x40_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconCover_40x40_@2x.png"; sourceTree = "<group>"; };
+		D25DDB4C21671D4E00530F21 /* iconCover_40x40_@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconCover_40x40_@3x.png"; sourceTree = "<group>"; };
 		D26A924B214E13AA00C118CA /* LFGPUImageEmptyFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFGPUImageEmptyFilter.h; sourceTree = "<group>"; };
 		D26A924C214E13AA00C118CA /* GPUImageBeautifyFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageBeautifyFilter.m; sourceTree = "<group>"; };
 		D26A924D214E13AA00C118CA /* GPUImageBeautifyFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageBeautifyFilter.h; sourceTree = "<group>"; };
@@ -1112,6 +1134,10 @@
 				D24DA0B4215E661800C8440A /* AlpVideoCameraCoverSlider.m */,
 				D03870362160BEB6002023F8 /* UIViewController+XYExtensions.h */,
 				D03870372160BEB7002023F8 /* UIViewController+XYExtensions.m */,
+				D25DDB39216718D900530F21 /* AlpEditVideoBottomView.h */,
+				D25DDB3A216718D900530F21 /* AlpEditVideoBottomView.m */,
+				D25DDB3C2167194500530F21 /* AlpVideoCameraButton.h */,
+				D25DDB3D2167194500530F21 /* AlpVideoCameraButton.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -1184,6 +1210,14 @@
 		D26A92CF214E13AA00C118CA /* cammerImg */ = {
 			isa = PBXGroup;
 			children = (
+				D25DDB4B21671D4E00530F21 /* iconCover_40x40_@2x.png */,
+				D25DDB4C21671D4E00530F21 /* iconCover_40x40_@3x.png */,
+				D25DDB4721671D2100530F21 /* iconSpecial2_40x40_@2x.png */,
+				D25DDB4821671D2100530F21 /* iconSpecial2_40x40_@3x.png */,
+				D25DDB4021671C3900530F21 /* iconFilterA_40x40_@2x.png */,
+				D25DDB4221671C3900530F21 /* iconFilterA_40x40_@3x.png */,
+				D25DDB3F21671C3900530F21 /* iconFilterB_40x40_@2x.png */,
+				D25DDB4121671C3900530F21 /* iconFilterB_40x40_@3x.png */,
 				D23770F22161A9FC003555F5 /* icon-white-close_24x24_@2x.png */,
 				D23770F12161A9FC003555F5 /* icon-white-close_24x24_@3x.png */,
 				D276160B21574CAB008A9AD4 /* record_button_open_65x65_@2x.png */,
@@ -1737,6 +1771,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D27615F021572892008A9AD4 /* icShootingMore_40x40_@2x.png in Resources */,
+				D25DDB4E21671D4E00530F21 /* iconCover_40x40_@3x.png in Resources */,
 				D26A9433214E13AA00C118CA /* beautyOFF@3x.png in Resources */,
 				D26A93ED214E13AA00C118CA /* stickers536.jpg in Resources */,
 				D26A93EB214E13AA00C118CA /* stickers535.jpg in Resources */,
@@ -1745,6 +1780,7 @@
 				D26A95CA21514E2700C118CA /* icon_send_save_yes_12x12_@2x.png in Resources */,
 				D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */,
 				D26A93FC214E13AA00C118CA /* stickers541.jpg in Resources */,
+				D25DDB4521671C3900530F21 /* iconFilterB_40x40_@3x.png in Resources */,
 				D26A941A214E13AA00C118CA /* icon_weixin_pyq@3x.png in Resources */,
 				D26A93E6214E13AA00C118CA /* stickers529.jpg in Resources */,
 				D276160D21574CAC008A9AD4 /* record_button_open_65x65_@2x.png in Resources */,
@@ -1784,6 +1820,7 @@
 				D26A9424214E13AA00C118CA /* beautyON@3x.png in Resources */,
 				D26A942B214E13AA00C118CA /* del@3x.png in Resources */,
 				D27615FE21572892008A9AD4 /* icShootingMusicSmall_31x31_@3x.png in Resources */,
+				D25DDB4621671C3900530F21 /* iconFilterA_40x40_@3x.png in Resources */,
 				D26A942A214E13AA00C118CA /* del@2x.png in Resources */,
 				D26A95BA2151414100C118CA /* icon_location_20x20_@3x.png in Resources */,
 				D26A93FB214E13AA00C118CA /* stickers555.jpg in Resources */,
@@ -1826,6 +1863,8 @@
 				D26A93DC214E13AA00C118CA /* stickers558.jpg in Resources */,
 				D27615F421572892008A9AD4 /* icShootingFlipped_31x31_@3x.png in Resources */,
 				D27615FF21572892008A9AD4 /* icShootingDelete_40x40_@2x.png in Resources */,
+				D25DDB4921671D2100530F21 /* iconSpecial2_40x40_@2x.png in Resources */,
+				D25DDB4321671C3900530F21 /* iconFilterB_40x40_@2x.png in Resources */,
 				D26A942D214E13AA00C118CA /* BackToVideoCammer@3x.png in Resources */,
 				D26A940E214E13AA00C118CA /* GPUImageSaturationFilter0.png in Resources */,
 				D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */,
@@ -1870,6 +1909,7 @@
 				D26A940D214E13AA00C118CA /* GPUImageMissEtikateFilter.png in Resources */,
 				D27615EB21572892008A9AD4 /* icShootingDelay_31x31_@3x.png in Resources */,
 				D26A9531214E953B00C118CA /* 6534.mp3 in Resources */,
+				D25DDB4A21671D2100530F21 /* iconSpecial2_40x40_@3x.png in Resources */,
 				D26A952B214E953B00C118CA /* 6302.jpeg in Resources */,
 				D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */,
 				D26A9403214E13AA00C118CA /* lookup_soft_elegance_1.png in Resources */,
@@ -1915,6 +1955,7 @@
 				D26A9549214E953B00C118CA /* 6475.jpeg in Resources */,
 				D26A93FD214E13AA00C118CA /* stickers540.jpg in Resources */,
 				D25188562054D3C8000147CC /* Assets.xcassets in Resources */,
+				D25DDB4421671C3900530F21 /* iconFilterA_40x40_@2x.png in Resources */,
 				D26A95D821526F2200C118CA /* icSearshSugbarSearch_24x24_@3x.png in Resources */,
 				D27615FD21572892008A9AD4 /* icShootingMusicCut_31x31_@2x.png in Resources */,
 				D26A9405214E13AA00C118CA /* LFGPUImageEmptyFilter.png in Resources */,
@@ -1938,6 +1979,7 @@
 				D27615E621572892008A9AD4 /* icShootingSpeedPlanCOn_40x40_@3x.png in Resources */,
 				D27615FC21572892008A9AD4 /* icShootingAntiShakeOn_31x31_@3x.png in Resources */,
 				D26A93E2214E13AA00C118CA /* stickers561.jpg in Resources */,
+				D25DDB4D21671D4E00530F21 /* iconCover_40x40_@2x.png in Resources */,
 				D27615EF21572892008A9AD4 /* icShootingMusicCut_31x31_@3x.png in Resources */,
 				D27615E821572892008A9AD4 /* icShootingMore_40x40_@3x.png in Resources */,
 				D26A93EA214E13AA00C118CA /* stickers531.jpg in Resources */,
@@ -2010,6 +2052,7 @@
 				D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */,
 				D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */,
 				D26AD485206733030047DC15 /* UIImage+Extension.swift in Sources */,
+				D25DDB3E2167194500530F21 /* AlpVideoCameraButton.m in Sources */,
 				D20093462078F16E0079AD8B /* PCLBlurEffectAlert+Action.swift in Sources */,
 				D26A93D9214E13AA00C118CA /* AlpMusicItemCollectionViewCell.m in Sources */,
 				D26A93AC214E13AA00C118CA /* GPUImageBeautifyFilter.m in Sources */,
@@ -2128,6 +2171,7 @@
 				D27615B721568F96008A9AD4 /* LocationItem.swift in Sources */,
 				D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D2BCBA46206F33F2008409B3 /* PlayVideoViewController.swift in Sources */,
+				D25DDB3B216718D900530F21 /* AlpEditVideoBottomView.m in Sources */,
 				D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */,
 				D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */,
 				D20093282078EEC50079AD8B /* CroppingParameters.swift in Sources */,
