@@ -45,7 +45,7 @@ class MainFeedViewController: UIViewController {
     
     public func displayViewController() -> UIViewController? {
         if let cell = collectionView.visibleCells.first as? MainFeedViewCell {
-            return cell.viewController
+            return cell.viewController.playVideoVc
         }
         return nil
     }

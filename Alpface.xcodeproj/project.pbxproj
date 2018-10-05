@@ -74,6 +74,7 @@
 		D24DA0B5215E661900C8440A /* AlpVideoCameraCoverSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = D24DA0B4215E661800C8440A /* AlpVideoCameraCoverSlider.m */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
+		D25DDB38216701BE00530F21 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25DDB37216701BE00530F21 /* UIViewController+Extension.swift */; };
 		D26A93AC214E13AA00C118CA /* GPUImageBeautifyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A924C214E13AA00C118CA /* GPUImageBeautifyFilter.m */; };
 		D26A93AD214E13AA00C118CA /* LFGPUImageEmptyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A924E214E13AA00C118CA /* LFGPUImageEmptyFilter.m */; };
 		D26A93D9214E13AA00C118CA /* AlpMusicItemCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D26A9290214E13AA00C118CA /* AlpMusicItemCollectionViewCell.m */; };
@@ -465,6 +466,7 @@
 		D25188552054D3C8000147CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D25188582054D3C8000147CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D251885A2054D3C8000147CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D25DDB37216701BE00530F21 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		D26A924B214E13AA00C118CA /* LFGPUImageEmptyFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFGPUImageEmptyFilter.h; sourceTree = "<group>"; };
 		D26A924C214E13AA00C118CA /* GPUImageBeautifyFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageBeautifyFilter.m; sourceTree = "<group>"; };
 		D26A924D214E13AA00C118CA /* GPUImageBeautifyFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageBeautifyFilter.h; sourceTree = "<group>"; };
@@ -1404,6 +1406,7 @@
 				D2D66329208185510044E2A7 /* MBProgressHUD+XYExtension.swift */,
 				D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */,
 				D2B16621208CC3B800FA5F05 /* UIView+XYExtension.swift */,
+				D25DDB37216701BE00530F21 /* UIViewController+Extension.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2102,6 +2105,7 @@
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
 				D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */,
 				D06FEAB6215CB5620005FAF5 /* AlpEditCoverViewController.m in Sources */,
+				D25DDB38216701BE00530F21 /* UIViewController+Extension.swift in Sources */,
 				D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */,
 				D038701C2160BA00002023F8 /* ICGVideoTrimmerView.m in Sources */,
 				D27616192158D6A1008A9AD4 /* AlpEditPublishLocationListTableViewCellModel.m in Sources */,

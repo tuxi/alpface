@@ -314,7 +314,10 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
             let nav = MainNavigationController(rootViewController: loginVc)
             /// 模态出来的控制器半透明
             nav.modalPresentationStyle = .overCurrentContext
-            showDetailViewController(nav, sender: self)
+            /// note: showDetailViewController 通过self.presentedViewController获取的是nil
+//            showDetailViewController(nav, sender: self)
+            /// note: present 通过self.presentedViewController获取的有值
+            self.present(nav, animated: true, completion: nil)
         }
     }
 

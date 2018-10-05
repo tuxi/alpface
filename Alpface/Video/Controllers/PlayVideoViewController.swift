@@ -440,7 +440,10 @@ extension PlayVideoViewController {
     // MARK: - Observer
     
     @objc fileprivate func applicationWillEnterForeground() {
-        autoPlay()
+        let topVC = UIViewController.alp_topViewController()
+        if topVC == self {
+            autoPlay()
+        }
     }
     
     @objc fileprivate func applicationDidEnterBackground() {
@@ -452,7 +455,10 @@ extension PlayVideoViewController {
     }
     
     @objc fileprivate func applicationDidBecomeActive() {
-        autoPlay()
+        let topVC = UIViewController.alp_topViewController()
+        if topVC == self {
+            autoPlay()
+        }
     }
     
     @objc fileprivate func playerItemPlaybackStalled(notification: Notification) {

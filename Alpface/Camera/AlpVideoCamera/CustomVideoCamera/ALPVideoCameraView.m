@@ -386,11 +386,12 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     //[_movieWriter cancelRecording];
 }
 
-/// 删除当前已经录制的内容
+
 - (void)clickDleBtn:(UIButton*)sender {
     [self removeLastSegementedVideo];
 }
 
+/// 删除最后一段录制的内容
 - (void)removeLastSegementedVideo {
     AlpSegmentedVideo *video = [self.segmentedVideos lastObject];
     if (!video) {
