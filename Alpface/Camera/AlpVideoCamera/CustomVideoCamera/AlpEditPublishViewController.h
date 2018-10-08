@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AlpEditPublishViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *videoURL;
+@property (nonatomic, assign) CGFloat startSecondsOfCover;
+@property (nonatomic, assign) CGFloat endSecondsOfCover;
 
 @end
 

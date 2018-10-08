@@ -59,14 +59,13 @@
     _mainPlayer = nil;
     [_thumbPlayer pause];
     _thumbPlayer = nil;
-    [self stopPlaybackTimeChecker];
+    [self stopReplayTimer];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor blackColor];
-    self.selectedIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     self.photoArrays = [[NSMutableArray alloc] init];
     [self setupUI];
     [self getVideoTotalValueAndScale];
@@ -113,7 +112,7 @@
     [NSLayoutConstraint constraintWithItem:_coverPlayerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.navigationBar attribute:NSLayoutAttributeBottom multiplier:1.0 constant:10.0].active = YES;
     
     UILabel *label = [[UILabel alloc] init];
-        label.backgroundColor = [UIColor blackColor];
+    label.backgroundColor = [UIColor blackColor];
     label.textColor = [UIColor whiteColor];
     label.text = @"已选封面";
     label.numberOfLines = 0;
@@ -144,7 +143,7 @@
     [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:slider attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.coverImageCollectionView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
-  
+    
     _slider = slider;
     [slider addTarget:self action:@selector(slidValueChange:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:slider];
@@ -179,7 +178,7 @@
     [self play];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -202,7 +201,8 @@
     }];
 }
 
-- (void)updateRange {
+- (void)setupVideoCover {
+    // 初始化videoTime，选择默认的cover
     if (self.videoTime.value == 0) {
         // 将总的time转换为当前player的timescale相同的time
         CMTime time = self.playerItem.duration;
@@ -220,12 +220,12 @@
 
 - (void)play {
     [_mainPlayer play];
-    [self startPlaybackTimeChecker];
+    [self startReplayTimer];
 }
 
 - (void)pause {
     [_mainPlayer pause];
-    [self stopPlaybackTimeChecker];
+    [self stopReplayTimer];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -237,49 +237,49 @@
 }
 
 - (void)onApplicationDidBecomeActive {
-    [self play];
+    if (self.navigationController.topViewController == self) {
+        [self play];
+    }
 }
 
 
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - 视频播放时间的检测
 ////////////////////////////////////////////////////////////////////////
-- (void)stopPlaybackTimeChecker {
+- (void)stopReplayTimer {
     if (self.displayLink) {
         [self.displayLink invalidate];
         self.displayLink = nil;
     }
 }
 
-- (void)startPlaybackTimeChecker {
+- (void)startReplayTimer {
     
-    [self stopPlaybackTimeChecker]; // 停止检测
-    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onPlaybackTimeCheckerTimer)];
+    [self stopReplayTimer]; // 停止检测
+    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onReplayTimer)];
     [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 }
 
-- (void)onPlaybackTimeCheckerTimer {
-//    CMTimeShow(self.mainPlayer.currentTime);
+- (void)onReplayTimer {
+    //    CMTimeShow(self.mainPlayer.currentTime);
     CMTime currentTime = self.mainPlayer.currentTime;
     if (currentTime.value <= 0) {
         return;
     }
-    [self updateRange];
-    self.videoPlaybackPosition = CMTimeGetSeconds(currentTime);
+    [self setupVideoCover];
+    CGFloat replayPosition = CMTimeGetSeconds(currentTime);
     CGFloat startSeconds = CMTimeGetSeconds(self.coverTime);
     CMTime stopTime = CMTimeMake(AlpVideoCameraCoverSliderMaxRange(self.slider.range), self.coverTime.timescale);
     CGFloat stopSeconds = CMTimeGetSeconds(stopTime);
     // 当视频播放完后，重置开始时间
-    if (self.videoPlaybackPosition >= stopSeconds) {
-        self.videoPlaybackPosition = startSeconds;
+    if (replayPosition >= stopSeconds) {
         [self seekVideoToPos:startSeconds];
     }
 }
 
 - (void)seekVideoToPos:(CGFloat)pos {
     
-    self.videoPlaybackPosition = pos;
-    CMTime time = CMTimeMakeWithSeconds(self.videoPlaybackPosition, self.coverTime.timescale);
+    CMTime time = CMTimeMakeWithSeconds(pos, self.coverTime.timescale);
     [self.mainPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     [self.thumbPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     [self.mainPlayer play];
@@ -300,8 +300,20 @@
 - (void)chooseWithTime:(CMTimeValue)value {
     CMTime coverTime = CMTimeMake(value, self.videoTime.timescale);
     self.coverTime = coverTime;
-    CGFloat seconds = CMTimeGetSeconds(coverTime);
-    [self seekVideoToPos:seconds];
+    CGFloat start = CMTimeGetSeconds(coverTime);
+    [self seekVideoToPos:start];
+}
+
+- (void)setCoverTime:(CMTime)coverTime {
+    _coverTime = coverTime;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(editCoverViewController:didChangeCoverWithStartTime:endTime:)]) {
+        CMTime stopTime = CMTimeMake(AlpVideoCameraCoverSliderMaxRange(self.slider.range), self.coverTime.timescale);
+        CGFloat startSeconds = CMTimeGetSeconds(coverTime);
+        CGFloat stopSeconds = CMTimeGetSeconds(stopTime);
+        [self.delegate editCoverViewController:self
+                   didChangeCoverWithStartTime:startSeconds
+                                       endTime:stopSeconds];
+    }
 }
 
 - (void)didClickNextButton {
@@ -326,27 +338,6 @@
     cell.imageView.image = _photoArrays[indexPath.item].firstFrameImage;
     return cell;
 }
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSIndexPath *firstSelectedIndexPath = self.selectedIndexPath;
-    [collectionView deselectItemAtIndexPath:firstSelectedIndexPath animated:YES];
-    
-    UICollectionViewScrollPosition position = UICollectionViewScrollPositionNone;
-    if (firstSelectedIndexPath.item > indexPath.item) {
-        position = UICollectionViewScrollPositionRight;
-    }
-    else if (firstSelectedIndexPath.item < indexPath.item) {
-        position = UICollectionViewScrollPositionLeft;
-    }
-    else {
-        position = UICollectionViewScrollPositionNone;
-    }
-    [self.coverImageCollectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:position];
-    self.selectedIndexPath = indexPath;
-    [_coverImageCollectionView reloadData];
-}
-
 
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - Getter

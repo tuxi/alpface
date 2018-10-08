@@ -11,31 +11,14 @@
 #import "AlpVideoCameraDefine.h"
 #import "UIImage+AlpExtensions.h"
 #import <CoreLocation/CoreLocation.h>
-#import <MBProgressHUD/MBProgressHUD.h>
+#import "MBProgressHUD+XYHUD.h"
 #import "XYLocationSearchViewController.h"
 #import "XYLocationManager.h"
 #import "XYLocationSearchTableViewModel.h"
 #import <CoreLocation/CoreLocation.h>
 #import "AlpEditPublishLocationListTableViewCellModel.h"
 #import <AddressBookUI/AddressBookUI.h>
-
-typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
-    AlpPublishVideoPermissionTypePublic,
-    AlpPublishVideoPermissionTypePrivate,
-    AlpPublishVideoPermissionTypeFriend,
-};
-
-@interface AlpEditPublishVideoModel : NSObject
-
-@property (nonatomic, strong) NSURL *videoURL;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *address;
-@property (nonatomic, copy) NSString *locationName;
-@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
-@property (nonatomic, assign) AlpPublishVideoPermissionType permissionType;
-@property (nonatomic, assign, getter=isSaveAlbum) BOOL saveAlbum;
-
-@end
+#import "AlpEditPublishVideoModel.h"
 
 @interface AlpEditPublishViewContentCell : UITableViewCell <UITextViewDelegate>
 
@@ -197,6 +180,8 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocationsNotification) name:XYUpdateLocationsNotification object:nil];
         
     }
+    self.publishModel.startSecondsOfCover = self.startSecondsOfCover;
+    self.publishModel.endSecondsOfCover = self.endSecondsOfCover;
 }
 
 - (void)updateLocationsNotification {
@@ -436,36 +421,26 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
     AlpEditPublishViewContentCell *contentCell = (id)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 //    AlpEditPublishViewSelectLocationCell *locationCell = (id)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
 //    AlpEditPublishViewPermissionCell *permissionCell = (id)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES ];
+
     
     if (_videoURL == nil) {
-        hud.label.text = @"还未选择视频...";
-        [hud hideAnimated:YES afterDelay:2];
+        [MBProgressHUD xy_showMessage:@"还未选择视频..."];
         return;
     }
     
-    if (contentCell.textView.text.length == 0 || [contentCell.textView.text isEqualToString:AlpContentTextFieldPlaceholder]) {
-        hud.label.text = @"请添加标题和描述文本";
-        [hud hideAnimated:YES afterDelay:2];
+    if (contentCell.textView.text.length == 0 ||
+        [contentCell.textView.text isEqualToString:AlpContentTextFieldPlaceholder]) {
+        [MBProgressHUD xy_showMessage:@"请添加标题和描述文本"];
         return;
     }
+    self.publishModel.content = contentCell.textView.text;
+    self.publishModel.title = @"test";
     if (self.publishModel.isSaveAlbum) {
-        hud.label.text = @"正在保存到相册...";
+        [MBProgressHUD xy_showMessage:@"正在保存到相册..."];
         UISaveVideoAtPathToSavedPhotosAlbum([[_videoURL absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""], nil, nil, nil);
         
-    }
-    [hud hideAnimated:YES];
-    
-    NSMutableDictionary *infoDict = @{@"video": _videoURL, @"title": @"test", @"content": contentCell.textView.text}.mutableCopy;
-    if (self.publishModel.address && self.publishModel.locationName) {
-        infoDict[@"longitude"] = @(self.publishModel.coordinate.longitude);
-        infoDict[@"latitude"] = @(self.publishModel.coordinate.latitude);
-        infoDict[@"poi_name"] = self.publishModel.locationName;
-        infoDict[@"poi_address"] = self.publishModel.address;
-    }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:AlpPublushVideoNotification object:nil userInfo:infoDict];
+    } 
+    [[NSNotificationCenter defaultCenter] postNotificationName:AlpDidClickPublushVideoNotification object:nil userInfo:@{@"publishKey": self.publishModel}];
 }
 
 
@@ -1084,18 +1059,7 @@ typedef NS_ENUM(NSInteger, AlpPublishVideoPermissionType) {
 //    [collectionView reloadData];
 //}
 @end
-@implementation AlpEditPublishVideoModel
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.saveAlbum = YES;
-    }
-    return self;
-}
-
-@end
 
 @implementation AlpEditPublishViewLocationListCellCollectionCell
 

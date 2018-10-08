@@ -21,7 +21,7 @@
 #import "MBProgressHUD+XYHUD.h"
 #import "AlpEditVideoBottomView.h"
 
-@interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate>
+@interface AlpEditVideoViewController () <UITextFieldDelegate, AlpEditVideoBarDelegate, AlpEditCoverViewControllerDelegate>
 
 @property (nonatomic, strong) AVPlayer *audioPlayer;
 @property (nonatomic, strong) AlpEditVideoBar *editVideoBar;
@@ -35,6 +35,8 @@
 @property (nonatomic, weak) NSLayoutConstraint *editVideoBarBottomConstraint;
 @property (nonatomic, copy) NSString *showActivityMessage;
 @property (nonatomic, strong) AlpEditVideoBottomView *bottomView;
+@property (nonatomic, assign) CGFloat startSecondsOfCover;
+@property (nonatomic, assign) CGFloat endSecondsOfCover;
 
 @end
 
@@ -211,6 +213,8 @@
                          [[NSNotificationCenter defaultCenter] removeObserver:self];
                          AlpEditPublishViewController* cor = [[AlpEditPublishViewController alloc] init];
                          cor.videoURL = compressionEncoder.outputURL;
+                         cor.startSecondsOfCover = self.startSecondsOfCover;
+                         cor.endSecondsOfCover = self.endSecondsOfCover;
                          [self.navigationController pushViewController:cor animated:YES];
                          
                      });
@@ -733,6 +737,7 @@
 - (void)editCoverClick {
     AlpEditCoverViewController *vc = [AlpEditCoverViewController new];
     vc.videoURL = self.videoURL;
+    vc.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
@@ -891,6 +896,17 @@
 - (void)editVideoBar:(AlpEditVideoBar *)bar didSelectSticker:(AlpStickersData *)stickerData {
     _stickersImgView.image = [UIImage imageWithContentsOfFile:stickerData.StickersImgPaht];
     _stickersImgView.hidden = NO;
+}
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - AlpEditCoverViewControllerDelegate
+////////////////////////////////////////////////////////////////////////
+
+- (void)editCoverViewController:(AlpEditCoverViewController *)controller
+    didChangeCoverWithStartTime:(CGFloat)start
+                        endTime:(CGFloat)end {
+    self.startSecondsOfCover = start;
+    self.endSecondsOfCover = end;
 }
 
 ////////////////////////////////////////////////////////////////////////

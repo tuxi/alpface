@@ -24,7 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
                         longitude:(double)longitude
                          latitude:(double)latitude
                          poi_name:(NSString *)poi_name
-                      poi_address:(NSString *)poi_address;
+                      poi_address:(NSString *)poi_address
+              startSecondsOfCover:(CGFloat)startSeconds
+                endSecondsOfCover:(CGFloat)endSeconds;
 
 /// 是否隐藏返回按钮
 - (BOOL)hiddenBackButtonForVideoCameraViewController:(AlpVideoCameraViewController *)viewController;

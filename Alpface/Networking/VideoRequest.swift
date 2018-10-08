@@ -149,7 +149,7 @@ open class VideoRequest: NSObject {
         parameters["title"] = title
         parameters["describe"] = describe
         // 播放封面的时间戳 默认5秒
-        parameters["coverDuration"] = 5
+        parameters["coverDuration"] = 2.5
         // 封面起始的时间戳
         parameters["coverStartTime"] = coverStartTime
         

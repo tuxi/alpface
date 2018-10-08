@@ -10,6 +10,7 @@
 #import "ALPVideoCameraView.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpEditVideoParameter.h"
+#import "AlpEditPublishVideoModel.h"
 
 @interface AlpVideoCameraViewController () <ALPVideoCameraViewDelegate>
 
@@ -22,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publishVideoNotification:) name:AlpPublushVideoNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publishVideoNotification:) name:AlpDidClickPublushVideoNotification object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -93,9 +94,20 @@
 ////////////////////////////////////////////////////////////////////////
 
 - (void)publishVideoNotification:(NSNotification *)notification {
+    
     NSDictionary *videoInfo =  notification.userInfo;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:publishWithVideoURL:title:content:longitude:latitude:poi_name:poi_address:)]) {
-        [self.delegate videoCameraViewController:self publishWithVideoURL:videoInfo[@"video"] title:videoInfo[@"title"] content:videoInfo[@"content"] longitude:[videoInfo[@"longitude"] doubleValue] latitude:[videoInfo[@"latitude"] doubleValue] poi_name:videoInfo[@"poi_name"] poi_address:videoInfo[@"poi_address"]];
+    AlpEditPublishVideoModel *model = videoInfo[@"publishKey"];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraViewController:publishWithVideoURL:title:content:longitude:latitude:poi_name:poi_address:startSecondsOfCover:endSecondsOfCover:)]) {
+        [self.delegate videoCameraViewController:self
+                             publishWithVideoURL:model.videoURL
+                                           title:model.title
+                                         content:model.content
+                                       longitude:model.coordinate.longitude
+                                        latitude:model.coordinate.latitude
+                                        poi_name:model.locationName
+                                     poi_address:model.address
+                             startSecondsOfCover:model.startSecondsOfCover
+                               endSecondsOfCover:model.endSecondsOfCover];
     }
 }
 

@@ -25,7 +25,7 @@
 #define COLOR_FONT_WHITE 0xFFFFFF
 
 /// 需要发布视频的通知
-static NSNotificationName const AlpPublushVideoNotification = @"AlpPublushVideoNotification";
+static NSNotificationName const AlpDidClickPublushVideoNotification = @"AlpDidClickPublushVideoNotification";
 /// 关闭相机
 static NSNotificationName const AlpVideoCameraCloseNotification = @"AlpVideoCameraCloseNotification";
 /// 允许录制视频的最大时间

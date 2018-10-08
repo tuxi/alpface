@@ -17,6 +17,7 @@
 		D038701F2160BA00002023F8 /* XYCutVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870192160BA00002023F8 /* XYCutVideoView.m */; };
 		D03870352160BD47002023F8 /* MBProgressHUD+XYHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870342160BD47002023F8 /* MBProgressHUD+XYHUD.m */; };
 		D03870382160BEB7002023F8 /* UIViewController+XYExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870372160BEB7002023F8 /* UIViewController+XYExtensions.m */; };
+		D0427872216B3D9F0062C6B5 /* AlpEditPublishVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D0427871216B3D9F0062C6B5 /* AlpEditPublishVideoModel.m */; };
 		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
 		D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868D213E83000009682C /* MCGCDTimer.swift */; };
 		D06FEAB6215CB5620005FAF5 /* AlpEditCoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D06FEAB5215CB5620005FAF5 /* AlpEditCoverViewController.m */; };
@@ -407,6 +408,8 @@
 		D03870342160BD47002023F8 /* MBProgressHUD+XYHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+XYHUD.m"; sourceTree = "<group>"; };
 		D03870362160BEB6002023F8 /* UIViewController+XYExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+XYExtensions.h"; sourceTree = "<group>"; };
 		D03870372160BEB7002023F8 /* UIViewController+XYExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+XYExtensions.m"; sourceTree = "<group>"; };
+		D0427870216B3D9F0062C6B5 /* AlpEditPublishVideoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditPublishVideoModel.h; sourceTree = "<group>"; };
+		D0427871216B3D9F0062C6B5 /* AlpEditPublishVideoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditPublishVideoModel.m; sourceTree = "<group>"; };
 		D06F868A213E80E20009682C /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
 		D06F868D213E83000009682C /* MCGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCGCDTimer.swift; sourceTree = "<group>"; };
 		D06FEAB4215CB5620005FAF5 /* AlpEditCoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditCoverViewController.h; sourceTree = "<group>"; };
@@ -1138,6 +1141,8 @@
 				D25DDB3A216718D900530F21 /* AlpEditVideoBottomView.m */,
 				D25DDB3C2167194500530F21 /* AlpVideoCameraButton.h */,
 				D25DDB3D2167194500530F21 /* AlpVideoCameraButton.m */,
+				D0427870216B3D9F0062C6B5 /* AlpEditPublishVideoModel.h */,
+				D0427871216B3D9F0062C6B5 /* AlpEditPublishVideoModel.m */,
 			);
 			path = CustomVideoCamera;
 			sourceTree = "<group>";
@@ -2122,6 +2127,7 @@
 				D20093362078EEC50079AD8B /* ConfirmViewController.swift in Sources */,
 				D07748B6215335A70080610A /* LocationConverter.m in Sources */,
 				D200933A2078EEC50079AD8B /* CropOverlay.swift in Sources */,
+				D0427872216B3D9F0062C6B5 /* AlpEditPublishVideoModel.m in Sources */,
 				D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */,
 				D20093312078EEC50079AD8B /* UIButtonExtensions.swift in Sources */,
 				D2B165F0208C4F4F00FA5F05 /* CornerBarNaviController.swift in Sources */,
