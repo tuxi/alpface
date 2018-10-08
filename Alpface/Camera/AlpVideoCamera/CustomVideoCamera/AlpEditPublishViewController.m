@@ -424,26 +424,36 @@
 
     
     if (_videoURL == nil) {
-        [MBProgressHUD xy_showMessage:@"还未选择视频..."];
+        [self.view xy_showMessage:@"还未选择视频..."];
         return;
     }
     
     if (contentCell.textView.text.length == 0 ||
         [contentCell.textView.text isEqualToString:AlpContentTextFieldPlaceholder]) {
-        [MBProgressHUD xy_showMessage:@"请添加标题和描述文本"];
+        [self.view xy_showMessage:@"请添加标题和描述文本"];
         return;
     }
     self.publishModel.content = contentCell.textView.text;
     self.publishModel.title = @"test";
     if (self.publishModel.isSaveAlbum) {
-        [MBProgressHUD xy_showMessage:@"正在保存到相册..."];
-        UISaveVideoAtPathToSavedPhotosAlbum([[_videoURL absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""], nil, nil, nil);
+        [self.view xy_showMessage:@"正在保存到相册..."];
+        NSString *videoPath = [[_videoURL absoluteString ] stringByReplacingOccurrencesOfString:@"file://" withString:@""];
+        UISaveVideoAtPathToSavedPhotosAlbum(videoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
         
     } 
     [[NSNotificationCenter defaultCenter] postNotificationName:AlpDidClickPublushVideoNotification object:nil userInfo:@{@"publishKey": self.publishModel}];
 }
 
-
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    
+    NSLog(@"%@", videoPath);
+    
+    if (error) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Video Saving Failed" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Video Saved" message:@"Save To Photo Album" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+    }
+}
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - Lazy
 ////////////////////////////////////////////////////////////////////////
