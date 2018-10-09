@@ -44,7 +44,9 @@ class RootViewController: UIViewController {
     }
     
     public func showUserProfilePage(user: User) {
-        self.appViewController.scrollingContainer.show(page: 2, animated: true)
+        self.appViewController.scrollingContainer.userProfileController.user = user
+        self.appViewController.scrollingContainer.show(page: 2, animated: true) { (finished) in
+        }
     }
     
     public func show(page: Int, animated: Bool) {
