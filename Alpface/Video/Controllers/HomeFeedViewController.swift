@@ -23,16 +23,14 @@ class HomeFeedViewController: MainFeedViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        requestRandomVideos()
         self.navigationItem.title = "推荐"
         addObserver()
         
-        self.addHeaderRefresh(self.collectionView, navigationBar: self.navigationBar) { () -> (Void) in
-            DispatchQueue.main.asyncAfter(deadline: .now()+2.0, execute: {
-                self.endRefresh()
-                self.collectionView .reloadData()
-            })
+        self.addHeaderRefresh(self.collectionView, navigationBar: self.navigationBar) {[weak self] () -> (Void) in
+            self?.requestRandomVideos()
         }
+        
+        self.beginRefresh()
     }
     
     
@@ -87,12 +85,14 @@ extension HomeFeedViewController {
             }
             self?.videoItems += array
             self?.collectionView.reloadData()
+            self?.endRefresh()
             DispatchQueue.main.async {
                 self?.updatePlayControl()
             }
-        }) { (error) in
+        }) {[weak self] (error) in
             let errorStr = error?.localizedDescription ?? "请求随机视频失败，" + "双击底部[首页]按钮可刷新页面！"
             MBProgressHUD.xy_show(errorStr)
+            self?.endRefresh()
         }
     }
 }

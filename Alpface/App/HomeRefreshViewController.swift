@@ -11,9 +11,9 @@ import UIKit
 class HomeRefreshViewController: UIViewController {
     
     enum HomeRefreshStatus {
-        case normal // 正常状态
-        case down  // 下拉
-        case up     // 上拉
+        case normal  // 正常状态
+        case down    // 下拉
+        case up      // 上拉
         case refreshing // 刷新中
     }
     
@@ -26,10 +26,13 @@ class HomeRefreshViewController: UIViewController {
     /// 可以刷新的回调
     fileprivate var refreshCallback: (() -> (Void))?
     fileprivate var startPoint: CGPoint = CGPoint.zero
+    fileprivate var previousPoint: CGPoint = CGPoint.zero
     
     fileprivate var scrollView: UIScrollView?
-    fileprivate var touchView: UIView?
     fileprivate var mainNavigationBar: UIView?
+    
+    fileprivate var panGestureOfTouchView: UIPanGestureRecognizer?
+    
     fileprivate lazy var refreshView: HomeRefreshNavigitionView = {
         var navigationHeight: CGFloat = 66.0;
         if AppUtils.isIPhoneX() {
@@ -48,7 +51,9 @@ class HomeRefreshViewController: UIViewController {
     }
     
 
-    public func addHeaderRefresh(_ scrollView: UIScrollView, navigationBar: UIView, callBack: @escaping ()->(Void)) {
+    public func addHeaderRefresh(_ scrollView: UIScrollView,
+                                 navigationBar: UIView,
+                                 callBack: @escaping ()->(Void)) {
         if scrollView.isKind(of: UIScrollView.classForCoder()) == false {
             return
         }
@@ -60,16 +65,10 @@ class HomeRefreshViewController: UIViewController {
         scrollView.bounces = false
         self.view.addSubview(scrollView)
         
-        // 用来响应touch的view
-        let _touchView = UIView()
-        _touchView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(_touchView)
-        NSLayoutConstraint(item: _touchView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1.0, constant: 0.0).isActive = true
-        NSLayoutConstraint(item: _touchView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1.0, constant: 0.0).isActive = true
-        NSLayoutConstraint(item: _touchView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1.0, constant: 0.0).isActive = true
-        NSLayoutConstraint(item: _touchView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: 0.0).isActive = true
-        touchView = _touchView
-  
+        let panGes = UIPanGestureRecognizer(target: self, action: #selector(panGestureOnTouchView(pan:)))
+        scrollView.addGestureRecognizer(panGes)
+        panGes.delegate = self
+        panGestureOfTouchView = panGes
         
         self.view.addSubview(self.refreshView)
         
@@ -86,30 +85,49 @@ class HomeRefreshViewController: UIViewController {
         if keyPath == "contentOffset" {
             if let scrollView = self.scrollView {
                 if scrollView.contentOffset.y <= 0 {
-                    self.touchView?.isHidden = false
+//                    self.touchView?.isHidden = false
                 }
             }
         }
         
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    @objc fileprivate func panGestureOnTouchView(pan: UIPanGestureRecognizer) {
+        switch pan.state {
+        case .began:
+            panGestureBeganOnTouchView(pan: pan)
+            break
+        case .changed:
+            panGestureMovedOnTouchView(pan: pan)
+            break
+        case .cancelled:
+            panGestureCancelledOnTouchView(pan: pan)
+            break
+        case .ended:
+            panGestureEndOnTouchView(pan: pan)
+            break
+        default:
+            break
+            
+        }
+    }
+    
+    fileprivate func panGestureBeganOnTouchView(pan: UIPanGestureRecognizer) {
         guard let scrollView = self.scrollView else {
             return
         }
         
         if scrollView.contentOffset.y <= 0.0 && self.refreshStatus == .normal {
             //当tableview停在第一个cell并且是正常状态才记录起始触摸点，防止页面在刷新时用户再次向下拖拽页面造成多次下拉刷新
-            let touch    = (touches as NSSet).anyObject() as! UITouch
-            startPoint = touch.location(in: self.view)
+            startPoint = pan.location(in: self.view)
         }
         else {
             // 隐藏touchView，让页面响应scrollView的事件
-            self.touchView?.isHidden = true
+//            self.touchView?.isHidden = true
         }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    fileprivate func panGestureMovedOnTouchView(pan: UIPanGestureRecognizer) {
         if startPoint.equalTo(.zero) {
             //没记录到起始触摸点就返回
             return
@@ -119,8 +137,7 @@ class HomeRefreshViewController: UIViewController {
             return
         }
         
-        let touch    = (touches as NSSet).anyObject() as! UITouch
-        let currentPoint = touch.location(in: self.view)
+        let currentPoint = pan.location(in: self.view)
         
         let moveDistance = currentPoint.y - startPoint.y
         if scrollView.contentOffset.y == 0 {
@@ -140,7 +157,7 @@ class HomeRefreshViewController: UIViewController {
                 }
                 
                 //在整体判断为下拉刷新的情况下，还需要对上一个触摸点和当前触摸点进行比对，判断圆圈旋转方向，下移逆时针，上移顺时针
-                let previousPoint = touch.preciseLocation(in: self.view) // 上一个坐标
+                let previousPoint = self.previousPoint // 上一个坐标
                 if currentPoint.y > previousPoint.y {
                     self.refreshView.circleImageView.transform = self.refreshView.transform.rotated(by: -0.08)
                 }
@@ -162,26 +179,28 @@ class HomeRefreshViewController: UIViewController {
                 self.scrollView?.contentOffset = CGPoint(x: 0, y: -moveDistance)
             }
         }
-       
+            
         else {
             self.refreshStatus = .up;
             //tableview被上拉了
-            self.touchView?.isHidden = true
+//            self.touchView?.isHidden = true
         }
+        
+        previousPoint = currentPoint
+    }
+
+    fileprivate func panGestureEndOnTouchView(pan: UIPanGestureRecognizer) {
+        let point = pan.location(in: self.view)
+        self.updateRefresh(point)
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch    = (touches as NSSet).anyObject() as! UITouch
-        self.updateRefresh(touch)
+    fileprivate func panGestureCancelledOnTouchView(pan: UIPanGestureRecognizer) {
+        let point = pan.location(in: self.view)
+        self.updateRefresh(point)
     }
+
     
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch    = (touches as NSSet).anyObject() as! UITouch
-        self.updateRefresh(touch)
-    }
-    
-    fileprivate func updateRefresh(_ touch: UITouch) {
-        let currentPoint = touch.location(in: self.view)
+    fileprivate func updateRefresh(_ currentPoint: CGPoint) {
         let moveDistance = currentPoint.y - startPoint.y
         if moveDistance == 0 {
             
@@ -201,12 +220,7 @@ class HomeRefreshViewController: UIViewController {
         
         //_refreshNavigitionView.alpha=1的时候说明用户拖拽到最大点，可以开始刷新页面
         if self.refreshView.alpha == 1.0 {
-            self.refreshStatus = .refreshing
-            // 刷新刷新控件
-            self.refreshView.startAnimation()
-            if let callback = self.refreshCallback {
-                callback()
-            }
+            self.beginRefresh()
         }
         else {
             resumeNormal()
@@ -222,11 +236,21 @@ class HomeRefreshViewController: UIViewController {
         }
     }
     
+    /// 开始刷新
+    public func beginRefresh() {
+        self.refreshStatus = .refreshing
+        // 刷新刷新控件
+        self.refreshView.startAnimation()
+        if let callback = self.refreshCallback {
+            callback()
+        }
+    }
+    
     /// 结束刷新
     public func endRefresh() {
         self.resumeNormal()
         self.refreshView.circleImageView.layer .removeAnimation(forKey: "rotationAnimation")
-        self.touchView?.isHidden = false
+//        self.touchView?.isHidden = false
     }
     
     deinit {
@@ -235,4 +259,45 @@ class HomeRefreshViewController: UIViewController {
         }
     }
 
+}
+
+extension HomeRefreshViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let pan = gestureRecognizer as? UIPanGestureRecognizer else {
+            return true
+        }
+        if pan != self.panGestureOfTouchView {
+            return true
+        }
+        if pan.state == .began || pan.state == .possible {
+            let velocity = pan.velocity(in: self.view)
+            let currentPoint = pan.translation(in: self.view)
+            if fabs(currentPoint.x) >= fabs(currentPoint.x) {
+                // 上下滑动
+                if velocity.y > 0 {
+                    // 下
+                    if scrollView?.contentOffset.y == 0.0 {
+                        // 滑到顶部，下拉刷新
+                        return true
+                    }
+                }
+                else {
+                    // 上
+                    return false
+                }
+            }
+            else {
+                // 左右滑动
+                if velocity.x > 0 {
+                    // 向右滑动
+                    return false
+                }
+                else {
+                    // 向左滑动
+                    return false
+                }
+            }
+        }
+        return false
+    }
 }

@@ -83,11 +83,11 @@ class HomeNavigationView: UIView {
     
     @objc fileprivate func selectButton(_ button: UIButton) {
         if button.tag == 1 {
-            self.reset(self.recommendButton)
+            self.reset(self.nearbyButton)
             self.choose(button)
         }
         if button.tag == 2 {
-            self.reset(self.nearbyButton)
+            self.reset(self.recommendButton)
             self.choose(button)
         }
     }

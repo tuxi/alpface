@@ -19,7 +19,6 @@
 		D03870382160BEB7002023F8 /* UIViewController+XYExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03870372160BEB7002023F8 /* UIViewController+XYExtensions.m */; };
 		D0427872216B3D9F0062C6B5 /* AlpEditPublishVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D0427871216B3D9F0062C6B5 /* AlpEditPublishVideoModel.m */; };
 		D05711CE216E109D0041D4F3 /* HomeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05711C9216E109D0041D4F3 /* HomeNavigationView.swift */; };
-		D05711CF216E109D0041D4F3 /* AlpRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D05711CB216E109D0041D4F3 /* AlpRefreshViewController.m */; };
 		D05711D0216E109D0041D4F3 /* HomeRefreshNavigitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05711CC216E109D0041D4F3 /* HomeRefreshNavigitionView.swift */; };
 		D05711D1216E109D0041D4F3 /* HomeRefreshViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05711CD216E109D0041D4F3 /* HomeRefreshViewController.swift */; };
 		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
@@ -415,8 +414,6 @@
 		D0427870216B3D9F0062C6B5 /* AlpEditPublishVideoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlpEditPublishVideoModel.h; sourceTree = "<group>"; };
 		D0427871216B3D9F0062C6B5 /* AlpEditPublishVideoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlpEditPublishVideoModel.m; sourceTree = "<group>"; };
 		D05711C9216E109D0041D4F3 /* HomeNavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeNavigationView.swift; sourceTree = "<group>"; };
-		D05711CA216E109D0041D4F3 /* AlpRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlpRefreshViewController.h; sourceTree = "<group>"; };
-		D05711CB216E109D0041D4F3 /* AlpRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpRefreshViewController.m; sourceTree = "<group>"; };
 		D05711CC216E109D0041D4F3 /* HomeRefreshNavigitionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRefreshNavigitionView.swift; sourceTree = "<group>"; };
 		D05711CD216E109D0041D4F3 /* HomeRefreshViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRefreshViewController.swift; sourceTree = "<group>"; };
 		D06F868A213E80E20009682C /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
@@ -1462,8 +1459,6 @@
 		D26AD41E20668F140047DC15 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				D05711CA216E109D0041D4F3 /* AlpRefreshViewController.h */,
-				D05711CB216E109D0041D4F3 /* AlpRefreshViewController.m */,
 				D05711C9216E109D0041D4F3 /* HomeNavigationView.swift */,
 				D05711CC216E109D0041D4F3 /* HomeRefreshNavigitionView.swift */,
 				D05711CD216E109D0041D4F3 /* HomeRefreshViewController.swift */,
@@ -2133,7 +2128,6 @@
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
 				D0DB45AA2085B7C6000C291A /* AdaptiveTextView.swift in Sources */,
 				D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */,
-				D05711CF216E109D0041D4F3 /* AlpRefreshViewController.m in Sources */,
 				D2B165F6208C68A800FA5F05 /* PresentTransition.swift in Sources */,
 				D26AD455206690E60047DC15 /* PastelView.swift in Sources */,
 				D26AD43B20668F140047DC15 /* AppDelegate.swift in Sources */,
