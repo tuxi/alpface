@@ -10,12 +10,35 @@ import UIKit
 import MBProgressHUD
 
 class HomeFeedViewController: MainFeedViewController {
-
+    
+    private lazy var navigationBar: HomeNavigationView = {
+        var navigationHeight: CGFloat = 66.0;
+        if AppUtils.isIPhoneX() {
+            navigationHeight = 88.0
+        }
+        let navigationBar = HomeNavigationView(frame: CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: navigationHeight))
+        navigationBar.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.2)
+        return navigationBar
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         requestRandomVideos()
         self.navigationItem.title = "推荐"
         addObserver()
+        
+        self.addHeaderRefresh(self.collectionView, navigationBar: self.navigationBar) { () -> (Void) in
+            DispatchQueue.main.asyncAfter(deadline: .now()+2.0, execute: {
+                self.endRefresh()
+                self.collectionView .reloadData()
+            })
+        }
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,7 +54,7 @@ class HomeFeedViewController: MainFeedViewController {
     deinit {
         removeObserver()
     }
-
+    
 }
 
 extension HomeFeedViewController {

@@ -9,15 +9,10 @@
 import UIKit
 
 @objc(ALPMainFeedViewController)
-class MainFeedViewController: UIViewController {
+class MainFeedViewController: HomeRefreshViewController {
+    
     
     public var initialPage = 0
-    fileprivate lazy var refreshControl: UIRefreshControl = {
-        let refresher = UIRefreshControl()
-        refresher.tintColor = UIColor.white
-        refresher.addTarget(self, action: #selector(afterRefresher), for: .valueChanged)
-        return refresher
-    }()
     
     public lazy var videoItems: [PlayVideoModel] = {
         let items = [PlayVideoModel]()
@@ -25,6 +20,7 @@ class MainFeedViewController: UIViewController {
     }()
     
     public var isVisibleInDisplay: Bool = false
+    
     
     public lazy var collectionView: GestureCoordinatingCollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -35,7 +31,7 @@ class MainFeedViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isPagingEnabled = true
-//        collectionView.bounces = false
+        collectionView.bounces = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(MainFeedViewCell.classForCoder(), forCellWithReuseIdentifier: "MainFeedViewCell")
@@ -67,6 +63,7 @@ class MainFeedViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupUI()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,7 +90,7 @@ class MainFeedViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-       super.viewDidDisappear(animated)
+        super.viewDidDisappear(animated)
         displayViewController()?.endAppearanceTransition()
         self.isVisibleInDisplay = false
         // 所有model停止播放
@@ -101,6 +98,7 @@ class MainFeedViewController: UIViewController {
             videoItem.isAllowPlay = false
         }
     }
+    
     
     public func show(page index: Int, animated: Bool) {
         if collectionView.indexPathsForVisibleItems.first?.row == index {
@@ -112,7 +110,7 @@ class MainFeedViewController: UIViewController {
     public func updatePlayControl() {
         var vidbleIndexPath = collectionView.indexPathsForVisibleItems.first
         if vidbleIndexPath == nil {
-           vidbleIndexPath = IndexPath.init(row: 0, section: 0)
+            vidbleIndexPath = IndexPath.init(row: 0, section: 0)
         }
         if vidbleIndexPath!.row >= videoItems.count {
             return
@@ -154,12 +152,7 @@ class MainFeedViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
-        if #available(iOS 10.0, *) {
-            collectionView.refreshControl = refreshControl
-        } else {
-            collectionView.addSubview(refreshControl)
-        }
-       
+        
         setupNavigation()
     }
     
@@ -187,9 +180,9 @@ class MainFeedViewController: UIViewController {
     }
     
     fileprivate func loadPosts(){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            self.refreshControl.endRefreshing()
-        }
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        //            self.refreshControl.endRefreshing()
+        //        }
     }
     
 }
@@ -254,16 +247,16 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.y
-        if offset < -100 {
-            collectionView.refreshControl?.tintColor = UIColor.white
-            collectionView.refreshControl?.attributedTitle = NSAttributedString(string: "现在可以松手了", attributes: [.foregroundColor : UIColor.orange])
-            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
-        } else {
-            collectionView.refreshControl?.tintColor = UIColor.white
-            collectionView.refreshControl?.attributedTitle = NSAttributedString(string: "下拉刷新...", attributes: [.foregroundColor : UIColor.orange])
-            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
-        }
+        //        let offset = scrollView.contentOffset.y
+        //        if offset < -100 {
+        //            collectionView.refreshControl?.tintColor = UIColor.white
+        //            collectionView.refreshControl?.attributedTitle = NSAttributedString(string: "现在可以松手了", attributes: [.foregroundColor : UIColor.orange])
+        //            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
+        //        } else {
+        //            collectionView.refreshControl?.tintColor = UIColor.white
+        //            collectionView.refreshControl?.attributedTitle = NSAttributedString(string: "下拉刷新...", attributes: [.foregroundColor : UIColor.orange])
+        //            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
+        //        }
     }
     
 }
@@ -277,8 +270,8 @@ extension MainFeedViewController: PlayInteractionViewControllerDelegate {
 extension MainFeedViewController {
     
     /// 关闭appearance callbacks的自动传递的特性呢
-//    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
-//        return false
-//    }
+    //    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
+    //        return false
+    //    }
     
 }

@@ -225,7 +225,6 @@ extension MainAppScrollingContainerViewController: UITabBarControllerDelegate {
         /// 只有首页才支持左右滑动切换控制器，向左滑动到创建故事页面，向右滑动到我的个人主页
         if tabBarController.selectedIndex == 0 {
             pageScrollView()?.isScrollEnabled = true
-//            collectionView.isScrollEnabled = true
             homeFeedController.isVisibleInDisplay = true
 //            tabBarController.tabBar.backgroundImage = UIImage()
         }
