@@ -166,7 +166,7 @@ class HomeRefreshViewController: UIViewController {
         else {
             self.refreshStatus = .up;
             //tableview被上拉了
-//            self.touchView?.isHidden = true
+            self.touchView?.isHidden = true
         }
     }
     
