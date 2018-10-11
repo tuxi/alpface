@@ -26,7 +26,7 @@ class HomeNavigationView: UIView {
         let button = UIButton(type: .custom)
         button.tag = 2;
         button.backgroundColor = UIColor.clear
-        button.setTitle("附近", for: .normal)
+        button.setTitle("北京", for: .normal)
         button.setTitleColor(UIColor.init(red: 230/255.0, green: 230/255.0, blue: 230/255.0, alpha: 1.0), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
         button.addTarget(self, action: #selector(selectButton(_:)), for: .touchUpInside)
@@ -38,7 +38,7 @@ class HomeNavigationView: UIView {
         let button = UIButton(type: .custom)
         button.tag = 3;
         button.backgroundColor = UIColor.clear
-        button.setImage(UIImage.init(named: "sousuo"), for: .normal)
+        button.setImage(UIImage.init(named: "D__icNavbarMore_24x24_"), for: .normal)
         button.addTarget(self, action: #selector(selectButton(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -55,15 +55,7 @@ class HomeNavigationView: UIView {
     }
     
     fileprivate func setup() {
-        let line = UIView()
-        line.backgroundColor = UIColor.init(red: 230/255.0, green: 230/255.0, blue: 230/255.0, alpha: 1.0)
-        self.addSubview(line)
-        line.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: line, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0).isActive = true
-        NSLayoutConstraint(item: line, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: -18.0).isActive = true
-        NSLayoutConstraint(item: line, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 1.0).isActive = true
-        NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 8.0).isActive = true
-        
+       
         self.addSubview(self.recommendButton)
         self.addSubview(self.searchButton)
         self.addSubview(self.nearbyButton)
@@ -74,11 +66,22 @@ class HomeNavigationView: UIView {
         NSLayoutConstraint(item: nearbyButton, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 46.0).isActive = true
         NSLayoutConstraint(item: nearbyButton, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0).isActive = true
         
-        NSLayoutConstraint(item: searchButton, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: searchButton, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: -20.0).isActive = true
         NSLayoutConstraint(item: searchButton, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0).isActive = true
         NSLayoutConstraint(item: searchButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 44.0).isActive = true
         NSLayoutConstraint(item: searchButton, attribute: .height, relatedBy: .equal, toItem: searchButton, attribute: .width, multiplier: 1.0, constant: 0.0).isActive = true
-
+        
+        let line = UIView()
+        line.backgroundColor = UIColor.init(red: 230/255.0, green: 230/255.0, blue: 230/255.0, alpha: 1.0)
+        self.addSubview(line)
+        line.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: line, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: line, attribute: .centerY, relatedBy: .equal, toItem: self.recommendButton, attribute: .centerY, multiplier: 1.0, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: line, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 1.0).isActive = true
+        NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 8.0).isActive = true
+        
+        self.selectButton(self.recommendButton)
+        
     }
     
     @objc fileprivate func selectButton(_ button: UIButton) {
@@ -101,6 +104,6 @@ class HomeNavigationView: UIView {
     // 选中按钮
     fileprivate func choose(_ button: UIButton) {
         button.isSelected = true
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18.0)
     }
 }

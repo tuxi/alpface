@@ -38,6 +38,7 @@ class HomeRefreshViewController: UIViewController {
     
     fileprivate var panGestureOfTouchView: UIPanGestureRecognizer?
     fileprivate var isSendFeedBackGenertor: Bool = false
+    fileprivate var animationStyle: HomeRefreshAnimationStyle = .circle
     
     fileprivate lazy var refreshView: HomeRefreshNavigitionView = {
         var navigationHeight: CGFloat = 66.0;
@@ -57,13 +58,14 @@ class HomeRefreshViewController: UIViewController {
     
     public func addHeaderRefresh(_ scrollView: UIScrollView,
                                  navigationBar: UIView,
+                                 animationStyle: HomeRefreshAnimationStyle = .eye,
                                  callBack: @escaping ()->(Void)) {
         if scrollView.isKind(of: UIScrollView.classForCoder()) == false {
             return
         }
         
         self.refreshCallback = callBack
-        
+        self.animationStyle = animationStyle
         self.scrollView = scrollView
         //去掉弹性效果
         scrollView.bounces = false
@@ -152,24 +154,29 @@ class HomeRefreshViewController: UIViewController {
             if moveDistance > 0 && moveDistance < self.maxDistance {
                 self.refreshStatus = .down
                 //只判断当前触摸点与起始触摸点y轴方向的移动距离，只要y比起始触摸点的y大就证明是下拉，这中间可能存在先下拉一段距离没松手又上滑了一点的情况
-                let alpha = moveDistance/self.maxDistance
+                let progress = moveDistance/self.maxDistance
                 //moveDistance>0则是下拉刷新，在下拉距离小于MaxDistance的时候对_refreshNavigitionView和_mainViewNavigitionView进行透明度、frame移动操作
-                self.refreshView.alpha = alpha
+                self.refreshView.alpha = progress
                 var frame = self.refreshView.frame
                 frame.origin.y = moveDistance
                 self.refreshView.frame = frame
                 if let navigationBar = self.mainNavigationBar {
-                    navigationBar.alpha = 1 - alpha
+                    navigationBar.alpha = 1 - progress
                     navigationBar.frame = frame
                 }
                 
                 //在整体判断为下拉刷新的情况下，还需要对上一个触摸点和当前触摸点进行比对，判断圆圈旋转方向，下移逆时针，上移顺时针
-                let previousPoint = self.previousPoint // 上一个坐标
-                if currentPoint.y > previousPoint.y {
-                    self.refreshView.circleImageView.transform = self.refreshView.transform.rotated(by: -0.08)
+                if animationStyle == .circle {
+                    let previousPoint = self.previousPoint // 上一个坐标
+                    if currentPoint.y > previousPoint.y {
+                        self.refreshView.animationImageView.transform = self.refreshView.transform.rotated(by: -0.08)
+                    }
+                    else {
+                        self.refreshView.animationImageView.transform = self.refreshView.transform.rotated(by: 0.08)
+                    }
                 }
-                else {
-                    self.refreshView.circleImageView.transform = self.refreshView.transform.rotated(by: 0.08)
+                else if animationStyle == .eye {
+                    self.refreshView.animation(progress: progress)
                 }
                 
             }
@@ -264,7 +271,7 @@ class HomeRefreshViewController: UIViewController {
         }
         self.refreshStatus = .refreshing
         // 刷新刷新控件
-        self.refreshView.startAnimation()
+        self.refreshView.startAnimation(style: self.animationStyle)
         if let callback = self.refreshCallback {
             callback()
         }
@@ -273,7 +280,7 @@ class HomeRefreshViewController: UIViewController {
     /// 结束刷新
     public func endRefresh() {
         self.resetRefresh()
-        self.refreshView.circleImageView.layer .removeAnimation(forKey: "rotationAnimation")
+        self.refreshView.stopAnimation()
     }
     
     /// scrollView是否滚动到了底部

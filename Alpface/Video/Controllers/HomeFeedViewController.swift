@@ -17,7 +17,7 @@ class HomeFeedViewController: MainFeedViewController {
             navigationHeight = 88.0
         }
         let navigationBar = HomeNavigationView(frame: CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: navigationHeight))
-        navigationBar.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.2)
+        navigationBar.backgroundColor = UIColor.clear
         return navigationBar
     }()
     
