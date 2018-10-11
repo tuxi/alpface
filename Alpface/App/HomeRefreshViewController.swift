@@ -41,7 +41,7 @@ class HomeRefreshViewController: UIViewController {
     fileprivate var animationStyle: HomeRefreshAnimationStyle = .circle
     
     fileprivate lazy var refreshView: HomeRefreshNavigitionView = {
-        var navigationHeight: CGFloat = 66.0;
+        var navigationHeight: CGFloat = 66.0-20.0; // 20.0为statusBar高度 非iPhoneX 主页不显示statusBar
         if AppUtils.isIPhoneX() {
             navigationHeight = 88.0
         }
@@ -334,9 +334,11 @@ extension HomeRefreshViewController: UIGestureRecognizerDelegate {
         }
         
         if pan.state == .began || pan.state == .possible {
+            
             let velocity = pan.velocity(in: self.view)
             let currentPoint = pan.translation(in: self.view)
-            if fabs(currentPoint.x) >= fabs(currentPoint.x) {
+            // y轴偏移量大，说明是上下移动，此时如果手势是gestureRecognizer时，让其不能响应
+            if fabs(currentPoint.y) > fabs(currentPoint.x) {
                 // 上下滑动
                 if velocity.y > 0 {
                     // 下

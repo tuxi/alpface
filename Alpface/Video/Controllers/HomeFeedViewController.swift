@@ -12,7 +12,7 @@ import MBProgressHUD
 class HomeFeedViewController: MainFeedViewController {
     
     private lazy var navigationBar: HomeNavigationView = {
-        var navigationHeight: CGFloat = 66.0;
+        var navigationHeight: CGFloat = 66.0-20.0; // 20.0为statusBar高度 非iPhoneX 主页不显示statusBar
         if AppUtils.isIPhoneX() {
             navigationHeight = 88.0
         }

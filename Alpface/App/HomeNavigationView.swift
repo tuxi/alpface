@@ -68,7 +68,7 @@ class HomeNavigationView: UIView {
         
         NSLayoutConstraint(item: searchButton, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: -20.0).isActive = true
         NSLayoutConstraint(item: searchButton, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0).isActive = true
-        NSLayoutConstraint(item: searchButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 44.0).isActive = true
+        NSLayoutConstraint(item: searchButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 30.0).isActive = true
         NSLayoutConstraint(item: searchButton, attribute: .height, relatedBy: .equal, toItem: searchButton, attribute: .width, multiplier: 1.0, constant: 0.0).isActive = true
         
         let line = UIView()
