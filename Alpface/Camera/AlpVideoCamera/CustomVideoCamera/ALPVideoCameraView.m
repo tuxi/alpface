@@ -195,13 +195,8 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     //    253 91 73
     [self.filteredVideoView addSubview:self.optionsView];
     self.optionsView.translatesAutoresizingMaskIntoConstraints = false;
-    if (@available(iOS 11.0, *)) {
-        [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-        [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
-    } else {
-        [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
-        [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
-    }
+    [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.optionsView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.filteredVideoView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0].active = YES;
     

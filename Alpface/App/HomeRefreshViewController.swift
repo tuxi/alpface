@@ -7,17 +7,22 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class HomeRefreshViewController: UIViewController {
     
     enum HomeRefreshStatus {
-        case normal  // 正常状态
-        case down    // 下拉
-        case up      // 上拉
-        case refreshing // 刷新中
+        // 正常状态
+        case normal
+        // 下拉
+        case down
+        // 上拉
+        case up
+        // 正在刷新中
+        case refreshing
     }
     
-    /// 向下拖拽最大点-刷新临界值
+    /// 向下拖拽最大点-刷新临界值，到达时即可刷新
     private let maxDistance: CGFloat = 60.0
     
     /// 记录手指滑动状态
@@ -32,6 +37,7 @@ class HomeRefreshViewController: UIViewController {
     fileprivate var mainNavigationBar: UIView?
     
     fileprivate var panGestureOfTouchView: UIPanGestureRecognizer?
+    fileprivate var isSendFeedBackGenertor: Bool = false
     
     fileprivate lazy var refreshView: HomeRefreshNavigitionView = {
         var navigationHeight: CGFloat = 66.0;
@@ -43,14 +49,12 @@ class HomeRefreshViewController: UIViewController {
         view.alpha = 0.0
         return view
     }()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
     
-
+    fileprivate lazy var feedBackGenertor:UIImpactFeedbackGenerator = {
+        let feedBackGenertor = UIImpactFeedbackGenerator(style: .medium)
+        return feedBackGenertor
+    }()
+    
     public func addHeaderRefresh(_ scrollView: UIScrollView,
                                  navigationBar: UIView,
                                  callBack: @escaping ()->(Void)) {
@@ -75,17 +79,17 @@ class HomeRefreshViewController: UIViewController {
         self.mainNavigationBar = navigationBar
         self.view.addSubview(navigationBar)
         
-        //添加观察者
+        // 添加观察者
         scrollView.addObserver(self, forKeyPath: "contentOffset", options: [.old, .new], context: nil)
-        //触摸结束恢复原位-松手回弹
-        scrollView.contentOffset = CGPoint(x: 0, y: 0)
+        // 触摸结束恢复原位-松手回弹
+        scrollView.contentOffset = CGPoint.zero
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentOffset" {
             if let scrollView = self.scrollView {
                 if scrollView.contentOffset.y <= 0 {
-//                    self.touchView?.isHidden = false
+
                 }
             }
         }
@@ -116,14 +120,17 @@ class HomeRefreshViewController: UIViewController {
         guard let scrollView = self.scrollView else {
             return
         }
+        self.isSendFeedBackGenertor = false
         
         if scrollView.contentOffset.y <= 0.0 && self.refreshStatus == .normal {
-            //当tableview停在第一个cell并且是正常状态才记录起始触摸点，防止页面在刷新时用户再次向下拖拽页面造成多次下拉刷新
+            // 当scrollView停在顶部并且是正常状态才记录起始触摸点，防止页面在刷新时用户再次向下拖拽页面造成多次下拉刷新
             startPoint = pan.location(in: self.view)
         }
         else {
-            // 隐藏touchView，让页面响应scrollView的事件
-//            self.touchView?.isHidden = true
+            // 在底部
+            if isScrollInBottom() {
+                startPoint = pan.location(in: self.view)
+            }
         }
     }
     
@@ -140,7 +147,7 @@ class HomeRefreshViewController: UIViewController {
         let currentPoint = pan.location(in: self.view)
         
         let moveDistance = currentPoint.y - startPoint.y
-        if scrollView.contentOffset.y == 0 {
+        if self.isScrollInTop() {
             // 根据触摸点移动方向判断用户是下拉还是上拉
             if moveDistance > 0 && moveDistance < self.maxDistance {
                 self.refreshStatus = .down
@@ -175,15 +182,21 @@ class HomeRefreshViewController: UIViewController {
                 }
             } else if moveDistance < 0.0 {
                 self.refreshStatus = .up
-                //moveDistance<0则是上拉 根据移动距离修改tableview.contentOffset，模仿tableview的拖拽效果，一旦执行了这行代码，下个触摸点就会走外层else代码
-                self.scrollView?.contentOffset = CGPoint(x: 0, y: -moveDistance)
+                // moveDistance<0则是上拉 根据移动距离修改tableview.contentOffset，模仿tableview的拖拽效果，一旦执行了这行代码，下个触摸点就会走外层else代码
+                scrollView.contentOffset = CGPoint(x: 0, y: -moveDistance)
+            }
+            
+            if self.refreshView.alpha == 1.0 {
+                self.sendFeedBackGenertor()
             }
         }
             
-        else {
+        else if self.isScrollInBottom() {
             self.refreshStatus = .up;
-            //tableview被上拉了
-//            self.touchView?.isHidden = true
+            // scrollView被上拉了
+            // 触发上拉加载更多
+//            self.scrollView?.contentOffset = CGPoint(x: 0, y: -moveDistance)
+            MBProgressHUD.xy_show("已触发上拉加载更多，功能还未完成")
         }
         
         previousPoint = currentPoint
@@ -223,12 +236,19 @@ class HomeRefreshViewController: UIViewController {
             self.beginRefresh()
         }
         else {
-            resumeNormal()
+            resetRefresh()
+        }
+    }
+    
+    fileprivate func sendFeedBackGenertor() {
+        if isSendFeedBackGenertor == false {
+            self.feedBackGenertor.impactOccurred()
+            isSendFeedBackGenertor = true
         }
     }
     
     /// 恢复为正常状态
-    fileprivate func resumeNormal() {
+    fileprivate func resetRefresh() {
         self.refreshStatus = .normal
         UIView.animate(withDuration: 0.3) {
             self.refreshView.alpha = 0.0
@@ -238,6 +258,10 @@ class HomeRefreshViewController: UIViewController {
     
     /// 开始刷新
     public func beginRefresh() {
+        // 正常刷新中禁止触发
+        if self.refreshStatus == .refreshing {
+            return
+        }
         self.refreshStatus = .refreshing
         // 刷新刷新控件
         self.refreshView.startAnimation()
@@ -248,9 +272,35 @@ class HomeRefreshViewController: UIViewController {
     
     /// 结束刷新
     public func endRefresh() {
-        self.resumeNormal()
+        self.resetRefresh()
         self.refreshView.circleImageView.layer .removeAnimation(forKey: "rotationAnimation")
-//        self.touchView?.isHidden = false
+    }
+    
+    /// scrollView是否滚动到了底部
+    private func isScrollInBottom() -> Bool {
+        // 当scrollView上滑动到底部时，触发上拉刷新
+        if let scrollView = self.scrollView {
+            let height: CGFloat = scrollView.frame.size.height
+            let contentOffsetY: CGFloat = scrollView.contentOffset.y
+            let bottomOffset: CGFloat = scrollView.contentSize.height - contentOffsetY
+            if (bottomOffset <= height)    {
+                //在最底部
+                return true
+            }
+        }
+        return false
+    }
+    
+    /// scrollView是否滚动到了顶部
+    private func isScrollInTop() -> Bool {
+        if let scrollView = self.scrollView {
+            if scrollView.contentOffset.y <= 0  {
+                // 滑到顶部，下拉刷新
+                return true
+            }
+        }
+        
+        return false
     }
     
     deinit {
@@ -262,6 +312,8 @@ class HomeRefreshViewController: UIViewController {
 }
 
 extension HomeRefreshViewController: UIGestureRecognizerDelegate {
+    
+    /// 决定添加到scrollView的手势触发时机
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let pan = gestureRecognizer as? UIPanGestureRecognizer else {
             return true
@@ -269,6 +321,11 @@ extension HomeRefreshViewController: UIGestureRecognizerDelegate {
         if pan != self.panGestureOfTouchView {
             return true
         }
+        
+        if self.refreshStatus == .refreshing {
+            return false
+        }
+        
         if pan.state == .began || pan.state == .possible {
             let velocity = pan.velocity(in: self.view)
             let currentPoint = pan.translation(in: self.view)
@@ -276,13 +333,17 @@ extension HomeRefreshViewController: UIGestureRecognizerDelegate {
                 // 上下滑动
                 if velocity.y > 0 {
                     // 下
-                    if scrollView?.contentOffset.y == 0.0 {
-                        // 滑到顶部，下拉刷新
+                    if isScrollInTop() {
                         return true
                     }
                 }
                 else {
                     // 上
+                    // 当scrollView上滑动到底部时，触发上拉刷新
+                    if self.isScrollInBottom() {
+                        return true
+                    }
+                    
                     return false
                 }
             }
