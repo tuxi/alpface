@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, AlpVideoCameraRecordState) {
 /// 录制完成按钮
 @property (nonatomic, strong) UIButton *cameraChangeButton;
 /// 删除当前已录制的视频按钮
-@property (nonatomic, strong) UIButton *dleButton;
+@property (nonatomic, strong) UIButton *deleteButton;
 /// 从相册导入视频按钮
 @property (nonatomic, strong) UIButton *inputLocalVieoBtn;
 /// 返回按钮

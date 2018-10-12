@@ -13,9 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIImage (AlpExtensions)
 
 /// 根据视频本地路径截取缩略图
-+ (UIImage *)getThumbnailByVideoPath:(NSString *)videoPath;
++ (nullable UIImage *)getThumbnailByVideoPath:(NSString *)videoPath;
 /// 颜色转换图片
-+ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
++ (nullable UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
+
++ (nullable UIImage *)alp_videoCameraBundleImageNamed:(NSString *)name;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -16,13 +16,13 @@
 #import "TZImagePickerController.h"
 #import "TZImageManager.h"
 #import <Photos/Photos.h>
-#import <Photos/PHImageManager.h>
 #import "GPUImage.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraUtils.h"
 #import "AlpEditVideoParameter.h"
 #import "XYCutVideoController.h"
 #import "MBProgressHUD+XYHUD.h"
+#import "UIImage+AlpExtensions.h"
 
 /**
  @note GPUImageVideoCamera录制视频 有时第一帧是黑屏 待解决
@@ -205,7 +205,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     [self.optionsView.cameraPositionChangeButton addTarget:self action:@selector(changeCameraPositionBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.camerafilterChangeButton addTarget:self action:@selector(changebeautifyFilterBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.cameraChangeButton addTarget:self action:@selector(stopRecording:) forControlEvents:UIControlEventTouchUpInside];
-    [self.optionsView.dleButton addTarget:self action:@selector(clickDleBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self.optionsView.deleteButton addTarget:self action:@selector(clickDleBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.inputLocalVieoBtn addTarget:self action:@selector(clickInputBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.shootingLightingButton addTarget:self action:@selector(changeFlashMode:) forControlEvents:UIControlEventTouchUpInside];
     [self.optionsView.permissionView updateHidden];
@@ -226,7 +226,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     
     // 初始化闪光灯模式为Auto
     [self setFlashMode:AlpCameraFlashModeOff];
-    [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
+    [self.optionsView.shootingLightingButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -278,7 +278,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
         [_myTimer invalidate];
         _myTimer = nil;
         if (self.segmentedVideos.count) {
-            self.optionsView.dleButton.hidden = NO;
+            self.optionsView.deleteButton.hidden = NO;
         }
     }
     sender.selected = !sender.isSelected;
@@ -354,7 +354,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
         }
         
         
-        [AlpVideoCameraUtils mergeVideos:urls exportPath:outPath watermarkImg: nil/*[UIImage imageNamed:@"icon_watermark"]*/ completion:^(NSURL * _Nonnull outLocalURL) {
+        [AlpVideoCameraUtils mergeVideos:urls exportPath:outPath watermarkImg: nil/*[UIImage alp_videoCameraBundleImageNamed:@"icon_watermark"]*/ completion:^(NSURL * _Nonnull outLocalURL) {
             [weakVideoCamera stopCameraCapture];
             
             AlpEditVideoViewController* vc = [[AlpEditVideoViewController alloc]init];
@@ -390,7 +390,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
 - (void)removeLastSegementedVideo {
     AlpSegmentedVideo *video = [self.segmentedVideos lastObject];
     if (!video) {
-        self.optionsView.dleButton.hidden = YES;
+        self.optionsView.deleteButton.hidden = YES;
         self.optionsView.cameraChangeButton.hidden = YES;
         _currentTime = 0.0;
         [self.optionsView.progressPreView cancelProgress];
@@ -423,15 +423,15 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
 }
 
 /// 从相册中导入视频
--(void)clickInputBtn:(UIButton*)sender {
+- (void)clickInputBtn:(UIButton*)sender {
     TZImagePickerController* imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 delegate:self];
     imagePickerVc.isSelectOriginalPhoto = NO;
     imagePickerVc.allowTakePicture = NO;
+    imagePickerVc.allowTakeVideo = NO;
     imagePickerVc.allowPickingImage = NO;
     imagePickerVc.allowPickingGif = NO;
-    imagePickerVc.allowPickingVideo = YES;
     imagePickerVc.sortAscendingByModificationDate = YES;
-    imagePickerVc.autoDismiss = NO;
+//    imagePickerVc.autoDismiss = NO;
     __weak typeof(self) weakSelf = self;
     imagePickerVc.pickerDelegate = self;
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage,id asset) {
@@ -570,7 +570,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     self.isOpenBeautifyFilter = !sender.isSelected;
 }
 
-- (void)setisOpenBeautifyFilter:(BOOL)isOpenBeautifyFilter {
+- (void)setIsOpenBeautifyFilter:(BOOL)isOpenBeautifyFilter {
     _isOpenBeautifyFilter = isOpenBeautifyFilter;
     if (isOpenBeautifyFilter) {
         [_videoCamera removeAllTargets];
@@ -605,7 +605,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
             //        }
             //            break;
         case AlpCameraFlashModeOff: {
-            [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
+            [self.optionsView.shootingLightingButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"icShootingLightingOff_31x31_"] forState:UIControlStateNormal];
             AVCaptureDevice *device = _videoCamera.inputCamera;
             if ([device hasTorch]) {
                 [device lockForConfiguration:nil];
@@ -616,7 +616,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
             
             break;
         case AlpCameraFlashModeOn: {
-            [self.optionsView.shootingLightingButton setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
+            [self.optionsView.shootingLightingButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
             NSError *error = nil;
             if ([_videoCamera.inputCamera hasTorch]) {
                 BOOL locked = [_videoCamera.inputCamera lockForConfiguration:&error];
@@ -640,7 +640,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     switch (self.flashMode) {
             //        case AlpCameraFlashModeAuto:
             //            self.flashMode = AlpCameraFlashModeOn;
-            //            [button setImage:[UIImage imageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
+            //            [button setImage:[UIImage alp_videoCameraBundleImageNamed:@"icShootingLightingOn_31x31_"] forState:UIControlStateNormal];
             //            break;
         case AlpCameraFlashModeOff:
             //            self.flashMode = AlpCameraFlashModeAuto;
@@ -682,7 +682,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
 
 /// 设置相机对焦的layer
 - (void)setfocusImage {
-    UIImage *focusImage = [UIImage imageNamed:@"96"];
+    UIImage *focusImage = [UIImage alp_videoCameraBundleImageNamed:@"96"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, focusImage.size.width, focusImage.size.height)];
     imageView.image = focusImage;
     CALayer *layer = imageView.layer;

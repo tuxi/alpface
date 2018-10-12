@@ -7,6 +7,7 @@
 //
 
 #import "AlpMusicItemCollectionViewCell.h"
+#import "UIImage+AlpExtensions.h"
 
 @implementation AlpMusicItemCollectionViewCell
 
@@ -83,7 +84,7 @@
 - (UIImageView *)checkMarkImgView {
     if (!_checkMarkImgView) {
         _checkMarkImgView = [[UIImageView alloc] init];
-        _checkMarkImgView.image = [UIImage imageNamed:@"GiftCheckmarkIcon"];
+        _checkMarkImgView.image = [UIImage alp_videoCameraBundleImageNamed:@"GiftCheckmarkIcon"];
         _checkMarkImgView.translatesAutoresizingMaskIntoConstraints = NO;
         _checkMarkImgView.contentMode = UIViewContentModeScaleToFill;
     }

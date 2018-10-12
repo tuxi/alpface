@@ -9,6 +9,7 @@
 #import "AlpVideoCameraOptionsView.h"
 #import "AlpVideoCameraDefine.h"
 #import "AlpVideoCameraButton.h"
+#import "UIImage+AlpExtensions.h"
 
 @interface AlpVideoCameraOptionsView ()
 
@@ -31,22 +32,22 @@
         _inputLocalVieoBtn.hidden = NO;
         [self.progressPreView cancelProgress];
         _rightView.hidden = NO;
-        _dleButton.hidden = YES;
+        _deleteButton.hidden = YES;
     }
     else if (_recordState == AlpVideoCameraRecordStateStart) {
         _inputLocalVieoBtn.hidden = YES;
         _rightView.hidden = YES;
         self.timeButton.hidden = NO;
-        _dleButton.hidden = YES;
+        _deleteButton.hidden = YES;
     }
     else if (_recordState == AlpVideoCameraRecordStatePause) {
         _inputLocalVieoBtn.hidden = YES;
         _rightView.hidden = NO;
-        _dleButton.hidden = NO;
+        _deleteButton.hidden = NO;
     }
     else if (_recordState == AlpVideoCameraRecordStateDone) {
         _inputLocalVieoBtn.hidden = YES;
-        self.dleButton.hidden = YES;
+        self.deleteButton.hidden = YES;
         [self.progressPreView cancelProgress];
         self.cameraChangeButton.hidden = YES;
     }
@@ -62,7 +63,7 @@
     [self.rightView addSubview:self.camerafilterChangeButton];
     [self.rightView addSubview:self.shootingLightingButton];
     [self addSubview:self.cameraChangeButton];
-    [self addSubview:self.dleButton];
+    [self addSubview:self.deleteButton];
     [self addSubview:self.inputLocalVieoBtn];
     [self addSubview:self.progressPreView];
     
@@ -73,7 +74,7 @@
     self.cameraPositionChangeButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.camerafilterChangeButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.cameraChangeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.dleButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.deleteButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.inputLocalVieoBtn.translatesAutoresizingMaskIntoConstraints = NO;
     self.progressPreView.translatesAutoresizingMaskIntoConstraints = NO;
     self.shootingLightingButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -128,10 +129,10 @@
     
     
     // 删除录制按钮
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:50].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.dleButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.deleteButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.deleteButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:50].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.deleteButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.deleteButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40.0].active = YES;
     
     // 完成录制按钮
     [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.photoCaptureButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:.0].active = YES;
@@ -140,8 +141,8 @@
     [NSLayoutConstraint constraintWithItem:self.cameraChangeButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50.0].active = YES;
     
     // 从相册中导入视频按钮
-    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.dleButton attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:.0].active = YES;
-    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.dleButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.deleteButton attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:.0].active = YES;
+    [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.deleteButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
     [NSLayoutConstraint constraintWithItem:self.inputLocalVieoBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0].active = YES;
     self.inputLocalVieoBtn.layer.cornerRadius = 3.0;
@@ -218,7 +219,7 @@
     if (!_photoCaptureButton) {
         _photoCaptureButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 31.5, SCREEN_HEIGHT- 120, 63, 63)];
         _photoCaptureButton.backgroundColor = [UIColor clearColor];
-        [_photoCaptureButton setImage:[UIImage imageNamed:@"record_button_open_65x65_"] forState:UIControlStateNormal];
+        [_photoCaptureButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"record_button_open_65x65_"] forState:UIControlStateNormal];
     }
     return _photoCaptureButton;
 }
@@ -228,7 +229,7 @@
         // 返回按钮
         UIButton* backBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, 25, 30, 30)];
         backBtn.showsTouchWhenHighlighted = YES;
-        [backBtn setImage:[UIImage imageNamed:@"icon-white-close_24x24_"] forState:UIControlStateNormal];
+        [backBtn setImage:[UIImage alp_videoCameraBundleImageNamed:@"icon-white-close_24x24_"] forState:UIControlStateNormal];
         _backBtn = backBtn;
     }
     return _backBtn;
@@ -238,7 +239,7 @@
     if (!_cameraPositionChangeButton) {
         // 前后摄像头切换按钮
         _cameraPositionChangeButton = (id)[[AlpVideoCameraButton alloc] initWithFrame:CGRectZero];
-        UIImage* img2 = [UIImage imageNamed:@"icShootingFlip_31x31_"];
+        UIImage* img2 = [UIImage alp_videoCameraBundleImageNamed:@"icShootingFlip_31x31_"];
         [_cameraPositionChangeButton setImage:img2 forState:UIControlStateNormal];
         [_cameraPositionChangeButton setTitle:@"翻转" forState:UIControlStateNormal];
     }
@@ -249,9 +250,9 @@
     if (!_camerafilterChangeButton) {
         _camerafilterChangeButton = (id)[[AlpVideoCameraButton alloc] init];
         _camerafilterChangeButton.frame = CGRectMake(_cameraPositionChangeButton.frame.origin.x, _cameraPositionChangeButton.frame.origin.y + 80, 30, 30);
-        UIImage* img = [UIImage imageNamed:@"iconBeautyOff2_40x40_"];
+        UIImage* img = [UIImage alp_videoCameraBundleImageNamed:@"iconBeautyOff2_40x40_"];
         [_camerafilterChangeButton setImage:img forState:UIControlStateNormal];
-        [_camerafilterChangeButton setImage:[UIImage imageNamed:@"iconBeautyOn2_40x40_"] forState:UIControlStateSelected];
+        [_camerafilterChangeButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"iconBeautyOn2_40x40_"] forState:UIControlStateSelected];
         [_camerafilterChangeButton setTitle:@"美化" forState:UIControlStateNormal];
     }
     return _camerafilterChangeButton;
@@ -270,20 +271,20 @@
         _cameraChangeButton  = [[UIButton alloc] init];
         _cameraChangeButton.hidden = YES;
         _cameraChangeButton.frame = CGRectMake(SCREEN_WIDTH - 100 , SCREEN_HEIGHT - 105.0, 52.6, 50.0);
-        UIImage* img3 = [UIImage imageNamed:@"complete"];
+        UIImage* img3 = [UIImage alp_videoCameraBundleImageNamed:@"complete"];
         [_cameraChangeButton setImage:img3 forState:UIControlStateNormal];
     }
     return _cameraChangeButton;
 }
 
-- (UIButton *)dleButton {
-    if (!_dleButton) {
-        _dleButton = [[UIButton alloc] init];
-        _dleButton.hidden = YES;
-        UIImage* img = [UIImage imageNamed:@"icShootingDelete_40x40_"];
-        [_dleButton setImage:img forState:UIControlStateNormal];
+- (UIButton *)deleteButton {
+    if (!_deleteButton) {
+        _deleteButton = [[UIButton alloc] init];
+        _deleteButton.hidden = YES;
+        UIImage* img = [UIImage alp_videoCameraBundleImageNamed:@"icShootingDelete_40x40_"];
+        [_deleteButton setImage:img forState:UIControlStateNormal];
     }
-    return _dleButton;
+    return _deleteButton;
 }
 
 - (UIButton *)inputLocalVieoBtn {
@@ -291,7 +292,7 @@
         _inputLocalVieoBtn = [[UIButton alloc] init];
         //    _inputLocalVieoBtn.hidden = YES;
         _inputLocalVieoBtn.frame = CGRectMake( 50 , SCREEN_HEIGHT - 105.0, 50, 50.0);
-        UIImage* img5 = [UIImage imageNamed:@"record_ico_input_1"];
+        UIImage* img5 = [UIImage alp_videoCameraBundleImageNamed:@"record_ico_input_1"];
         [_inputLocalVieoBtn setImage:img5 forState:UIControlStateNormal];
     }
     return _inputLocalVieoBtn;

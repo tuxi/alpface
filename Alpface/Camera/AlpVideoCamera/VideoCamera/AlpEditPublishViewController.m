@@ -730,7 +730,7 @@
     if (!_iconView) {
         _iconView = [UIImageView new];
         _iconView.contentMode = UIViewContentModeScaleAspectFill;
-        _iconView.image = [UIImage imageNamed:@"icPoiNewPublishLocation_20x20_"];
+        _iconView.image = [UIImage alp_videoCameraBundleImageNamed:@"icPoiNewPublishLocation_20x20_"];
     }
     return _iconView;
 }
@@ -749,7 +749,7 @@
     if (!_arrowIconView) {
         _arrowIconView = [UIImageView new];
         _arrowIconView.contentMode = UIViewContentModeScaleAspectFill;
-        _arrowIconView.image = [UIImage imageNamed:@"arrow_alert_more_18x18_"];
+        _arrowIconView.image = [UIImage alp_videoCameraBundleImageNamed:@"arrow_alert_more_18x18_"];
     }
     return _arrowIconView;
 }
@@ -802,7 +802,7 @@
     if (!_iconView) {
         _iconView = [UIImageView new];
         _iconView.contentMode = UIViewContentModeScaleAspectFill;
-        _iconView.image = [UIImage imageNamed:@"icon_publicVideoImage_20x20_"];
+        _iconView.image = [UIImage alp_videoCameraBundleImageNamed:@"icon_publicVideoImage_20x20_"];
     }
     return _iconView;
 }
@@ -821,7 +821,7 @@
     if (!_arrowIconView) {
         _arrowIconView = [UIImageView new];
         _arrowIconView.contentMode = UIViewContentModeScaleAspectFill;
-        _arrowIconView.image = [UIImage imageNamed:@"arrow_alert_more_18x18_"];
+        _arrowIconView.image = [UIImage alp_videoCameraBundleImageNamed:@"arrow_alert_more_18x18_"];
     }
     return _arrowIconView;
 }
@@ -920,7 +920,7 @@
 - (UIButton *)draftButton {
     if (!_draftButton) {
         _draftButton = [UIButton new];
-        [_draftButton setImage:[UIImage imageNamed:@"icon_draft_20x20_"] forState:UIControlStateNormal];
+        [_draftButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"icon_draft_20x20_"] forState:UIControlStateNormal];
         [_draftButton setTitle:@"草稿" forState:UIControlStateNormal];
         [_draftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_draftButton setBackgroundColor:[UIColor lightGrayColor]];
@@ -935,7 +935,7 @@
 - (UIButton *)publishButton {
     if (!_publishButton) {
         _publishButton = [UIButton new];
-        [_publishButton setImage:[UIImage imageNamed:@"icon_release_small_20x20_"] forState:UIControlStateNormal];
+        [_publishButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"icon_release_small_20x20_"] forState:UIControlStateNormal];
         [_publishButton setTitle:@"发布" forState:UIControlStateNormal];
         [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_publishButton setBackgroundColor:[UIColor redColor]];
@@ -950,8 +950,8 @@
 - (UIButton *)saveAlbumButton {
     if (!_saveAlbumButton) {
         _saveAlbumButton = [UIButton new];
-        [_saveAlbumButton setImage:[UIImage imageNamed:@"icon_send_save_yes_12x12_"] forState:UIControlStateNormal];
-        [_saveAlbumButton setImage:[UIImage imageNamed:@"icon_send_save_no_12x12_"] forState:UIControlStateSelected];
+        [_saveAlbumButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"icon_send_save_yes_12x12_"] forState:UIControlStateNormal];
+        [_saveAlbumButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"icon_send_save_no_12x12_"] forState:UIControlStateSelected];
         [_saveAlbumButton setTitle:@"保存本地" forState:UIControlStateNormal];
         [_saveAlbumButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
         _saveAlbumButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
@@ -1000,7 +1000,7 @@
     if (!_searchButton) {
         _searchButton = [UIButton new];
         [_searchButton setTitle:@"查看更多" forState:UIControlStateNormal];
-        [_searchButton setImage:[UIImage imageNamed:@"icSearshSugbarSearch_24x24_"] forState:UIControlStateNormal];
+        [_searchButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"icSearshSugbarSearch_24x24_"] forState:UIControlStateNormal];
         _searchButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         _searchButton.layer.masksToBounds = YES;
         _searchButton.layer.cornerRadius = 10.0;

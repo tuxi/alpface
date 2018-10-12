@@ -53,4 +53,20 @@
     return image;
 }
 
++ (UIImage *)alp_videoCameraBundleImageNamed:(NSString *)name {
+    NSString *imageName = name;
+    UIImage *image = nil;
+    if (![imageName hasPrefix:@"ALPVideoCameraAssets.bundle/camera_icon/"]) {
+        imageName = [@"ALPVideoCameraAssets.bundle/camera_icon/" stringByAppendingString:imageName];
+    }
+    image = [UIImage imageNamed:imageName];
+    if (image) {
+        printf(" ");
+    }
+    else {
+        printf(" ");
+    }
+    return image;
+}
+
 @end

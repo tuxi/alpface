@@ -7,6 +7,7 @@
 //
 
 #import "AlpEditVideoNavigationBar.h"
+#import "UIImage+AlpExtensions.h"
 
 @implementation AlpEditVideoNavigationBar
 
@@ -40,7 +41,7 @@
     [NSLayoutConstraint constraintWithItem:nextBtn attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-10.0].active = YES;
     [NSLayoutConstraint constraintWithItem:nextBtn attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setImage:[UIImage imageNamed:@"BackToVideoCammer"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"BackToVideoCammer"] forState:UIControlStateNormal];
     _leftButton = backButton;
     [self addSubview:backButton];
     backButton.translatesAutoresizingMaskIntoConstraints = false;

@@ -458,7 +458,7 @@ typedef NS_ENUM(NSUInteger , AlpChooseEditType) {
         static NSString *cellID = @"MyCollectionCell3";
         AlpMusicItemCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
         AlpStickersData* data = [self.resourceItem.stickersAry objectAtIndex:indexPath.row];
-        cell.iconImgView.image = [UIImage imageWithContentsOfFile:data.StickersImgPaht];
+        cell.iconImgView.image = [UIImage imageWithContentsOfFile:data.stickersImgPath];
         cell.nameLabel.text = data.name;
         
         cell.checkMarkImgView.hidden = !data.isSelected;

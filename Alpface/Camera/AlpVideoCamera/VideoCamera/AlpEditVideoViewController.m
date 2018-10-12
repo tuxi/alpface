@@ -437,9 +437,6 @@
     NSString *documents = [NSHomeDirectory() stringByAppendingPathComponent:@"tmp"];
     
     // 声音来源
-    
-    //    NSURL *audioInputUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"audio529" ofType:@"mp3"]];
-    
     NSURL *audioInputUrl = [NSURL fileURLWithPath:self.editVideoBar.audioPath];
     
     // 视频来源
@@ -447,8 +444,6 @@
     NSURL *videoInputUrl = inputURL;
     
     // 最终合成输出路径
-    
-    //    NSString *outPutFilePath = [documents stringByAppendingPathComponent:@"videoandoudio.mov"];
     
     // 添加合成路径
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -894,7 +889,7 @@
 }
 
 - (void)editVideoBar:(AlpEditVideoBar *)bar didSelectSticker:(AlpStickersData *)stickerData {
-    _stickersImgView.image = [UIImage imageWithContentsOfFile:stickerData.StickersImgPaht];
+    _stickersImgView.image = [UIImage imageWithContentsOfFile:stickerData.stickersImgPath];
     _stickersImgView.hidden = NO;
 }
 

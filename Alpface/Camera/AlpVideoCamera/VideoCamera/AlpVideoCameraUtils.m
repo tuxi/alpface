@@ -504,6 +504,10 @@
     return YES;
 }
 
+
++ (NSBundle *)alpVideoCameraBundle {
+    return [NSBundle bundleWithPath:[[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"ALPVideoCameraAssets.bundle"]];
+}
 @end
 
 @implementation AlpVideoCameraCover

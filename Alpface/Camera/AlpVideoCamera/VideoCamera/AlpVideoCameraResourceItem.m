@@ -7,6 +7,7 @@
 //
 
 #import "AlpVideoCameraResourceItem.h"
+#import "AlpVideoCameraUtils.h"
 
 @implementation AlpVideoCameraResourceItem
 
@@ -23,7 +24,7 @@
 -(NSArray<AlpMusicData *>*)creatMusicData {
     
     /// musics.json 来自 爱动小视频的音乐页面抓取
-    NSString *configPath = [[NSBundle mainBundle] pathForResource:@"musics" ofType:@"json"];
+    NSString *configPath = [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:@"music/musics" ofType:@"json"];
     NSData *configData = [NSData dataWithContentsOfFile:configPath];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:configData options:NSJSONReadingAllowFragments error:nil];
     NSArray *items = dic[@"data"][@"musics"];
@@ -31,7 +32,7 @@
     
     AlpMusicData *effect = [[AlpMusicData alloc] init];
     effect.name = @"原始";
-    effect.iconPath = [[NSBundle mainBundle] pathForResource:@"nilMusic" ofType:@"png"];
+    effect.iconPath = [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:@"camera_icon/nilMusic" ofType:@"png"];
     effect.isSelected = YES;
     [array addObject:effect];
     
@@ -42,8 +43,8 @@
         effect.eid = [item[@"id"] integerValue];
         effect.start_time = item[@"start_time"];
         effect.artists = item[@"artists"];
-        effect.audioPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%ld",effect.eid] ofType:@"mp3"];
-        effect.iconPath = [[NSBundle mainBundle] pathForResource:[NSString  stringWithFormat:@"%ld",effect.eid] ofType:@"jpeg"];
+        effect.audioPath = [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:[NSString stringWithFormat:@"music/%ld",effect.eid] ofType:@"mp3"];
+        effect.iconPath = [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:[NSString  stringWithFormat:@"music/%ld",effect.eid] ofType:@"jpeg"];
         NSParameterAssert(effect.audioPath || effect.iconPath);
         effect.type = [item[@"type"] integerValue];
         effect.duration = [item[@"duration"] doubleValue];
@@ -56,7 +57,7 @@
     return array;
 }
 - (NSArray<AlpStickersData *>*)creatStickersData {
-    NSString *configPath = [[NSBundle mainBundle] pathForResource:@"stickers" ofType:@"json"];
+    NSString *configPath = [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:@"stickers_icon/stickers" ofType:@"json"];
     NSData *configData = [NSData dataWithContentsOfFile:configPath];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:configData options:NSJSONReadingAllowFragments error:nil];
     NSArray *items = dic[@"stickers"];
@@ -64,10 +65,10 @@
     NSMutableArray *array = [NSMutableArray array];
     
     for (NSDictionary *item in items) {
-        //        NSString *path = [baseDir stringByAppendingPathComponent:item[@"resourceUrl"]];
+        //        NSString *path = [baseDir stringByAppendingPathComponent:item[@"resourceUrl"]];iimag
         AlpStickersData* stickersItem = [[AlpStickersData alloc] init];
         stickersItem.name = item[@"name"];
-        stickersItem.StickersImgPaht = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"stickers%d",i] ofType:@"jpg"];
+        stickersItem.stickersImgPath = [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:[NSString stringWithFormat:@"stickers_icon/stickers%d",i] ofType:@"jpg"];
         [array addObject:stickersItem];
         i++;
     }
@@ -87,13 +88,13 @@
     
     AlpFilterData* filter8 = [[AlpFilterData alloc] init];
     filter8.name = @"Saturation0";
-    filter8.iconPath = [[NSBundle mainBundle] pathForResource:@"GPUImageSaturationFilter0" ofType:@"png"];
+    filter8.iconPath = [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:@"GPUImageSaturationFilter0" ofType:@"png"];
     filter8.fillterName = @"GPUImageSaturationFilter";
     filter8.value = @"0";
     
     AlpFilterData* filter9 = [[AlpFilterData alloc] init];
     filter9.name = @"Saturation2";
-    filter9.iconPath = [[NSBundle mainBundle] pathForResource:@"GPUImageSaturationFilter2" ofType:@"png"];
+    filter9.iconPath = [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:@"GPUImageSaturationFilter2" ofType:@"png"];
     filter9.fillterName = @"GPUImageSaturationFilter";
     filter9.value = @"2";
     
@@ -105,7 +106,7 @@
 {
     AlpFilterData* filter1 = [[AlpFilterData alloc] init];
     filter1.name = name;
-    filter1.iconPath =  [[NSBundle mainBundle] pathForResource:fileName ofType:@"png"];
+    filter1.iconPath =  [[AlpVideoCameraUtils alpVideoCameraBundle] pathForResource:fileName ofType:@"png"];
     filter1.fillterName = fileName;
     if (value) {
         filter1.value = value;

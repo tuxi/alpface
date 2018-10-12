@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AlpStickersData : AlpResourceData
 
 @property (nonatomic,strong) NSString* name;
-@property (nonatomic,strong) NSString* StickersImgPaht;
+@property (nonatomic,strong) NSString* stickersImgPath;
 
 @end
 

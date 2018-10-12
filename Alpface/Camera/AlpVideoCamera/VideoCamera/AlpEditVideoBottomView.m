@@ -8,6 +8,7 @@
 
 #import "AlpEditVideoBottomView.h"
 #import "AlpVideoCameraButton.h"
+#import "UIImage+AlpExtensions.h"
 
 @interface AlpEditVideoBottomView ()
 
@@ -78,7 +79,7 @@
     if (!_specialEffectsButton) {
         _specialEffectsButton = [AlpVideoCameraButton new];
         [_specialEffectsButton setTitle:@"特效" forState:UIControlStateNormal];
-        [_specialEffectsButton setImage:[UIImage imageNamed:@"iconSpecial2_40x40_"] forState:UIControlStateNormal];
+        [_specialEffectsButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"iconSpecial2_40x40_"] forState:UIControlStateNormal];
         _specialEffectsButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
         
     }
@@ -89,7 +90,7 @@
     if (!_chooseCoverButton) {
         _chooseCoverButton = [AlpVideoCameraButton new];
         [_chooseCoverButton setTitle:@"选封面" forState:UIControlStateNormal];
-        [_chooseCoverButton setImage:[UIImage imageNamed:@"iconCover_40x40_"] forState:UIControlStateNormal];
+        [_chooseCoverButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"iconCover_40x40_"] forState:UIControlStateNormal];
         _chooseCoverButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
     }
     return _chooseCoverButton;
@@ -99,7 +100,7 @@
     if (!_filterButton) {
         _filterButton = [AlpVideoCameraButton new];
         [_filterButton setTitle:@"滤镜" forState:UIControlStateNormal];
-        [_filterButton setImage:[UIImage imageNamed:@"iconFilterA_40x40_"] forState:UIControlStateNormal];
+        [_filterButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"iconFilterA_40x40_"] forState:UIControlStateNormal];
         _filterButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
     }
     return _filterButton;

@@ -7,6 +7,7 @@
 //
 
 #import "XYLocationSearchTopView.h"
+#import "UIImage+AlpExtensions.h"
 
 @implementation XYLocationSearchTopView
 - (instancetype)initWithFrame:(CGRect)frame
@@ -43,7 +44,7 @@
     [NSLayoutConstraint constraintWithItem:titleLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:nextBtn attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0].active = YES;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setImage:[UIImage imageNamed:@"BackToVideoCammer"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage alp_videoCameraBundleImageNamed:@"BackToVideoCammer"] forState:UIControlStateNormal];
     _leftButton = backButton;
     [self addSubview:backButton];
     backButton.translatesAutoresizingMaskIntoConstraints = false;
