@@ -439,14 +439,60 @@ extension BaseProfileViewController: UIScrollViewDelegate {
 }
 
 extension BaseProfileViewController: HitTestScrollViewGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer == self.mainScrollView.panGestureRecognizer && otherGestureRecognizer == self.containerViewController.collectionView.panGestureRecognizer {
-            return false
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        guard let pan = gestureRecognizer as? UIPanGestureRecognizer else {
+            return true
         }
-        if gestureRecognizer.view!.isMember(of: HitTestScrollView.classForCoder()) && otherGestureRecognizer.view!.isMember(of:GestureCoordinatingCollectionView.classForCoder()) {
-            return false
+        
+        if gestureRecognizer != self.mainScrollView.panGestureRecognizer {
+            return true
+        }
+        
+        
+        if pan.state == .began || pan.state == .possible {
+
+            let currentPoint = pan.translation(in: self.view)
+            // y轴偏移量大，说明是上下移动，此时如果手势是gestureRecognizer时，让其不能响应
+            if fabs(currentPoint.y) > fabs(currentPoint.x) {
+                // 上下滑动
+                return true
+            }
+            else {
+                // 左右滑动
+                return false
+            }
         }
         return true
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        if gestureRecognizer == self.mainScrollView.panGestureRecognizer && otherGestureRecognizer == self.containerViewController.collectionView.panGestureRecognizer {
+//            return false
+//        }
+//        if gestureRecognizer.view!.isMember(of: HitTestScrollView.classForCoder()) && otherGestureRecognizer.view!.isMember(of:GestureCoordinatingCollectionView.classForCoder()) {
+//            return false
+//        }
+//        guard let pan = gestureRecognizer as? UIPanGestureRecognizer else {
+//            return false
+//        }
+//        if gestureRecognizer == self.mainScrollView.panGestureRecognizer {
+//            if pan.state == .began || pan.state == .possible {
+//                
+//                let currentPoint = pan.translation(in: self.view)
+//                // y轴偏移量大，说明是上下移动，此时如果手势是gestureRecognizer时，让其不能响应
+//                if fabs(currentPoint.y) > fabs(currentPoint.x) {
+//                    // 上下滑动
+//                    return true
+//                }
+//                else {
+//                    // 左右滑动
+//                    return false
+//                }
+//            }
+//        }
+        
+        return false
     }
 }
 

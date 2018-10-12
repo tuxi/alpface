@@ -11,6 +11,7 @@ import UIKit
 @objc(ALPHitTestScrollViewGestureRecognizerDelegate)
 protocol HitTestScrollViewGestureRecognizerDelegate: UIScrollViewDelegate {
     @objc func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool
+    @objc func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool
 }
 
 @objc(ALPHitTestScrollView)
@@ -41,6 +42,15 @@ internal class HitTestScrollView: UITableView/*, UIGestureRecognizerDelegate*/ {
         if let delegate = self.delegate as? HitTestScrollViewGestureRecognizerDelegate {
             if delegate.responds(to: #selector(HitTestScrollViewGestureRecognizerDelegate.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:))) {
                return delegate.gestureRecognizer(gestureRecognizer, shouldRecognizeSimultaneouslyWith: otherGestureRecognizer)
+            }
+        }
+        return true
+    }
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let delegate = self.delegate as? HitTestScrollViewGestureRecognizerDelegate {
+            if delegate.responds(to: #selector(HitTestScrollViewGestureRecognizerDelegate.gestureRecognizerShouldBegin(_:))) {
+                return delegate.gestureRecognizerShouldBegin(gestureRecognizer)
             }
         }
         return true
