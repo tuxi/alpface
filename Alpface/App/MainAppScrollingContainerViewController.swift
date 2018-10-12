@@ -84,6 +84,10 @@ class MainAppScrollingContainerViewController: UIViewController {
         
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+    }
+    
     private func setupUI() {
         view.backgroundColor = UIColor.clear
         pageController.view.layer.cornerRadius = 3.0

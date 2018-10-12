@@ -20,6 +20,10 @@
 
 @implementation AlpVideoCameraViewController
 
+- (void)dealloc {
+    NSLog(@"%s", __func__);
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
@@ -81,7 +85,7 @@
 }
 
 - (void)videoCamerView:(ALPVideoCameraView *)view presentViewCotroller:(UIViewController *)viewController {
-    [self presentViewController:viewController animated:YES completion:nil];
+    [self.navigationController presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)videoCamerView:(ALPVideoCameraView *)view didClickBackButton:(UIButton *)btn {

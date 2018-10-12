@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     AlpCameraFlashModeOn /**<打开*/
 };
 
-@interface ALPVideoCameraView ()<TZImagePickerControllerDelegate> {
+@interface ALPVideoCameraView () <TZImagePickerControllerDelegate> {
     
     NSString *_pathToMovie;
     CALayer *_focusLayer;
@@ -431,7 +431,9 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     imagePickerVc.allowPickingGif = NO;
     imagePickerVc.allowPickingVideo = YES;
     imagePickerVc.sortAscendingByModificationDate = YES;
+    imagePickerVc.autoDismiss = NO;
     __weak typeof(self) weakSelf = self;
+    imagePickerVc.pickerDelegate = self;
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage,id asset) {
         [MBProgressHUD xy_hideHUD];
         [MBProgressHUD xy_showActivityMessage:@"视频导出中..."];
@@ -499,6 +501,8 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
         }
         
     }];
+    
+    
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [MBProgressHUD xy_hideHUD];
     if (self.delegate&&[self.delegate respondsToSelector:@selector(videoCamerView:presentViewCotroller:)]) {
@@ -776,6 +780,17 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
 - (void)closeVideoCameraNotification {
     [self clickBack:nil];
 }
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - TZImagePickerControllerDelegate
+////////////////////////////////////////////////////////////////////////
+- (void)tz_imagePickerControllerDidCancel:(TZImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:NO completion:nil];
+}
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Getter
+////////////////////////////////////////////////////////////////////////
 
 - (AlpVideoCameraOptionsView *)optionsView {
     if (!_optionsView) {
