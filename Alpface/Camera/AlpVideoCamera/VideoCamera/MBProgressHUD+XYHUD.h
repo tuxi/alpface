@@ -6,7 +6,7 @@
 //  Copyright © 2017 erlinyou.com. All rights reserved.
 //
 
-#import "MBProgressHUD.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 typedef void(^XYHUDActionCallBack)(MBProgressHUD *hud);
 

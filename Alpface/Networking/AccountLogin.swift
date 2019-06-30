@@ -43,13 +43,11 @@ public typealias ALPSuccessHandler = (_ response: Any?) -> ()
 
 @objc(ALPAccountLoginResult)
 public class AccountLoginResult: NSObject {
-    @objc var status: String
-    @objc var username: String
-    @objc var message: String?
-    @objc init(status: String, username: String, message: String?) {
+    @objc var status: Int
+    @objc var user: User?
+    @objc init(status: Int, user: User?) {
         self.status = status
-        self.username = username
-        self.message = message
+        self.user = user
     }
 }
 
@@ -58,178 +56,130 @@ public class AccountLoginResult: NSObject {
 public class AccountLogin: NSObject {
     
     /// 登录解决，会先获取一个新的csrftoken，再进行登录操作
-    public func login(username: String, password: String, success: ALPAccountLoginResultBlock?, failure: ALPErrorHandler?){
+    public func login(mobile: String, password: String, success: ALPAccountLoginResultBlock?, failure: ALPErrorHandler?){
         
-        /// 登录之前先请求csrftoken
-        getCsrfToken(success: { (response) in
+        let urlString = ALPConstans.HttpRequestURL.login
+        let parameters = [
+            "mobile": mobile,
+            "password": password,
+        ]
+        
+        HttpRequestHelper.request(method: .post, url: urlString, parameters: parameters as NSDictionary) { (response, error) in
             
-            let urlString = ALPConstans.HttpRequestURL.login
-            let parameters = [
-                ALPConstans.AuthKeys.ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
-                "username": username,
-                "password": password,
-                ]
+            if let error = error {
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(error)
+                }
+                return
+            }
             
-            HttpRequestHelper.request(method: .post, url: urlString, parameters: parameters as NSDictionary) { (response, error) in
-                
-                if let error = error {
-                    guard let fail = failure else { return }
-                    DispatchQueue.main.async {
-                        fail(error)
-                    }
-                    return
+            
+            guard let userInfo = response as? String else {
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
                 }
                 
-                
-                guard let userInfo = response as? String else {
-                    guard let fail = failure else { return }
-                    DispatchQueue.main.async {
-                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                    }
-                   
-                    return
-                }
-                
-                let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
-                if let userDict = jsonDict["user"] as? [String : Any] {
-                    let token = jsonDict["token"] as? String
-                    AuthenticationManager.shared.authToken = token
-                    guard let succ = success else { return }
-                    let user = User(dict: userDict)
-                    let result = AccountLoginResult(status: jsonDict["status"] as! String, username:username, message: "")
-                    
-                    // 记录当前登录的用户
-                    AuthenticationManager.shared.loginUser = user
-                    DispatchQueue.main.async {
-                        succ(result)
-                    }
-                }
-                else {
-                    guard let fail = failure else { return }
-                    DispatchQueue.main.async {
-                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                    }
-                }
-                
-               
+                return
             }
-        }) { (error) in
-            guard let fail = failure else { return }
-            DispatchQueue.main.async {
-                fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+            
+            let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
+            if let userDict = jsonDict["user"] as? [String : Any], let token = jsonDict["token"] as? String {
+                guard let succ = success else { return }
+                AuthenticationManager.shared.authToken = token
+                let user = User(dict: userDict)
+                let result = AccountLoginResult(status: 200, user: user)
+                
+                // 记录当前登录的用户
+                AuthenticationManager.shared.loginUser = user
+                DispatchQueue.main.async {
+                    succ(result)
+                }
             }
-            print(error ?? "")
+            else {
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                }
+            }
+            
+            
         }
-        
 
         
     }
     
     
     /// 登录解决，会先获取一个新的csrftoken，再进行登录操作
-    public func register(username: String, password: String, confirm_password: String, email: String, phone: String, avate: UIImage? ,success: ALPHttpResponseBlock?, failure: ALPErrorHandler?){
+    public func register(username: String, password: String, phone: String, code: String, email: String?, avate: UIImage? ,success: ALPHttpResponseBlock?, failure: ALPErrorHandler?){
         
-        /// 註冊之前先请求csrftoken
-        getCsrfToken(success: { (response) in
+        let urlString = ALPConstans.HttpRequestURL.register
+        var parameters = [
+            "username": username,
+            "password": password,
+            "nickname": username,
+            "mobile": phone,
+            "code": code
+        ]
+        if let email = email {
+            parameters["email"] = email
+        }
+        
+        
+        let url = URL(string: urlString)
+        Alamofire.upload(multipartFormData: { (multipartFormData) in
+            if let avatar = avate {
+                let _data = UIImageJPEGRepresentation((avatar), 0.5)
+                multipartFormData.append(_data!, withName:"avatar", fileName:  "\(username).jpg", mimeType:"image/jpeg")
+            }
             
-            let urlString = ALPConstans.HttpRequestURL.register
-            let parameters = [
-                ALPConstans.AuthKeys.ALPCsrfmiddlewaretokenKey: AuthenticationManager.shared.csrftoken,
-                "username": username,
-                "password": password,
-                "confirm_password": confirm_password,
-                "nickname": username,
-                "phone": phone,
-                "email": email,
-                ]
+            // 遍历字典
+            for (key, value) in parameters {
+                
+                let str: String = value
+                let _datas: Data = str.data(using:String.Encoding.utf8)!
+                multipartFormData.append(_datas, withName: key as String)
+                
+            }
             
-
-            let url = URL(string: urlString)
-            Alamofire.upload(multipartFormData: { (multipartFormData) in
-                if let avatar = avate {
-                    let _data = UIImageJPEGRepresentation((avatar), 0.5)
-                    multipartFormData.append(_data!, withName:"avatar", fileName:  "\(username).jpg", mimeType:"image/jpeg")
-                }
-                
-                // 遍历字典
-                for (key, value) in parameters {
+        }, to: url!) { (result) in
+            switch result {
+            case .success(let upload,_, _):
+                upload.responseJSON(completionHandler: { (response) in
                     
-                    let str: String = value!
-                    let _datas: Data = str.data(using:String.Encoding.utf8)!
-                    multipartFormData.append(_datas, withName: key as String)
-                    
-                }
-                
-            }, to: url!) { (result) in
-                switch result {
-                case .success(let upload,_, _):
-                    upload.responseJSON(completionHandler: { (response) in
-
-                        if let value = response.result.value as? NSDictionary {
-                            if value["status"] as? String == "success" {
-                                guard let succ = success else { return }
-                                DispatchQueue.main.async {
-                                    succ(value)
-                                }
+                    if let value = response.result.value as? NSDictionary {
+                        if let token = value["token"] as? String, let  user_dict = value["user"] as? [String : Any] {
+                            guard let succ = success else { return }
+                            AuthenticationManager.shared.authToken = token
+                            let user = User(dict: user_dict)
+                            let result = AccountLoginResult(status: 200, user: user)
+                            
+                            // 记录当前登录的用户
+                            AuthenticationManager.shared.loginUser = user
+                            DispatchQueue.main.async {
+                                succ(result)
                             }
                             return
                         }
-                        guard let fail = failure else { return }
-                        DispatchQueue.main.async {
-                            fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                        }
-                    })
-                case .failure(let error):
-                    
-                    guard let fail = failure else { return }
-                    DispatchQueue.main.async {
-                        fail(error)
                     }
-                }
-            }
-            
+                    guard let fail = failure else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    }
+                })
+            case .failure(let error):
                 
-        }) { (error) in
-            guard let fail = failure else { return }
-            DispatchQueue.main.async {
-                fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(error)
+                }
             }
-            print(error ?? "")
         }
         
         
-        
-    }
-    
-    /// 获取csrftoken
-    public func getCsrfToken(success: ALPSuccessHandler?, failure: ALPErrorHandler?) {
-         let urlString = ALPConstans.HttpRequestURL.getCsrfToken
-        HttpRequestHelper.request(method: .get, url: urlString, parameters: nil) { (response, error) in
-            if let err = error {
-                if let fail = failure {
-                    fail(err)
-                }
-                return
-            }
-            
-            guard let res = response as? String else {
-                if let fail = failure {
-                    fail(NSError.init(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                }
-                return
-            }
-            
-           let jsonDict =  self.getDictionaryFromJSONString(jsonString: res)
-            
-            /// 将csrf存储起来，并回调
-            let csrf = jsonDict[ALPConstans.AuthKeys.ALPCsrftokenKey] as? String
-            print(csrf ?? "")
-            AuthenticationManager.shared.csrftoken = csrf
-            guard let succ = success else {
-                return
-            }
-            succ(csrf)
-        }
     }
     
     /// 获取authtoken
@@ -292,14 +242,8 @@ public class AccountLogin: NSObject {
         
         let urlString = ALPConstans.HttpRequestURL.updateProfile
         var parameters = Dictionary<String, Any>.init()
-        if let csrfToken = AuthenticationManager.shared.csrftoken {
-            parameters[ALPConstans.AuthKeys.ALPCsrfmiddlewaretokenKey] = csrfToken
-        }
         if let email = user.email {
             parameters["email"] = email
-        }
-        if let nickname = user.nickname {
-            parameters["nickname"] = nickname
         }
         if let gender = user.gender {
             parameters["gender"] = gender

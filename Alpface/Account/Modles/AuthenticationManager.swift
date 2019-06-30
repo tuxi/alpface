@@ -19,17 +19,6 @@ final class AuthenticationManager: NSObject {
     static public let shared = AuthenticationManager()
     public let accountLogin = AccountLogin()
     
-    public var csrftoken : String? {
-        get {
-            return UserDefaults.standard.object(forKey: ALPConstans.AuthKeys.ALPCsrftokenKey) as? String
-        }
-        
-        set {
-            UserDefaults.standard .set(newValue, forKey: ALPConstans.AuthKeys.ALPCsrftokenKey)
-            UserDefaults.standard.synchronize()
-        }
-    }
-    
     public var authToken : String? {
         get {
             return UserDefaults.standard.object(forKey: ALPConstans.AuthKeys.ALPAuthTokenKey) as? String
@@ -93,7 +82,6 @@ final class AuthenticationManager: NSObject {
     
     public func logout() {
         self.loginUser = nil
-        self.csrftoken = nil
         self.authToken = nil
         HttpRequestHelper.clearCookies()
         stopHeartBeat()

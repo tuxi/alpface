@@ -82,14 +82,26 @@ class LoginViewController: UIViewController {
     }()
     
     @objc fileprivate func registerButtonClick(_ sender: UIButton) {
-        let registerController = RegisterViewController {[weak self] (username, password, error) -> (Void) in
+        let registerController = RegisterViewController {[weak self] (user, error) -> (Void) in
             if error == nil {
-                self?.usernameTf.text = username
-                self?.passwordTf.text = password
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+2.0, execute: {
-                    guard let loginButton = self?.loginButton else { return }
-                    self?.loginButtonClick(loginButton)
-                })
+                // 注册成功后直接显示登陆成功，保存token，不需要用户额外再次登陆
+                if user != nil {
+                    guard let user = AuthenticationManager.shared.loginUser else { return }
+                    NotificationCenter.default.post(name: NSNotification.Name.ALPLoginSuccess, object: nil, userInfo: [ALPConstans.AuthKeys.ALPAuthenticationUserKey: user])
+                    // 登录成功
+                    guard let delegate = self?.delegate else {
+                        return
+                    }
+                    if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(controller:loginSuccess:))) {
+                        delegate.loginViewController!(controller: self, loginSuccess: user)
+                    }
+                    
+                }
+                
+//                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+2.0, execute: {
+//                    guard let loginButton = self?.loginButton else { return }
+//                    self?.loginButtonClick(loginButton)
+//                })
             }
         }
         self.navigationController?.pushViewController(registerController, animated: true)
@@ -106,9 +118,9 @@ class LoginViewController: UIViewController {
         
         guard let username = usernameTf.text else { return }
         guard let password = passwordTf.text else { return }
-        AuthenticationManager.shared.accountLogin.login(username: username, password: password, success: { [weak self] (result) in
+        AuthenticationManager.shared.accountLogin.login(mobile: username, password: password, success: { [weak self] (result) in
             
-            if result.status == "success" {
+            if result.status == 200 {
                 guard let user = AuthenticationManager.shared.loginUser else { return }
                 NotificationCenter.default.post(name: NSNotification.Name.ALPLoginSuccess, object: nil, userInfo: [ALPConstans.AuthKeys.ALPAuthenticationUserKey: user])
                 // 登录成功
@@ -259,8 +271,8 @@ class LoginViewController: UIViewController {
         loginButton.setTitle("登錄", for: .normal)
         loginProblemButton.setTitle("登錄遇到問題", for: .normal)
         registerButton.setTitle("需要一個新的賬戶", for: .normal)
-        usernameTf.text = "alpface"
-        passwordTf.text = "Sey123456*"
+        usernameTf.text = "1881081988"
+        passwordTf.text = "xiaoyuan123"
         setupNavigationBar()
         updateLoginButtonLayout(animated: false)
     }

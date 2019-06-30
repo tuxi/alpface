@@ -4,3 +4,4 @@
 
 #import "ZFModalTransitionAnimator.h"
 #import "AlpVideoCameraViewController.h"
+#import "MBProgressHUD+XYHUD.h"

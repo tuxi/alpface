@@ -139,7 +139,7 @@ class EditUserProfileViewController: UIViewController {
 extension EditUserProfileViewController {
     
     fileprivate func setupItems() -> Void {
-        let item1 = EditUserProfileModel(title: "姓名", content: self.user?.nickname, placeholder: "添加你的姓名")
+        let item1 = EditUserProfileModel(title: "姓名", content: self.user?.username, placeholder: "添加你的姓名")
         let item2 = EditUserProfileModel(title: "简介", content: self.user?.summary, placeholder: "在你的个人资料中添加简介", type: .textFieldMultiLine)
         let item3 = EditUserProfileModel(title: "位置", content: self.user?.address, placeholder: "添加你的位置")
         let item4 = EditUserProfileModel(title: "生日", content: nil, placeholder: "选择你的生日", type: .dateTime)
@@ -294,7 +294,7 @@ extension EditUserProfileViewController: UITableViewDataSource {
         cell.contentChangedCallBack = { [weak self] content in
             switch indexPath.row {
             case 0:
-                self?.user?.nickname = content
+                self?.user?.username = content
             case 1:
                 self?.user?.summary = content
             case 2:

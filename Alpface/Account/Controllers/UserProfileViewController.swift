@@ -109,7 +109,7 @@ class UserProfileViewController: BaseProfileViewController {
     
     @objc func reloadCollectionData() -> Void {
         self.profileHeaderView.locationLabel.text = self.user?.address
-        self.profileHeaderView.nicknameLabel.text = self.user?.nickname
+        self.profileHeaderView.nicknameLabel.text = self.user?.username
         self.profileHeaderView.summaryLabel.text = self.user?.summary
         if let cover_url = self.user?.getCoverURL() {
             self.stickyHeaderView.headerCoverView.sd_setImage(with: cover_url)
@@ -117,7 +117,7 @@ class UserProfileViewController: BaseProfileViewController {
         else {
             self.stickyHeaderView.headerCoverView.image = nil
         }
-        self.navigationTitleLabel.text = self.user?.nickname
+        self.navigationTitleLabel.text = self.user?.username
         if let userName = self.user?.username {
             self.profileHeaderView.usernameLabel.text = "用户号" + ":" + userName
         }
@@ -177,7 +177,7 @@ extension UserProfileViewController {
         guard let user = userIno["user"] as? User else {
             return
         }
-        if user.userid == self.user?.userid {
+        if user.mobile == self.user?.mobile {
             self.user = user
             self.reloadCollectionData()
         }

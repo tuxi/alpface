@@ -143,9 +143,6 @@ open class VideoRequest: NSObject {
         
         let urlString = ALPConstans.HttpRequestURL.uoloadVideo
         var parameters = Dictionary<String, Any>.init()
-        if let csrfToken = AuthenticationManager.shared.csrftoken {
-            parameters[ALPConstans.AuthKeys.ALPCsrfmiddlewaretokenKey] = csrfToken
-        }
         parameters["title"] = title
         parameters["describe"] = describe
         // 播放封面的时间戳 默认5秒

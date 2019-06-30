@@ -10,12 +10,12 @@ import UIKit
 
 class RegisterViewController: UIViewController {
     
-    convenience init(completion: @escaping (_ username: String?, _ password: String?, _ error: Error?) -> (Void)) {
+    convenience init(completion: @escaping (_ user: User?, _ error: Error?) -> (Void)) {
         self.init()
         self.registerCompletion = completion
     }
     
-    fileprivate var registerCompletion : ((_ username: String?, _ password: String?, _ error: Error?) -> (Void))?
+    fileprivate var registerCompletion : ((_ user: User?, _ error: Error?) -> (Void))?
     
     fileprivate lazy var pastelView : PastelView = {
         let pastelView = PastelView(frame: view.bounds)
@@ -49,7 +49,8 @@ class RegisterViewController: UIViewController {
     fileprivate lazy var usernameTf : UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
+        tf.textColor = UIColor.white
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged(tf:)),for: .editingChanged)
         return tf
     }()
     
@@ -57,7 +58,8 @@ class RegisterViewController: UIViewController {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.isSecureTextEntry = true
-        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
+        tf.textColor = UIColor.white
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged(tf:)),for: .editingChanged)
         return tf
     }()
     
@@ -65,7 +67,8 @@ class RegisterViewController: UIViewController {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.isSecureTextEntry = true
-        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
+        tf.textColor = UIColor.white
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged(tf:)),for: .editingChanged)
         return tf
     }()
     
@@ -73,16 +76,35 @@ class RegisterViewController: UIViewController {
         let tf = UITextField()
         tf.keyboardType = .emailAddress
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
+        tf.textColor = UIColor.white
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged(tf:)),for: .editingChanged)
         return tf
     }()
     
     fileprivate lazy var phoneTf : UITextField = {
         let tf = UITextField()
-        tf.keyboardType = .namePhonePad
+        tf.keyboardType = .phonePad
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
+        tf.textColor = UIColor.white
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged(tf:)),for: .editingChanged)
         return tf
+    }()
+    
+    fileprivate lazy var verificationCodeTf : UITextField = {
+        let tf = UITextField()
+        tf.keyboardType = .phonePad
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.textColor = UIColor.white
+        tf.addTarget(self, action: #selector(textFieldsEditingChanged(tf:)),for: .editingChanged)
+        return tf
+    }()
+    
+    fileprivate lazy var verificationCodeButton : VerificationCodeButton = {
+        let button = VerificationCodeButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isEnabled = false
+        button.addTarget(self, action: #selector(verificationCodeButtonClick), for: .touchUpInside)
+        return button
     }()
     
     fileprivate lazy var contentView : UIView = {
@@ -96,13 +118,15 @@ class RegisterViewController: UIViewController {
         let button = TransitionButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.white.withAlphaComponent(0.03)
-        button.setTitleColor(UIColor.white.withAlphaComponent(0.55), for: .normal)
+        button.setTitleColor(UIColor.white.withAlphaComponent(0.75), for: .normal)
+        button.setTitleColor(UIColor.gray.withAlphaComponent(0.85), for: .disabled)
         button.setTitleColor(UIColor.white, for: .highlighted)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight(rawValue: 1.0))
         button.spinnerColor = UIColor.white
         button.cornerRadius = 25.0
         button.layer.cornerRadius = 3.0
         button.layer.masksToBounds = true
+        button.isEnabled = false
         button.applyGradient(gradient: CAGradientLayer(), colours:[UIColor(hex:"00C3FF"), UIColor(hex:"FFFF1C")], locations:[0.0,1.0], stP:CGPoint(x:0.0,y:0.0), edP:CGPoint(x:1.0,y:0.0), gradientAnimation: CABasicAnimation())
         button.addTarget(self, action: #selector(RegisterViewController.register(_:)), for: .touchUpInside)
         return button
@@ -143,17 +167,21 @@ class RegisterViewController: UIViewController {
         contentView.addSubview(registerButton)
         contentView.addSubview(emailTf)
         contentView.addSubview(phoneTf)
+        contentView.addSubview(verificationCodeTf)
+        contentView.addSubview(verificationCodeButton)
         addLines()
         setupConstraints()
         setupNavigationBar()
         
         registerButton.setTitle("完成", for: .normal)
-        usernameTf.attributedPlaceholder = NSAttributedString(string: "請輸入賬戶名稱", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        passwordTf.attributedPlaceholder = NSAttributedString(string: "請輸入密碼", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        confirm_passwordTf.attributedPlaceholder = NSAttributedString(string: "請輸入確認密碼", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        emailTf.attributedPlaceholder = NSAttributedString(string: "請輸入郵箱", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        phoneTf.attributedPlaceholder = NSAttributedString(string: "請輸入手機號", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        chooseAvatarButton.setTitle("選擇頭像", for: .normal)
+        
+        usernameTf.attributedPlaceholder = NSAttributedString(string: "请输入用户名", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        passwordTf.attributedPlaceholder = NSAttributedString(string: "请输入密码", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        confirm_passwordTf.attributedPlaceholder = NSAttributedString(string: "请输入确认密码", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        emailTf.attributedPlaceholder = NSAttributedString(string: "请输入邮箱", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        phoneTf.attributedPlaceholder = NSAttributedString(string: "请输入手机号", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        verificationCodeTf.attributedPlaceholder = NSAttributedString(string: "请输入验证码", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        chooseAvatarButton.setTitle("选择头像", for: .normal)
     }
     
     fileprivate func setupConstraints() {
@@ -198,12 +226,25 @@ class RegisterViewController: UIViewController {
         self.phoneTf.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         self.phoneTf.topAnchor.constraint(equalTo: self.emailTf.bottomAnchor, constant: 5.0).isActive = true
         self.phoneTf.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        
+        self.verificationCodeTf.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        self.verificationCodeTf.topAnchor.constraint(equalTo: self.phoneTf.bottomAnchor, constant: 5.0).isActive = true
+        self.verificationCodeTf.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        
+        self.verificationCodeButton.leadingAnchor.constraint(equalTo: self.verificationCodeTf.trailingAnchor, constant: 20.0).isActive = true
+//        self.verificationCodeButton.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
+        self.verificationCodeButton.centerYAnchor.constraint(equalTo: self.verificationCodeTf.centerYAnchor, constant: 0.0).isActive = true
+        self.verificationCodeButton.heightAnchor.constraint(equalTo: self.verificationCodeTf.heightAnchor, constant: 0.0).isActive = true
+        self.verificationCodeButton.trailingAnchor.constraint(lessThanOrEqualTo: self.contentView.trailingAnchor, constant: -0.0).isActive = true
 
-        self.registerButton.topAnchor.constraint(equalTo: self.phoneTf.bottomAnchor, constant: 20.0).isActive = true
+        self.registerButton.topAnchor.constraint(equalTo: self.verificationCodeTf.bottomAnchor, constant: 20.0).isActive = true
         self.registerButton.centerXAnchor.constraint(equalTo: self.chooseAvatarButton.centerXAnchor).isActive = true
         self.registerButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
         self.registerButton.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 1.0).isActive = true
         self.registerButton.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0.0).isActive = true
+        
+        self.verificationCodeButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        self.verificationCodeButton.setContentHuggingPriority(.required, for: .horizontal)
         
     }
     
@@ -213,27 +254,32 @@ class RegisterViewController: UIViewController {
         let line3 = UIView()
         let line4 = UIView()
         let line5 = UIView()
+        let line6 = UIView()
         line1.backgroundColor = UIColor.white
         line2.backgroundColor = UIColor.white
         line3.backgroundColor = UIColor.white
         line4.backgroundColor = UIColor.white
         line5.backgroundColor = UIColor.white
+        line6.backgroundColor = UIColor.white
         contentView.addSubview(line1)
         contentView.addSubview(line2)
         contentView.addSubview(line3)
         contentView.addSubview(line4)
         contentView.addSubview(line5)
+        contentView.addSubview(line6)
         line1.translatesAutoresizingMaskIntoConstraints = false
         line2.translatesAutoresizingMaskIntoConstraints = false
         line3.translatesAutoresizingMaskIntoConstraints = false
         line4.translatesAutoresizingMaskIntoConstraints = false
         line5.translatesAutoresizingMaskIntoConstraints = false
+        line6.translatesAutoresizingMaskIntoConstraints = false
         
         line1.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         line2.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         line3.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         line4.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         line5.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        line6.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         line1.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
         line1.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
@@ -250,6 +296,9 @@ class RegisterViewController: UIViewController {
         line5.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
         line5.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
         line5.bottomAnchor.constraint(equalTo: self.phoneTf.bottomAnchor, constant: 0.0).isActive = true
+        line6.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
+        line6.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
+        line6.bottomAnchor.constraint(equalTo: self.verificationCodeTf.bottomAnchor, constant: 0.0).isActive = true
     }
     
     fileprivate func setupNavigationBar() {
@@ -304,8 +353,62 @@ class RegisterViewController: UIViewController {
 }
 
 extension RegisterViewController {
-    @objc fileprivate func textFieldsEditingChanged() {
+    @objc fileprivate func textFieldsEditingChanged(tf: UITextField) {
+        var maxTextNumber = Int.max
         
+        if tf == self.phoneTf {
+            maxTextNumber = 11
+            // 验证码是否可以发送
+            self.verificationCodeButton.isEnabled = (tf.text?.utf16.count)! == maxTextNumber
+        }
+        
+        if tf == self.verificationCodeTf {
+            maxTextNumber = 4
+        }
+        
+        // 控制手机号输入的最大值， 判断是不是在拼音状态,拼音状态不截取文本
+        if let positionRange = tf.markedTextRange {
+            guard tf.position(from: positionRange.start, offset: 0) != nil else {
+                checkTextFieldText(textField:tf, maxTextNumber: maxTextNumber)
+                return
+            }
+        }
+        else {
+            checkTextFieldText(textField:tf, maxTextNumber: maxTextNumber)
+        }
+        
+        if self.phoneTf.text?.count == 11 && self.verificationCodeTf.text?.count == 4  && (self.passwordTf.text ?? "").count > 6 && (self.confirm_passwordTf.text ?? "").count > 6 && (self.usernameTf.text ?? "" ).count > 4 {
+            self.registerButton.isEnabled = true
+        }
+        else {
+            self.registerButton.isEnabled = false
+        }
+        
+    }
+    
+    
+    
+    /// 检测如果输入数高于设置最大输入数则截取
+    private func checkTextFieldText(textField: UITextField, maxTextNumber: Int){
+        guard (textField.text?.utf16.count)! <= maxTextNumber  else {
+            guard let text = textField.text else {
+                return
+            }
+            /// emoji的utf16.count是2，所以不能以maxTextNumber进行截取，改用text.count-1
+            let sIndex = text.index(text
+                .startIndex, offsetBy: text.count-1)
+            textField.text = String(text[..<sIndex])
+            return
+        }
+    }
+    
+    @objc fileprivate func verificationCodeButtonClick() {
+        guard let phone = phoneTf.text else { return }
+        if phone.count != 11 {
+            self.view.xy_showMessage("请输入手机号")
+            return
+        }
+        self.verificationCodeButton.countDown(count: 60)
     }
     
     @objc fileprivate func chooseAvatarButtonAction() {
@@ -348,6 +451,44 @@ extension RegisterViewController {
     }
     
     @objc fileprivate func register(_ sender: TransitionButton) {
+        
+        guard let username = usernameTf.text else {
+            self.view.xy_showMessage("请输入昵称，必填项")
+            return
+        }
+        guard let password = passwordTf.text else {
+            self.view.xy_showMessage("请输入密码，必填项")
+            return
+            
+        }
+        guard let confirm_password = confirm_passwordTf.text else {
+            self.view.xy_showMessage("请输入确认密码，必填项")
+            return
+        }
+        
+        if (self.passwordTf.text ?? "").count < 6 {
+            self.view.xy_showMessage("密码少于6位")
+            return
+        }
+        
+        if password != confirm_password {
+            self.view.xy_showMessage("两次输入的密码不一致，请重新输入")
+            self.passwordTf.text = nil
+            self.confirm_passwordTf.text = nil
+            return
+        }
+        
+        guard let phone = phoneTf.text else {
+            self.view.xy_showMessage("请输入手机号，必填项")
+            return
+        }
+        guard let code = verificationCodeTf.text else {
+            self.view.xy_showMessage("请输入手机验证码，必填项")
+            return
+        }
+        let avatar = chooseAvatarButton.image(for: .normal)
+        let email = emailTf.text
+        
         usernameTf.isEnabled = false
         passwordTf.isEnabled = false
         confirm_passwordTf.isEnabled = false
@@ -355,18 +496,13 @@ extension RegisterViewController {
         registerButton.isEnabled = false
         
         sender.startAnimation()
-        
-        guard let username = usernameTf.text else { return }
-        guard let password = passwordTf.text else { return }
-        guard let confirm_password = confirm_passwordTf.text else { return }
-        guard let avatar = chooseAvatarButton.image(for: .normal) else { return }
-        guard let email = emailTf.text else { return }
-        guard let phone = phoneTf.text else { return }
-        AuthenticationManager.shared.accountLogin.register(username: username, password: password, confirm_password: confirm_password, email:email, phone:phone, avate: avatar, success: { [weak self] (response) in
+        AuthenticationManager.shared.accountLogin.register(username: username, password: password, phone:phone, code: code, email:email, avate: avatar, success: { [weak self] (response) in
+            
+            let result = response as! AccountLoginResult
             // 註冊成功
             sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: {
                 if let registerCom = self?.registerCompletion {
-                    registerCom(username, password, nil)
+                    registerCom(result.user, nil)
                 }
                 self?.navigationController?.popViewController(animated: true)
                 
@@ -386,7 +522,7 @@ extension RegisterViewController {
                 self?.chooseAvatarButton.isEnabled = true
                 self?.registerButton.isEnabled = true
                 if let registerCom = self?.registerCompletion {
-                    registerCom(username, password, error)
+                    registerCom(nil, error)
                 }
             })
         }

@@ -225,7 +225,7 @@ open class ProfileHeaderView: UIView {
         self.followersLabel.text = "300粉丝"
         self.praiseLabel.text = "100赞"
         self.locationLabel.text = "北京市朝阳区"
-        self.nicknameLabel.text = "alpface"
+        self.nicknameLabel.text = "18810181988"
         self.usernameLabel.text = "xiaoyuan"
 //        self.summaryLabel.text = "This is xiaoyuan. Singer from Beijing. 大家好，我是孝远，欢迎交流"
         

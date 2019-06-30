@@ -154,6 +154,7 @@
 		D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */; };
 		D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */; };
 		D2A59BD5207125AE00CB0DC2 /* DOFavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */; };
+		D2ADA63F22C8E9D800F36488 /* UIButton+VerificationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ADA63E22C8E9D800F36488 /* UIButton+VerificationCode.swift */; };
 		D2B165EE208C4D8500FA5F05 /* CommentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165ED208C4D8500FA5F05 /* CommentListViewController.swift */; };
 		D2B165F0208C4F4F00FA5F05 /* CornerBarNaviController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165EF208C4F4F00FA5F05 /* CornerBarNaviController.swift */; };
 		D2B165F2208C4FCB00FA5F05 /* SelectMusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B165F1208C4FCB00FA5F05 /* SelectMusicViewController.swift */; };
@@ -381,6 +382,7 @@
 		D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoDetailView.swift; sourceTree = "<group>"; };
 		D2A59BCD20711D3700CB0DC2 /* FeedVideoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoButton.swift; sourceTree = "<group>"; };
 		D2A59BD0207125AE00CB0DC2 /* DOFavoriteButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DOFavoriteButton.swift; sourceTree = "<group>"; };
+		D2ADA63E22C8E9D800F36488 /* UIButton+VerificationCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+VerificationCode.swift"; sourceTree = "<group>"; };
 		D2B165ED208C4D8500FA5F05 /* CommentListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListViewController.swift; sourceTree = "<group>"; };
 		D2B165EF208C4F4F00FA5F05 /* CornerBarNaviController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerBarNaviController.swift; sourceTree = "<group>"; };
 		D2B165F1208C4FCB00FA5F05 /* SelectMusicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectMusicViewController.swift; sourceTree = "<group>"; };
@@ -1004,6 +1006,7 @@
 				D28B2294207732BA00680970 /* VideoGifCollectionViewCell.swift */,
 				D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */,
 				D27D6CE120839B690095425A /* SettingsTableViewCell.swift */,
+				D2ADA63E22C8E9D800F36488 /* UIButton+VerificationCode.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1282,6 +1285,7 @@
 				D21A2CD1207D09DC00335A8A /* EditProfileTableViewCell.swift in Sources */,
 				D2BCBA43206F33F2008409B3 /* FeedCellViewController.swift in Sources */,
 				D08D1CEC21707815006C47D6 /* AlpEditVideoBar.m in Sources */,
+				D2ADA63F22C8E9D800F36488 /* UIButton+VerificationCode.swift in Sources */,
 				D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */,
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
 				D0DB45AA2085B7C6000C291A /* AdaptiveTextView.swift in Sources */,

@@ -39,32 +39,26 @@ final class HttpRequestHelper: NSObject {
         config.timeoutIntervalForRequest = NetworkTimeoutInterval
         sessionManager = SessionManager(configuration: config)
         setCookie()
-        let headers: HTTPHeaders = [
-            "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" ,
-            "Content-Type": "application/x-www-form-urlencoded",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
-            "Accept-Encoding": "gzip,deflate",
-            "Accept-Language": "zh-CN,zh;q=0.9",
-            "Upgrade-Insecure-Requests": "1"
-        ]
+//        let headers: HTTPHeaders = [
+//            "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" ,
+//            "Content-Type": "application/x-www-form-urlencoded",
+//            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
+//            "Accept-Encoding": "gzip,deflate",
+//            "Accept-Language": "zh-CN,zh;q=0.9",
+//            "Upgrade-Insecure-Requests": "1"
+//        ]
         
 //        if let csrftoken = AuthenticationManager.shared.csrftoken {
 //            headers["Cookie"] = "csrftoken=\(csrftoken)"
 //        }
         
-        Alamofire.request(url, method: method, parameters: parameters as? Parameters, encoding: URLEncoding.default, headers: headers).responseString(queue: DispatchQueue.global(), encoding: String.Encoding.utf8, completionHandler: { (response) in
+        Alamofire.request(url, method: method, parameters: parameters as? Parameters, encoding: URLEncoding.default, headers: nil).responseString(queue: DispatchQueue.global(), encoding: String.Encoding.utf8, completionHandler: { (response) in
             let data = response.result.value
             var error = response.result.error
             if data == ALPConstans.AuthKeys.ALPAuthPermissionErrorValue {
                 error = NSError(domain: ALPConstans.AuthKeys.ALPAuthPermissionErrorValue, code: 403, userInfo: nil)
             }
             if (response.result.isSuccess && error == nil) {
-                
-                // 如果是登录成功后保存cookies
-                let url = response.request?.url
-                if url?.absoluteString == ALPConstans.HttpRequestURL.login {
-                    self.saveCookie(response: response)
-                }
                 finishedCallBack(data as AnyObject, nil)
             }
             else {
