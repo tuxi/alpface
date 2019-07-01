@@ -48,13 +48,13 @@ final class AuthenticationManager: NSObject {
     public var loginUser: User? {
         set {
             _loginUser = newValue
-            if newValue != nil {
-                // 登录成功开启心跳包，监测token是否过期，或者用户是否被挤下线
-                startHeartbeat()
-            }
-            else {
-                stopHeartBeat()
-            }
+//            if newValue != nil {
+//                // 登录成功开启心跳包，监测token是否过期，或者用户是否被挤下线
+//                startHeartbeat()
+//            }
+//            else {
+//                stopHeartBeat()
+//            }
             let data = NSKeyedArchiver.archivedData(withRootObject: newValue as Any)
             UserDefaults.standard.setValue(data, forKey: ALPConstans.AuthKeys.ALPLoginUserInfoKey)
             UserDefaults.standard.synchronize()
@@ -101,9 +101,9 @@ final class AuthenticationManager: NSObject {
             
 //        }
       
-        _ = MCGCDTimer.shared.scheduledDispatchTimer(WithTimerName: "HeartBeat", timeInterval: 20, queue: self.timerQueue, repeats: true) {
-            self.checkToken()
-        }
+//        _ = MCGCDTimer.shared.scheduledDispatchTimer(WithTimerName: "HeartBeat", timeInterval: 20, queue: self.timerQueue, repeats: true) {
+//            self.checkToken()
+//        }
     }
     private func stopHeartBeat() {
         MCGCDTimer.shared.cancleTimer(WithTimerName: "HeartBeat")
@@ -118,27 +118,6 @@ final class AuthenticationManager: NSObject {
             }
             return
         }
-        //        if 无网络 {return}
-        accountLogin.getAuthToken(success: { (response) in
-            guard let token = response as? String else {
-                self.logout()
-                MBProgressHUD.xy_show("您已被挤下线, 请重新登录")
-                return
-            }
-            if token != AuthenticationManager.shared.authToken {
-                self.logout()
-                MBProgressHUD.xy_show("您已被挤下线, 请重新登录")
-            }
-            
-            }) { (error) in
-//                guard let error = error as NSError? else {
-//                    return
-//                }
-//                if error.code == 500 {
-//                    self.logout()
-//                    MBProgressHUD.xy_show("登录状态异常, 请重新登录")
-//                }
-            
-        }
+        
     }
 }

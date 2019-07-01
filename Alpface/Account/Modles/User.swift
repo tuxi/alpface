@@ -11,6 +11,7 @@ import Foundation
 @objc(ALPUser)
 open class User: NSObject, NSCoding {
     public var username : String?
+    public var nickname : String?
     public var avatar : String?
     public var mobile : String?
     public var gender : String?
@@ -22,10 +23,12 @@ open class User: NSObject, NSCoding {
     public var my_likes: [VideoItem]?
     public var summary: String?
     public var email: String?
-    public var headbackground: String?
+    public var head_background: String?
+    public var website: String?
     
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(username, forKey: "username")
+        aCoder.encode(username, forKey: "nickname")
         aCoder.encode(avatar, forKey: "avatar")
         aCoder.encode(mobile, forKey: "mobile")
         aCoder.encode(gender, forKey: "gender")
@@ -38,12 +41,14 @@ open class User: NSObject, NSCoding {
         aCoder.encode(my_likes, forKey: "my_likes")
         aCoder.encode(summary, forKey: "summary")
         aCoder.encode(email, forKey: "email")
-        aCoder.encode(headbackground, forKey: "headbackground")
+        aCoder.encode(head_background, forKey: "head_background")
+        aCoder.encode(website, forKey: "website")
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init()
         username = aDecoder.decodeObject(forKey: "username") as? String
+        nickname = aDecoder.decodeObject(forKey: "nickname") as? String
         avatar = aDecoder.decodeObject(forKey: "avatar") as? String
         mobile = aDecoder.decodeObject(forKey: "mobile") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
@@ -55,7 +60,8 @@ open class User: NSObject, NSCoding {
         my_likes = aDecoder.decodeObject(forKey: "my_likes") as? [VideoItem]
         summary = aDecoder.decodeObject(forKey: "summary") as? String
         email = aDecoder.decodeObject(forKey: "email") as? String
-        headbackground = aDecoder.decodeObject(forKey: "headbackground") as? String
+        head_background = aDecoder.decodeObject(forKey: "head_background") as? String
+        website = aDecoder.decodeObject(forKey: "website") as? String
     }
     
     public func getAvatarURL() -> URL? {
@@ -71,7 +77,7 @@ open class User: NSObject, NSCoding {
     }
     
     public func getCoverURL() -> URL? {
-        if let c = self.headbackground {
+        if let c = self.head_background {
             if c.hasPrefix("http://") == true {
                 return URL.init(string: c)
             }
@@ -89,8 +95,8 @@ open class User: NSObject, NSCoding {
         if let username = dict["username"] as? String {
             self.username = username
         }
-        if let username = dict["username"] as? String {
-            self.username = username
+        if let nickname = dict["nickname"] as? String {
+            self.nickname = nickname
         }
         
         /// avatar和image返回的都是头像，有些接口字段没统一，我现在这里处理了
@@ -129,8 +135,11 @@ open class User: NSObject, NSCoding {
         if let summary = dict["summary"] as? String {
             self.summary = summary
         }
-        if let headbackground = dict["headbackground"] as? String {
-            self.headbackground = headbackground
+        if let head_background = dict["head_background"] as? String {
+            self.head_background = head_background
+        }
+        if let website = dict["website"] as? String {
+            self.website = website
         }
     }
     

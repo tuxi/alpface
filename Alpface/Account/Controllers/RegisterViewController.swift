@@ -46,7 +46,7 @@ class RegisterViewController: UIViewController {
         return btn
     }()
     
-    fileprivate lazy var usernameTf : UITextField = {
+    fileprivate lazy var nicknameTf : UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.textColor = UIColor.white
@@ -161,7 +161,7 @@ class RegisterViewController: UIViewController {
         view.insertSubview(pastelView, at: 0)
         view.addSubview(contentView)
         contentView.addSubview(chooseAvatarButton)
-        contentView.addSubview(usernameTf)
+        contentView.addSubview(nicknameTf)
         contentView.addSubview(passwordTf)
         contentView.addSubview(confirm_passwordTf)
         contentView.addSubview(registerButton)
@@ -175,7 +175,7 @@ class RegisterViewController: UIViewController {
         
         registerButton.setTitle("完成", for: .normal)
         
-        usernameTf.attributedPlaceholder = NSAttributedString(string: "请输入用户名", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        nicknameTf.attributedPlaceholder = NSAttributedString(string: "请输入用户名", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         passwordTf.attributedPlaceholder = NSAttributedString(string: "请输入密码", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         confirm_passwordTf.attributedPlaceholder = NSAttributedString(string: "请输入确认密码", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         emailTf.attributedPlaceholder = NSAttributedString(string: "请输入邮箱", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
@@ -202,14 +202,14 @@ class RegisterViewController: UIViewController {
         chooseAvatarButton.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
         chooseAvatarButton.heightAnchor.constraint(equalToConstant: 120.0).isActive = true
 
-        self.usernameTf.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
-        self.usernameTf.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
-        self.usernameTf.topAnchor.constraint(equalTo: self.chooseAvatarButton.bottomAnchor, constant: 30.0).isActive = true
-        self.usernameTf.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        self.nicknameTf.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        self.nicknameTf.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        self.nicknameTf.topAnchor.constraint(equalTo: self.chooseAvatarButton.bottomAnchor, constant: 30.0).isActive = true
+        self.nicknameTf.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
 
         self.passwordTf.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
         self.passwordTf.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
-        self.passwordTf.topAnchor.constraint(equalTo: self.usernameTf.bottomAnchor, constant: 5.0).isActive = true
+        self.passwordTf.topAnchor.constraint(equalTo: self.nicknameTf.bottomAnchor, constant: 5.0).isActive = true
         self.passwordTf.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
 
         self.confirm_passwordTf.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
@@ -283,7 +283,7 @@ class RegisterViewController: UIViewController {
         
         line1.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
         line1.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
-        line1.bottomAnchor.constraint(equalTo: self.usernameTf.bottomAnchor, constant: 0.0).isActive = true
+        line1.bottomAnchor.constraint(equalTo: self.nicknameTf.bottomAnchor, constant: 0.0).isActive = true
         line2.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
         line2.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
         line2.bottomAnchor.constraint(equalTo: self.passwordTf.bottomAnchor, constant: 0.0).isActive = true
@@ -377,7 +377,7 @@ extension RegisterViewController {
             checkTextFieldText(textField:tf, maxTextNumber: maxTextNumber)
         }
         
-        if self.phoneTf.text?.count == 11 && self.verificationCodeTf.text?.count == 4  && (self.passwordTf.text ?? "").count > 6 && (self.confirm_passwordTf.text ?? "").count > 6 && (self.usernameTf.text ?? "" ).count > 4 {
+        if self.phoneTf.text?.count == 11 && self.verificationCodeTf.text?.count == 4  && (self.passwordTf.text ?? "").count > 6 && (self.confirm_passwordTf.text ?? "").count > 6 && (self.nicknameTf.text ?? "" ).count > 4 {
             self.registerButton.isEnabled = true
         }
         else {
@@ -452,7 +452,7 @@ extension RegisterViewController {
     
     @objc fileprivate func register(_ sender: TransitionButton) {
         
-        guard let username = usernameTf.text else {
+        guard let nickname = nicknameTf.text else {
             self.view.xy_showMessage("请输入昵称，必填项")
             return
         }
@@ -489,14 +489,14 @@ extension RegisterViewController {
         let avatar = chooseAvatarButton.image(for: .normal)
         let email = emailTf.text
         
-        usernameTf.isEnabled = false
+        nicknameTf.isEnabled = false
         passwordTf.isEnabled = false
         confirm_passwordTf.isEnabled = false
         chooseAvatarButton.isEnabled = false
         registerButton.isEnabled = false
         
         sender.startAnimation()
-        AuthenticationManager.shared.accountLogin.register(username: username, password: password, phone:phone, code: code, email:email, avate: avatar, success: { [weak self] (response) in
+        AuthenticationManager.shared.accountLogin.register(username: nil, password: password, phone:phone, code: code, nickname: nickname, email:email, avate: avatar, success: { [weak self] (response) in
             
             let result = response as! AccountLoginResult
             // 註冊成功
@@ -516,7 +516,7 @@ extension RegisterViewController {
                 let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alert.addAction(ok)
                 self?.present(alert, animated: true, completion: nil)
-                self?.usernameTf.isEnabled = true
+                self?.nicknameTf.isEnabled = true
                 self?.passwordTf.isEnabled = true
                 self?.confirm_passwordTf.isEnabled = true
                 self?.chooseAvatarButton.isEnabled = true

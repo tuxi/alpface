@@ -109,8 +109,8 @@ class UserProfileViewController: BaseProfileViewController {
     
     @objc func reloadCollectionData() -> Void {
         self.profileHeaderView.locationLabel.text = self.user?.address
-        self.profileHeaderView.nicknameLabel.text = self.user?.username
-        self.profileHeaderView.summaryLabel.text = self.user?.summary
+        self.profileHeaderView.nicknameLabel.text = self.user?.nickname
+        self.profileHeaderView.summaryLabel.text = self.user?.summary ?? "该用户什么都没有留下"
         if let cover_url = self.user?.getCoverURL() {
             self.stickyHeaderView.headerCoverView.sd_setImage(with: cover_url)
         }

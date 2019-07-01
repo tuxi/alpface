@@ -20,6 +20,11 @@ let alp_cookies_key = "alp_cookies_key"
     @objc optional func httpRequestDidFailure(request: AnyObject?, requestName: String, parameters: NSDictionary?, error: Error)
 }
 
+public struct HttpRequestResponse {
+    let statusCode: Int
+    let data: [String: Any]?
+}
+
 final class HttpRequestHelper: NSObject {
 
     static var sessionManager: SessionManager? = nil
@@ -33,7 +38,7 @@ final class HttpRequestHelper: NSObject {
     ///   - url: 请求的url，可以是String，也可以是URL
     ///   - parameters: 请求参数
     ///   - finishedCallBack: 完成请求的回调
-    class func request(method: HTTPMethod, url: String, parameters: NSDictionary?, finishedCallBack: @escaping (_ result: AnyObject?, _ _error: Error?) -> ()) {
+    class func request(method: HTTPMethod, url: String, parameters: NSDictionary?, finishedCallBack: @escaping (_ result: HttpRequestResponse?, _ _error: Error?) -> ()) {
         
         let config:URLSessionConfiguration = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = NetworkTimeoutInterval
@@ -52,17 +57,18 @@ final class HttpRequestHelper: NSObject {
 //            headers["Cookie"] = "csrftoken=\(csrftoken)"
 //        }
         
-        Alamofire.request(url, method: method, parameters: parameters as? Parameters, encoding: URLEncoding.default, headers: nil).responseString(queue: DispatchQueue.global(), encoding: String.Encoding.utf8, completionHandler: { (response) in
+         Alamofire.request(url, method: method, parameters: parameters as? Parameters, encoding: URLEncoding.default, headers: nil).responseJSON(queue: DispatchQueue.global(), options: .mutableContainers, completionHandler: { (response) in
             let data = response.result.value
-            var error = response.result.error
-            if data == ALPConstans.AuthKeys.ALPAuthPermissionErrorValue {
-                error = NSError(domain: ALPConstans.AuthKeys.ALPAuthPermissionErrorValue, code: 403, userInfo: nil)
-            }
+            let error = response.result.error
+//            if data == ALPConstans.AuthKeys.ALPAuthPermissionErrorValue {
+//                error = NSError(domain: ALPConstans.AuthKeys.ALPAuthPermissionErrorValue, code: 403, userInfo: nil)
+//            }
+            let res = HttpRequestResponse(statusCode: response.response?.statusCode ?? 500, data: data as? [String : Any])
             if (response.result.isSuccess && error == nil) {
-                finishedCallBack(data as AnyObject, nil)
+                finishedCallBack(res, nil)
             }
             else {
-                finishedCallBack(data as AnyObject, error)
+                finishedCallBack(res, error)
             }
         })
         

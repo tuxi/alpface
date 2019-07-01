@@ -64,7 +64,7 @@ public class AccountLogin: NSObject {
             "password": password,
         ]
         
-        HttpRequestHelper.request(method: .post, url: urlString, parameters: parameters as NSDictionary) { (response, error) in
+       return HttpRequestHelper.request(method: .post, url: urlString, parameters: parameters as NSDictionary) { (response, error) in
             
             if let error = error {
                 guard let fail = failure else { return }
@@ -74,64 +74,84 @@ public class AccountLogin: NSObject {
                 return
             }
             
-            
-            guard let userInfo = response as? String else {
+            guard let response = response else {
                 guard let fail = failure else { return }
                 DispatchQueue.main.async {
-                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo: nil))
                 }
-                
                 return
             }
             
-            let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
-            if let userDict = jsonDict["user"] as? [String : Any], let token = jsonDict["token"] as? String {
-                guard let succ = success else { return }
-                AuthenticationManager.shared.authToken = token
-                let user = User(dict: userDict)
-                let result = AccountLoginResult(status: 200, user: user)
-                
-                // 记录当前登录的用户
-                AuthenticationManager.shared.loginUser = user
-                DispatchQueue.main.async {
-                    succ(result)
+            
+            if response.statusCode == 200  {
+                guard let data = response.data else {
+                    DispatchQueue.main.async {
+                        guard let fail = failure else { return }
+                        fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo:nil))
+                    }
+                    return
                 }
-            }
-            else {
-                guard let fail = failure else { return }
-                DispatchQueue.main.async {
-                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                if let userDict = data["user"] as? [String : Any], let token = data["token"] as? String {
+                    AuthenticationManager.shared.authToken = token
+                    let user = User(dict: userDict)
+                    let result = AccountLoginResult(status: 200, user: user)
+                    
+                    // 记录当前登录的用户
+                    AuthenticationManager.shared.loginUser = user
+                    guard let succ = success else { return }
+                    DispatchQueue.main.async {
+                        succ(result)
+                    }
                 }
             }
             
+            guard let fail = failure else { return }
+            DispatchQueue.main.async {
+                fail(NSError(domain: NSURLErrorDomain, code: response.statusCode, userInfo: response.data))
+            }
             
         }
-
-        
     }
     
     
-    /// 登录解决，会先获取一个新的csrftoken，再进行登录操作
-    public func register(username: String, password: String, phone: String, code: String, email: String?, avate: UIImage? ,success: ALPHttpResponseBlock?, failure: ALPErrorHandler?){
+    /**
+     注册用户api
+     
+     - parameter username: 用户名 具有唯一性，如果服务端数据库已存在此用户名则抛出异常，注册失败，可不传，服务端会自动生成，可修改
+     - parameter password: 用户密码
+     - parameter phone: 手机号 具有唯一性，可作为登录使用，注册时必须通过手机验证码验证
+     - parameter code: 手机验证码
+     - parameter nickname: 用户昵称
+     - parameter email: 用户邮箱，暂不验证
+     - parameter avate: 用户头像
+     - parameter success: 注册成功的回调
+     - parameter failure: 注册时候的回调
+     
+     - returns:
+     */
+    public func register(username: String?, password: String, phone: String, code: String, nickname:String? , email: String?, avate: UIImage? ,success: ALPHttpResponseBlock?, failure: ALPErrorHandler?){
         
         let urlString = ALPConstans.HttpRequestURL.register
         var parameters = [
-            "username": username,
             "password": password,
-            "nickname": username,
             "mobile": phone,
             "code": code
         ]
         if let email = email {
             parameters["email"] = email
         }
-        
+        if let nickname = nickname {
+            parameters["nickname"] = nickname
+        }
+        if let username = username {
+            parameters["username"] = username
+        }
         
         let url = URL(string: urlString)
-        Alamofire.upload(multipartFormData: { (multipartFormData) in
+        return Alamofire.upload(multipartFormData: { (multipartFormData) in
             if let avatar = avate {
                 let _data = UIImageJPEGRepresentation((avatar), 0.5)
-                multipartFormData.append(_data!, withName:"avatar", fileName:  "\(username).jpg", mimeType:"image/jpeg")
+                multipartFormData.append(_data!, withName:"avatar", fileName:   "\(phone).jpg", mimeType:"image/jpeg")
             }
             
             // 遍历字典
@@ -147,28 +167,39 @@ public class AccountLogin: NSObject {
             switch result {
             case .success(let upload,_, _):
                 upload.responseJSON(completionHandler: { (response) in
-                    
-                    if let value = response.result.value as? NSDictionary {
-                        if let token = value["token"] as? String, let  user_dict = value["user"] as? [String : Any] {
-                            guard let succ = success else { return }
-                            AuthenticationManager.shared.authToken = token
-                            let user = User(dict: user_dict)
-                            let result = AccountLoginResult(status: 200, user: user)
-                            
-                            // 记录当前登录的用户
-                            AuthenticationManager.shared.loginUser = user
-                            DispatchQueue.main.async {
-                                succ(result)
+                    if response.response?.statusCode == 201 {
+                        // http status code 201 创建用户成功
+                        if let data = response.result.value as? NSDictionary {
+                            if let token = data["token"] as? String, let  user_dict = data["user"] as? [String : Any] {
+                                guard let succ = success else { return }
+                                AuthenticationManager.shared.authToken = token
+                                let user = User(dict: user_dict)
+                                let result = AccountLoginResult(status: 200, user: user)
+                                
+                                // 记录当前登录的用户
+                                AuthenticationManager.shared.loginUser = user
+                                DispatchQueue.main.async {
+                                    succ(result)
+                                }
+                                return
                             }
+                        }
+                        guard let fail = failure else {
                             return
                         }
+                        DispatchQueue.main.async {
+                            fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo: nil))
+                        }
                     }
-                    guard let fail = failure else {
-                        return
+                    else {
+                        guard let fail = failure else {
+                            return
+                        }
+                        DispatchQueue.main.async {
+                            fail(NSError(domain: NSURLErrorDomain, code: response.response?.statusCode ?? 500, userInfo: nil))
+                        }
                     }
-                    DispatchQueue.main.async {
-                        fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                    }
+                    
                 })
             case .failure(let error):
                 
@@ -182,47 +213,6 @@ public class AccountLogin: NSObject {
         
     }
     
-    /// 获取authtoken
-    public func getAuthToken(success: ALPSuccessHandler?, failure: ALPErrorHandler?) {
-        let urlString = ALPConstans.HttpRequestURL.getAuthToken
-//        guard let token = AuthenticationManager.shared.authToken else {
-//            return
-//        }
-//        let parameters = ["authToken": token] as NSDictionary
-        HttpRequestHelper.request(method: .get, url: urlString, parameters: nil) { (response, error) in
-            DispatchQueue.main.async {
-                if let err = error {
-                    if let fail = failure {
-                        fail(err)
-                    }
-                    return
-                }
-                
-                guard let res = response as? String else {
-                    if let fail = failure {
-                        fail(NSError.init(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                    }
-                    return
-                }
-                
-                if res == "<h1>Server Error (500)</h1>" { // 处理nginx服务器频繁访问崩溃问题
-                    if let fail = failure {
-                        fail(NSError.init(domain: NSURLErrorDomain, code: 500, userInfo: nil))
-                    }
-                    return
-                }
-                
-                let jsonDict =  self.getDictionaryFromJSONString(jsonString: res)
-                
-                let authtoken = jsonDict[ALPConstans.AuthKeys.ALPAuthTokenKey] as? String
-                print("authtoken:" + (authtoken ?? "") )
-                guard let succ = success else {
-                    return
-                }
-                succ(authtoken)
-            }
-        }
-    }
     
     public func update(user: User, avatar: UIImage?, cover: UIImage?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
         

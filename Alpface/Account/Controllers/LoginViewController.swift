@@ -48,8 +48,9 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    fileprivate lazy var usernameTf : UITextField = {
+    fileprivate lazy var mobileTf : UITextField = {
         let tf = UITextField()
+        tf.keyboardType = .phonePad
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
         return tf
@@ -109,16 +110,23 @@ class LoginViewController: UIViewController {
     
     @objc fileprivate func loginButtonClick(_ sender: TransitionButton) {
         
-        usernameTf.isEnabled = false
+        guard let mobile = mobileTf.text else {
+            self.view.xy_showMessage("请输入手机号，必填项")
+            return
+        }
+        guard let password = passwordTf.text else {
+            self.view.xy_showMessage("还未输入密码哦！")
+            return
+        }
+        
+        mobileTf.isEnabled = false
         passwordTf.isEnabled = false
         loginProblemButton.isEnabled = false
         registerButton.isEnabled = false
         
         sender.startAnimation()
         
-        guard let username = usernameTf.text else { return }
-        guard let password = passwordTf.text else { return }
-        AuthenticationManager.shared.accountLogin.login(mobile: username, password: password, success: { [weak self] (result) in
+        AuthenticationManager.shared.accountLogin.login(mobile: mobile, password: password, success: { [weak self] (result) in
             
             if result.status == 200 {
                 guard let user = AuthenticationManager.shared.loginUser else { return }
@@ -148,7 +156,7 @@ class LoginViewController: UIViewController {
                 let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alert.addAction(ok)
                 self?.present(alert, animated: true, completion: nil)
-                self?.usernameTf.isEnabled = true
+                self?.mobileTf.isEnabled = true
                 self?.passwordTf.isEnabled = true
                 self?.loginProblemButton.isEnabled = true
                 self?.registerButton.isEnabled = true
@@ -242,7 +250,7 @@ class LoginViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(loginButtonClick(_:)), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(registerButtonClick(_:)), for: .touchUpInside)
         registerButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
-        usernameTf.becomeFirstResponder()
+        mobileTf.becomeFirstResponder()
     }
     
     
@@ -257,7 +265,7 @@ class LoginViewController: UIViewController {
         contentView.addSubview(passwordContentView)
         contentView.addSubview(logoLabel)
         usernameContentView.addSubview(usernameLabel)
-        usernameContentView.addSubview(usernameTf)
+        usernameContentView.addSubview(mobileTf)
         passwordContentView.addSubview(passwordLabel)
         passwordContentView.addSubview(passwordTf)
         contentView.addSubview(loginButton)
@@ -266,13 +274,13 @@ class LoginViewController: UIViewController {
         setupConstraints()
         
         logoLabel.text = "Alpface"
-        usernameLabel.text = "賬戶"
-        passwordLabel.text = "密碼"
-        loginButton.setTitle("登錄", for: .normal)
-        loginProblemButton.setTitle("登錄遇到問題", for: .normal)
-        registerButton.setTitle("需要一個新的賬戶", for: .normal)
-        usernameTf.text = "1881081988"
-        passwordTf.text = "xiaoyuan123"
+        usernameLabel.text = "手机号"
+        passwordLabel.text = "密码  "
+        loginButton.setTitle("登录", for: .normal)
+        loginProblemButton.setTitle("登录遇到问题", for: .normal)
+        registerButton.setTitle("注册账户", for: .normal)
+        mobileTf.text = "1881081988"
+        passwordTf.text = "admin123"
         setupNavigationBar()
         updateLoginButtonLayout(animated: false)
     }
@@ -303,10 +311,10 @@ class LoginViewController: UIViewController {
         usernameLabel.setContentHuggingPriority(.required, for: .horizontal)
         usernameLabel.leadingAnchor.constraint(equalTo: usernameContentView.leadingAnchor, constant: 20.0).isActive = true
         usernameLabel.centerYAnchor.constraint(equalTo: usernameContentView.centerYAnchor, constant: 0.0).isActive = true
-        usernameTf.leadingAnchor.constraint(equalTo: usernameLabel.trailingAnchor, constant: 10.0).isActive = true
-        usernameTf.trailingAnchor.constraint(equalTo: usernameContentView.trailingAnchor, constant: -20.0).isActive = true
-        usernameTf.topAnchor.constraint(equalTo: usernameContentView.topAnchor).isActive = true
-        usernameTf.bottomAnchor.constraint(equalTo: usernameContentView.bottomAnchor).isActive = true
+        mobileTf.leadingAnchor.constraint(equalTo: usernameLabel.trailingAnchor, constant: 10.0).isActive = true
+        mobileTf.trailingAnchor.constraint(equalTo: usernameContentView.trailingAnchor, constant: -20.0).isActive = true
+        mobileTf.topAnchor.constraint(equalTo: usernameContentView.topAnchor).isActive = true
+        mobileTf.bottomAnchor.constraint(equalTo: usernameContentView.bottomAnchor).isActive = true
         
         passwordLabel.setContentHuggingPriority(.required, for: .horizontal)
         passwordLabel.leadingAnchor.constraint(equalTo: passwordContentView.leadingAnchor, constant: 20.0).isActive = true
@@ -357,12 +365,12 @@ class LoginViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.usernameTf.becomeFirstResponder()
+        self.mobileTf.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.usernameTf.resignFirstResponder()
+        self.mobileTf.resignFirstResponder()
         self.passwordTf.resignFirstResponder()
     }
     
@@ -441,7 +449,7 @@ extension LoginViewController {
     }
     
     fileprivate func updateLoginButtonLayout(animated : Bool = true) {
-        loginButton.isHidden = (usernameTf.text?.isEmpty)! || (passwordTf.text?.isEmpty)!
+        loginButton.isHidden = (mobileTf.text?.isEmpty)! || (passwordTf.text?.isEmpty)!
         
         if loginButton.isHidden {
             loginButtonHeightConstraint?.constant = 0.0
@@ -509,7 +517,7 @@ extension LoginViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        usernameTf.resignFirstResponder()
+        mobileTf.resignFirstResponder()
         passwordTf.resignFirstResponder()
         return true
     }

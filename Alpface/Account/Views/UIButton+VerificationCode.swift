@@ -11,7 +11,12 @@ import Foundation
 var VerificationCode: Int = 60
 
 class VerificationCodeButton: UIButton {
-    var codeTimer = DispatchSource.makeTimerSource(queue:DispatchQueue.global())
+    var codeTimer: DispatchSourceTimer?
+    
+    deinit {
+        
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setTitleColor(.white, for: .normal)
@@ -24,9 +29,13 @@ class VerificationCodeButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        if !codeTimer.isCancelled {
+    override func willMove(toSuperview newSuperview: UIView?) {
+        guard let superview = newSuperview else {
+            return
+        }
+        if  let  codeTimer = codeTimer,  codeTimer.isCancelled {
             codeTimer.cancel()
+            self.codeTimer = nil
         }
     }
     
@@ -51,18 +60,20 @@ class VerificationCodeButton: UIButton {
             }
             
         }
-        
-        if codeTimer.isCancelled {
+        if codeTimer == nil  {
+            codeTimer = DispatchSource.makeTimerSource(queue:DispatchQueue.global())
+        }
+        if codeTimer!.isCancelled {
             
             codeTimer = DispatchSource.makeTimerSource(queue:DispatchQueue.global())
             
         }
         
         // 设定这个时间源是每秒循环一次，立即开始
-        codeTimer.schedule(deadline: .now(), repeating: .seconds(1))
+        codeTimer!.schedule(deadline: .now(), repeating: .seconds(1))
         
         // 设定时间源的触发事件
-        codeTimer.setEventHandler {[weak self] in
+        codeTimer!.setEventHandler {[weak self] in
             
             // 返回主线程处理一些事件，更新UI等等
             
@@ -77,7 +88,7 @@ class VerificationCodeButton: UIButton {
                 if remainingCount <= 0 {
                     
                     self?.isEnabled = true
-                    self?.codeTimer.cancel()
+                    self?.codeTimer!.cancel()
                     
                 }
                 
@@ -85,18 +96,16 @@ class VerificationCodeButton: UIButton {
         }
 
         // 启动时间源
-        codeTimer.resume()
+        codeTimer!.resume()
         
     }
     
     //取消倒计时
     func countdownCancel() {
-        
-        if !codeTimer.isCancelled {
-            
+        if  let  codeTimer = codeTimer,  codeTimer.isCancelled {
             codeTimer.cancel()
+            self.codeTimer = nil
         }
-        
         
         
         // 返回主线程
