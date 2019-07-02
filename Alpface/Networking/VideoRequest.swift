@@ -20,48 +20,48 @@ open class VideoRequest: NSObject {
         let url = ALPConstans.HttpRequestURL.getRadomVideos
         HttpRequestHelper.request(method: .get, url: url, parameters: nil) { (response, error) in
             
-            if error != nil {
-                guard let fail = failure else {
-                    return
-                }
+            if let error = error {
+                guard let fail = failure else { return }
                 DispatchQueue.main.async {
                     fail(error)
                 }
                 return
             }
             
-            guard let succ = success else {
-                return
-            }
-            guard let jsonString = response as? String else {
+            guard let response = response else {
+                guard let fail = failure else { return }
                 DispatchQueue.main.async {
-                    succ(nil)
+                    fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo: nil))
                 }
                 return
             }
             
-            let jsonDict =  self.getDictionaryFromJSONString(jsonString: jsonString)
-            guard let dataDict = jsonDict["data"] as? [String : Any] else {
-                DispatchQueue.main.async {
-                    succ(nil)
+            // get 方法的200 为请求成功
+            if response.statusCode == 200  {
+                guard let data = response.data else {
+                    DispatchQueue.main.async {
+                        guard let fail = failure else { return }
+                        fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo:nil))
+                    }
+                    return
                 }
-                print("data不存在或者不是字典类型")
-                return
-            }
-            guard let videoList = dataDict["videos"] as? [[String : Any]] else {
-                DispatchQueue.main.async {
-                    succ(nil)
+                if let videos = data["results"] as? [[String : Any]] {
+                    guard let succ = success else { return }
+                    var list = [VideoItem]()
+                    videos.forEach { (item) in
+                        let video = VideoItem(dict: item)
+                        list.append(video)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        succ(list)
+                    }
+                    return
                 }
-                print("videos不存在或者不是字典类型")
-                return
             }
-            var list: [VideoItem] = [VideoItem]()
-            for dict in videoList {
-                let video = VideoItem(dict: dict)
-                list.append(video)
-            }
+            guard let fail = failure else { return }
             DispatchQueue.main.async {
-                succ(list)
+                fail(NSError(domain: NSURLErrorDomain, code: response.statusCode, userInfo: response.data))
             }
             
         }

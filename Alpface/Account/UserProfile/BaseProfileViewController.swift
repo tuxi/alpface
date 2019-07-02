@@ -33,7 +33,7 @@ open class BaseProfileViewController: UIViewController {
     }
     
     /// 头部背景视图最小的高度(固定值)
-    public let navigationMinHeight : CGFloat = 65.0
+    public let navigationMinHeight : CGFloat = UIApplication.shared.statusBarFrame.size.height + 44.0
     
     open var navigationTitleLabelBottomConstraint : NSLayoutConstraint?
     

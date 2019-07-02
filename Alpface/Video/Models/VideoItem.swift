@@ -8,46 +8,57 @@
 
 import UIKit
 
+public enum VideoItemStatus: String {
+    case done = "d" // 审核通过
+    case publish = "p" // 已发表，还未审核
+}
+
+public enum VideoItemSource: String {
+    case camera = "c" // 发表的来源相机
+    case album = "a" // 发布的来源相册
+}
+
 @objc(ALPVideoItem)
 open class VideoItem: NSObject {
-    open var videoid : Int64 = 0
+    open var id: Int64 = 0
     open var video_height : Double = 0.0
     open var video_width : Double = 0.0
     open var video_rotation : Double = 0.0
     open var video_mimetype : String?
-    open var video_duration: Int64?
-    open var title: String?
-    open var describe: String?
-    open var upload_time: TimeInterval?
-    open var pub_time: TimeInterval?
-    open var views: Int64 = 0
-    open var userid: Int64 = 0
-    open var comment_status: Int32?
-    open var status: Int32?
+    open var video_duration: Int64 = 0
+    open var content: String?
+    open var upload_time: String?
+    open var user: User?
+    open var status: VideoItemStatus?
     open var video_thumbnail: String?
     open var video: String?
     open var video_ogg: String?
-    open var user: User?
     open var video_gif: String?
     open var video_animated_webp: String?
     open var video_mp4: String?
     open var location: LocationItem?
-//    open var rating: VideoRatingItem?
+    open var is_hot: Bool = false
+    open var is_active: Bool = false
+    open var source: VideoItemSource?
+    open var is_commentable: Bool = false
+    open var click_num: Int64 = 0
+    open var view_num: Int64 = 0
+    open var audit_completed_time: String?
+    open var first_create_time: String?
+    open var cover_duration: Int64 = 0
+    open var cover_start_second: Int64 = 0
+    open var video_cover_image: String?
+
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(videoid, forKey: "videoid")
+        aCoder.encode(id, forKey: "id")
         aCoder.encode(video_height, forKey: "video_height")
         aCoder.encode(video_width, forKey: "video_width")
         aCoder.encode(video_rotation, forKey: "video_rotation")
         aCoder.encode(video_mimetype, forKey: "video_mimetype")
         aCoder.encode(video_duration, forKey: "video_duration")
-        aCoder.encode(title, forKey: "title")
-        aCoder.encode(describe, forKey: "describe")
+        aCoder.encode(content, forKey: "title")
         aCoder.encode(upload_time, forKey: "upload_time")
-        aCoder.encode(pub_time, forKey: "pub_time")
-        aCoder.encode(views, forKey: "views")
-        aCoder.encode(userid, forKey: "userid")
-        aCoder.encode(comment_status, forKey: "comment_status")
         aCoder.encode(status, forKey: "status")
         aCoder.encode(video_thumbnail, forKey: "video_thumbnail")
         aCoder.encode(video, forKey: "video")
@@ -57,24 +68,32 @@ open class VideoItem: NSObject {
         aCoder.encode(video_animated_webp, forKey: "video_animated_webp")
         aCoder.encode(video_mp4, forKey: "video_mp4")
         aCoder.encode(location, forKey: "location")
+        aCoder.encode(view_num, forKey: "view_num")
+        aCoder.encode(is_hot, forKey: "is_hot")
+        aCoder.encode(is_active, forKey: "is_active")
+        aCoder.encode(source?.rawValue, forKey: "source")
+        aCoder.encode(is_commentable, forKey: "is_commentable")
+        aCoder.encode(click_num, forKey: "click_num")
+        aCoder.encode(view_num, forKey: "view_num")
+        aCoder.encode(audit_completed_time, forKey: "audit_completed_time")
+        aCoder.encode(first_create_time, forKey: "first_create_time")
+        aCoder.encode(cover_duration, forKey: "cover_duration")
+        aCoder.encode(cover_start_second, forKey: "cover_start_second")
+        aCoder.encode(video_cover_image, forKey: "video_cover_image")
+        
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init()
-        videoid = aDecoder.decodeInt64(forKey: "videoid")
+        id = aDecoder.decodeInt64(forKey: "id")
         video_height = aDecoder.decodeDouble(forKey: "video_height")
         video_width = aDecoder.decodeDouble(forKey: "video_width")
         video_rotation = aDecoder.decodeDouble(forKey: "video_rotation")
         video_mimetype = aDecoder.decodeObject(forKey: "video_mimetype") as? String
         video_duration = aDecoder.decodeInt64(forKey: "video_duration")
-        title = aDecoder.decodeObject(forKey: "title") as? String
-        describe = aDecoder.decodeObject(forKey: "describe") as? String
-        upload_time = aDecoder.decodeDouble(forKey: "upload_time")
-        pub_time = aDecoder.decodeDouble(forKey: "pub_time")
-        views = aDecoder.decodeInt64(forKey: "views")
-        userid = aDecoder.decodeInt64(forKey: "userid")
-        comment_status = aDecoder.decodeInt32(forKey: "comment_status")
-        status = aDecoder.decodeInt32(forKey: "status")
+        content = aDecoder.decodeObject(forKey: "content") as? String
+        upload_time = aDecoder.decodeObject(forKey: "upload_time") as? String
+        status = VideoItemStatus(rawValue: aDecoder.decodeObject(forKey: "status") as? String ?? "p")
         video_thumbnail = aDecoder.decodeObject(forKey: "video_thumbnail") as? String
         video = aDecoder.decodeObject(forKey: "video") as? String
         video_ogg = aDecoder.decodeObject(forKey: "video_ogg") as? String
@@ -83,6 +102,18 @@ open class VideoItem: NSObject {
         video_animated_webp = aDecoder.decodeObject(forKey: "video_animated_webp") as? String
         video_mp4 = aDecoder.decodeObject(forKey: "video_mp4") as? String
         location = aDecoder.decodeObject(forKey: "location") as? LocationItem
+        view_num = aDecoder.decodeInt64(forKey: "view_num")
+        is_hot = aDecoder.decodeBool(forKey: "is_hot")
+        is_active = aDecoder.decodeBool(forKey: "is_active")
+        source = VideoItemSource(rawValue: aDecoder.decodeObject(forKey: "source") as? String ?? "a")
+        is_commentable = aDecoder.decodeBool(forKey: "is_commentable")
+        click_num = aDecoder.decodeInt64(forKey: "click_num")
+        view_num = aDecoder.decodeInt64(forKey: "view_num")
+        audit_completed_time = aDecoder.decodeObject(forKey: "audit_completed_time") as? String
+        first_create_time = aDecoder.decodeObject(forKey: "first_create_time") as? String
+        cover_duration = aDecoder.decodeInt64(forKey: "cover_duration")
+        cover_start_second = aDecoder.decodeInt64(forKey: "cover_start_second")
+        video_cover_image = aDecoder.decodeObject(forKey: "video_cover_image") as? String
     }
     
     override init() {
@@ -91,7 +122,7 @@ open class VideoItem: NSObject {
     convenience init(dict: [String: Any]) {
         self.init()
         if let id = dict["id"] as? NSNumber {
-            self.videoid = id.int64Value
+            self.id = id.int64Value
         }
         if let video_height = dict["video_height"] as? NSNumber {
             self.video_height = video_height.doubleValue
@@ -105,32 +136,17 @@ open class VideoItem: NSObject {
         if let video_mimetype = dict["video_mimetype"] as? String {
             self.video_mimetype = video_mimetype
         }
-        if let video_duration = dict["video_duration"] as? NSNumber {
-            self.video_duration = video_duration.int64Value
+        if let video_duration = dict["video_duration"] as? Int64 {
+            self.video_duration = video_duration
         }
-        if let title = dict["title"] as? String {
-            self.title = title
+        if let content = dict["content"] as? String {
+            self.content = content
         }
-        if let describe = dict["describe"] as? String {
-            self.describe = describe
+        if let upload_time = dict["upload_time"] as? String {
+            self.upload_time = upload_time
         }
-        if let upload_time = dict["upload_time"] as? NSNumber {
-            self.upload_time = upload_time.doubleValue
-        }
-        if let pub_time = dict["pub_time"] as? NSNumber {
-            self.pub_time = pub_time.doubleValue
-        }
-        if let views = dict["views"] as? NSNumber {
-            self.views = views.int64Value
-        }
-        if let userid = dict["userid"] as? NSNumber {
-            self.userid = userid.int64Value
-        }
-        if let comment_status = dict["comment_status"] as? NSNumber {
-            self.comment_status = comment_status.int32Value
-        }
-        if let status = dict["status"] as? NSNumber {
-            self.status = status.int32Value
+        if let status = dict["status"] as? String {
+            self.status = VideoItemStatus(rawValue: status)
         }
         if let video_thumbnail = dict["video_thumbnail"] as? String {
             self.video_thumbnail = video_thumbnail
@@ -141,7 +157,7 @@ open class VideoItem: NSObject {
         if let video_ogg = dict["video_ogg"] as? String {
             self.video_ogg = video_ogg
         }
-        if let user = dict["author"] as? [String : Any] {
+        if let user = dict["user"] as? [String : Any] {
             self.user = User(dict: user)
         }
         if let video_gif = dict["video_gif"] as? String {
@@ -153,14 +169,58 @@ open class VideoItem: NSObject {
         if let video_mp4 = dict["video_mp4"] as? String {
             self.video_mp4 = video_mp4
         }
-        if let location_dict = dict["location"] as? [String: Any] {
+        if let poi_name = dict["poi_name"] as? String, let longitude = dict["longitude"] as? Double, let latitude = dict["latitude"] as? Double {
+            var location_dict = ["poi_name": poi_name, "longitude": longitude, "latitude": latitude] as [String : Any]
+            if let poi_address = dict["poi_address"] as? String {
+                location_dict["poi_address"] = poi_address
+            }
             self.location = LocationItem(dict: location_dict)
+        }
+        
+        if let first_create_time = dict["first_create_time"] as? String {
+            self.first_create_time = first_create_time
+        }
+        if let audit_completed_time = dict["audit_completed_time"] as? String {
+            self.audit_completed_time = audit_completed_time
+        }
+        if let cover_duration = dict["cover_duration"] as? Int64 {
+            self.cover_duration = cover_duration
+        }
+        if let video_cover_image = dict["video_cover_image"] as? String {
+            self.video_cover_image = video_cover_image
+        }
+        if let view_num = dict["view_num"] as? Int64 {
+            self.view_num = view_num
+        }
+        if let is_hot = dict["is_hot"] as? Bool {
+            self.is_hot = is_hot
+        }
+        if let is_active = dict["is_active"] as? Bool {
+            self.is_active = is_active
+        }
+        if let source = dict["source"] as? String {
+            self.source = VideoItemSource(rawValue: source)
+        }
+        if let is_commentable = dict["is_commentable"] as? Bool {
+            self.is_commentable = is_commentable
+        }
+        if let is_commentable = dict["is_commentable"] as? Bool {
+            self.is_commentable = is_commentable
+        }
+        if let click_num = dict["click_num"] as? Int64 {
+            self.click_num = click_num
+        }
+        if let cover_start_second = dict["cover_start_second"] as? Int64 {
+            self.cover_start_second = cover_start_second
         }
     }
     
     open func getVideoURL() -> URL? {
         guard let video = self.video else {
            return nil
+        }
+        if video.hasPrefix("http") {
+            return URL.init(string: video)
         }
         return URL.init(string: ALPConstans.HttpRequestURL.ALPSiteURLString + video)
     }

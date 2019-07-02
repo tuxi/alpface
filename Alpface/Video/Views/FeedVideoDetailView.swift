@@ -22,8 +22,8 @@ class FeedVideoDetailView: UIView {
     public var videoItem: VideoItem? {
         didSet {
             titleButton.text = "@" + (videoItem?.user?.username)!
-            describeButton.text = videoItem?.title
-            musicButton.text = videoItem?.describe
+            describeButton.text = videoItem?.content
+            musicButton.text = videoItem?.content
             avatarButton.sd_setImage(with: videoItem?.user?.getAvatarURL(), for: .normal)
             locationButton.isHidden = videoItem?.location == nil
             locationButton.setTitle(videoItem?.location?.name, for: .normal)

@@ -28,15 +28,16 @@ struct ALPConstans {
     }
     
     struct HttpRequestURL {
-        static let ALPSiteURLString = "http://39.105.79.94"
+//        static let ALPSiteURLString = "http://39.105.79.94"
+        static let ALPSiteURLString = "http://10.211.55.4"
+        
         // 登录
-//        static let login = "\(ALPSiteURLString)" + "/account/auth/login/"
         static let login = "\(ALPSiteURLString)" + "/login/"
         // 注册
         static let register = "\(ALPSiteURLString)" + "/users/"
         static let updateProfile = "\(ALPSiteURLString)" + "/account/user/update/"
-        static let getRadomVideos = "\(ALPSiteURLString)" + "/video/getAll"
-        static let uoloadVideo = "\(ALPSiteURLString)" + "/video/new"
+        static let getRadomVideos = "\(ALPSiteURLString)" + "/videos/"
+        static let uoloadVideo = "\(ALPSiteURLString)" + "/videos/"
         static let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
         static let getVideoByUserId = "\(ALPSiteURLString)" + "/video/getVideoByUserId"
         

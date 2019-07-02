@@ -42,7 +42,7 @@ open class LocationItem: NSObject {
         self.init()
         self.longitude = dict["longitude"] as? Double
         self.latitude = dict["latitude"] as? Double
-        self.name = dict["name"] as? String
+        self.name = dict["poi_name"] as? String
         self.address = dict["address"] as? String
     }
 }
