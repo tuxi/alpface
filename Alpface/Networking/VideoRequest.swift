@@ -143,12 +143,12 @@ open class VideoRequest: NSObject {
         
         let urlString = ALPConstans.HttpRequestURL.uoloadVideo
         var parameters = Dictionary<String, Any>.init()
-        parameters["title"] = title
-        parameters["describe"] = describe
+        parameters["content"] = title
         // 播放封面的时间戳 默认5秒
-        parameters["coverDuration"] = 2.5
+        parameters["cover_duration"] = 3
         // 封面起始的时间戳
-        parameters["coverStartTime"] = coverStartTime
+        parameters["cover_start_second"] = coverStartTime
+        parameters["source"] = "a"
         
         if longitude != 0 &&
             latitude != 0 &&
@@ -159,6 +159,7 @@ open class VideoRequest: NSObject {
             parameters["poi_name"] = poi_name
             parameters["poi_address"] = poi_address
         }
+
         
         let url = URL(string: urlString)
        Alamofire.upload(multipartFormData: { (multipartFormData) in
