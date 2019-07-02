@@ -102,6 +102,7 @@ public class AccountLogin: NSObject {
                     DispatchQueue.main.async {
                         succ(result)
                     }
+                    return
                 }
             }
             

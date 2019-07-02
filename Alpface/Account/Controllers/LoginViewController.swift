@@ -132,14 +132,14 @@ class LoginViewController: UIViewController {
                 guard let user = AuthenticationManager.shared.loginUser else { return }
                 NotificationCenter.default.post(name: NSNotification.Name.ALPLoginSuccess, object: nil, userInfo: [ALPConstans.AuthKeys.ALPAuthenticationUserKey: user])
                 // 登录成功
-                sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: {
+                sender.stopAnimation(animationStyle: .expand, revertAfterDelay: 1, completion: { [weak self] in
+                    self?.dismiss(animated: true, completion: nil)
                     guard let delegate = self?.delegate else {
                         return
                     }
                     if delegate.responds(to: #selector(LoginViewControllerDelegate.loginViewController(controller:loginSuccess:))) {
                         delegate.loginViewController!(controller: self, loginSuccess: user)
                     }
-                    
                 })
                 
             }
