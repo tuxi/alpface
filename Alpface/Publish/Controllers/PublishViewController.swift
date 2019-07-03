@@ -94,7 +94,7 @@ class PublishViewController: UIViewController {
             return
         }
         MBProgressHUD.xy_showActivity()
-        VideoRequest.shared.releaseVideo(title: self.titleTextView.text, describe: self.describeTextView.text, coverStartTime: 1.0, videoPath: path, progress: { (p) in
+        VideoRequest.shared.releaseVideo(content: self.titleTextView.text, coverStartTime: 1.0, videoPath: path, progress: { (p) in
             print("上传进度\(p.completedUnitCount)")
         }, success: {[weak self] (response) in
             guard let video = response as? VideoItem else { return }

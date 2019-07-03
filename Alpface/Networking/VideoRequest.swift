@@ -129,26 +129,42 @@ open class VideoRequest: NSObject {
     /// @param success 成功回调
     /// @param failure 失败回调
     /// @param coverStartTime 封面从某秒开始
-    public func releaseVideo(title: String, describe: String, coverStartTime: TimeInterval, videoPath: String,longitude: Double = 0, latitude: Double = 0 , poi_name: String="", poi_address: String="", progress: ALPProgressHandler?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
-        
+    public func releaseVideo(content: String, coverStartTime: TimeInterval, videoPath: String,longitude: Double = 0, latitude: Double = 0 , poi_name: String="", poi_address: String="", progress: ALPProgressHandler?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
+        guard let token = AuthenticationManager.shared.authToken else {
+            guard let fail = failure else { return }
+            fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+            return
+        }
         if AuthenticationManager.shared.isLogin == false {
+            guard let fail = failure else { return }
+            fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
             return
         }
         
         let file = VideoFile(path: videoPath)
         guard let data = file.readAll() else {
+            guard let fail = failure else { return }
+            fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
             return
         }
         file.close()
         
         let urlString = ALPConstans.HttpRequestURL.uoloadVideo
         var parameters = Dictionary<String, Any>.init()
-        parameters["content"] = title
+        parameters["content"] = content
         // 播放封面的时间戳 默认5秒
         parameters["cover_duration"] = 3
         // 封面起始的时间戳
         parameters["cover_start_second"] = coverStartTime
         parameters["source"] = "a"
+        
+        let dateFormatter = DateFormatter()
+        //设置时间格式（这里的dateFormatter对象在上一段代码中创建）
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        //调用string方法进行转换
+        let dateStr = dateFormatter.string(from: Date())
+        //输出转换结果
+        parameters["first_create_time"] = dateStr
         
         if longitude != 0 &&
             latitude != 0 &&
@@ -162,7 +178,10 @@ open class VideoRequest: NSObject {
 
         
         let url = URL(string: urlString)
-       Alamofire.upload(multipartFormData: { (multipartFormData) in
+        // 将jwt传递给服务端，用于身份验证
+        var headers: HTTPHeaders = [:]
+        headers["Authorization"] = "JWT \(token)"
+       Alamofire.upload( multipartFormData: { (multipartFormData) in
             
             multipartFormData.append(data, withName:"video", fileName:file.displayName!, mimeType:"video/mp4")
             
@@ -181,7 +200,7 @@ open class VideoRequest: NSObject {
                 
             }
             
-        }, to: url!) { (result) in
+       }, to: url!, headers: headers) { (result) in
             switch result {
             case .success(let upload,_, _):
                 upload.uploadProgress(queue: DispatchQueue.main, closure: { (p) in
@@ -189,20 +208,17 @@ open class VideoRequest: NSObject {
                         prog(p)
                     }
                 }).responseJSON(completionHandler: { (response) in
-                    if let value = response.result.value as? NSDictionary {
-                        if value["status"] as? String == "success" {
+                    // 201 创建成功
+                    if response.response?.statusCode == 201 {
+                        if let value = response.result.value as? NSDictionary {
                             if let suc = success {
-                                if let data = value["data"] as? NSDictionary {
-                                    if let video = data["video"] as? NSDictionary {
-                                        let v = VideoItem(dict: video as! [String : Any])
-                                        suc(v)
-                                        return
-                                    }
-                                }
-                                
+                                let v = VideoItem(dict: value as! [String : Any])
+                                suc(v)
+                                return
                             }
                         }
                     }
+                    
                     guard let fail = failure else { return }
                     fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
                 })
