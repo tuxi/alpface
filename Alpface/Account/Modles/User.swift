@@ -8,13 +8,18 @@
 
 import Foundation
 
+public enum UserGender: String {
+    case male = "male" // 男
+    case female = "female" // 女
+}
+
 @objc(ALPUser)
 open class User: NSObject, NSCoding {
     public var username : String?
     public var nickname : String?
     public var avatar : String?
     public var mobile : String?
-    public var gender : String?
+    public var gender : UserGender?
     public var address : String?
     public var following : Int64 = 0
     public var followers : Int64 = 0
@@ -25,13 +30,14 @@ open class User: NSObject, NSCoding {
     public var email: String?
     public var head_background: String?
     public var website: String?
+    public var id: Int64 = -1
     
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(username, forKey: "username")
         aCoder.encode(username, forKey: "nickname")
         aCoder.encode(avatar, forKey: "avatar")
         aCoder.encode(mobile, forKey: "mobile")
-        aCoder.encode(gender, forKey: "gender")
+        aCoder.encode(gender?.rawValue, forKey: "gender")
         aCoder.encode(address, forKey: "address")
         
         aCoder.encode(following, forKey: "following")
@@ -43,6 +49,7 @@ open class User: NSObject, NSCoding {
         aCoder.encode(email, forKey: "email")
         aCoder.encode(head_background, forKey: "head_background")
         aCoder.encode(website, forKey: "website")
+        aCoder.encode(id, forKey: "id")
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -51,7 +58,7 @@ open class User: NSObject, NSCoding {
         nickname = aDecoder.decodeObject(forKey: "nickname") as? String
         avatar = aDecoder.decodeObject(forKey: "avatar") as? String
         mobile = aDecoder.decodeObject(forKey: "mobile") as? String
-        gender = aDecoder.decodeObject(forKey: "gender") as? String
+        gender = UserGender(rawValue: aDecoder.decodeObject(forKey: "gender") as? String ?? "male")
         address = aDecoder.decodeObject(forKey: "address") as? String
         following = aDecoder.decodeInt64(forKey: "following")
         followers = aDecoder.decodeInt64(forKey: "followers")
@@ -62,6 +69,7 @@ open class User: NSObject, NSCoding {
         email = aDecoder.decodeObject(forKey: "email") as? String
         head_background = aDecoder.decodeObject(forKey: "head_background") as? String
         website = aDecoder.decodeObject(forKey: "website") as? String
+        id = aDecoder.decodeInt64(forKey: "id")
     }
     
     public func getAvatarURL() -> URL? {
@@ -110,7 +118,7 @@ open class User: NSObject, NSCoding {
             self.mobile = mobile
         }
         if let gender = dict["gender"] as? String {
-            self.gender = gender
+            self.gender = UserGender(rawValue: gender)
         }
         if let address = dict["address"] as? String {
             self.address = address
@@ -140,6 +148,9 @@ open class User: NSObject, NSCoding {
         }
         if let website = dict["website"] as? String {
             self.website = website
+        }
+        if let id = dict["id"] as? Int64 {
+            self.id = id
         }
     }
     

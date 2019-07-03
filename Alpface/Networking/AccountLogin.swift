@@ -231,7 +231,7 @@ public class AccountLogin: NSObject {
             }
         }
         
-        let urlString = ALPConstans.HttpRequestURL.updateProfile
+        let urlString = ALPConstans.HttpRequestURL.updateProfile + "\(loginUser.id)/"
         var parameters = Dictionary<String, Any>.init()
         if let email = user.email {
             parameters["email"] = email
@@ -239,28 +239,34 @@ public class AccountLogin: NSObject {
         if let gender = user.gender {
             parameters["gender"] = gender
         }
-        if let address = user.address {
-            parameters["address"] = address
-        }
-        else {
-            parameters["address"] = ""
-        }
+//        if let address = user.address {
+//            parameters["address"] = address
+//        }
         if let summary = user.summary {
             parameters["summary"] = summary
         }
-        else {
-            parameters["summary"] = ""
+        if let website = user.website {
+            parameters["website"] = website
+        }
+        if let website = user.website {
+            parameters["website"] = website
+        }
+        if let nickname = user.nickname {
+            parameters["nickname"] = nickname
+        }
+        if let username = user.username {
+            parameters["username"] = username
         }
         
         let url = URL(string: urlString)
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             if let avatar = avatar {
                 let _data = UIImageJPEGRepresentation((avatar), 0.5)
-                multipartFormData.append(_data!, withName:"avatar", fileName:  "\(user.username!).jpg", mimeType:"image/jpeg")
+                multipartFormData.append(_data!, withName:"avatar", fileName:  "avatar_" + "\(user.username!).jpg", mimeType:"image/jpeg")
             }
             if let cover = cover {
                 let _data = UIImageJPEGRepresentation((cover), 1.0)
-                multipartFormData.append(_data!, withName:"cover", fileName:  "\(user.username!).jpg", mimeType:"image/jpeg")
+                multipartFormData.append(_data!, withName:"head_background", fileName:  "head_background_" + "\(user.username!).jpg", mimeType:"image/jpeg")
             }
             
             // 遍历字典
@@ -272,30 +278,24 @@ public class AccountLogin: NSObject {
                 
             }
             
-        }, to: url!) { (result) in
+        }, to: url!, method: .patch) { (result) in
             switch result {
             case .success(let upload,_, _):
                 upload.responseJSON(completionHandler: { (response) in
-                    if let value = response.result.value as? NSDictionary {
-                        if value["status"] as? String == "success" {
-                            
-                            if let userDict = value["user"] as? [String : Any] {
-                                // 登录成功后保存cookies
-                                guard let succ = success else { return }
-                                let user = User(dict: userDict)
-                                
+                    // 200 修改成功
+                    if response.response?.statusCode == 200 {
+                        if let value = response.result.value as? NSDictionary {
+                            if let suc = success {
+                                let user = User(dict: value as! [String : Any])
                                 // 记录修改后的user
                                 AuthenticationManager.shared.loginUser = user
                                 NotificationCenter.default.post(name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil, userInfo: ["user": user])
-                                succ(user)
-                            }
-                            else {
-                                guard let fail = failure else { return }
-                                fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                                suc(user)
+                                return
                             }
                         }
-                        return
                     }
+                    
                     guard let fail = failure else { return }
                     fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
                 })

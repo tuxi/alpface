@@ -33,9 +33,10 @@ struct ALPConstans {
         
         // 登录
         static let login = "\(ALPSiteURLString)" + "/login/"
-        // 注册
+        // 注册 必须是post方法 成功返回 201
         static let register = "\(ALPSiteURLString)" + "/users/"
-        static let updateProfile = "\(ALPSiteURLString)" + "/account/user/update/"
+        // 根据用户id修改用户部分信息，后面拼上用户id，必须是PATCH方法 200 成功
+        static let updateProfile = "\(ALPSiteURLString)" + "/users/"
         static let getRadomVideos = "\(ALPSiteURLString)" + "/videos/"
         static let uoloadVideo = "\(ALPSiteURLString)" + "/videos/"
         static let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
