@@ -215,21 +215,38 @@ public class AccountLogin: NSObject {
         
     }
     
-    
+    /**
+     修改用户信息
+     
+     - parameter user: 需要修改的用户，根据属性修改相关字段，id和username不可更改，支持上传用户头像和顶部背景图
+     - parameter success: 修改成功的回调
+     - parameter failure: 修改失败的回调
+     
+     - returns:
+     */
     public func update(user: User, avatar: UIImage?, cover: UIImage?, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?) {
         
+        
         guard let loginUser = AuthenticationManager.shared.loginUser else {
-            if let fail = failure {
-                fail(NSError.init(domain: "用户未登录", code: 404, userInfo: nil))
+            guard let fail = failure else {
                 return
             }
+            fail(NSError.init(domain: "用户未登录", code: 401, userInfo: nil))
             return
         }
         if loginUser.username != user.username {
-            if let fail = failure {
-                fail(NSError.init(domain: "没有权限", code: 404, userInfo: nil))
+            guard let fail = failure else {
                 return
             }
+            fail(NSError.init(domain: "没有权限", code: 401, userInfo: nil))
+            return
+        }
+        guard let token = AuthenticationManager.shared.authToken else {
+            guard let fail = failure else {
+                return
+            }
+            fail(NSError.init(domain: "没有token", code: 401, userInfo: nil))
+            return
         }
         
         let urlString = ALPConstans.HttpRequestURL.updateProfile + "\(loginUser.id)/"
@@ -252,9 +269,10 @@ public class AccountLogin: NSObject {
         if let nickname = user.nickname {
             parameters["nickname"] = nickname
         }
-//        if let username = user.username {
-//            parameters["username"] = username
-//        }
+
+        // 将jwt传递给服务端，用于身份验证
+        var headers: HTTPHeaders = [:]
+        headers["Authorization"] = "JWT \(token)"
         
         let url = URL(string: urlString)
         Alamofire.upload(multipartFormData: { (multipartFormData) in
@@ -276,7 +294,7 @@ public class AccountLogin: NSObject {
                 
             }
             
-        }, to: url!, method: .patch) { (result) in
+        }, to: url!, method: .patch, headers: headers) { (result) in
             switch result {
             case .success(let upload,_, _):
                 upload.responseJSON(completionHandler: { (response) in

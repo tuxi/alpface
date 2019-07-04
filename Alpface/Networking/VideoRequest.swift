@@ -149,7 +149,7 @@ open class VideoRequest: NSObject {
         }
         file.close()
         
-        let urlString = ALPConstans.HttpRequestURL.uoloadVideo
+        let urlString = ALPConstans.HttpRequestURL.uploadVideo
         var parameters = Dictionary<String, Any>.init()
         parameters["content"] = content
         // 播放封面的时间戳 默认5秒

@@ -28,8 +28,8 @@ struct ALPConstans {
     }
     
     struct HttpRequestURL {
-//        static let ALPSiteURLString = "http://10.211.55.4"
-        static let ALPSiteURLString = "http://39.105.79.94"
+        static let ALPSiteURLString = "http://10.211.55.3"
+//        static let ALPSiteURLString = "http://39.105.79.94"
         
         // 登录
         static let login = "\(ALPSiteURLString)" + "/login/"
@@ -38,7 +38,7 @@ struct ALPConstans {
         // 根据用户id修改用户部分信息，后面拼上用户id，必须是PATCH方法 200 成功
         static let updateProfile = "\(ALPSiteURLString)" + "/users/"
         static let getRadomVideos = "\(ALPSiteURLString)" + "/videos/"
-        static let uoloadVideo = "\(ALPSiteURLString)" + "/videos/"
+        static let uploadVideo = "\(ALPSiteURLString)" + "/videos/"
         static let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
         static let getVideoByUserId = "\(ALPSiteURLString)" + "/video/getVideoByUserId"
         
