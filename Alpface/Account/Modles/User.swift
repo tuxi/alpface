@@ -111,9 +111,6 @@ open class User: NSObject, NSCoding {
         if let avatar = dict["avatar"] as? String {
             self.avatar = avatar
         }
-        if let image = dict["image"] as? String {
-            self.avatar = image
-        }
         if let mobile = dict["mobile"] as? String {
             self.mobile = mobile
         }

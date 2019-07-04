@@ -92,6 +92,7 @@ public class AccountLogin: NSObject {
                     return
                 }
                 if let userDict = data["user"] as? [String : Any], let token = data["token"] as? String {
+                    print(userDict)
                     AuthenticationManager.shared.authToken = token
                     let user = User(dict: userDict)
                     let result = AccountLoginResult(status: 200, user: user)
@@ -236,7 +237,7 @@ public class AccountLogin: NSObject {
         if let email = user.email {
             parameters["email"] = email
         }
-        if let gender = user.gender {
+        if let gender = user.gender?.rawValue {
             parameters["gender"] = gender
         }
 //        if let address = user.address {
@@ -248,15 +249,12 @@ public class AccountLogin: NSObject {
         if let website = user.website {
             parameters["website"] = website
         }
-        if let website = user.website {
-            parameters["website"] = website
-        }
         if let nickname = user.nickname {
             parameters["nickname"] = nickname
         }
-        if let username = user.username {
-            parameters["username"] = username
-        }
+//        if let username = user.username {
+//            parameters["username"] = username
+//        }
         
         let url = URL(string: urlString)
         Alamofire.upload(multipartFormData: { (multipartFormData) in
@@ -282,20 +280,23 @@ public class AccountLogin: NSObject {
             switch result {
             case .success(let upload,_, _):
                 upload.responseJSON(completionHandler: { (response) in
-                    // 200 修改成功
-                    if response.response?.statusCode == 200 {
-                        if let value = response.result.value as? NSDictionary {
-                            if let suc = success {
-                                let user = User(dict: value as! [String : Any])
-                                // 记录修改后的user
-                                AuthenticationManager.shared.loginUser = user
-                                NotificationCenter.default.post(name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil, userInfo: ["user": user])
-                                suc(user)
-                                return
+                    if response.result.isSuccess {
+                        // 200 修改成功
+                        print(response.result.debugDescription)
+                        if response.response?.statusCode == 200 {
+                            if let value = response.result.value as? NSDictionary {
+                                if let suc = success {
+                                    let user = User(dict: value as! [String : Any])
+                                    // 记录修改后的user
+                                    AuthenticationManager.shared.loginUser = user
+                                    NotificationCenter.default.post(name: NSNotification.Name.AuthenticationAccountProfileChanged, object: nil, userInfo: ["user": user])
+                                    suc(user)
+                                    return
+                                }
                             }
                         }
+                        
                     }
-                    
                     guard let fail = failure else { return }
                     fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
                 })
