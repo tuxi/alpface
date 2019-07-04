@@ -69,9 +69,9 @@ class EditUserProfileViewController: UIViewController {
     /// 头部描述用户信息视图的高度(不固定值)
     open var profileHeaderViewHeight: CGFloat = 160
     
-    open let changeCoverButtonHeight : CGFloat = 65.0
+    public let changeCoverButtonHeight : CGFloat = 65.0
     open var changeCoverButtonCenterYConstraint : NSLayoutConstraint?
-    open let bouncingThreshold: CGFloat = 100
+    public let bouncingThreshold: CGFloat = 100
     /// scrollView 向上滚动时时，固定头部背景视图，此属性为scrollView滚动到contentView.y==这个偏移量时，就固定头部背景视图，将其作为当导航条展示 (固定值)
     open func scrollToScaleDownProfileIconDistance() -> CGFloat {
         return stickyheaderContainerViewHeight - changeCoverButtonHeight
@@ -139,14 +139,16 @@ class EditUserProfileViewController: UIViewController {
 extension EditUserProfileViewController {
     
     fileprivate func setupItems() -> Void {
-        let item1 = EditUserProfileModel(title: "姓名", content: self.user?.username, placeholder: "添加你的姓名")
+        let item1 = EditUserProfileModel(title: "姓名", content: self.user?.nickname, placeholder: "添加你的姓名")
         let item2 = EditUserProfileModel(title: "简介", content: self.user?.summary, placeholder: "在你的个人资料中添加简介", type: .textFieldMultiLine)
         let item3 = EditUserProfileModel(title: "位置", content: self.user?.address, placeholder: "添加你的位置")
         let item4 = EditUserProfileModel(title: "生日", content: nil, placeholder: "选择你的生日", type: .dateTime)
+        let item5 = EditUserProfileModel(title: "网站", content: nil, placeholder: "添加你的网站")
         editProfileItems.append(item1)
         editProfileItems.append(item2)
         editProfileItems.append(item3)
         editProfileItems.append(item4)
+        editProfileItems.append(item5)
     }
     
     fileprivate func prepareViews() {
@@ -294,11 +296,15 @@ extension EditUserProfileViewController: UITableViewDataSource {
         cell.contentChangedCallBack = { [weak self] content in
             switch indexPath.row {
             case 0:
-                self?.user?.username = content
+                self?.user?.nickname = content
             case 1:
                 self?.user?.summary = content
             case 2:
                 self?.user?.address = content
+//            case 3:
+//                self?.user?. = content
+            case 4:
+                self?.user?.website = content
             default:
                 print(content ?? "content not know!")
             }
@@ -371,10 +377,10 @@ extension EditUserProfileViewController {
         let action1 = PCLBlurEffectAlertAction(title: "拍照", style: .default) { _ in
             self.openCamera(isCover: isCover)
         }
-        let action2 = PCLBlurEffectAlertAction(title: "從手機相冊選擇", style: .destructive) { _ in
+        let action2 = PCLBlurEffectAlertAction(title: "从相册选择", style: .destructive) { _ in
             self.openLibrary(isCover: isCover)
         }
-        let cancelAction = PCLBlurEffectAlertAction(title: "Cancel", style: .cancel) { _ in
+        let cancelAction = PCLBlurEffectAlertAction(title: "取消", style: .cancel) { _ in
             
         }
         alertController.addAction(action1)
@@ -401,10 +407,10 @@ extension EditUserProfileViewController {
         let action1 = PCLBlurEffectAlertAction(title: "拍照", style: .default) { _ in
             self.openCamera(isCover: true)
         }
-        let action2 = PCLBlurEffectAlertAction(title: "從手機相冊選擇", style: .destructive) { _ in
+        let action2 = PCLBlurEffectAlertAction(title: "从相册选择", style: .destructive) { _ in
             self.openLibrary(isCover: true)
         }
-        let cancelAction = PCLBlurEffectAlertAction(title: "Cancel", style: .cancel) { _ in
+        let cancelAction = PCLBlurEffectAlertAction(title: "取消", style: .cancel) { _ in
             
         }
         alertController.addAction(action1)

@@ -31,7 +31,10 @@ final class AuthenticationManager: NSObject {
     
     var isLogin : Bool  {
         get {
-            if loginUser?.username?.isEmpty == false {
+            if self.authToken == nil {
+                return false;
+            }
+            if let userId = loginUser?.id, userId > 0 {
                 return true
             }
             return false

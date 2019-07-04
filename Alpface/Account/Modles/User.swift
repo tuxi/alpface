@@ -31,6 +31,7 @@ open class User: NSObject, NSCoding {
     public var head_background: String?
     public var website: String?
     public var id: Int64 = -1
+    public var birthday: String?
     
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(username, forKey: "username")
@@ -50,6 +51,7 @@ open class User: NSObject, NSCoding {
         aCoder.encode(head_background, forKey: "head_background")
         aCoder.encode(website, forKey: "website")
         aCoder.encode(id, forKey: "id")
+        aCoder.encode(birthday, forKey: "birthday")
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -70,6 +72,7 @@ open class User: NSObject, NSCoding {
         head_background = aDecoder.decodeObject(forKey: "head_background") as? String
         website = aDecoder.decodeObject(forKey: "website") as? String
         id = aDecoder.decodeInt64(forKey: "id")
+        birthday = aDecoder.decodeObject(forKey: "birthday") as? String
     }
     
     public func getAvatarURL() -> URL? {
@@ -148,6 +151,9 @@ open class User: NSObject, NSCoding {
         }
         if let id = dict["id"] as? Int64 {
             self.id = id
+        }
+        if let birthday = dict["birthday"] as? String {
+            self.birthday = birthday
         }
     }
     
