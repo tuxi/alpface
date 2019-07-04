@@ -108,7 +108,7 @@ class UserProfileViewController: BaseProfileViewController {
     }
     
     @objc func reloadCollectionData() -> Void {
-        self.profileHeaderView.locationLabel.text = self.user?.address
+        self.profileHeaderView.locationLabel.text = self.user?.address ?? "还未设置地址"
         self.profileHeaderView.nicknameLabel.text = self.user?.nickname
         self.profileHeaderView.summaryLabel.text = self.user?.summary ?? "该用户什么都没有留下"
         if let cover_url = self.user?.getCoverURL() {
