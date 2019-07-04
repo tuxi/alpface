@@ -69,7 +69,7 @@ open class VideoRequest: NSObject {
     
     
     public func discoverUserByUsername(username: String, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
-        let url = ALPConstans.HttpRequestURL.discoverUserByUsername
+        let url = ALPConstans.HttpRequestURL.vtimeline
 //        guard let authUser = AuthenticationManager.shared.loginUser else {
 //            if let fail = failure {
 //                let e = NSError(domain: "ErrorNOTFoundauthUser", code: 404, userInfo: nil)

@@ -28,8 +28,8 @@ struct ALPConstans {
     }
     
     struct HttpRequestURL {
-        static let ALPSiteURLString = "http://10.211.55.3"
-//        static let ALPSiteURLString = "http://39.105.79.94"
+//        static let ALPSiteURLString = "http://10.211.55.3"
+        static let ALPSiteURLString = "http://39.105.79.94"
         
         // 登录
         static let login = "\(ALPSiteURLString)" + "/login/"
@@ -39,7 +39,8 @@ struct ALPConstans {
         static let updateProfile = "\(ALPSiteURLString)" + "/users/"
         static let getRadomVideos = "\(ALPSiteURLString)" + "/videos/"
         static let uploadVideo = "\(ALPSiteURLString)" + "/videos/"
-        static let discoverUserByUsername = "\(ALPSiteURLString)" + "/account/discover/search"
+        // 
+        static let vtimeline = "\(ALPSiteURLString)" + "/vtimeline/"
         static let getVideoByUserId = "\(ALPSiteURLString)" + "/video/getVideoByUserId"
         
     }
