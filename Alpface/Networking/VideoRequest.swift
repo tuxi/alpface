@@ -152,7 +152,7 @@ open class VideoRequest: NSObject {
         // 播放封面的时间戳 默认5秒
         parameters["cover_duration"] = 3
         // 封面起始的时间戳
-        parameters["cover_start_second"] = coverStartTime
+        parameters["cover_start_second"] = Int(coverStartTime)
         parameters["source"] = "a"
         
         let dateFormatter = DateFormatter()
@@ -173,7 +173,6 @@ open class VideoRequest: NSObject {
             parameters["poi_address"] = poi_address
         }
 
-        
         let url = URL(string: urlString)
         // 将jwt传递给服务端，用于身份验证
         var headers: HTTPHeaders = [:]
@@ -206,6 +205,8 @@ open class VideoRequest: NSObject {
                     }
                 }).responseJSON(completionHandler: { (response) in
                     // 201 创建成功
+                    print(response.response?.statusCode ?? 0)
+                    print(response.result.value ?? "未知")
                     if response.response?.statusCode == 201 {
                         if let value = response.result.value as? NSDictionary {
                             if let suc = success {
@@ -217,7 +218,7 @@ open class VideoRequest: NSObject {
                     }
                     
                     guard let fail = failure else { return }
-                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    fail(NSError(domain: NSURLErrorDomain, code: response.response?.statusCode ?? 0, userInfo: response.result.value as? [String : Any]))
                 })
             case .failure(let error):
                 
