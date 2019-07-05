@@ -6,7 +6,7 @@
 //  Copyright © 2018年 alpface. All rights reserved.
 //
 
-import UIKit
+import UIKit 
 
 class MainFeedViewCell: UICollectionViewCell {
     

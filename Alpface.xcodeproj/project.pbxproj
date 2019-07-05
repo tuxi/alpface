@@ -85,6 +85,7 @@
 		D20093452078F16E0079AD8B /* PCLBlurEffectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20093412078F16E0079AD8B /* PCLBlurEffectAlert.swift */; };
 		D20093462078F16E0079AD8B /* PCLBlurEffectAlert+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20093422078F16E0079AD8B /* PCLBlurEffectAlert+Action.swift */; };
 		D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20093432078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift */; };
+		D208F3FD22CFA5B100C2140B /* UserHomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D208F3FC22CFA5B100C2140B /* UserHomeModel.swift */; };
 		D21A2CCB207CF5C600335A8A /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CCA207CF5C600335A8A /* EditUserProfileViewController.swift */; };
 		D21A2CCD207CFA0600335A8A /* StickyHeaderContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CCC207CFA0600335A8A /* StickyHeaderContainerView.swift */; };
 		D21A2CD1207D09DC00335A8A /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */; };
@@ -307,6 +308,7 @@
 		D20093412078F16E0079AD8B /* PCLBlurEffectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCLBlurEffectAlert.swift; sourceTree = "<group>"; };
 		D20093422078F16E0079AD8B /* PCLBlurEffectAlert+Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PCLBlurEffectAlert+Action.swift"; sourceTree = "<group>"; };
 		D20093432078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PCLBlurEffectAlert+Controller.swift"; sourceTree = "<group>"; };
+		D208F3FC22CFA5B100C2140B /* UserHomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeModel.swift; sourceTree = "<group>"; };
 		D21A2CCA207CF5C600335A8A /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		D21A2CCC207CFA0600335A8A /* StickyHeaderContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyHeaderContainerView.swift; sourceTree = "<group>"; };
 		D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
@@ -921,6 +923,7 @@
 			isa = PBXGroup;
 			children = (
 				D26AD4642066BB180047DC15 /* User.swift */,
+				D208F3FC22CFA5B100C2140B /* UserHomeModel.swift */,
 				D26AD466206729D60047DC15 /* AuthenticationManager.swift */,
 				D21A2CD4207D154400335A8A /* EditUserProfileModel.swift */,
 				D27D6CE320839E520095425A /* SettingsTableViewCellModel.swift */,
@@ -1258,6 +1261,7 @@
 				D08D1CFB21707815006C47D6 /* UIViewController+XYExtensions.m in Sources */,
 				D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */,
 				D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */,
+				D208F3FD22CFA5B100C2140B /* UserHomeModel.swift in Sources */,
 				D2B165F8208C720B00FA5F05 /* TabbarPlaceholderViewController.swift in Sources */,
 				D08D1CFA21707815006C47D6 /* MBProgressHUD+XYHUD.m in Sources */,
 				D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */,

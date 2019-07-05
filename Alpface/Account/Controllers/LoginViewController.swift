@@ -151,11 +151,14 @@ class LoginViewController: UIViewController {
             sender.stopAnimation(animationStyle: .shake, revertAfterDelay: 1, completion: {
                 [weak self] in
                 
-                //another case
-                let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alert.addAction(ok)
-                self?.present(alert, animated: true, completion: nil)
+                if  let ns_error = error as NSError? {
+                    //another case
+                    let alert = UIAlertController(title: "Error", message: ns_error.userInfo.debugDescription, preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alert.addAction(ok)
+                    self?.present(alert, animated: true, completion: nil)
+                }
+               
                 self?.mobileTf.isEnabled = true
                 self?.passwordTf.isEnabled = true
                 self?.loginProblemButton.isEnabled = true

@@ -18,7 +18,9 @@ open class VideoRequest: NSObject {
     public func getRadomVideos(success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
         
         let url = ALPConstans.HttpRequestURL.getRadomVideos
-        HttpRequestHelper.request(method: .get, url: url, parameters: nil) { (response, error) in
+        // 按照上传时间排序
+        let parameters = ["ordering": "-upload_time"]
+        HttpRequestHelper.request(method: .get, url: url, parameters: parameters as NSDictionary) { (response, error) in
             
             if let error = error {
                 guard let fail = failure else { return }
@@ -68,26 +70,15 @@ open class VideoRequest: NSObject {
     }
     
     
-    public func discoverUserByUsername(username: String, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
-        let url = ALPConstans.HttpRequestURL.vtimeline
-//        guard let authUser = AuthenticationManager.shared.loginUser else {
-//            if let fail = failure {
-//                let e = NSError(domain: "ErrorNOTFoundauthUser", code: 404, userInfo: nil)
-//                fail(e)
-//            }
-//            return
-//        }
+    public func getUserHomeByUserId(id: Int64, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
+        let url = ALPConstans.HttpRequestURL.userHome + "\(id)/"
         
-        let parameters = [
-            "username": username,
-            "type": "1",
-            
-        ]  as NSMutableDictionary
-        if let authUser = AuthenticationManager.shared.loginUser {
-            parameters["auth_username"] = authUser.username!
-        }
+//        let parameters = [
+//            "id": id,
+//
+//        ]  as NSDictionary
 
-        HttpRequestHelper.request(method: .get, url: url, parameters: parameters) { (response, error) in
+        HttpRequestHelper.request(method: .get, url: url, parameters: nil) { (response, error) in
             if let error = error {
                 guard let fail = failure else { return }
                 DispatchQueue.main.async {
@@ -95,30 +86,36 @@ open class VideoRequest: NSObject {
                 }
                 return
             }
-            
-            guard let userInfo = response as? String else {
+            guard let response = response else {
                 guard let fail = failure else { return }
                 DispatchQueue.main.async {
-                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
+                    fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo: nil))
                 }
-                
                 return
             }
             
-            let jsonDict =  self.getDictionaryFromJSONString(jsonString: userInfo)
-            if let userDict = jsonDict["data"] as? [String : Any] {
+            // get 方法的200 为请求成功
+            if response.statusCode == 200  {
+                guard let data = response.data else {
+                    DispatchQueue.main.async {
+                        guard let fail = failure else { return }
+                        fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo:nil))
+                    }
+                    return
+                }
                 guard let succ = success else { return }
-                let user = User(dict: userDict)
+                let home = UserHomeModel(dict: data)
+                
                 DispatchQueue.main.async {
-                    succ(user)
+                    succ(home)
                 }
+                return
             }
-            else {
-                guard let fail = failure else { return }
-                DispatchQueue.main.async {
-                    fail(NSError(domain: NSURLErrorDomain, code: 403, userInfo: nil))
-                }
+            guard let fail = failure else { return }
+            DispatchQueue.main.async {
+                fail(NSError(domain: NSURLErrorDomain, code: response.statusCode, userInfo: response.data))
             }
+            
         }
     }
     /// 发布视频

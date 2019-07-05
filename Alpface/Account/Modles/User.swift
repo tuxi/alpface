@@ -24,8 +24,6 @@ open class User: NSObject, NSCoding {
     public var following : Int64 = 0
     public var followers : Int64 = 0
     public var is_active: Bool = false
-    public var my_videos: [VideoItem]?
-    public var my_likes: [VideoItem]?
     public var summary: String?
     public var email: String?
     public var head_background: String?
@@ -44,8 +42,6 @@ open class User: NSObject, NSCoding {
         aCoder.encode(following, forKey: "following")
         aCoder.encode(followers, forKey: "followers")
         aCoder.encode(is_active, forKey: "is_active")
-        aCoder.encode(my_videos, forKey: "my_videos")
-        aCoder.encode(my_likes, forKey: "my_likes")
         aCoder.encode(summary, forKey: "summary")
         aCoder.encode(email, forKey: "email")
         aCoder.encode(head_background, forKey: "head_background")
@@ -65,8 +61,6 @@ open class User: NSObject, NSCoding {
         following = aDecoder.decodeInt64(forKey: "following")
         followers = aDecoder.decodeInt64(forKey: "followers")
         is_active = aDecoder.decodeBool(forKey: "is_active")
-        my_videos = aDecoder.decodeObject(forKey: "my_videos") as? [VideoItem]
-        my_likes = aDecoder.decodeObject(forKey: "my_likes") as? [VideoItem]
         summary = aDecoder.decodeObject(forKey: "summary") as? String
         email = aDecoder.decodeObject(forKey: "email") as? String
         head_background = aDecoder.decodeObject(forKey: "head_background") as? String
@@ -122,23 +116,6 @@ open class User: NSObject, NSCoding {
         }
         if let address = dict["address"] as? String {
             self.address = address
-        }
-        if let my_videos = dict["my_videos"] as? [[String: Any]] {
-            var items = [VideoItem]()
-            for video in my_videos {
-                let item = VideoItem(dict: video)
-                item.user = self
-                items.append(item)
-            }
-            self.my_videos = items
-        }
-        if let my_likes = dict["my_likes"] as? [[String: Any]] {
-            var items = [VideoItem]()
-            for video in my_likes {
-                let item = VideoItem(dict: video)
-                items.append(item)
-            }
-            self.my_likes = items
         }
         if let summary = dict["summary"] as? String {
             self.summary = summary

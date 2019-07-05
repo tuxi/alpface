@@ -63,8 +63,12 @@ public class AccountLogin: NSObject {
             "mobile": mobile,
             "password": password,
         ]
+        Alamofire.request(urlString, method: .post, parameters: parameters as Parameters, encoding: URLEncoding.default, headers: nil).responseJSON(queue: DispatchQueue.global(), options: .mutableContainers, completionHandler: { (response) in
+            let data = response.result.value
+            let error = response.result.error
         
-       return HttpRequestHelper.request(method: .post, url: urlString, parameters: parameters as NSDictionary) { (response, error) in
+            let res = HttpRequestResponse(statusCode: response.response?.statusCode ?? 500, data: data as? [String : Any])
+           
             
             if let error = error {
                 guard let fail = failure else { return }
@@ -74,17 +78,9 @@ public class AccountLogin: NSObject {
                 return
             }
             
-            guard let response = response else {
-                guard let fail = failure else { return }
-                DispatchQueue.main.async {
-                    fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo: nil))
-                }
-                return
-            }
             
-            
-            if response.statusCode == 200  {
-                guard let data = response.data else {
+            if res.statusCode == 200  {
+                guard let data = res.data else {
                     DispatchQueue.main.async {
                         guard let fail = failure else { return }
                         fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo:nil))
@@ -109,10 +105,9 @@ public class AccountLogin: NSObject {
             
             guard let fail = failure else { return }
             DispatchQueue.main.async {
-                fail(NSError(domain: NSURLErrorDomain, code: response.statusCode, userInfo: response.data))
+                fail(NSError(domain: NSURLErrorDomain, code: res.statusCode, userInfo: res.data))
             }
-            
-        }
+        })
     }
     
     

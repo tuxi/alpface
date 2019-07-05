@@ -19,7 +19,7 @@ class UserProfileViewController: BaseProfileViewController {
     fileprivate var isViewDidLoad: Bool = false
 
     override func numberOfSegments() -> Int {
-        return 3
+        return 2
     }
     
     override func segmentTitle(forSegment index: Int) -> String {
@@ -48,6 +48,8 @@ class UserProfileViewController: BaseProfileViewController {
             }
         }
     }
+    
+    public var homeModel: UserHomeModel?
     
     convenience init(user: User?) {
         self.init()
@@ -94,11 +96,11 @@ class UserProfileViewController: BaseProfileViewController {
         switch index {
         case 0:
             vc = MyReleaseViewController()
-            vc.collectionItems = self.user?.my_videos
+            vc.collectionItems = self.homeModel?.segments?[0].data
             return vc
         case 1:
             vc = MyFavoriteViewController()
-            vc.collectionItems = self.user?.my_likes
+            vc.collectionItems = self.homeModel?.segments?[1].data
             return vc
         case 2:
             return MyStoryViewController()
@@ -147,10 +149,10 @@ class UserProfileViewController: BaseProfileViewController {
         self.controllers.forEach { (controller) in
             if let c = controller as? UserProfileChildCollectionViewController {
                 if c.isMember(of: MyReleaseViewController.classForCoder()) {
-                    c.collectionItems = self.user?.my_videos
+                    c.collectionItems = self.homeModel?.segments?.first?.data
                 }
                 else if c.isMember(of: MyFavoriteViewController.classForCoder()) {
-                    c.collectionItems = self.user?.my_likes
+                    c.collectionItems = self.homeModel?.segments?.last?.data
                 }
                 else {
                     c.collectionItems = []
@@ -218,16 +220,18 @@ extension UserProfileViewController {
         self.controllers.forEach { (controller) in
             controller.childScrollView()?.xy_loading = true
         }
-        guard let username = self.user?.username else { return }
-        VideoRequest.shared.discoverUserByUsername(username: username, success: {[weak self] (response) in
-            guard let user = response as? User else {
+        guard let id = self.user?.id else { return }
+        VideoRequest.shared.getUserHomeByUserId(id: id, success: {[weak self] (response) in
+            guard let homeModel = response as? UserHomeModel else {
                 return
             }
-            self?._user = user
+            self?._user = homeModel.user
+            self?.homeModel = homeModel
             self?.reloadCollectionData()
         }) {[weak self] (error) in
             self?.reloadCollectionData()
             if let e = error as NSError? {
+                MBProgressHUD.xy_show(e.userInfo.debugDescription)
                 if e.domain == ALPConstans.AuthKeys.ALPAuthPermissionErrorValue {
                     AuthenticationManager.shared.logout()
                     if let rootVc = self?.navigationController?.viewControllers.first {
