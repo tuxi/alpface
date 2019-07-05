@@ -421,7 +421,7 @@ extension MainAppScrollingContainerViewController: AlpVideoCameraViewControllerD
             
         }) { (error) in
             MBProgressHUD.xy_hide()
-            MBProgressHUD.xy_show("请重新登录")
+            MBProgressHUD.xy_show(error?.localizedDescription ?? "未知错误！")
         }
     }
     
