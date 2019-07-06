@@ -1,11 +1,17 @@
 # Alpface
 * [学习抖音的iOS项目](https://github.com/alpface/alpface)
-* [服务端开源项目](https://github.com/alpface/ShortVideo)
+* [使用RESTful api搭建的短视频服务端](https://github.com/tuxi/video-hub)
 
 <img src = "https://github.com/alpface/alpface/blob/master/sv.gif?raw=true" width = "375" height = "667" alt = "Screenshot.gif"/>
 
+### 项目环境
+- iOS
+- Xcode 10+
+- Swift 5+
+
+
 ##### animated webp 制作 及 展示
-[ffmpeg 制作 webp动图](http://www.alpface.com/article/2018/4/15/53.html)
+[ffmpeg 制作 webp动图](https://objc.com/article/13)
 
 
 ##### 实战中遇到的问题及解决方案
