@@ -171,8 +171,8 @@ open class BaseProfileViewController: UIViewController {
     
     deinit {
         self.controllers.forEach { (controller) in
-            let vc = controller as! UIViewController
-            vc.view.removeFromSuperview()
+            controller.removeFromParent()
+            controller.view.removeFromSuperview()
         }
         self.controllers.removeAll()
         
@@ -202,26 +202,6 @@ open class BaseProfileViewController: UIViewController {
         
         self.setNeedsUpdateHeaderLayout()
     }
-//
-//    open override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        self.containerViewController.beginAppearanceTransition(true, animated: true)
-//    }
-//
-//    open override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        self.containerViewController.endAppearanceTransition()
-//    }
-//
-//    open override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        self.containerViewController.beginAppearanceTransition(false, animated: true)
-//    }
-//
-//    open override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-//        self.containerViewController.endAppearanceTransition()
-//    }
     
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -445,6 +425,9 @@ extension BaseProfileViewController: HitTestScrollViewGestureRecognizerDelegate 
         if pan.state == .began || pan.state == .possible {
 
             let currentPoint = pan.translation(in: self.view)
+            if currentPoint == CGPoint.zero {
+                return true
+            }
             // y轴偏移量大，说明是上下移动，此时如果手势是gestureRecognizer时，让其不能响应
             if fabs(currentPoint.y) > fabs(currentPoint.x) {
                 // 上下滑动
@@ -513,7 +496,7 @@ extension BaseProfileViewController {
             guard let containerVc = self.containerViewController else {
                 return
             }
-            if let controller = containerVc.displayViewController() as? BaseProfileViewChildControllr {
+            if let controller = containerVc.displayViewController() {
                 guard let childScrollView = controller.childScrollView() else {
                     self.shouldScrollForMainScrollView = true
                     return

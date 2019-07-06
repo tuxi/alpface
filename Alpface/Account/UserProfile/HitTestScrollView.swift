@@ -15,17 +15,19 @@ protocol HitTestScrollViewGestureRecognizerDelegate: UIScrollViewDelegate {
 }
 
 @objc(ALPHitTestScrollView)
-// waring : Redundant conformance of 'HitTestScrollView' to protocol 'UIGestureRecognizerDelegate'
-internal class HitTestScrollView: UITableView/*, UIGestureRecognizerDelegate*/ {
+
+internal class HitTestScrollView: UITableView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.delaysContentTouches = false
+        self.delaysContentTouches = false;
+        self.canCancelContentTouches = true;
     }
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
-        self.delaysContentTouches = false
+        self.delaysContentTouches = false;
+        self.canCancelContentTouches = true;
     }
     
     override func touchesShouldCancel(in view: UIView) -> Bool {

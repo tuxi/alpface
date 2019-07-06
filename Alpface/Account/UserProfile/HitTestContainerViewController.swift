@@ -25,33 +25,33 @@ import UIKit
     @objc optional func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, childScrollViewLeaveTop scrollView: UIScrollView) -> Void
 }
 
-class HitTestContainerCollectionView: UICollectionView {
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        let pan : UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
-        
-        if pan.isEqual(self.panGestureRecognizer) == false {
-            return true
-        }
-        
-        let point = pan.translation(in: self)
-        if pan.state == .began || pan.state == .possible {
-            // y轴偏移量大，说明是上下移动, 上下滑动，让其不能响应手势
-            if fabs(point.y) >= fabs(point.x) {
-                return false
-            }
-            else {
-                // 左右滑动，如果此时collectionView的contentOffset.x < 0，
-                // 并且 手指在collectionView上的x轴偏移量大于0，说明向左移动，此时让其不能响应手势
-                if self.contentOffset.x <= 0 && point.x > 0 {
-                    return false
-                }
-            }
-        }
-        
-        return true
-    }
-}
+//class HitTestContainerCollectionView: UICollectionView {
+//    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//
+//        let pan : UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
+//
+//        if pan.isEqual(self.panGestureRecognizer) == false {
+//            return true
+//        }
+//
+//        let point = pan.translation(in: self)
+//        if pan.state == .began || pan.state == .possible {
+//            // y轴偏移量大，说明是上下移动, 上下滑动，让其不能响应手势
+//            if fabs(point.y) >= fabs(point.x) {
+//                return false
+//            }
+//            else {
+//                // 左右滑动，如果此时collectionView的contentOffset.x < 0，
+//                // 并且 手指在collectionView上的x轴偏移量大于0，说明向左移动，此时让其不能响应手势
+//                if self.contentOffset.x <= 0 && point.x > 0 {
+//                    return false
+//                }
+//            }
+//        }
+//
+//        return true
+//    }
+//}
 
 class HitTestContainerViewController: UIViewController {
     
@@ -84,34 +84,6 @@ class HitTestContainerViewController: UIViewController {
         setupUI()
     }
     
-//    open override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        if let childController = self.displayViewController() {
-//            childController.beginAppearanceTransition(true, animated: true)
-//        }
-//    }
-//
-//    open override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        if let childController = self.displayViewController() {
-//            childController.endAppearanceTransition()
-//        }
-//    }
-//
-//    open override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        if let childController = self.displayViewController() {
-//            childController.beginAppearanceTransition(false, animated: true)
-//        }
-//    }
-//
-//    open override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-//        if let childController = self.displayViewController() {
-//            childController.endAppearanceTransition()
-//        }
-//    }
-    
     fileprivate func setupUI() {
         
         pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -134,6 +106,7 @@ class HitTestContainerViewController: UIViewController {
                 let tempScrollView = subView as? UIScrollView
                 tempScrollView?.addObserver(self, forKeyPath: "panGestureRecognizer.state", options: .new, context: nil)
                 self.scrollView = tempScrollView
+                tempScrollView?.isScrollEnabled = false
             }
         }
     }
@@ -175,6 +148,9 @@ class HitTestContainerViewController: UIViewController {
             return
         }
         guard let controllers = self.viewControllers else {
+            return
+        }
+        if index >= controllers.count {
             return
         }
         let direction: UIPageViewController.NavigationDirection = (index > currentIndex) ? .forward : .reverse

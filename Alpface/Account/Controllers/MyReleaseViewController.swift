@@ -16,11 +16,6 @@ class MyReleaseViewController: UserProfileChildCollectionViewController {
         // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 
     override func titleForEmptyDataView() -> String? {
         return "TA还没有发不过任何作品哦~"
