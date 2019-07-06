@@ -17,7 +17,7 @@ open class VideoRequest: NSObject {
     
     public func getHomeRecommendedVideos(success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
         
-        let url = ALPConstans.HttpRequestURL.getRadomVideos
+        let url = ALPConstans.HttpRequestURL.getAllVideos
         // 按照上传时间排序
         let parameters = ["ordering": "-upload_time"]
         HttpRequestHelper.request(method: .get, url: url, parameters: parameters as NSDictionary) { (response, error) in
@@ -52,6 +52,72 @@ open class VideoRequest: NSObject {
                     var list = [VideoItem]()
                     videos.forEach { (item) in
                         let video = VideoItem(dict: item)
+                        list.append(video)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        succ(list)
+                    }
+                    return
+                }
+            }
+            guard let fail = failure else { return }
+            DispatchQueue.main.async {
+                fail(NSError(domain: NSURLErrorDomain, code: response.statusCode, userInfo: response.data))
+            }
+            
+        }
+    }
+    
+    /**
+     分页获取用户收藏的数据
+     
+     - parameter content_type: 要获取的收藏的内容类型， 6为视频
+     - parameter userId: 查询的用户id
+     - parameter page: 获取的的页码，从1开始
+     - parameter pageSize: 分页的数量，默认20
+     - parameter success:
+     - parameter failure: 修改失败的回调
+     
+     - returns:
+     */
+    public func getUserLikes(contentType: Int, userId: Int64, page: Int=1, pageSize: Int=20, success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
+        let url = ALPConstans.HttpRequestURL.getUserLikes
+        let parameters = ["receiver_content_type": contentType, "sender": userId, "page": page, "page_size": pageSize] as [String : Any]
+        HttpRequestHelper.request(method: .get, url: url, parameters: parameters as NSDictionary) { (response, error) in
+            
+            if let error = error {
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(error)
+                }
+                return
+            }
+            
+            guard let response = response else {
+                guard let fail = failure else { return }
+                DispatchQueue.main.async {
+                    fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo: nil))
+                }
+                return
+            }
+            
+            // get 方法的200 为请求成功
+            if response.statusCode == 200  {
+                guard let data = response.data else {
+                    DispatchQueue.main.async {
+                        guard let fail = failure else { return }
+                        fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo:nil))
+                    }
+                    return
+                }
+                if let results = data["results"] as? [[String : Any]] {
+                    guard let succ = success else { return }
+                    print(results)
+                    var list = [VideoItem]()
+                    results.forEach { (dict) in
+                        guard let video_dict = dict["receiver"] as? [String : Any] else { return }
+                        let video = VideoItem(dict: video_dict)
                         list.append(video)
                     }
                     

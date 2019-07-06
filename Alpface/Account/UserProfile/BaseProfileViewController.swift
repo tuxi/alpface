@@ -429,7 +429,7 @@ extension BaseProfileViewController: HitTestScrollViewGestureRecognizerDelegate 
                 return true
             }
             // y轴偏移量大，说明是上下移动，此时如果手势是gestureRecognizer时，让其不能响应
-            if fabs(currentPoint.y) > fabs(currentPoint.x) {
+            if abs(currentPoint.y) > abs(currentPoint.x) {
                 // 上下滑动
                 return true
             }

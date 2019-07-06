@@ -210,11 +210,13 @@ extension UserProfileViewController {
         if self.user == nil {
             return
         }
+        guard let id = self.user?.id else { return }
         self.controllers.forEach { (controller) in
             controller.childScrollView()?.xy_loading = true
         }
-        guard let id = self.user?.id else { return }
+        self.view.xy_showActivity()
         VideoRequest.shared.getUserHomeByUserId(id: id, success: {[weak self] (response) in
+            self?.view.xy_hideHUD()
             guard let homeModel = response as? UserHomeModel else {
                 return
             }
@@ -222,7 +224,7 @@ extension UserProfileViewController {
             self?.homeModel = homeModel
             self?.reloadCollectionData()
         }) {[weak self] (error) in
-            self?.reloadCollectionData()
+            self?.view.xy_hideHUD()
             if let e = error as NSError? {
                 MBProgressHUD.xy_show(e.userInfo.debugDescription)
                 if e.domain == ALPConstans.AuthKeys.ALPAuthPermissionErrorValue {

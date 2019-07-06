@@ -37,13 +37,17 @@ struct ALPConstans {
         static let register = "\(ALPSiteURLString)" + "/users/"
         // 根据用户id修改用户部分信息，后面拼上用户id，必须是PATCH方法 200 成功
         static let updateProfile = "\(ALPSiteURLString)" + "/users/"
-        static let getRadomVideos = "\(ALPSiteURLString)" + "/videos/"
+        // get 方法 获取视频系列
+        static let getAllVideos = "\(ALPSiteURLString)" + "/videos/"
+        // post 方法 上传视频
         static let uploadVideo = "\(ALPSiteURLString)" + "/videos/"
         //
         static let vtimeline = "\(ALPSiteURLString)" + "/vtimeline/"
         // 根据用户id 请求用户主页数据
         static let userHome = "\(ALPSiteURLString)" + "/user_home/"
         static let getVideoByUserId = "\(ALPSiteURLString)" + "/video/getVideoByUserId"
+        // get方法 根据content_type 类型获取用户收藏的列表 6为视频
+        static let getUserLikes = "\(ALPSiteURLString)" + "/likes/"
         
     }
 }
