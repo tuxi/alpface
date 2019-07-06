@@ -65,7 +65,7 @@ class MainAppScrollingContainerViewController: UIViewController {
         if currentIndex == index {
             return
         }
-        let direction: UIPageViewControllerNavigationDirection = (index > currentIndex) ? .forward : .reverse
+        let direction: UIPageViewController.NavigationDirection = (index > currentIndex) ? .forward : .reverse
         
         if let controller = collectionSection.items[index].model as? UIViewController {
             currentIndex = index
@@ -93,8 +93,8 @@ class MainAppScrollingContainerViewController: UIViewController {
         pageController.view.layer.cornerRadius = 3.0
         pageController.view.layer.masksToBounds = true
         view.addSubview(pageController.view)
-        addChildViewController(pageController)
-        pageController.didMove(toParentViewController: self)
+        addChild(pageController)
+        pageController.didMove(toParent: self)
         pageController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: ["collectionView": pageController.view]))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": pageController.view]))
@@ -146,7 +146,7 @@ class MainAppScrollingContainerViewController: UIViewController {
                 tabBarVc.tabBar.shadowImage = UIImage()
                 tabBarVc.tabBar.isTranslucent = true
                 // 设置tabbarItem的文本向上偏移15.0，因为无图片，所以尽量居中显示
-                let offSet = UIOffsetMake(0.0, -15.0)
+                let offSet = UIOffset(horizontal: 0.0, vertical: -15.0)
                 nac1.tabBarItem.titlePositionAdjustment = offSet
                 nac2.tabBarItem.titlePositionAdjustment = offSet
                 selectMusicVC.tabBarItem.titlePositionAdjustment = offSet

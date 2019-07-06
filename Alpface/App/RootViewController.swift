@@ -77,8 +77,8 @@ class RootViewController: UIViewController {
         return appViewController.prefersStatusBarHidden
     }
     
-    override var childViewControllerForStatusBarStyle: UIViewController? {
-        return appViewController.childViewControllerForStatusBarStyle
+    override var childForStatusBarStyle: UIViewController? {
+        return appViewController.childForStatusBarStyle
     }
     
 

@@ -15,7 +15,7 @@ public typealias ALPProgressHandler = (Progress) -> Void
 open class VideoRequest: NSObject {
     static public let shared = VideoRequest()
     
-    public func getRadomVideos(success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
+    public func getHomeRecommendedVideos(success: ALPHttpResponseBlock?, failure: ALPHttpErrorBlock?){
         
         let url = ALPConstans.HttpRequestURL.getRadomVideos
         // 按照上传时间排序

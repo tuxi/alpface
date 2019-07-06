@@ -30,12 +30,10 @@ class HitTestScrollViewCell: UITableViewCell {
             }
         }
     }
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()
@@ -45,10 +43,10 @@ class HitTestScrollViewCell: UITableViewCell {
         self.selectionStyle = .none 
         self.contentView.addSubview(controller.view)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0)
-        controller.view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0)
-        controller.view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 0.0)
-        controller.view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0.0)
+        controller.view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0.0).isActive = true
+        controller.view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0.0).isActive = true
+        controller.view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 0.0).isActive = true
+        controller.view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0.0).isActive = true
     }
 
     override func awakeFromNib() {

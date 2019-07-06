@@ -51,7 +51,7 @@ class StoryCreationViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: backButton)
         
         // 设置导航栏标题属性：设置标题颜色
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         // 设置导航栏前景色：设置item指示色
         navigationController?.navigationBar.tintColor = UIColor.white
         

@@ -23,7 +23,7 @@ class UserProfileChildCollectionViewController: UIViewController, ProfileViewChi
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(VideoGifCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "VideoGifCollectionViewCell")
-        collectionView.contentInset = UIEdgeInsetsMake(0, 0, 55, 0)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 55, right: 0)
         return collectionView
     }()
     
@@ -162,7 +162,7 @@ extension UserProfileChildCollectionViewController: XYEmptyDataDelegate {
     
     func customView(forEmptyDataView scrollView: UIScrollView) -> UIView? {
         if scrollView.xy_loading == true {
-           let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            let indicatorView = UIActivityIndicatorView(style: .white)
             indicatorView.startAnimating()
             return indicatorView
         }

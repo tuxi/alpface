@@ -846,7 +846,7 @@ extension PCLBlurEffectAlertController : PCLAlertKeyboardNotificationObserver, P
     }
     func keyboardWillShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardSize = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.size else {
+            let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey]?.cgRectValue.size else {
                 return
         }
         keyboardHeight = keyboardSize.height

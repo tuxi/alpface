@@ -97,7 +97,7 @@ class AdaptiveTextView: UITextView {
         self.layer.borderWidth = 1;
         self.layer.borderColor = UIColor.lightGray.cgColor
         // 实时监听textView值得改变
-        NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: NSNotification.Name.UITextViewTextDidChange, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: UITextView.textDidChangeNotification, object: self)
         self.prepareViews()
     }
     
@@ -125,6 +125,6 @@ class AdaptiveTextView: UITextView {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidChange, object: self)
+        NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: self)
     }
 }

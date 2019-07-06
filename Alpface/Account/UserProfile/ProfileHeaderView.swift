@@ -246,7 +246,7 @@ open class ProfileHeaderView: UIView {
     
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
         
-        let newSize = self.systemLayoutSizeFitting(UILayoutFittingExpandedSize)
+        let newSize = self.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize)
         return CGSize(width: size.width, height: newSize.height)
     }
     

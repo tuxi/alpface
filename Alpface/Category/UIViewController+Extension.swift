@@ -73,11 +73,11 @@ extension UIViewController {
          window有一个属性：windowLevel
          当 windowLevel == UIWindowLevelNormal 的时候，表示这个window是当前屏幕正在显示的window
          */
-        if window?.windowLevel != UIWindowLevelNormal {
+        if window?.windowLevel != UIWindow.Level.normal {
             
             for tempWindow in UIApplication.shared.windows {
                 
-                if tempWindow.windowLevel == UIWindowLevelNormal {
+                if tempWindow.windowLevel == UIWindow.Level.normal {
                     
                     window = tempWindow
                     break

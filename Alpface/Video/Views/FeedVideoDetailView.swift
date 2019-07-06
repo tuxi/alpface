@@ -92,7 +92,7 @@ class FeedVideoDetailView: UIView {
         button.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
-        button.contentEdgeInsets = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)
+        button.contentEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
         button.layer.cornerRadius = 3.0
         button.layer.masksToBounds = true
         button.setImage(UIImage(named: "poi_bigLocationIcon_20x20_"), for: .normal)

@@ -42,7 +42,7 @@ class RegisterViewController: UIViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(chooseAvatarButtonAction),for: .touchUpInside)
         btn.backgroundColor = BaseProfileViewController.globalTint.withAlphaComponent(0.8)
-        btn.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+        btn.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
         return btn
     }()
     
@@ -175,12 +175,12 @@ class RegisterViewController: UIViewController {
         
         registerButton.setTitle("完成", for: .normal)
         
-        nicknameTf.attributedPlaceholder = NSAttributedString(string: "请输入用户名", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        passwordTf.attributedPlaceholder = NSAttributedString(string: "请输入密码", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        confirm_passwordTf.attributedPlaceholder = NSAttributedString(string: "请输入确认密码", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        emailTf.attributedPlaceholder = NSAttributedString(string: "请输入邮箱", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        phoneTf.attributedPlaceholder = NSAttributedString(string: "请输入手机号", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        verificationCodeTf.attributedPlaceholder = NSAttributedString(string: "请输入验证码", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        nicknameTf.attributedPlaceholder = NSAttributedString(string: "请输入用户名", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        passwordTf.attributedPlaceholder = NSAttributedString(string: "请输入密码", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        confirm_passwordTf.attributedPlaceholder = NSAttributedString(string: "请输入确认密码", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        emailTf.attributedPlaceholder = NSAttributedString(string: "请输入邮箱", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        phoneTf.attributedPlaceholder = NSAttributedString(string: "请输入手机号", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        verificationCodeTf.attributedPlaceholder = NSAttributedString(string: "请输入验证码", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         chooseAvatarButton.setTitle("选择头像", for: .normal)
     }
     
@@ -313,7 +313,7 @@ class RegisterViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: backButton)
         
         // 设置导航栏标题属性：设置标题颜色
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         // 设置导航栏前景色：设置item指示色
         navigationController?.navigationBar.tintColor = UIColor.white
         
@@ -533,8 +533,8 @@ extension RegisterViewController {
     
     // 监听键盘
     fileprivate  func setupObserver(){
-        NotificationCenter.default.addObserver(self, selector: #selector(RegisterViewController.keyboardWillShow(notification:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(RegisterViewController.keyboardWillHide(notification:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(RegisterViewController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(RegisterViewController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         chooseAvatarButton.addObserver(self, forKeyPath: "highlighted", options: .new, context: nil)
     }
     
@@ -548,10 +548,10 @@ extension RegisterViewController {
     @objc private func keyboardWillShow(notification: Notification) {
         guard let userInfo = notification.userInfo else { return }
         // 获取键盘frame
-        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         // 键盘弹出的时间
-        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
         
         if contentView.frame.maxY > keyboardRect.origin.y {
             // 键盘遮住文本了，就把contentView往上移
@@ -567,7 +567,7 @@ extension RegisterViewController {
         guard let userInfo = notification.userInfo else { return }
         
         // 键盘弹出的时间
-        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
         
         // 键盘遮住文本了，就把contentView往上移
         contentViewCenterYConstraint?.constant = 0

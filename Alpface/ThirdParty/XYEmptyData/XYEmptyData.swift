@@ -862,7 +862,7 @@ fileprivate class XYEmptyDataView : UIView {
     
     /** 刷新按钮 */
     lazy open var reloadButton: UIButton = {
-        let button = UIButton(type: UIButtonType.custom)
+        let button = UIButton(type: UIButton.ButtonType.custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.contentVerticalAlignment = .center
@@ -987,12 +987,12 @@ fileprivate class XYEmptyDataView : UIView {
         }
         
         let viewDict = ["self": self]
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[self]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewDict))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[self]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: viewDict))
         view.addConstraints([
             NSLayoutConstraint.init(item: self, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1.0, constant: CGFloat(-widthConstant)),
             NSLayoutConstraint.init(item: self, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1.0, constant: 0.0)
             ])
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[self]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewDict))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[self]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: viewDict))
     }
     
     override init(frame: CGRect) {
@@ -1080,7 +1080,7 @@ fileprivate class XYEmptyDataView : UIView {
             NSLayoutConstraint.init(item: contentView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0)
             ]
         addConstraints(contentViewConstraints)
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(contentViewHorizontalSpace)-[contentView]-(contentViewHorizontalSpace)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: ["contentViewHorizontalSpace": contentViewHorizontalSpace], views: ["contentView": contentView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(contentViewHorizontalSpace)-[contentView]-(contentViewHorizontalSpace)-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: ["contentViewHorizontalSpace": contentViewHorizontalSpace], views: ["contentView": contentView]))
         
         
         // 需要调整self 相对父控件顶部和左侧 的偏移量
@@ -1102,8 +1102,8 @@ fileprivate class XYEmptyDataView : UIView {
             
             let viewDict: [String: UIView] = ["customView": customView]
             
-            let constraints1 = NSLayoutConstraint.constraints(withVisualFormat: "H:|[customView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewDict)
-            let constraints2 = NSLayoutConstraint.constraints(withVisualFormat: "V:|[customView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewDict)
+            let constraints1 = NSLayoutConstraint.constraints(withVisualFormat: "H:|[customView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: viewDict)
+            let constraints2 = NSLayoutConstraint.constraints(withVisualFormat: "V:|[customView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: viewDict)
             contentView.addConstraints(constraints1)
             contentView.addConstraints(constraints2)
         }
@@ -1141,7 +1141,7 @@ fileprivate class XYEmptyDataView : UIView {
                     for d in imageMetrics {
                         metrics[d.key] = imageMetrics[d.key]
                     }
-                    contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(imageLeftSpace@999)-[imageView]-(imageRightSpace@999)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
+                    contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(imageLeftSpace@999)-[imageView]-(imageRightSpace@999)-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
                     
                 }
                 else {
@@ -1175,7 +1175,7 @@ fileprivate class XYEmptyDataView : UIView {
                 subviewKeyArray.append("titleLabel")
                 subviewDict[subviewKeyArray.last!] = self.titleLabel
                 
-                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(titleLeftSpace@999)-[titleLabel(>=0)]-(titleRightSpace@999)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
+                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(titleLeftSpace@999)-[titleLabel(>=0)]-(titleRightSpace@999)-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
                 
             } else {
                 // 不显示就移除
@@ -1199,7 +1199,7 @@ fileprivate class XYEmptyDataView : UIView {
                 }
                 subviewKeyArray.append("detailLabel")
                 subviewDict[subviewKeyArray.last!] = detailLabel
-                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(detailLeftSpace@999)-[detailLabel(>=0)]-(detailRightSpace@999)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
+                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(detailLeftSpace@999)-[detailLabel(>=0)]-(detailRightSpace@999)-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
           
             } else {
                 // 不显示就移除
@@ -1224,7 +1224,7 @@ fileprivate class XYEmptyDataView : UIView {
                 subviewKeyArray.append("reloadButton")
                 subviewDict[subviewKeyArray.last!] = reloadButton
                 
-                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(buttonLeftSpace@999)-[reloadButton(>=0)]-(buttonRightSpace@999)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
+                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(buttonLeftSpace@999)-[reloadButton(>=0)]-(buttonRightSpace@999)-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
             } else {
                 // 不显示就移除
                 reloadButton.removeFromSuperview()
@@ -1262,7 +1262,7 @@ fileprivate class XYEmptyDataView : UIView {
             previousView = nil;
             // 向contentView分配垂直约束
             if (verticalFormat.count > 0) {
-                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|\(verticalFormat)|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
+                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|\(verticalFormat)|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: metrics, views: subviewDict))
             }
         }
         

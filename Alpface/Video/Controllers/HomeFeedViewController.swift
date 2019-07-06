@@ -68,7 +68,7 @@ extension HomeFeedViewController {
 extension HomeFeedViewController {
     
     @objc fileprivate func requestRandomVideos() -> Void {
-        VideoRequest.shared.getRadomVideos(success: {[weak self] (response) in
+        VideoRequest.shared.getHomeRecommendedVideos(success: {[weak self] (response) in
             NotificationCenter.default.post(name: NSNotification.Name.ALPPlayerStopAll, object: self)
             guard let list = response as? [VideoItem] else {
                 return

@@ -20,7 +20,7 @@ class EditProfileTableViewCell: UITableViewCell {
     
     fileprivate lazy var textField : UITextField = {
         let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "添加你的姓名", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        tf.attributedPlaceholder = NSAttributedString(string: "添加你的姓名", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         tf.addTarget(self, action: #selector(textFieldsEditingChanged),for: .editingChanged)
         tf.font = UIFont.systemFont(ofSize: 15.0)
         tf.textColor = BaseProfileViewController.globalTint
@@ -53,12 +53,10 @@ class EditProfileTableViewCell: UITableViewCell {
             }
         }
     }
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()

@@ -47,7 +47,7 @@ class MainNavigationController: UINavigationController {
         return topVc.preferredStatusBarStyle
     }
     
-    override var childViewControllerForStatusBarStyle: UIViewController? {
+    override var childForStatusBarStyle: UIViewController? {
         guard let topVc = topViewController else { return nil }
         return topVc
     }

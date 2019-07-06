@@ -21,7 +21,7 @@ open class EditProfileHeaderView: UIView {
     
     fileprivate lazy var changeIconButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.imageEdgeInsets = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
         button.imageView?.contentMode = .scaleAspectFit
         button.setImage(UIImage(named: "icon_personal_changephoto"), for: .normal)
         button.addTarget(self, action: #selector(changeIconButtonClick), for: .touchUpInside)
@@ -100,7 +100,7 @@ open class EditProfileHeaderView: UIView {
     
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
         
-        let newSize = self.contentView.systemLayoutSizeFitting(UILayoutFittingExpandedSize)
+        let newSize = self.contentView.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize)
         return CGSize(width: size.width, height: newSize.height)
     }
     

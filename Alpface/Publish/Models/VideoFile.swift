@@ -57,7 +57,7 @@ class VideoFile: NSObject {
     
     public func read(offset: Int64, size: Int64) -> Data? {
         if let d = self.data {
-            let range:Range<Data.Index> = Range(Int(offset)..<Int(size))
+            let range: Range<Data.Index> = Int(offset)..<Int(size)
             return d.subdata(in: range)
         }
         self.file?.seek(toFileOffset: UInt64(offset))
