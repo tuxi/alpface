@@ -9,7 +9,7 @@ target 'Alpface' do
   pod 'Alamofire', '4.7.0'
   #pod 'Peek', :configurations => ['Debug']
   pod 'MBProgressHUD', '1.1.0'
-  pod 'DeviceKit', '1.5.0'
+#  pod 'DeviceKit', '2.0'
   pod 'SDWebImage', '4.4.2'
   pod 'SDWebImage/WebP' # libwebp (0.6.1)
   pod 'TZImagePickerController', '3.0.7'
