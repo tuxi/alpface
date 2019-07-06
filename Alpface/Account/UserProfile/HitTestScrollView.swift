@@ -23,12 +23,10 @@ internal class HitTestScrollView: UITableView/*, UIGestureRecognizerDelegate*/ {
         
         self.delaysContentTouches = false
     }
-    
-    override init(frame: CGRect, style: UITableViewStyle) {
+    override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         self.delaysContentTouches = false
     }
-
     
     override func touchesShouldCancel(in view: UIView) -> Bool {
         if view.isKind(of: UIButton.self) {

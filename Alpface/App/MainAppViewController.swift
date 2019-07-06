@@ -65,8 +65,8 @@ class MainAppViewController: UIViewController {
         return scrollingContainer.prefersStatusBarHidden
     }
     
-    override var childViewControllerForStatusBarStyle: UIViewController? {
-        return scrollingContainer.childViewControllerForStatusBarStyle
+    override var childForStatusBarStyle: UIViewController? {
+        return scrollingContainer.childForStatusBarStyle
     }
 
 }

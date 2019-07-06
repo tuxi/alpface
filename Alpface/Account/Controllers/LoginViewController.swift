@@ -345,7 +345,7 @@ class LoginViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: backButton)
         
         // 设置导航栏标题属性：设置标题颜色
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         // 设置导航栏前景色：设置item指示色
         navigationController?.navigationBar.tintColor = UIColor.white
         
@@ -431,8 +431,8 @@ extension  LoginViewController {
     
     // 监听键盘
     fileprivate  func setupObserver(){
-        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow(notification:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide(notification:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
@@ -468,7 +468,7 @@ extension LoginViewController {
         if let notification = keyboardIsVisibleNotification {
             guard let userInfo = notification.userInfo else { return }
             // 获取键盘frame
-            let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            let keyboardRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
             
             // 键盘遮住文本了，就把contentView往上移
             let offset = contentView.frame.maxY - keyboardRect.origin.y
@@ -485,10 +485,10 @@ extension LoginViewController {
         keyboardIsVisibleNotification = notification
         guard let userInfo = notification.userInfo else { return }
         // 获取键盘frame
-        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         // 键盘弹出的时间
-        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
         
         if contentView.frame.maxY > keyboardRect.origin.y {
             // 键盘遮住文本了，就把contentView往上移
@@ -505,7 +505,7 @@ extension LoginViewController {
         guard let userInfo = notification.userInfo else { return }
         
         // 键盘弹出的时间
-        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
         
         // 键盘遮住文本了，就把contentView往上移
         contentViewCenterYConstraint?.constant = 0

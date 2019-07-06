@@ -291,13 +291,13 @@ extension BaseProfileViewController {
         
         segmentedControl.underlineSelected = true
         segmentedControl.selectedSegmentIndex = 0
-        let largerWhiteTextAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16),
-                                         NSAttributedStringKey.foregroundColor: UIColor.white]
+        let largerWhiteTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                                         NSAttributedString.Key.foregroundColor: UIColor.white]
         
-        let largerRedTextHighlightAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16),
-                                                NSAttributedStringKey.foregroundColor: UIColor.blue]
-        let largerRedTextSelectAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16),
-                                             NSAttributedStringKey.foregroundColor: UIColor.orange]
+        let largerRedTextHighlightAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                                                NSAttributedString.Key.foregroundColor: UIColor.blue]
+        let largerRedTextSelectAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                                             NSAttributedString.Key.foregroundColor: UIColor.orange]
         
         segmentedControl.setTitleTextAttributes(largerWhiteTextAttributes, for: .normal)
         
@@ -386,12 +386,12 @@ extension BaseProfileViewController: UIScrollViewDelegate {
             if contentOffset.y >= scrollToScaleDownProfileIconDistance() {
                 self.stickyHeaderView.frame = CGRect(x: 0, y: contentOffset.y - scrollToScaleDownProfileIconDistance(), width: mainScrollView.bounds.width, height: stickyheaderContainerViewHeight)
                 // 当scrollView 的 segment顶部 滚动到scrollToScaleDownProfileIconDistance时(也就是导航底部及以上位置)，让stickyHeaderContainerView显示在最上面，防止被profileHeaderView遮挡
-                tableHeaderView.bringSubview(toFront: self.stickyHeaderView)
+                tableHeaderView.bringSubviewToFront(self.stickyHeaderView)
                 
             } else {
                 // 当scrollView 的 segment顶部 滚动到导航底部以下位置，让profileHeaderView显示在最上面,防止用户头像被遮挡
                 self.stickyHeaderView.frame = computeStickyHeaderContainerViewFrame()
-                tableHeaderView.bringSubview(toFront: self.profileHeaderView)
+                tableHeaderView.bringSubviewToFront(self.profileHeaderView)
             }
             
             // Sticky Segmented Control
@@ -617,7 +617,7 @@ extension BaseProfileViewController {
     /// 更新导航条上面titleLabel的位置
     fileprivate func animateNaivationTitleAt(progress: CGFloat) {
         
-        let totalDistance: CGFloat = self.navigationTitleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height + ALPNavigationTitleLabelBottomPadding
+        let totalDistance: CGFloat = self.navigationTitleLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height + ALPNavigationTitleLabelBottomPadding
         
         if progress >= 0 {
             let distance = (1 - progress) * totalDistance

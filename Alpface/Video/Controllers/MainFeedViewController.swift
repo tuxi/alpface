@@ -160,7 +160,7 @@ class MainFeedViewController: HomeRefreshViewController {
     fileprivate func setupNavigation() {
         // 设置导航栏标题属性：设置标题字体
         let font = UIFont(name: "MedulaOne-Regular", size: 20.0)
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 20.0), NSAttributedStringKey.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font ?? UIFont.systemFont(ofSize: 20.0), NSAttributedString.Key.foregroundColor: UIColor.white]
         
         // 设置导航栏前景色：设置item指示色
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -199,7 +199,7 @@ extension MainFeedViewController {
         return true
     }
     
-    override var childViewControllerForStatusBarStyle: UIViewController? {
+    override var childForStatusBarStyle: UIViewController? {
         return nil
     }
 }

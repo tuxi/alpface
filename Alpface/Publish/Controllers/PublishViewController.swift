@@ -110,14 +110,14 @@ class PublishViewController: UIViewController {
     }
     
     @objc fileprivate func openLibrary() {
-        guard UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum) else {
+        guard UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.savedPhotosAlbum) else {
             print("not support library")
             return
         }
         
         let imagePick = UIImagePickerController()
         imagePick.delegate = self;
-        imagePick.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePick.sourceType = UIImagePickerController.SourceType.photoLibrary
         imagePick.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String, kUTTypeAudio as String]
         imagePick.view.backgroundColor = UIColor.init(white: 0.5, alpha: 0.5)
         if let nac = self.alp_navigationController {

@@ -147,7 +147,7 @@ public class AccountLogin: NSObject {
         let url = URL(string: urlString)
         return Alamofire.upload(multipartFormData: { (multipartFormData) in
             if let avatar = avate {
-                let _data = UIImageJPEGRepresentation((avatar), 0.5)
+                let _data = avatar.jpegData(compressionQuality: 0.5)
                 multipartFormData.append(_data!, withName:"avatar", fileName:   "\(phone).jpg", mimeType:"image/jpeg")
             }
             
@@ -272,11 +272,11 @@ public class AccountLogin: NSObject {
         let url = URL(string: urlString)
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             if let avatar = avatar {
-                let _data = UIImageJPEGRepresentation((avatar), 0.5)
+                let _data = avatar.jpegData(compressionQuality: 0.5)
                 multipartFormData.append(_data!, withName:"avatar", fileName:  "avatar_" + "\(user.username!).jpg", mimeType:"image/jpeg")
             }
             if let cover = cover {
-                let _data = UIImageJPEGRepresentation((cover), 1.0)
+                let _data = cover.jpegData(compressionQuality: 1.0)
                 multipartFormData.append(_data!, withName:"head_background", fileName:  "head_background_" + "\(user.username!).jpg", mimeType:"image/jpeg")
             }
             

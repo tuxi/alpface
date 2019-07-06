@@ -265,12 +265,12 @@ extension EditUserProfileViewController: UITableViewDelegate {
             if contentOffset.y >= scrollToScaleDownProfileIconDistance() {
                 self.stickyHeaderView.frame = CGRect(x: 0, y: contentOffset.y - scrollToScaleDownProfileIconDistance(), width: tableView.bounds.width, height: stickyheaderContainerViewHeight)
                 // 当scrollView 的 segment顶部 滚动到scrollToScaleDownProfileIconDistance时(也就是导航底部及以上位置)，让stickyHeaderContainerView显示在最上面，防止被profileHeaderView遮挡
-                tableHeaderView.bringSubview(toFront: self.stickyHeaderView)
+                tableHeaderView.bringSubviewToFront(self.stickyHeaderView)
                 
             } else {
                 // 当scrollView 的 segment顶部 滚动到导航底部以下位置，让profileHeaderView显示在最上面,防止用户头像被遮挡, 归位
                 self.stickyHeaderView.frame = computeStickyHeaderContainerViewFrame()
-                tableHeaderView.bringSubview(toFront: self.profileHeaderView)
+                tableHeaderView.bringSubviewToFront(self.profileHeaderView)
             }
             
             

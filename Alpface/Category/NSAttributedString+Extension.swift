@@ -38,7 +38,7 @@ extension NSString {
         paragraph.lineBreakMode = NSLineBreakMode.byWordWrapping
         paragraph.alignment = .center // potentially this can be an input param too, but i guess in most use cases we want center align
         
-        let attributedString = NSAttributedString(string: text as String, attributes: [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.paragraphStyle:paragraph])
+        let attributedString = NSAttributedString(string: text as String, attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color, NSAttributedString.Key.paragraphStyle:paragraph])
         
         let size = attributedString.getSize(maxWidth: maxWidth)
         UIGraphicsBeginImageContextWithOptions(size, false , 0.0)

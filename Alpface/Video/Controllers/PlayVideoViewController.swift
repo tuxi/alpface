@@ -170,7 +170,7 @@ class PlayVideoViewController: UIViewController {
     
     /// 播放结束，回到最开始位置，播放按钮显示带播放图标
     @objc func playerItemDidPlayToEnd(notification: Notification){
-        player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        player?.seek(to: CMTime.zero, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
         if let delegate = delegate {
             if delegate.responds(to: #selector(PlayVideoViewControllerDelegate.playVideoViewController(didPlayToEnd:))) {
                 delegate.playVideoViewController!(didPlayToEnd: self)
@@ -272,7 +272,7 @@ class PlayVideoViewController: UIViewController {
         var second = max(0, seconds)
         second = min(seconds, totalDuration)
         pause()
-        player?.seek(to: CMTimeMakeWithSeconds(Float64(second), Int32(NSEC_PER_SEC)) , completionHandler: { [weak self](_) in
+        player?.seek(to: CMTimeMakeWithSeconds(Float64(second), preferredTimescale: Int32(NSEC_PER_SEC)) , completionHandler: { [weak self](_) in
             self?.play()
             if !self!.playerItem!.isPlaybackLikelyToKeepUp {
                 self?.state = .buffering
@@ -326,17 +326,17 @@ extension PlayVideoViewController {
         NotificationCenter.default.removeObserver(self, name:  Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemPlaybackStalled, object: playerItem)
         if isFromApplication == false {
-            self.observerSet.remove(NSNotification.Name.UIApplicationDidEnterBackground.rawValue)
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+            self.observerSet.remove(UIApplication.didEnterBackgroundNotification.rawValue)
+            NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
             
-            self.observerSet.remove(NSNotification.Name.UIApplicationWillEnterForeground.rawValue)
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+            self.observerSet.remove(UIApplication.willEnterForegroundNotification.rawValue)
+            NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
             
-            self.observerSet.remove(NSNotification.Name.UIApplicationWillResignActive.rawValue)
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+            self.observerSet.remove(UIApplication.willResignActiveNotification.rawValue)
+            NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
             
-            self.observerSet.remove(NSNotification.Name.UIApplicationDidBecomeActive.rawValue)
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+            self.observerSet.remove(UIApplication.didBecomeActiveNotification.rawValue)
+            NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         }
     }
     
@@ -374,35 +374,35 @@ extension PlayVideoViewController {
     }
     
     fileprivate func addApplicationObserver() {
-        if self.observerSet.contains(NSNotification.Name.UIApplicationDidEnterBackground.rawValue) == false {
+        if self.observerSet.contains(UIApplication.didEnterBackgroundNotification.rawValue) == false {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(applicationDidEnterBackground),
-                                                   name: NSNotification.Name.UIApplicationDidEnterBackground,
+                                                   name: UIApplication.didEnterBackgroundNotification,
                                                    object: nil)
-            self.observerSet.insert(NSNotification.Name.UIApplicationDidEnterBackground.rawValue)
+            self.observerSet.insert(UIApplication.didEnterBackgroundNotification.rawValue)
         }
        
-        if self.observerSet.contains(NSNotification.Name.UIApplicationWillEnterForeground.rawValue) == false {
+        if self.observerSet.contains(UIApplication.willEnterForegroundNotification.rawValue) == false {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(applicationWillEnterForeground),
-                                                   name: NSNotification.Name.UIApplicationWillEnterForeground,
+                                                   name: UIApplication.willEnterForegroundNotification,
                                                    object: nil)
-            self.observerSet.insert(NSNotification.Name.UIApplicationWillEnterForeground.rawValue)
+            self.observerSet.insert(UIApplication.willEnterForegroundNotification.rawValue)
         }
        
-        if self.observerSet.contains(NSNotification.Name.UIApplicationWillResignActive.rawValue) == false {
+        if self.observerSet.contains(UIApplication.willResignActiveNotification.rawValue) == false {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(applicationWillResignActive),
-                                                   name: NSNotification.Name.UIApplicationWillResignActive,
+                                                   name: UIApplication.willResignActiveNotification,
                                                    object: nil)
-            self.observerSet.insert(NSNotification.Name.UIApplicationWillResignActive.rawValue)
+            self.observerSet.insert(UIApplication.willResignActiveNotification.rawValue)
         }
-        if self.observerSet.contains(NSNotification.Name.UIApplicationDidBecomeActive.rawValue) == false {
+        if self.observerSet.contains(UIApplication.didBecomeActiveNotification.rawValue) == false {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(applicationDidBecomeActive),
-                                                   name: NSNotification.Name.UIApplicationDidBecomeActive,
+                                                   name: UIApplication.didBecomeActiveNotification,
                                                    object: nil)
-            self.observerSet.insert(NSNotification.Name.UIApplicationDidBecomeActive.rawValue)
+            self.observerSet.insert(UIApplication.didBecomeActiveNotification.rawValue)
         }
        
     }
@@ -413,7 +413,7 @@ extension PlayVideoViewController {
             player?.removeTimeObserver(timeObserver)
         }
         // 这里设置每秒执行一次.
-        timeObserver =  player?.addPeriodicTimeObserver(forInterval: CMTimeMake(Int64(1.0), Int32(1.0)), queue: DispatchQueue.main) { [weak self](time: CMTime) in
+        timeObserver =  player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: Int64(1.0), timescale: Int32(1.0)), queue: DispatchQueue.main) { [weak self](time: CMTime) in
             //CMTimeGetSeconds函数是将CMTime转换为秒，如果CMTime无效，将返回NaN
             let currentTime = CMTimeGetSeconds(time)
             let totalTime = CMTimeGetSeconds(self!.playerItem!.duration)

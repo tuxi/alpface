@@ -99,7 +99,7 @@ private extension PCLBlurEffectAlert.TransitionAnimator {
                 alertController.cornerView.subviews.forEach { $0.alpha = 0 }
             }
         }
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: animations) { finished in
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: UIView.AnimationOptions(), animations: animations) { finished in
             guard finished else { return }
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
