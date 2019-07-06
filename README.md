@@ -1,6 +1,7 @@
 # Alpface
+本项目为学习抖音短视频的iOS客户端app：
 * [学习抖音的iOS项目](https://github.com/tuxi/alpface)
-* [使用RESTful api搭建的短视频服务端](https://github.com/tuxi/video-hub)
+* [基于Django restframework + ffmpeg  搭建的短视频服务端](https://github.com/tuxi/video-hub)
 
 <img src = "https://github.com/tuxi/alpface/blob/master/sv.gif?raw=true" width = "375" height = "667" alt = "Screenshot.gif"/>
 
