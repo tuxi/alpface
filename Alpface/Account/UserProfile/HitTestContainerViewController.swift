@@ -8,25 +8,6 @@
 
 import UIKit
 
-@objc(HitTestContainerViewCollectionViewCell)
-class HitTestContainerViewCollectionViewCell: UICollectionViewCell {
-    
-    fileprivate var view: UIView? {
-        didSet {
-            view?.backgroundColor = UIColor.white
-            if view != oldValue {
-                oldValue?.removeFromSuperview()
-                guard let v = view else { return }
-                self.contentView.addSubview(v)
-                v.translatesAutoresizingMaskIntoConstraints = false
-                v.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
-                v.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
-                v.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
-                v.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
-            }
-        }
-    }
-}
 
 @objc protocol HitTestContainerViewControllerDelegate: NSObjectProtocol {
     /// 页面完全显示时调用
@@ -74,40 +55,27 @@ class HitTestContainerCollectionView: UICollectionView {
 
 class HitTestContainerViewController: UIViewController {
     
-    public var viewControllers: [ProfileViewChildControllerProtocol]? {
+    fileprivate var pageViewController: UIPageViewController!
+    fileprivate var currentIndex: Int = -1
+    
+    public var viewControllers: [BaseProfileViewChildControllr]? {
         didSet {
-            let keyPath = "contentOffset"
-            oldValue?.forEach({ (controller) in
-                controller.childScrollView()?.removeObserver(self, forKeyPath: keyPath)
-            })
-            viewControllers?.forEach({ (controller) in
-                let c = controller
-                c.childScrollView()?.addObserver(self, forKeyPath: keyPath, options: .new, context: nil)
-            })
+            self.show(page: self.initialPage, animated: true)
         }
     }
     
     public weak var delegate: HitTestContainerViewControllerDelegate?
+    fileprivate weak var scrollView: UIScrollView?
     
     /// 子scrollView是否可以滚动
     public var shouldScrollForCurrentChildScrollView: Bool?
     
-    fileprivate static let cellIfentifier: String = "HitTestContainerViewCollectionViewCell"
-    
-    public lazy var collectionView: HitTestContainerCollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.scrollDirection = .horizontal
-        let view = HitTestContainerCollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        view.delegate = self
-        view.dataSource = self
-        view.register(HitTestContainerViewCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: HitTestContainerViewController.cellIfentifier)
-        view.isPagingEnabled = true
-        view.backgroundColor = UIColor.white
-        view.addObserver(self, forKeyPath: "panGestureRecognizer.state", options: .new, context: nil)
-        return view
-    }()
+    public func displayViewController() -> BaseProfileViewChildControllr? {
+        if self.currentIndex == -1 {
+            return nil
+        }
+        return self.viewControllerAtIndex(self.currentIndex)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,41 +84,58 @@ class HitTestContainerViewController: UIViewController {
         setupUI()
     }
     
-    open override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let childController = self.displayViewController() {
-            childController.beginAppearanceTransition(true, animated: true)
-        }
-    }
-    
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if let childController = self.displayViewController() {
-            childController.endAppearanceTransition()
-        }
-    }
-    
-    open override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if let childController = self.displayViewController() {
-            childController.beginAppearanceTransition(false, animated: true)
-        }
-    }
-    
-    open override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        if let childController = self.displayViewController() {
-            childController.endAppearanceTransition()
-        }
-    }
+//    open override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        if let childController = self.displayViewController() {
+//            childController.beginAppearanceTransition(true, animated: true)
+//        }
+//    }
+//
+//    open override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        if let childController = self.displayViewController() {
+//            childController.endAppearanceTransition()
+//        }
+//    }
+//
+//    open override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        if let childController = self.displayViewController() {
+//            childController.beginAppearanceTransition(false, animated: true)
+//        }
+//    }
+//
+//    open override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        if let childController = self.displayViewController() {
+//            childController.endAppearanceTransition()
+//        }
+//    }
     
     fileprivate func setupUI() {
-        self.view.addSubview(self.collectionView)
-        self.collectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageViewController.dataSource = self
+        pageViewController.delegate = self
+        pageViewController.view.backgroundColor = UIColor.black
+        addChild(pageViewController)
+        view.addSubview(pageViewController.view)
+        pageViewController.didMove(toParent: self)
+        
+    
+        pageViewController!.view.translatesAutoresizingMaskIntoConstraints = false
+        pageViewController!.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        pageViewController!.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        pageViewController!.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        pageViewController!.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        for subView: UIView in pageViewController.view.subviews {
+            if subView.isKind(of: UIScrollView.classForCoder()) {
+                let tempScrollView = subView as? UIScrollView
+                tempScrollView?.addObserver(self, forKeyPath: "panGestureRecognizer.state", options: .new, context: nil)
+                self.scrollView = tempScrollView
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -159,108 +144,62 @@ class HitTestContainerViewController: UIViewController {
     }
     
     public var initialPage = 0
-    public func displayViewController() -> UIViewController? {
-        guard let viewControllers = viewControllers else {
+    
+    fileprivate func viewControllerAtIndex(_ index: Int) -> BaseProfileViewChildControllr? {
+        guard let controllers = self.viewControllers else {
             return nil
         }
-        let indexPath = collectionView.indexPathsForVisibleItems.first
-        guard let ip = indexPath else { return nil }
-        let vc = viewControllers[ip.row]
-        return vc  as? UIViewController
+        if controllers.count == 0 || index >= controllers.count {
+            return nil
+        }
+        
+        return controllers[index]
     }
     
-    public func show(page index: NSInteger, animated: Bool) {
-        if collectionView.indexPathsForVisibleItems.first?.row == index {
+    fileprivate func indexOfViewController(_ controller: UIViewController) -> Int {
+        guard let viewControllers = self.viewControllers else {
+            return NSNotFound
+        }
+        var idx = 0
+        for item in viewControllers {
+            if item == controller {
+                return idx
+            }
+            idx += 1
+        }
+        return NSNotFound
+    }
+    
+    public func show(page index: NSInteger, animated: Bool, completion: ((_ finished: Bool) -> Void)? = nil) {
+        if currentIndex == index {
             return
         }
-        collectionView .scrollToItem(at: IndexPath.init(row: index, section: 0), at: .centeredHorizontally, animated: animated)
+        guard let controllers = self.viewControllers else {
+            return
+        }
+        let direction: UIPageViewController.NavigationDirection = (index > currentIndex) ? .forward : .reverse
+        let controller = controllers[index]
+        self.currentIndex = index
+        pageViewController.setViewControllers([controller], direction: direction, animated: animated, completion: completion)
+        
     }
-    
     deinit {
-        self.collectionView.removeObserver(self, forKeyPath: "panGestureRecognizer.state")
+        scrollView?.removeObserver(self, forKeyPath: "panGestureRecognizer.state")
+        
     }
 
-}
-
-extension HitTestContainerViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let viewControllers = viewControllers else { return 0 }
-        return viewControllers.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HitTestContainerViewController.cellIfentifier, for: indexPath) as! HitTestContainerViewCollectionViewCell
-        if let viewController = viewControllers![indexPath.row] as? UIViewController {
-            cell.view = viewController.view
-        }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return collectionView.frame.size
-    }
-    
-    /// cell 完全离开屏幕后调用
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let viewControllers = viewControllers else { return }
-        // 获取当前显示已经显示的控制器
-        guard let displayIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
-        let displayIndexPathController = viewControllers[displayIndexPath.row] as! UIViewController
-        displayIndexPathController.endAppearanceTransition()
-        
-        if let delegate = delegate {
-            if delegate.responds(to: #selector(HitTestContainerViewControllerDelegate.hitTestContainerViewController(_:didPageDisplay:forItemAt:))) {
-                delegate.hitTestContainerViewController!(_: self, didPageDisplay: displayIndexPathController, forItemAt: displayIndexPath.row)
-            }
-        }
-        
-        // 获取已离开屏幕的cell上控制器，执行其view消失的生命周期方法
-        let endDisplayingViewController = viewControllers[indexPath.row] as! UIViewController
-        if displayIndexPathController != endDisplayingViewController {
-            // 如果完全显示的控制器和已经离开屏幕的控制器是同一个就return，防止初始化完成后是同一个
-            endDisplayingViewController.endAppearanceTransition()
-        }
-//        UIView.animate(withDuration: 0.3) {
-//            UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
-//        }
-    }
-    
-    /// cell 即将显示在屏幕时调用
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if initialPage > 0 {
-            show(page: initialPage, animated: false)
-            initialPage = 0
-        }
-        guard let viewControllers = viewControllers else { return }
-        /// 获取即将显示的cell上的控制器，执行其view显示的生命周期方法
-        let willDisplayController = viewControllers[indexPath.row] as! UIViewController
-        willDisplayController.beginAppearanceTransition(true, animated: true)
-        if let delegate = delegate {
-            if delegate.responds(to: #selector(HitTestContainerViewControllerDelegate.hitTestContainerViewController(_:willPageDisplay:forItemAt:))) {
-                delegate.hitTestContainerViewController!(_: self, willPageDisplay: willDisplayController, forItemAt: indexPath.row)
-            }
-        }
-        
-        /// 获取即将消失的控制器（当前collectionView显示的cell就是即将要离开屏幕的cell）
-        guard let willEndDisplayingIndexPath = collectionView.indexPathsForVisibleItems.first else { return }
-        let willEndDisplayingController = viewControllers[willEndDisplayingIndexPath.row] as! UIViewController
-        if willEndDisplayingController != willDisplayController {
-            // 如果是同一个控制器return，防止初始化完成后是同一个
-            willEndDisplayingController.beginAppearanceTransition(false, animated: true)
-        }
-    }
-    
 }
 
 extension HitTestContainerViewController {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        let scrollView = object as! UIScrollView
-        if keyPath == "panGestureRecognizer.state" && scrollView == self.collectionView {
+        guard let scrollView = self.scrollView else {
+            return
+        }
+        let currentScrollView = object as! UIScrollView
+        if keyPath == "panGestureRecognizer.state" && currentScrollView == scrollView {
             if let delegate = delegate {
                 if delegate.responds(to: #selector(HitTestContainerViewControllerDelegate.hitTestContainerViewController(_:handlerContainerPanGestureState:))) {
-                    delegate.hitTestContainerViewController!(self, handlerContainerPanGestureState: self.collectionView.panGestureRecognizer)
+                    delegate.hitTestContainerViewController!(self, handlerContainerPanGestureState: scrollView.panGestureRecognizer)
                 }
             }
         }
@@ -291,3 +230,67 @@ extension HitTestContainerViewController {
     }
 }
 
+extension HitTestContainerViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        guard completed else {
+            return
+        }
+        
+        guard let viewController = pageViewController.viewControllers?.last else {
+            return
+        }
+        
+        let index = indexOfViewController(viewController)
+        if index == NSNotFound {
+            return
+        }
+        currentIndex = index
+        if let delegate = delegate {
+            if delegate.responds(to: #selector(HitTestContainerViewControllerDelegate.hitTestContainerViewController(_:didPageDisplay:forItemAt:))) {
+                delegate.hitTestContainerViewController!(_: self, didPageDisplay: viewController, forItemAt: index)
+            }
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        guard let vc = pendingViewControllers.first else { return }
+        let index = self.indexOfViewController(vc)
+        if let delegate = delegate {
+            if delegate.responds(to: #selector(HitTestContainerViewControllerDelegate.hitTestContainerViewController(_:willPageDisplay:forItemAt:))) {
+                delegate.hitTestContainerViewController!(_: self, willPageDisplay: vc, forItemAt: index)
+            }
+        }
+
+    }
+}
+
+extension HitTestContainerViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        
+        var index = self.indexOfViewController(viewController)
+        
+        if (index == 0) || (index == NSNotFound) {
+            return nil
+        }
+        
+        index -= 1
+        
+        return viewControllerAtIndex(index)
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        
+        var index = self.indexOfViewController(viewController)
+        
+        if index == NSNotFound {
+            return nil
+        }
+        
+        index += 1
+        
+        return viewControllerAtIndex(index)
+    }
+    
+    
+}

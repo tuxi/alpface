@@ -19,18 +19,11 @@ class UserProfileViewController: BaseProfileViewController {
     fileprivate var isViewDidLoad: Bool = false
 
     override func numberOfSegments() -> Int {
-        return 2
+        return self.homeModel?.segments?.count ?? 0
     }
     
     override func segmentTitle(forSegment index: Int) -> String {
-        switch index {
-        case 0:
-            return "作品"
-        case 1:
-            return "喜欢"
-        default:
-            return "故事"
-        }
+        self.homeModel?.segments?[index].title ?? ""
     }
     
     
@@ -44,7 +37,7 @@ class UserProfileViewController: BaseProfileViewController {
                 _user = newValue
                 if isViewDidLoad == false { return }
                 self.reloadCollectionData()
-                self.discoverUserByUsername()
+                self.getUserHomeData()
             }
         }
     }
@@ -64,7 +57,7 @@ class UserProfileViewController: BaseProfileViewController {
         super.viewDidLoad()
         
         self.reloadCollectionData()
-        self.discoverUserByUsername()
+        self.getUserHomeData()
         self.addObserver()
         isViewDidLoad = true
     }
@@ -91,25 +84,25 @@ class UserProfileViewController: BaseProfileViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    override func controller(forSegment index: Int) -> ProfileViewChildControllerProtocol {
-        var vc = UserProfileChildCollectionViewController()
+    override func controller(forSegment index: Int) -> BaseProfileViewChildControllr {
         switch index {
         case 0:
-            vc = MyReleaseViewController()
-            vc.collectionItems = self.homeModel?.segments?[0].data
+            let vc = MyReleaseViewController()
+            vc.segmentModel = self.homeModel?.segments?[index]
             return vc
         case 1:
-            vc = MyFavoriteViewController()
-            vc.collectionItems = self.homeModel?.segments?[1].data
+            let vc = MyFavoriteViewController()
+            vc.segmentModel = self.homeModel?.segments?[index]
             return vc
         case 2:
             return MyStoryViewController()
         default:
-            return vc
+            return BaseProfileViewChildControllr()
         }
     }
     
     @objc func reloadCollectionData() -> Void {
+        self.reloadPage()
         self.profileHeaderView.locationLabel.text = self.user?.address ?? "还未设置地址"
         self.profileHeaderView.nicknameLabel.text = self.user?.nickname
         self.profileHeaderView.summaryLabel.text = self.user?.summary ?? "该用户什么都没有留下"
@@ -149,13 +142,13 @@ class UserProfileViewController: BaseProfileViewController {
         self.controllers.forEach { (controller) in
             if let c = controller as? UserProfileChildCollectionViewController {
                 if c.isMember(of: MyReleaseViewController.classForCoder()) {
-                    c.collectionItems = self.homeModel?.segments?.first?.data
+                    c.segmentModel = self.homeModel?.segments?.first
                 }
                 else if c.isMember(of: MyFavoriteViewController.classForCoder()) {
-                    c.collectionItems = self.homeModel?.segments?.last?.data
+                    c.segmentModel = self.homeModel?.segments?.last
                 }
                 else {
-                    c.collectionItems = []
+                    c.segmentModel = nil
                 }
                 controller.childScrollView()?.xy_loading = false
                 let collectionView = controller.childScrollView() as? UICollectionView
@@ -186,7 +179,7 @@ extension UserProfileViewController {
     }
     
     @objc fileprivate func publushVideoSuccess() {
-        self.discoverUserByUsername()
+        self.getUserHomeData()
     }
     
     @objc fileprivate func loginSuccess(notification: NSNotification) {
@@ -213,7 +206,7 @@ extension UserProfileViewController {
 }
 
 extension UserProfileViewController {
-    fileprivate func discoverUserByUsername() {
+    fileprivate func getUserHomeData() {
         if self.user == nil {
             return
         }

@@ -27,6 +27,7 @@ class FeedVideoDetailView: UIView {
             avatarButton.sd_setImage(with: videoItem?.user?.getAvatarURL(), for: .normal)
             locationButton.isHidden = videoItem?.location == nil
             locationButton.setTitle(videoItem?.location?.name, for: .normal)
+            
         }
     }
 

@@ -9,8 +9,13 @@
 import UIKit
 
 @objc(ALPChildTableViewController)
-class UserProfileChildCollectionViewController: UIViewController, ProfileViewChildControllerProtocol {
+class UserProfileChildCollectionViewController: BaseProfileViewChildControllr {
     
+    public var segmentModel: UserHomeSegmentModel? {
+        didSet {
+            self.collectionView.reloadData()
+        }
+    }
     public lazy var collectionView: UICollectionView = {
         let layout = ETCollectionViewWaterfallLayout()
         let padding: CGFloat = 3.0
@@ -27,15 +32,8 @@ class UserProfileChildCollectionViewController: UIViewController, ProfileViewChi
         return collectionView
     }()
     
-    public var collectionItems: [VideoItem]? {
-        didSet {
-            if oldValue != collectionItems {
-                self.collectionView.reloadData()
-            }
-        }
-    }
     
-    func childScrollView() -> UIScrollView? {
+    override func childScrollView() -> UIScrollView? {
         return self.collectionView
     }
     
@@ -100,14 +98,16 @@ class UserProfileChildCollectionViewController: UIViewController, ProfileViewChi
 extension UserProfileChildCollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate, ETCollectionViewDelegateWaterfallLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let items = self.collectionItems else { return 0 }
-        return items.count
+        guard let model = self.segmentModel else { return 0 }
+        guard let data = model.data else { return 0 }
+        return data.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoGifCollectionViewCell", for: indexPath) as! VideoGifCollectionViewCell
-        guard let items = self.collectionItems else { return cell }
-        let video = items[indexPath.row]
+        guard let model = self.segmentModel else { return cell }
+        guard let data = model.data else { return cell }
+        let video = data[indexPath.row]
         guard let webpURL = video.getVideoAnimatedWebpURL() else {
             return cell
         }
@@ -120,7 +120,7 @@ extension UserProfileChildCollectionViewController: UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = VideoDetailListViewController()
-        self.collectionItems?.forEach({ (video) in
+        self.segmentModel?.data?.forEach({ (video) in
             vc.videoItems.append(PlayVideoModel(videoItem: video))
         })
         let nac = MainNavigationController(rootViewController: vc)
@@ -169,10 +169,3 @@ extension UserProfileChildCollectionViewController: XYEmptyDataDelegate {
         return nil
     }
 }
-
-extension UserProfileChildCollectionViewController {
-    
-}
-
-
-

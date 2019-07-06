@@ -12,11 +12,13 @@ fileprivate let HitTestScrollViewCellIdentifier = "HitTestScrollViewCellIdentifi
 fileprivate let HitTestScrollViewSectionIdentifier = "HitTestScrollViewSectionIdentifier"
 let ALPNavigationTitleLabelBottomPadding : CGFloat = 15.0;
 
-@objc public protocol ProfileViewChildControllerProtocol {
+public class BaseProfileViewChildControllr: UIViewController {
     /// 必须实现此方法，告知BaseProfileViewController当前控制器的view是否是scrollView
     /// 用与控制mainScrollView和child scrollView 之间滚动
     /// 如果不是UIScrollView类型，返回nil即可
-    func childScrollView() -> UIScrollView?
+    public func childScrollView() -> UIScrollView? {
+        return nil
+    }
 }
 
 @objc(ALPBaseProfileViewController)
@@ -60,17 +62,13 @@ open class BaseProfileViewController: UIViewController {
         }
     }
     
-    open var controllers: [ProfileViewChildControllerProtocol] = []
+    open var controllers: [BaseProfileViewChildControllr] = []
     
-    open var currentController: ProfileViewChildControllerProtocol {
+    open var currentController: BaseProfileViewChildControllr {
         return controllers[currentIndex]
     }
     
-    fileprivate lazy var containerViewController: HitTestContainerViewController = {
-        let containerViewController = HitTestContainerViewController()
-        containerViewController.delegate = self
-        return containerViewController;
-    }()
+    fileprivate var containerViewController: HitTestContainerViewController?
     
     /// main scrollView是否可以滚动 (用于控制main 与 child scrollView 之间的滚动)
     public var shouldScrollForMainScrollView: Bool = true
@@ -84,7 +82,6 @@ open class BaseProfileViewController: UIViewController {
         _mainScrollView.backgroundColor = UIColor.white
         _mainScrollView.separatorStyle = .none
         _mainScrollView.scrollsToTop = false
-        _mainScrollView.register(HitTestScrollViewCell.classForCoder(), forCellReuseIdentifier: HitTestScrollViewCellIdentifier)
         if #available(iOS 11.0, *) {
             _mainScrollView.contentInsetAdjustmentBehavior = .never
         } else {
@@ -109,20 +106,15 @@ open class BaseProfileViewController: UIViewController {
         return view
     }()
     
-    
-    fileprivate lazy var segmentedControl: ScrollableSegmentedControl = {
-        let _segmentedControl = ScrollableSegmentedControl()
-        _segmentedControl.segmentStyle = .textOnly
-        _segmentedControl.addTarget(self, action: #selector(self.segmentedControlValueDidChange(sender:)), for: .valueChanged)
+    fileprivate lazy var segmentedControl: BetterSegmentedControl = {
+        let control = BetterSegmentedControl(frame: CGRect.zero, segments: [])
         
-        for index in 0..<numberOfSegments() {
-            let segmentTitle = self.segmentTitle(forSegment: index)
-            _segmentedControl.insertSegment(withTitle: segmentTitle, image: nil, at: index)
-            
-        }
-        _segmentedControl.backgroundColor = UIColor.black
-        return _segmentedControl
+        control.addTarget(self, action: #selector(self.segmentedControlValueDidChange(sender:)), for: .valueChanged)
+        
+        control.backgroundColor = UIColor.black
+        return control
     }()
+    
     
     fileprivate lazy var segmentedControlContainer: UITableViewHeaderFooterView = {
         let _segmentedControlContainer = UITableViewHeaderFooterView.init(reuseIdentifier: HitTestScrollViewSectionIdentifier)
@@ -146,6 +138,19 @@ open class BaseProfileViewController: UIViewController {
     open func setNeedsUpdateHeaderLayout() {
         self.needsUpdateHeaderLayout = true
     }
+    
+    fileprivate func reloadSegmentControl() -> Void {
+        
+        var segments = [String]()
+        for index in 0..<numberOfSegments() {
+            let segmentTitle = self.segmentTitle(forSegment: index)
+            segments.append(segmentTitle)
+        }
+        self.segmentedControl.segments = LabelSegment.segments(withTitles: segments,
+                                                               normalFont: UIFont(name: "HelveticaNeue-Light", size: 16.0)!,
+                                                               selectedFont: UIFont(name: "HelveticaNeue-Medium", size: 16.0)!, selectedTextColor: UIColor.orange)
+    }
+    
     open func updateHeaderLayoutIfNeeded() {
         if self.needsUpdateHeaderLayout == true {
             self.profileHeaderViewHeight = profileHeaderView.sizeThatFits(self.mainScrollView.bounds.size).height
@@ -180,9 +185,11 @@ open class BaseProfileViewController: UIViewController {
             let controller = self.controller(forSegment: index)
             self.controllers.append(controller)
         }
-        
+        reloadSegmentControl()
         self.mainScrollView.reloadData()
-        
+        if let containerVc = self.containerViewController {
+            containerVc.viewControllers = self.controllers
+        }
         containerDidLoad()
     }
     
@@ -195,26 +202,26 @@ open class BaseProfileViewController: UIViewController {
         
         self.setNeedsUpdateHeaderLayout()
     }
-    
-    open override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.containerViewController.beginAppearanceTransition(true, animated: true)
-    }
-    
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.containerViewController.endAppearanceTransition()
-    }
-    
-    open override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.containerViewController.beginAppearanceTransition(false, animated: true)
-    }
-    
-    open override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.containerViewController.endAppearanceTransition()
-    }
+//
+//    open override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        self.containerViewController.beginAppearanceTransition(true, animated: true)
+//    }
+//
+//    open override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        self.containerViewController.endAppearanceTransition()
+//    }
+//
+//    open override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        self.containerViewController.beginAppearanceTransition(false, animated: true)
+//    }
+//
+//    open override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        self.containerViewController.endAppearanceTransition()
+//    }
     
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -238,9 +245,9 @@ open class BaseProfileViewController: UIViewController {
         return ""
     }
     
-    open func controller(forSegment index: Int) -> ProfileViewChildControllerProtocol {
+    open func controller(forSegment index: Int) -> BaseProfileViewChildControllr {
         /* 需要子类重写 */
-        return (UIViewController() as? ProfileViewChildControllerProtocol)!
+        return (UIViewController() as? BaseProfileViewChildControllr)!
     }
     
     open func controller(didDisplay controller: UIViewController, forItemAt index: Int) {
@@ -288,22 +295,7 @@ extension BaseProfileViewController {
         segmentedControl.heightAnchor.constraint(equalTo: segmentedControlContainer.contentView.heightAnchor, constant: 0.0).isActive = true
         segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainer.contentView.centerXAnchor).isActive = true
         segmentedControl.centerYAnchor.constraint(equalTo: segmentedControlContainer.contentView.centerYAnchor).isActive = true
-        
-        segmentedControl.underlineSelected = true
-        segmentedControl.selectedSegmentIndex = 0
-        let largerWhiteTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-                                         NSAttributedString.Key.foregroundColor: UIColor.white]
-        
-        let largerRedTextHighlightAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-                                                NSAttributedString.Key.foregroundColor: UIColor.blue]
-        let largerRedTextSelectAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-                                             NSAttributedString.Key.foregroundColor: UIColor.orange]
-        
-        segmentedControl.setTitleTextAttributes(largerWhiteTextAttributes, for: .normal)
-        
-        segmentedControl.setTitleTextAttributes(largerRedTextHighlightAttributes, for: .highlighted)
-        
-        segmentedControl.setTitleTextAttributes(largerRedTextSelectAttributes, for: .selected)
+
         
         self.reloadPage()
         self.showDebugInfo()
@@ -518,7 +510,10 @@ extension BaseProfileViewController {
         }
         if self.shouldScrollForMainScrollView == true {
             // 当当前显示的child scrollView 不能够滚动时，比如其contentSize小与其frame.size时，就还让main scrollView 响应滚动
-            if let controller = self.containerViewController.displayViewController() as? ProfileViewChildControllerProtocol {
+            guard let containerVc = self.containerViewController else {
+                return
+            }
+            if let controller = containerVc.displayViewController() as? BaseProfileViewChildControllr {
                 guard let childScrollView = controller.childScrollView() else {
                     self.shouldScrollForMainScrollView = true
                     return
@@ -527,11 +522,11 @@ extension BaseProfileViewController {
                 let frameSizeHeight = childScrollView.frame.size.height
                 if contentSizeHeight <= frameSizeHeight {
                     self.shouldScrollForMainScrollView = true
-                    self.containerViewController.shouldScrollForCurrentChildScrollView = false
+                    containerVc.shouldScrollForCurrentChildScrollView = false
                 }
                 else {
                     self.shouldScrollForMainScrollView = false
-                    self.containerViewController.shouldScrollForCurrentChildScrollView = true
+                    containerVc.shouldScrollForCurrentChildScrollView = true
                 }
             }
             
@@ -552,7 +547,7 @@ extension BaseProfileViewController {
 extension BaseProfileViewController: HitTestContainerViewControllerDelegate {
     
     internal func hitTestContainerViewController(_ containerViewController: HitTestContainerViewController, didPageDisplay controller: UIViewController, forItemAt index: Int) {
-        segmentedControl.selectedSegmentIndex = index
+        segmentedControl.setIndex(index, animated: true)
         self.controller(didDisplay: controller, forItemAt: index)
     }
     
@@ -587,10 +582,15 @@ extension BaseProfileViewController: UITableViewDelegate, UITableViewDataSource 
     
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: HitTestScrollViewCellIdentifier, for: indexPath) as! HitTestScrollViewCell
-        self.containerViewController.viewControllers = self.controllers
-        cell.view = self.containerViewController.view
-        return cell
+        var cell = tableView.dequeueReusableCell(withIdentifier: HitTestScrollViewCellIdentifier) as? HitTestScrollViewCell
+        if cell == nil {
+            cell = HitTestScrollViewCell(style: .default, reuseIdentifier: HitTestScrollViewCellIdentifier)
+            self.addChild(cell!.controller)
+            cell?.controller.willMove(toParent: self)
+        }
+        self.containerViewController = cell!.controller
+        self.containerViewController?.delegate = self
+        return cell!
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -640,11 +640,13 @@ extension BaseProfileViewController {
 
 extension BaseProfileViewController {
     fileprivate func updateTableViewContent(index: Int) {
-        self.containerViewController.show(page: index, animated: true)
+        if let containerVc = self.containerViewController {
+            containerVc.show(page: index, animated: true)
+        }
     }
     
     @objc fileprivate func segmentedControlValueDidChange(sender: AnyObject?) {
-        self.currentIndex = self.segmentedControl.selectedSegmentIndex
+        self.currentIndex = self.segmentedControl.index;
     }
 }
 
