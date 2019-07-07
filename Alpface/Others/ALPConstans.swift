@@ -48,6 +48,10 @@ struct ALPConstans {
         static let getVideoByUserId = "\(ALPSiteURLString)" + "/video/getVideoByUserId"
         // get方法 根据content_type 类型获取用户收藏的列表 6为视频
         static let getUserLikes = "\(ALPSiteURLString)" + "/likes/"
+        // 点赞 post 方法，成功返回201
+        static let createLike = "\(ALPSiteURLString)" + "/likes/"
+        // delete方法 根据like id 删除对象，成功返回204
+        static let deleteLikeById = "\(ALPSiteURLString)" + "/likes/"
         
     }
 }

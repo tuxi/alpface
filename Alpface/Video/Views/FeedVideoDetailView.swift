@@ -14,7 +14,7 @@ protocol FeedVideoDetailViewDelegate: NSObjectProtocol {
     @objc optional func feedVideoDetailView(detailView view: FeedVideoDetailView, didClickUserAvatarFrom video: VideoItem)
 }
 
-@objc(ALPVideoDetailView)
+@objc(ALPFeedVideoDetailView)
 class FeedVideoDetailView: UIView {
     
     public weak var delegate: FeedVideoDetailViewDelegate?
@@ -27,7 +27,14 @@ class FeedVideoDetailView: UIView {
             avatarButton.sd_setImage(with: videoItem?.user?.getAvatarURL(), for: .normal)
             locationButton.isHidden = videoItem?.location == nil
             locationButton.setTitle(videoItem?.location?.name, for: .normal)
+            praiseButton.alpTitle = "\(videoItem?.like_num ?? 0)"
             
+            if videoItem!.is_like {
+                praiseButton.isSelected = true
+            }
+            else {
+                praiseButton.isSelected = false
+            }
         }
     }
 
@@ -42,6 +49,7 @@ class FeedVideoDetailView: UIView {
         view.imageColorOn = UIColor(red: 254/255, green: 110/255, blue: 111/255, alpha: 1.0)
         view.circleColor = UIColor(red: 254/255, green: 110/255, blue: 111/255, alpha: 1.0)
         view.lineColor = UIColor(red: 226/255, green: 96/255, blue: 96/255, alpha: 1.0)
+        view.alpImageView.addTarget(self, action: #selector(self.likeOrUnLike), for: .touchUpInside)
         return view
     }()
     
@@ -204,6 +212,52 @@ extension FeedVideoDetailView {
         }
         if d.responds(to: #selector(FeedVideoDetailViewDelegate.feedVideoDetailView(detailView:didClickUserAvatarFrom:))) {
             d.feedVideoDetailView!(detailView: self, didClickUserAvatarFrom: self.videoItem!)
+        }
+    }
+    
+    @objc public func likeOrUnLike() {
+        guard let video = self.videoItem else {
+            return
+        }
+        if video.isLikeOperationing == true {
+            return
+        }
+        video.isLikeOperationing = true
+        if video.is_like {
+            praiseButton.isSelected = false
+            video.like_num -= 1
+            VideoRequest.shared.deleteLike(likeId: video.like_id, success: {[weak self] (response) in
+                video.like_id = -1
+                self?.praiseButton.alpTitle = "\(self?.videoItem?.like_num ?? 0)"
+                video.isLikeOperationing = false
+            }) { (error) in
+                video.isLikeOperationing = false
+                guard let ns_error = error as NSError? else {
+                    return
+                }
+                MBProgressHUD.xy_show(ns_error.userInfo.debugDescription)
+            }
+        }
+        else {
+            praiseButton.isSelected = true
+            video.like_num += 1
+            VideoRequest.shared.createLike(contentType: 6, objectId: video.id, success: { [weak self] (response) in
+                video.isLikeOperationing = false
+                guard let dict = response as? [String: Any] else {
+                    return
+                }
+                guard let like_id = dict["id"] as? Int64 else {
+                    return
+                }
+                video.like_id = like_id
+                self?.praiseButton.alpTitle = "\(self?.videoItem?.like_num ?? 0)"
+            }) { (error) in
+                video.isLikeOperationing = false
+                guard let ns_error = error as NSError? else {
+                    return
+                }
+                MBProgressHUD.xy_show(ns_error.userInfo.debugDescription)
+            }
         }
     }
 }

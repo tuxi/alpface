@@ -16,7 +16,6 @@ class FeedVideoButton: UIButton {
 //        button.imageColorOn = UIColor(red: 45/255, green: 204/255, blue: 112/255, alpha: 1.0)
 //        button.circleColor = UIColor(red: 45/255, green: 204/255, blue: 112/255, alpha: 1.0)
 //        button.lineColor = UIColor(red: 45/255, green: 195/255, blue: 106/255, alpha: 1.0)
-        button.addTarget(self, action: #selector(FeedVideoButton.tappedImageView(sender:)), for: .touchUpInside)
         return button
     }()
     open lazy var alpLabel: UILabel = {
@@ -78,6 +77,18 @@ class FeedVideoButton: UIButton {
         setupUI()
     }
     
+    override var isSelected: Bool {
+        didSet {
+            // 必须先执行layoutIfNeeded 不然 alpImageView会crash
+            self.layoutIfNeeded()
+            if self.isSelected {
+                self.alpImageView.select()
+            } else {
+                self.alpImageView.deselect()
+            }
+        }
+    }
+    
     fileprivate func setupUI() {
         addSubview(containerView)
         containerView.addSubview(alpLabel)
@@ -104,13 +115,5 @@ class FeedVideoButton: UIButton {
         alpLabel.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor, constant: 0.0).isActive = true
         
         heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1.0).isActive = true
-    }
-    
-   @objc fileprivate func tappedImageView(sender: DOFavoriteButton) {
-        if sender.isSelected {
-            sender.deselect()
-        } else {
-            sender.select()
-        }
     }
 }

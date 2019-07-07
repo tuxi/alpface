@@ -394,7 +394,6 @@ open class DOFavoriteButton: UIButton {
         circleShape.add(circleTransform, forKey: "transform")
         circleMask.add(circleMaskTransform, forKey: "transform")
         imageShape.add(imageTransform, forKey: "transform")
-
         for i in 0 ..< 5 {
             lines[i].add(lineStrokeStart, forKey: "strokeStart")
             lines[i].add(lineStrokeEnd, forKey: "strokeEnd")

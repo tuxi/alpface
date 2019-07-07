@@ -48,7 +48,14 @@ open class VideoItem: NSObject {
     open var cover_duration: Int64 = 0
     open var cover_start_second: Int64 = 0
     open var video_cover_image: String?
-
+    open var like_id: Int64 = -1
+    open var is_like: Bool  {
+        get {
+            return self.like_id > -1
+        }
+    }
+    open var like_num: Int64 = 0
+    open var isLikeOperationing: Bool = false
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(id, forKey: "id")
@@ -80,6 +87,8 @@ open class VideoItem: NSObject {
         aCoder.encode(cover_duration, forKey: "cover_duration")
         aCoder.encode(cover_start_second, forKey: "cover_start_second")
         aCoder.encode(video_cover_image, forKey: "video_cover_image")
+        aCoder.encode(like_num, forKey: "like_num")
+        aCoder.encode(like_id, forKey: "like_id")
         
     }
     
@@ -114,6 +123,8 @@ open class VideoItem: NSObject {
         cover_duration = aDecoder.decodeInt64(forKey: "cover_duration")
         cover_start_second = aDecoder.decodeInt64(forKey: "cover_start_second")
         video_cover_image = aDecoder.decodeObject(forKey: "video_cover_image") as? String
+        like_num = aDecoder.decodeInt64(forKey: "like_num")
+        like_id = aDecoder.decodeInt64(forKey: "like_id")
     }
     
     override init() {
@@ -212,6 +223,12 @@ open class VideoItem: NSObject {
         }
         if let cover_start_second = dict["cover_start_second"] as? Int64 {
             self.cover_start_second = cover_start_second
+        }
+        if let like_num = dict["like_num"] as? Int64 {
+            self.like_num = like_num
+        }
+        if let like_id = dict["like_id"] as? Int64 {
+            self.like_id = like_id
         }
     }
     
