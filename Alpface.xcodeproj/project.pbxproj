@@ -751,7 +751,7 @@
 				D26AD40F20668F130047DC15 /* Story */,
 				D26AD40220668F130047DC15 /* Video */,
 				D26AD45B2066A9C30047DC15 /* Discover */,
-				D26AD444206690B40047DC15 /* ThirdParty */,
+				D26AD444206690B40047DC15 /* Extra */,
 				D27E3FEF20971E2A00776EB0 /* Reuse */,
 				D2371D8E2084F6E900588BEC /* Publish */,
 				D2B165EB208C4D6E00FA5F05 /* Comment */,
@@ -876,7 +876,7 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		D26AD444206690B40047DC15 /* ThirdParty */ = {
+		D26AD444206690B40047DC15 /* Extra */ = {
 			isa = PBXGroup;
 			children = (
 				D203F53F22D0941600D79CC1 /* BetterSegmentedControl */,
@@ -892,7 +892,7 @@
 				D26AD47920672E120047DC15 /* TransitionButton */,
 				D26AD445206690E60047DC15 /* Pastel */,
 			);
-			path = ThirdParty;
+			path = Extra;
 			sourceTree = "<group>";
 		};
 		D26AD445206690E60047DC15 /* Pastel */ = {
