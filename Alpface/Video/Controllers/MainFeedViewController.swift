@@ -75,7 +75,7 @@ class MainFeedViewController: HomeRefreshViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayViewController()?.endAppearanceTransition()
-        self.updatePlayControl()
+        self.play()
         DispatchQueue.main.async {
             UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         }
@@ -86,7 +86,7 @@ class MainFeedViewController: HomeRefreshViewController {
         displayViewController()?.beginAppearanceTransition(false, animated: true)
         // 所有model停止播放
         for videoItem in videoItems {
-            videoItem.isAllowPlay = false
+            videoItem.stop()
         }
     }
     
@@ -96,7 +96,7 @@ class MainFeedViewController: HomeRefreshViewController {
         self.isVisibleInDisplay = false
         // 所有model停止播放
         for videoItem in videoItems {
-            videoItem.isAllowPlay = false
+            videoItem.stop()
         }
     }
     
@@ -108,30 +108,31 @@ class MainFeedViewController: HomeRefreshViewController {
         collectionView .scrollToItem(at: IndexPath.init(row: index, section: 0), at: .centeredVertically, animated: animated)
     }
     
-    public func updatePlayControl() {
-        var vidbleIndexPath = collectionView.indexPathsForVisibleItems.first
-        if vidbleIndexPath == nil {
-            vidbleIndexPath = IndexPath.init(row: 0, section: 0)
+    // 未显示的资源停止播放，已显示的资源开始播放
+    public func play() {
+        guard let vidbleIndexPath = collectionView.indexPathsForVisibleItems.first else {
+            return
         }
-        if vidbleIndexPath!.row >= videoItems.count {
+        if vidbleIndexPath.row >= videoItems.count {
             return
         }
         
         // 取出当前显示的model,继续播放
-        let model = videoItems[vidbleIndexPath!.row]
+        let model = videoItems[vidbleIndexPath.row]
         // 所有model停止播放
         for videoItem in videoItems {
             if model != videoItem {
-                videoItem.isAllowPlay = false
+                videoItem.stop()
             }
         }
         
         if isVisibleInDisplay == false {
-            model.isAllowPlay = false
+            model.stop()
             return
         }
-        
-        model.isAllowPlay = true
+        DispatchQueue.main.async {        
+            model.play()
+        }
     }
     
     fileprivate func setupUI() {
@@ -235,8 +236,8 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
     
     /// cell 完全离开屏幕后调用
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        self.updatePlayControl()
+
+        self.play()
     }
     
     /// cell 即将显示在屏幕时调用
@@ -259,6 +260,16 @@ extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewD
         //            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
         //        }
     }
+    
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        if decelerate == false {
+//            self.play()
+//        }
+//    }
+//    
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        self.play()
+//    }
     
 }
 

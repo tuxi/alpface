@@ -10,25 +10,20 @@ import UIKit
 
 @objc(ALPPlayVideoModel)
 class PlayVideoModel: BaseCellModel {
-    fileprivate var _isAllowPlay = false
     
     public var playCallBack: ((_ isAllowPlay: Bool) -> Void)?
     
-    public var isAllowPlay : Bool {
-        set {
-//            if newValue != _isAllowPlay {
-                _isAllowPlay = newValue
-                if let callBack = playCallBack {
-                    callBack(_isAllowPlay)
-                }
-//            }
-        }
-        get {
-            return _isAllowPlay
+    public func play() {
+        if let callBack = playCallBack {
+            callBack(true)
         }
     }
     
-//    public var isPauseByUser: Bool = false 
+    public func stop() {
+        if let callBack = playCallBack {
+            callBack(false)
+        }
+    }
     
     convenience init(videoItem: VideoItem) {
         self.init()

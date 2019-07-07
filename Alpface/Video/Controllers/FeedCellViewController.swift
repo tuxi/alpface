@@ -15,36 +15,43 @@ class FeedCellViewController: UIViewController {
     fileprivate var hasPlayCallBack: Bool = false
     public var model: PlayVideoModel? {
         didSet {
-            guard let m = model else {
-                return
-            }
             
-            // 准备资源
-            if let videoItem = m.model as? VideoItem {
-                guard let url = videoItem.getVideoURL() else { return }
-                interactionController.videoItem = videoItem
-                playVideoVc.preparePlayback(url: url)
-            }
-            else {
-                playVideoVc.resetPlayer()
-            }
-            // 视图显示的时候播放
-            m.playCallBack = { [weak self] (canPlay: Bool) in
-                self?.playVideoVc.isEndDisplaying = (canPlay == false)
-                if canPlay {
-                    self?.playVideoVc.autoPlay()
-                }
-                else {
-                    self?.playVideoVc.pause(autoPlay: true)
-                }
-            }
-            if hasPlayCallBack == false {
-                // 这里执行下block是为了防止PlayVideoModel的isAllowPlay被初始化时，cell没有显示，导致playCallBack没有执行的机会
-                m.playCallBack!(m.isAllowPlay)
-                hasPlayCallBack = true
-            }
+            prepareToPlay(model: model)
             
         }
+    }
+    
+    // 准备资源，不会播放资源，需要手动触发
+    public func prepareToPlay(model: PlayVideoModel?) {
+        guard let m = model else {
+            playVideoVc.resetPlayer()
+            return
+        }
+        // 准备资源
+        if let videoItem = m.model as? VideoItem {
+            guard let url = videoItem.getVideoURL() else { return }
+            interactionController.videoItem = videoItem
+            playVideoVc.preparePlayback(url: url)
+        }
+        else {
+            playVideoVc.resetPlayer()
+        }
+        
+        // 视图显示的时候播放
+        m.playCallBack = { [weak self] (canPlay: Bool) in
+            self?.playVideoVc.isEndDisplaying = (canPlay == false)
+            if canPlay {
+                self?.playVideoVc.autoPlay()
+            }
+            else {
+                self?.playVideoVc.pause(autoPlay: true)
+            }
+        }
+//        if hasPlayCallBack == false {
+//            // 这里执行下block是为了防止PlayVideoModel的isAllowPlay被初始化时，cell没有显示，导致playCallBack没有执行的机会
+//            m.playCallBack!(m.isAllowPlay)
+//            hasPlayCallBack = true
+//        }
     }
     
     /// 播放视频控制器

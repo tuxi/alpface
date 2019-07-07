@@ -84,7 +84,7 @@ extension VideoDetailListViewController {
             self?.videoItems += array
             self?.collectionView.reloadData()
             DispatchQueue.main.async {
-                self?.updatePlayControl()
+                self?.play()
             }
         }) { (error) in
             print(error?.localizedDescription ?? "请求随机视频失败!")

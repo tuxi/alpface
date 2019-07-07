@@ -75,7 +75,7 @@ extension HomeFeedViewController {
             }
             // 刷新数据时，移除资源，但是必须暂停全部
             self?.videoItems.forEach({ (item) in
-                item.isAllowPlay = false
+                item.stop()
             })
             self?.videoItems.removeAll()
             var array : [PlayVideoModel] = [PlayVideoModel]()
@@ -87,7 +87,7 @@ extension HomeFeedViewController {
             self?.collectionView.reloadData()
             self?.endRefresh()
             DispatchQueue.main.async {
-                self?.updatePlayControl()
+                self?.play()
             }
         }) {[weak self] (error) in
             let errorStr = error?.localizedDescription ?? "请求随机视频失败，" + "双击底部[首页]按钮可刷新页面！"
