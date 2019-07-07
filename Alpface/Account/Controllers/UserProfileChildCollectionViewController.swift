@@ -11,6 +11,19 @@ import UIKit
 @objc(ALPChildTableViewController)
 class UserProfileChildCollectionViewController: BaseProfileViewChildControllr {
     
+    /// 弹窗转场
+    fileprivate lazy var presentScaleAnimation: MyHomePresentScaleAnimation = {
+        return MyHomePresentScaleAnimation()
+    }()
+    /// 消失转场
+    fileprivate lazy var dismissScaleAnimation: MyHomeDismissScaleAnimation = {
+        return MyHomeDismissScaleAnimation()
+    }()
+    fileprivate lazy var leftDragInteractiveTransition: MyHomeDragLeftInteractiveTransition = {
+        return MyHomeDragLeftInteractiveTransition()
+    }()
+
+    
     public var segmentModel: UserHomeSegmentModel? {
         didSet {
             self.collectionView.reloadData()
@@ -120,12 +133,36 @@ extension UserProfileChildCollectionViewController: UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = VideoDetailListViewController()
+        vc.transitioningDelegate = self
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        let cellFrame = cell.frame
+        let cellConvertedFrame = collectionView.convert(cellFrame, to: collectionView.superview)
+        // 弹窗转场
+        self.presentScaleAnimation.cellConvertFrame = cellConvertedFrame
+        
+        self.dismissScaleAnimation.selectCell = cell
+        self.dismissScaleAnimation.originCellFrame = cellFrame
+        self.dismissScaleAnimation.finalCellFrame = cellConvertedFrame
+        
+        
+        //消失转场
+        self.dismissScaleAnimation.selectCell = cell; // 5
+        self.dismissScaleAnimation.originCellFrame  = cellFrame; //6
+        self.dismissScaleAnimation.finalCellFrame = cellConvertedFrame; //7
+        
         self.segmentModel?.data?.forEach({ (video) in
             vc.videoItems.append(PlayVideoModel(videoItem: video))
         })
-        let nac = MainNavigationController(rootViewController: vc)
-        self.showDetailViewController(nac, sender: self)
+
         vc.initialPage = indexPath.row
+        
+        vc.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.modalPresentationStyle = UIModalPresentationStyle.currentContext
+        
+        self.leftDragInteractiveTransition.prepare(to: vc)
+        self.present(vc, animated: true, completion: nil)
+        
         
     }
     
@@ -165,6 +202,25 @@ extension UserProfileChildCollectionViewController: XYEmptyDataDelegate {
             let indicatorView = UIActivityIndicatorView(style: .white)
             indicatorView.startAnimating()
             return indicatorView
+        }
+        return nil
+    }
+}
+
+extension UserProfileChildCollectionViewController: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+         return self.presentScaleAnimation
+    }
+ 
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return self.dismissScaleAnimation
+    }
+    
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        if self.leftDragInteractiveTransition.isInteracting {
+            return self.leftDragInteractiveTransition
         }
         return nil
     }

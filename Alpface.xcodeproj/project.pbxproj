@@ -98,6 +98,9 @@
 		D21A2CD5207D154400335A8A /* EditUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CD4207D154400335A8A /* EditUserProfileModel.swift */; };
 		D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD053207A6586003E08B9 /* XYEmptyData.swift */; };
 		D22FD056207A65A2003E08B9 /* RuntimeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */; };
+		D234D31E22D196500091912C /* MyHomeDragLeftInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D234D31B22D1964F0091912C /* MyHomeDragLeftInteractiveTransition.swift */; };
+		D234D31F22D196500091912C /* MyHomePresentScaleAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D234D31C22D1964F0091912C /* MyHomePresentScaleAnimation.swift */; };
+		D234D32022D196500091912C /* MyHomeDismissScaleAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D234D31D22D1964F0091912C /* MyHomeDismissScaleAnimation.swift */; };
 		D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D902084F73B00588BEC /* PublishViewController.swift */; };
 		D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D932084FD7F00588BEC /* VideoFile.swift */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
@@ -326,6 +329,9 @@
 		D21A2CD4207D154400335A8A /* EditUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileModel.swift; sourceTree = "<group>"; };
 		D22FD053207A6586003E08B9 /* XYEmptyData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XYEmptyData.swift; sourceTree = "<group>"; };
 		D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuntimeExtensions.swift; sourceTree = "<group>"; };
+		D234D31B22D1964F0091912C /* MyHomeDragLeftInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeDragLeftInteractiveTransition.swift; sourceTree = "<group>"; };
+		D234D31C22D1964F0091912C /* MyHomePresentScaleAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomePresentScaleAnimation.swift; sourceTree = "<group>"; };
+		D234D31D22D1964F0091912C /* MyHomeDismissScaleAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeDismissScaleAnimation.swift; sourceTree = "<group>"; };
 		D2371D902084F73B00588BEC /* PublishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishViewController.swift; sourceTree = "<group>"; };
 		D2371D932084FD7F00588BEC /* VideoFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFile.swift; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -690,6 +696,24 @@
 			path = XYEmptyData;
 			sourceTree = "<group>";
 		};
+		D234D31922D196250091912C /* MyHome */ = {
+			isa = PBXGroup;
+			children = (
+				D234D31A22D1964F0091912C /* Transitioning */,
+			);
+			path = MyHome;
+			sourceTree = "<group>";
+		};
+		D234D31A22D1964F0091912C /* Transitioning */ = {
+			isa = PBXGroup;
+			children = (
+				D234D31B22D1964F0091912C /* MyHomeDragLeftInteractiveTransition.swift */,
+				D234D31C22D1964F0091912C /* MyHomePresentScaleAnimation.swift */,
+				D234D31D22D1964F0091912C /* MyHomeDismissScaleAnimation.swift */,
+			);
+			path = Transitioning;
+			sourceTree = "<group>";
+		};
 		D2371D8E2084F6E900588BEC /* Publish */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,6 +766,7 @@
 		D251884D2054D3C8000147CC /* Alpface */ = {
 			isa = PBXGroup;
 			children = (
+				D234D31922D196250091912C /* MyHome */,
 				D26A90EB214E13A900C118CA /* Camera */,
 				D26AD41620668F130047DC15 /* Account */,
 				D26AD41E20668F140047DC15 /* App */,
@@ -1291,6 +1316,7 @@
 				D08D1CFB21707815006C47D6 /* UIViewController+XYExtensions.m in Sources */,
 				D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */,
 				D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */,
+				D234D31E22D196500091912C /* MyHomeDragLeftInteractiveTransition.swift in Sources */,
 				D208F3FD22CFA5B100C2140B /* UserHomeModel.swift in Sources */,
 				D2B165F8208C720B00FA5F05 /* TabbarPlaceholderViewController.swift in Sources */,
 				D08D1CFA21707815006C47D6 /* MBProgressHUD+XYHUD.m in Sources */,
@@ -1324,6 +1350,7 @@
 				D27D6CE220839B690095425A /* SettingsTableViewCell.swift in Sources */,
 				D203F54A22D0941600D79CC1 /* LabelSegment.swift in Sources */,
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
+				D234D32022D196500091912C /* MyHomeDismissScaleAnimation.swift in Sources */,
 				D0DB45AA2085B7C6000C291A /* AdaptiveTextView.swift in Sources */,
 				D08D1D0A21707815006C47D6 /* XYLocationSearchTopView.m in Sources */,
 				D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */,
@@ -1385,6 +1412,7 @@
 				D08D1D0821707815006C47D6 /* LocationConverter.m in Sources */,
 				D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */,
 				D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */,
+				D234D31F22D196500091912C /* MyHomePresentScaleAnimation.swift in Sources */,
 				D20093282078EEC50079AD8B /* CroppingParameters.swift in Sources */,
 				D2BCBA4A206F33F2008409B3 /* ListCollectionView.swift in Sources */,
 				D05711D0216E109D0041D4F3 /* HomeRefreshNavigitionView.swift in Sources */,
