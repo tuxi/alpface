@@ -51,19 +51,46 @@ class MainAppViewController: UIViewController {
         view.backgroundColor = UIColor.clear
         view.addSubview(scrollingContainer.view)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    public func showHomePage() {
+        self.scrollingContainer.show(page: 1, animated: true)
+        
+        guard let disVc = self.scrollingContainer.displayViewController() as? UITabBarController else {
+            return
+        }
+        disVc.selectedIndex = 0
+    }
+    
+    public func isHomePageVisible() -> Bool {
+        return self.scrollingContainer.isHomePageVisible()
+    }
+    
+    public func showUserProfilePage(user: User) {
+        self.scrollingContainer.userProfileController.user = user
+        self.scrollingContainer.show(page: 2, animated: true) { (finished) in
+        }
+    }
+    
+    public func show(page: Int, animated: Bool) {
+        self.scrollingContainer.show(page: page, animated: animated)
+    }
+    
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .fade
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        if AppUtils.isIPhoneX() {
+            return false
+        }
+        return scrollingContainer.prefersStatusBarHidden
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return scrollingContainer.preferredStatusBarStyle
     }
     
-    override var prefersStatusBarHidden: Bool {
-        return scrollingContainer.prefersStatusBarHidden
-    }
     
     override var childForStatusBarStyle: UIViewController? {
         return scrollingContainer.childForStatusBarStyle

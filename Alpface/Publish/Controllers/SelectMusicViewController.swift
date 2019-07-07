@@ -32,7 +32,7 @@ class SelectMusicViewController: UIViewController {
         super.viewWillAppear(animated)
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             if let rootViewController = delegate.rootViewController {
-                rootViewController.appViewController.scrollingContainer.displayViewController()?.beginAppearanceTransition(false, animated: true)
+                rootViewController.scrollingContainer.displayViewController()?.beginAppearanceTransition(false, animated: true)
             }
         }
     }
@@ -41,7 +41,7 @@ class SelectMusicViewController: UIViewController {
         super.viewDidAppear(animated)
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             if let rootViewController = delegate.rootViewController {
-                rootViewController.appViewController.scrollingContainer.displayViewController()?.endAppearanceTransition()
+                rootViewController.scrollingContainer.displayViewController()?.endAppearanceTransition()
             }
         }
     }
@@ -50,7 +50,7 @@ class SelectMusicViewController: UIViewController {
         super.viewWillDisappear(animated)
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             if let rootViewController = delegate.rootViewController {
-                rootViewController.appViewController.scrollingContainer.displayViewController()?.beginAppearanceTransition(true, animated: true)
+                rootViewController.scrollingContainer.displayViewController()?.beginAppearanceTransition(true, animated: true)
             }
         }
     }
@@ -59,7 +59,7 @@ class SelectMusicViewController: UIViewController {
         super.viewDidDisappear(animated)
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             if let rootViewController = delegate.rootViewController {
-                rootViewController.appViewController.scrollingContainer.displayViewController()?.endAppearanceTransition()
+                rootViewController.scrollingContainer.displayViewController()?.endAppearanceTransition()
             }
         }
     }

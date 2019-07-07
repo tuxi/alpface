@@ -16,13 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    var rootViewController: RootViewController?
+    var rootViewController: MainAppViewController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Override point for customization after application launch.
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        self.rootViewController = RootViewController()
+        self.rootViewController = MainAppViewController()
         window?.rootViewController = self.rootViewController
         window?.makeKeyAndVisible()
         HttpRequestHelper.setCookie()

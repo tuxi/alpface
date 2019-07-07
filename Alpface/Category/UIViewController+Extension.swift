@@ -19,16 +19,16 @@ extension UIViewController {
         var rootVC = viewController
         
         if let root = rootVC {
-            if root.isKind(of: RootViewController.classForCoder()) {
-                let vc = viewController as? RootViewController
-                let scrollingContainerVC = vc?.appViewController.scrollingContainer
+            if root.isKind(of: MainAppViewController.classForCoder()) {
+                let vc = viewController as? MainAppViewController
+                let scrollingContainerVC = vc?.scrollingContainer
                 // 先判断登录控制器是否弹出
                 if let presentedViewController = scrollingContainerVC?.presentedViewController {
                     
                     rootVC = self.topViewControllerWithRootViewController(viewController: presentedViewController)
                 }
                 else {
-                    rootVC = vc?.appViewController.scrollingContainer.displayViewController()
+                    rootVC = vc?.scrollingContainer.displayViewController()
                 }
                 
             }
