@@ -163,7 +163,12 @@ extension PlayInteractionViewController : PlayVideoViewControllerDelegate {
     }
     /// 缓冲进度改变时调用
     func playVideoViewController(didChangebufferedProgress player:PlayVideoViewController, loadedTime: Double, bufferedProgress: Float) -> Void {
-        
+        if player.state == .buffering {
+            progressView.startLoading()
+        }
+        else {
+            progressView.endLoading()
+        }
     }
     /// 播放状态改变时调用
     func playVideoViewController(didChangePlayerState player:PlayVideoViewController, state: PlayerState) -> Void {

@@ -282,8 +282,12 @@ open class VideoItem: NSObject {
     }
     
     open func getVideoMP4URL() -> URL? {
-        guard let mp4 = self.video_mp4 else {
+        guard var mp4 = self.video_mp4 else {
             return nil
+        }
+        if mp4.contains("/var/www/video-hub/media") {
+            let array = mp4.components(separatedBy: "/var/www/video-hub/media")
+            mp4 = (array.first ?? "") + (array.last ?? "")
         }
         if mp4.hasPrefix("http") {
             return URL.init(string: mp4)

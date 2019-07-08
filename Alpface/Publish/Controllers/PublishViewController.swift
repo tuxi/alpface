@@ -32,7 +32,7 @@ class PublishViewController: UIViewController {
             if let filePath = filePath {
                 self.playVideoVc?.preparePlayback(url: URL(fileURLWithPath: filePath))
                 self.playVideoVc?.isEndDisplaying = false
-                self.playVideoVc?.autoPlay()
+                self.playVideoVc?.loopPlay()
             }
         }
     }

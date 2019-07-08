@@ -9,9 +9,9 @@
 import UIKit
 
 
+
 @objc(ALPMainFeedViewController)
 class MainFeedViewController: HomeRefreshViewController {
-    
     
     public var initialPage = 0
     
@@ -30,6 +30,7 @@ class MainFeedViewController: HomeRefreshViewController {
         tableView.delegate = self
         tableView.isPagingEnabled = true
         tableView.bounces = false
+        tableView.separatorStyle = .none
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
         tableView.register(MainFeedViewCell.classForCoder(), forCellReuseIdentifier: "MainFeedViewCell")
@@ -57,16 +58,22 @@ class MainFeedViewController: HomeRefreshViewController {
         return nil
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         setupUI()
+        addObservers()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.isVisibleInDisplay = true
+        
+        show(page: initialPage, animated: false)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -87,15 +94,17 @@ class MainFeedViewController: HomeRefreshViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.isVisibleInDisplay = false
-        // 所有model停止播放
-        for videoItem in videoItems {
-            videoItem.stop()
-        }
+        self.stop()
     }
     
+    fileprivate func addObservers() -> Void {
+        NotificationCenter.default.addObserver(self, selector: #selector(resetPlayer), name: NSNotification.Name.ALPPlayerStopAll, object: nil)
+    }
     
     public func show(page index: Int, animated: Bool) {
-        
+        if self.videoItems.count == 0 {
+            return
+        }
         if tableView.indexPathsForVisibleRows?.first?.row == index {
             return
         }
@@ -110,15 +119,11 @@ class MainFeedViewController: HomeRefreshViewController {
         if visibleIndexPath.row >= videoItems.count {
             return
         }
-        
-        // 取出当前显示的model,继续播放
-        let model = videoItems[visibleIndexPath.row]
-        // 所有model停止播放
-        for videoItem in videoItems {
-            if model != videoItem {
-                videoItem.stop()
-            }
+        if self.currentPlayIndex == visibleIndexPath.row {
+            return
         }
+        // 取出当前显示的model，执行播放
+        let model = videoItems[visibleIndexPath.row]
         
         if isVisibleInDisplay == false {
             model.stop()
@@ -127,6 +132,24 @@ class MainFeedViewController: HomeRefreshViewController {
         DispatchQueue.main.async {        
             model.play()
             self.currentPlayIndex = visibleIndexPath.row
+        }
+    }
+    
+    // 停止所有在显示的cell的播放
+    fileprivate func stop() {
+        self.currentPlayIndex = -1
+        guard let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows else {
+            return
+        }
+        
+        indexPathsForVisibleRows.forEach { (indexPath) in
+            if indexPath.row >= videoItems.count {
+                return
+            }
+            
+            // 取出当前显示的model,停止播放
+            let model = videoItems[indexPath.row]
+            model.stop()
         }
     }
     
@@ -151,6 +174,7 @@ class MainFeedViewController: HomeRefreshViewController {
         
         
         setupNavigation()
+        
     }
     
     fileprivate func setupNavigation() {
@@ -171,20 +195,10 @@ class MainFeedViewController: HomeRefreshViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
     }
     
-    @objc fileprivate func afterRefresher(){
-        
-        loadPosts()
-    }
-    
-    fileprivate func loadPosts(){
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-        //            self.refreshControl.endRefreshing()
-        //        }
-    }
     
     // 预加载更多列表
-    fileprivate func prefetchFeedListIfNeeded(index: Int) {
-        
+    fileprivate func prefetchFeedListIfNeeded(cell: MainFeedViewCell) {
+        cell.viewController.prepareToPlay(model: cell.model)
     }
 }
 
@@ -216,14 +230,11 @@ extension MainFeedViewController : UITableViewDelegate, UITableViewDataSource, U
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainFeedViewCell", for: indexPath) as! MainFeedViewCell
-//        let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
-//        let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
-//        let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         
         let model = videoItems[indexPath.row]
         cell.model = model
-//        cell.contentView.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
         cell.viewController.interactionController.delegate = self
+        cell.model?.indexPath = indexPath
         return cell
     }
     
@@ -232,16 +243,20 @@ extension MainFeedViewController : UITableViewDelegate, UITableViewDataSource, U
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if initialPage > 0 {
-            show(page: initialPage, animated: false)
-            initialPage = 0
-        }
+        self.willPlayIndex = indexPath.row
+        self.prefetchFeedListIfNeeded(cell: cell as! MainFeedViewCell)
     }
     
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        willPlayIndex = indexPath.row
-        prefetchFeedListIfNeeded(index: willPlayIndex)
+
+        if (initialPage > 0) {
+            self.show(page: self.initialPage, animated: false)
+            initialPage = 0
+        }
+        
+        let c = cell as! MainFeedViewCell
+        c.model?.stop()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -274,8 +289,6 @@ extension MainFeedViewController : UITableViewDelegate, UITableViewDataSource, U
     }
     
     fileprivate func _onScrollDidEnd() -> Void {
-//        willPlayIndex
-//        currentPlayIndex
         
         self.play()
     }
@@ -290,7 +303,7 @@ extension MainFeedViewController: PlayInteractionViewControllerDelegate {
 
 extension MainFeedViewController {
     
-    /// 关闭appearance callbacks的自动传递的特性呢
+    // 关闭appearance callbacks的自动传递的特性呢
     //    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
     //        return false
     //    }
@@ -301,4 +314,10 @@ extension MainFeedViewController {
     fileprivate func cellHeight() -> CGFloat {
         return cellHeightForScreenHeight(screenHeight: UIScreen.main.bounds.size.height)
     }
+}
+extension MainFeedViewController {
+    @objc fileprivate func resetPlayer() {
+        self.stop()
+    }
+    
 }

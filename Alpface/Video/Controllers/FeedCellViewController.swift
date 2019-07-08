@@ -13,13 +13,7 @@ class FeedCellViewController: UIViewController {
     
     fileprivate var observerSet: Set<String> = Set()
     fileprivate var hasPlayCallBack: Bool = false
-    public var model: PlayVideoModel? {
-        didSet {
-            
-            prepareToPlay(model: model)
-            
-        }
-    }
+    public var model: PlayVideoModel?
     
     // 准备资源，不会播放资源，需要手动触发
     public func prepareToPlay(model: PlayVideoModel?) {
@@ -27,9 +21,9 @@ class FeedCellViewController: UIViewController {
             playVideoVc.resetPlayer()
             return
         }
-        // 准备资源
+        // 预加载视频，此时并未播放视频
         if let videoItem = m.model as? VideoItem {
-            guard let url = videoItem.getVideoURL() else { return }
+            guard let url = videoItem.getVideoMP4URL() else { return }
             interactionController.videoItem = videoItem
             playVideoVc.preparePlayback(url: url)
         }
@@ -37,30 +31,26 @@ class FeedCellViewController: UIViewController {
             playVideoVc.resetPlayer()
         }
         
-        // 视图显示的时候播放
+        // 在此block被执行时，执行循环播放视频
         m.playCallBack = { [weak self] (canPlay: Bool) in
             self?.playVideoVc.isEndDisplaying = (canPlay == false)
             if canPlay {
-                self?.playVideoVc.autoPlay()
+                self?.playVideoVc.loopPlay()
             }
             else {
-                self?.playVideoVc.pause(autoPlay: true)
+                self?.playVideoVc.pause(loopPlay: true)
             }
         }
-//        if hasPlayCallBack == false {
-//            // 这里执行下block是为了防止PlayVideoModel的isAllowPlay被初始化时，cell没有显示，导致playCallBack没有执行的机会
-//            m.playCallBack!(m.isAllowPlay)
-//            hasPlayCallBack = true
-//        }
     }
     
-    /// 播放视频控制器
+    // 播放视频控制器
     public lazy var playVideoVc: PlayVideoViewController = {
         let playVideoVc = PlayVideoViewController()
         playVideoVc.view.translatesAutoresizingMaskIntoConstraints = false
         return playVideoVc
     }()
-    /// 处理及展示视频的描述、字幕、点赞数、作者信息的控制器
+    
+    // 处理及展示视频的描述、字幕、点赞数、作者信息的控制器
     public lazy var interactionController: PlayInteractionViewController = {
         let interactionController = PlayInteractionViewController(playerController: self.playVideoVc)
         interactionController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +60,6 @@ class FeedCellViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        NotificationCenter.default.addObserver(self, selector: #selector(resetPlayer), name: NSNotification.Name.ALPPlayerStopAll, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,11 +109,6 @@ class FeedCellViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
-    @objc fileprivate func resetPlayer() {
-        self.playVideoVc.resetPlayer()
-    }
-    
 }
 
 
