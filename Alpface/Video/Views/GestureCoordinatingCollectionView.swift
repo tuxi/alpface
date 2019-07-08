@@ -8,8 +8,8 @@
 
 import UIKit
 
-@objc(ALPGestureCoordinatingCollectionView)
-class GestureCoordinatingCollectionView: UICollectionView {
+@objc(ALPGestureCoordinatingTableView)
+class GestureCoordinatingTableView: UITableView {
     
     public weak var gestureDelegate: UIGestureRecognizerDelegate?
 

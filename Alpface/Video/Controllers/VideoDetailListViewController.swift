@@ -82,7 +82,7 @@ extension VideoDetailListViewController {
                 array.append(cellModel)
             }
             self?.videoItems += array
-            self?.collectionView.reloadData()
+            self?.tableView.reloadData()
             DispatchQueue.main.async {
                 self?.play()
             }

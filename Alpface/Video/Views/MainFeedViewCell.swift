@@ -8,7 +8,7 @@
 
 import UIKit 
 
-class MainFeedViewCell: UICollectionViewCell {
+class MainFeedViewCell: UITableViewCell {
     
     public var model: PlayVideoModel? {
         didSet {
@@ -20,8 +20,9 @@ class MainFeedViewCell: UICollectionViewCell {
         vc.view.translatesAutoresizingMaskIntoConstraints = false
         return vc
     }()
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
     }
     

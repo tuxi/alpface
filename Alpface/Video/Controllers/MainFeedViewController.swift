@@ -21,34 +21,31 @@ class MainFeedViewController: HomeRefreshViewController {
     }()
     
     public var isVisibleInDisplay: Bool = false
+    fileprivate var willPlayIndex: Int = 0
+    fileprivate var currentPlayIndex: Int?
     
-    
-    public lazy var collectionView: GestureCoordinatingCollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 0.0
-        layout.minimumInteritemSpacing = 0.0
-        layout.scrollDirection = .vertical
-        let collectionView = GestureCoordinatingCollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.isPagingEnabled = true
-        collectionView.bounces = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.register(MainFeedViewCell.classForCoder(), forCellWithReuseIdentifier: "MainFeedViewCell")
-        collectionView.backgroundColor = UIColor.clear
-        return collectionView
+    public lazy var tableView: GestureCoordinatingTableView = {
+        let tableView = GestureCoordinatingTableView()
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.isPagingEnabled = true
+        tableView.bounces = false
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.register(MainFeedViewCell.classForCoder(), forCellReuseIdentifier: "MainFeedViewCell")
+        tableView.backgroundColor = UIColor.clear
+        return tableView
     }()
     
     public func displayViewController() -> UIViewController? {
-        if let cell = collectionView.visibleCells.first as? MainFeedViewCell {
+        if let cell = tableView.visibleCells.first as? MainFeedViewCell {
             return cell.viewController.playVideoVc
         }
         return nil
     }
     
     public func displayVideoItem() -> VideoItem? {
-        if let cell = collectionView.visibleCells.first as? MainFeedViewCell {
+        if let cell = tableView.visibleCells.first as? MainFeedViewCell {
             guard let model = cell.model else {
                 return nil
             }
@@ -70,11 +67,9 @@ class MainFeedViewController: HomeRefreshViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.isVisibleInDisplay = true
-        displayViewController()?.beginAppearanceTransition(true, animated: animated)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        displayViewController()?.endAppearanceTransition()
         self.play()
         DispatchQueue.main.async {
             UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
@@ -83,7 +78,6 @@ class MainFeedViewController: HomeRefreshViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        displayViewController()?.beginAppearanceTransition(false, animated: true)
         // 所有model停止播放
         for videoItem in videoItems {
             videoItem.stop()
@@ -92,7 +86,6 @@ class MainFeedViewController: HomeRefreshViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        displayViewController()?.endAppearanceTransition()
         self.isVisibleInDisplay = false
         // 所有model停止播放
         for videoItem in videoItems {
@@ -102,23 +95,24 @@ class MainFeedViewController: HomeRefreshViewController {
     
     
     public func show(page index: Int, animated: Bool) {
-        if collectionView.indexPathsForVisibleItems.first?.row == index {
+        
+        if tableView.indexPathsForVisibleRows?.first?.row == index {
             return
         }
-        collectionView .scrollToItem(at: IndexPath.init(row: index, section: 0), at: .centeredVertically, animated: animated)
+        tableView.scrollToRow(at: IndexPath.init(row: index, section: 0), at: UITableView.ScrollPosition.none, animated: animated)
     }
     
     // 未显示的资源停止播放，已显示的资源开始播放
     public func play() {
-        guard let vidbleIndexPath = collectionView.indexPathsForVisibleItems.first else {
+        guard let visibleIndexPath = tableView.indexPathsForVisibleRows?.first else {
             return
         }
-        if vidbleIndexPath.row >= videoItems.count {
+        if visibleIndexPath.row >= videoItems.count {
             return
         }
         
         // 取出当前显示的model,继续播放
-        let model = videoItems[vidbleIndexPath.row]
+        let model = videoItems[visibleIndexPath.row]
         // 所有model停止播放
         for videoItem in videoItems {
             if model != videoItem {
@@ -132,6 +126,7 @@ class MainFeedViewController: HomeRefreshViewController {
         }
         DispatchQueue.main.async {        
             model.play()
+            self.currentPlayIndex = visibleIndexPath.row
         }
     }
     
@@ -139,19 +134,19 @@ class MainFeedViewController: HomeRefreshViewController {
         view.backgroundColor = UIColor.clear
         automaticallyAdjustsScrollViewInsets = false
         if #available(iOS 11.0, *) {
-            collectionView.contentInsetAdjustmentBehavior = .never
+            tableView.contentInsetAdjustmentBehavior = .never
         }
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         // iPhone x 系列 底部内容显示在安全区域以上
         // 其他系列 底部内容显示在屏幕底部以上，tabBar透明显示，可以看到全屏内容
         if #available(iOS 11.0, *), AppUtils.isIPhoneX() {
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         } else {
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
         
@@ -187,6 +182,10 @@ class MainFeedViewController: HomeRefreshViewController {
         //        }
     }
     
+    // 预加载更多列表
+    fileprivate func prefetchFeedListIfNeeded(index: Int) {
+        
+    }
 }
 
 
@@ -205,71 +204,81 @@ extension MainFeedViewController {
     }
 }
 
-extension MainFeedViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension MainFeedViewController : UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return videoItems.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainFeedViewCell", for: indexPath) as! MainFeedViewCell
-        let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
-        let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
-        let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MainFeedViewCell", for: indexPath) as! MainFeedViewCell
+//        let c1: CGFloat = CGFloat(arc4random_uniform(256))/255.0
+//        let c2: CGFloat = CGFloat(arc4random_uniform(256))/255.0
+//        let c3: CGFloat = CGFloat(arc4random_uniform(256))/255.0
         
         let model = videoItems[indexPath.row]
         cell.model = model
-        cell.contentView.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
+//        cell.contentView.backgroundColor = UIColor.init(red: c1, green: c2, blue: c3, alpha: 1.0)
         cell.viewController.interactionController.delegate = self
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return collectionView.frame.size
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableView.frame.size.height
     }
-    
-    /// cell 完全离开屏幕后调用
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 
-        self.play()
-    }
-    
-    /// cell 即将显示在屏幕时调用
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if initialPage > 0 {
             show(page: initialPage, animated: false)
             initialPage = 0
         }
     }
     
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        willPlayIndex = indexPath.row
+        prefetchFeedListIfNeeded(index: willPlayIndex)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //        let offset = scrollView.contentOffset.y
         //        if offset < -100 {
-        //            collectionView.refreshControl?.tintColor = UIColor.white
-        //            collectionView.refreshControl?.attributedTitle = NSAttributedString(string: "现在可以松手了", attributes: [.foregroundColor : UIColor.orange])
-        //            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
+        //            tableView.refreshControl?.tintColor = UIColor.white
+        //            tableView.refreshControl?.attributedTitle = NSAttributedString(string: "现在可以松手了", attributes: [.foregroundColor : UIColor.orange])
+        //            tableView.refreshControl?.backgroundColor = UIColor.darkGray
         //        } else {
-        //            collectionView.refreshControl?.tintColor = UIColor.white
-        //            collectionView.refreshControl?.attributedTitle = NSAttributedString(string: "下拉刷新...", attributes: [.foregroundColor : UIColor.orange])
-        //            collectionView.refreshControl?.backgroundColor = UIColor.darkGray
+        //            tableView.refreshControl?.tintColor = UIColor.white
+        //            tableView.refreshControl?.attributedTitle = NSAttributedString(string: "下拉刷新...", attributes: [.foregroundColor : UIColor.orange])
+        //            tableView.refreshControl?.backgroundColor = UIColor.darkGray
         //        }
     }
     
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        if decelerate == false {
-//            self.play()
-//        }
-//    }
-//    
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        self.play()
-//    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        _onScrollDidEnd()
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate == false {
+            _onScrollDidEnd()
+        }
+    }
+    
+    // 滚动完毕就会调用（如果不是人为拖拽scrollView导致滚动完毕，比如设置setContentOffset时改变会调用)
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        _onScrollDidEnd()
+    }
+    
+    fileprivate func _onScrollDidEnd() -> Void {
+//        willPlayIndex
+//        currentPlayIndex
+        
+        self.play()
+    }
     
 }
 
@@ -285,5 +294,11 @@ extension MainFeedViewController {
     //    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
     //        return false
     //    }
+    fileprivate func cellHeightForScreenHeight(screenHeight: CGFloat) -> CGFloat {
+        return screenHeight
+    }
     
+    fileprivate func cellHeight() -> CGFloat {
+        return cellHeightForScreenHeight(screenHeight: UIScreen.main.bounds.size.height)
+    }
 }

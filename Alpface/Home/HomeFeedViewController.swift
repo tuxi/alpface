@@ -26,7 +26,7 @@ class HomeFeedViewController: MainFeedViewController {
         self.navigationItem.title = "推荐"
         addObserver()
         
-        self.addHeaderRefresh(self.collectionView, navigationBar: self.navigationBar) {[weak self] () -> (Void) in
+        self.addHeaderRefresh(self.tableView, navigationBar: self.navigationBar) {[weak self] () -> (Void) in
             self?.requestRandomVideos()
         }
         
@@ -84,7 +84,7 @@ extension HomeFeedViewController {
                 array.append(cellModel)
             }
             self?.videoItems += array
-            self?.collectionView.reloadData()
+            self?.tableView.reloadData()
             self?.endRefresh()
             DispatchQueue.main.async {
                 self?.play()
