@@ -230,8 +230,9 @@ extension FeedVideoDetailView {
                 video.like_id = -1
                 self?.praiseButton.alpTitle = "\(self?.videoItem?.like_num ?? 0)"
                 video.isLikeOperationing = false
-            }) { (error) in
+            }) {[weak self] (error) in
                 video.isLikeOperationing = false
+                self?.praiseButton.isSelected = true
                 guard let ns_error = error as NSError? else {
                     return
                 }
@@ -251,7 +252,8 @@ extension FeedVideoDetailView {
                 }
                 video.like_id = like_id
                 self?.praiseButton.alpTitle = "\(self?.videoItem?.like_num ?? 0)"
-            }) { (error) in
+            }) {[weak self] (error) in
+                self?.praiseButton.isSelected = false
                 video.isLikeOperationing = false
                 guard let ns_error = error as NSError? else {
                     return

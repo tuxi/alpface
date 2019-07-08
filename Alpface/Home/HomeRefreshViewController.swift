@@ -203,7 +203,7 @@ class HomeRefreshViewController: UIViewController {
             // scrollView被上拉了
             // 触发上拉加载更多
 //            self.scrollView?.contentOffset = CGPoint(x: 0, y: -moveDistance)
-            MBProgressHUD.xy_show("已触发上拉加载更多，功能还未完成")
+            self.view.xy_show("已触发上拉加载更多，功能还未完成")
         }
         
         previousPoint = currentPoint

@@ -23,6 +23,10 @@ extension UIView {
         }
     }
     
+    public func xy_show(_ message: String, delay: TimeInterval = 2.0, toView: UIView? = nil, offset: CGPoint = .zero) {
+        MBProgressHUD.xy_show(message, delay: delay, toView: toView, offset: offset)
+    }
+    
     fileprivate func setBb_hudCancelOption(cancelOption: XYHUDActionCallBack?) {
         
     }
@@ -55,18 +59,8 @@ extension MBProgressHUD {
     }
     
     // MARK: - Text
-    class func xy_show(_ message: String) {
-        self.xy_show(message, delay: XYToastDefaultDuration)
-    }
-    class func xy_show(_ message: String, delay: TimeInterval) {
-        self.xy_show(message, delay: delay, offset: .zero)
-    }
     
-    class func xy_show(_ message: String, delay: TimeInterval, offset: CGPoint) {
-        self.xy_show(message, delay: delay, toView: nil, offset: offset)
-    }
-    
-    class func xy_show(_ message: String, delay: TimeInterval, toView: UIView?, offset: CGPoint) {
+    class func xy_show(_ message: String, delay: TimeInterval = XYToastDefaultDuration, toView: UIView? = nil, offset: CGPoint = .zero) {
         var d = delay
         if d <= 0.0 {
             d = 2.0
@@ -80,19 +74,8 @@ extension MBProgressHUD {
     }
     
     // MARK: - Activity
-    class func xy_showActivity() {
-        self.xy_show(activity: 0)
-    }
     
-    class func xy_show(activity delay: TimeInterval) {
-        self.xy_show(activity: delay, toView: nil)
-    }
-    
-    class func xy_show(activity delay: TimeInterval, toView: UIView?) {
-        self.xy_show(activity: nil, delay: delay, toView: nil, offset: .zero)
-    }
-    
-    class func xy_show(activity message: String?, delay: TimeInterval, toView: UIView?, offset: CGPoint) {
+    class func xy_show(activity message: String?, delay: TimeInterval = 0.0, toView: UIView? = nil, offset: CGPoint = .zero) {
         let hud = self.xy_createHud(message: message, toView: toView, offset: offset)
         hud.mode = .indeterminate
         hud.isSquare = true
@@ -120,7 +103,7 @@ extension MBProgressHUD {
         return hud
     }
     
-    class func xy_show(custom image: UIImage, message: String, toView: UIView?, offset: CGPoint) {
+    public class func xy_show(custom image: UIImage, message: String, toView: UIView?, offset: CGPoint) {
         let hud = self.xy_createHud(message: message, toView: toView, offset: offset)
         hud.mode = .customView
         hud.customView = UIImageView.init(image: image)
@@ -155,7 +138,7 @@ extension MBProgressHUD {
     }
     
     // MARK: - Hidden
-    class func xy_hide() {
+    public class func xy_hide() {
         guard let window = UIApplication.shared.delegate?.window else { return }
         self.hide(for: window!, animated: true)
         
