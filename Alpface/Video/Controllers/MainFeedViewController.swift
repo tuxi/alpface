@@ -85,10 +85,6 @@ class MainFeedViewController: HomeRefreshViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // 所有model停止播放
-        for videoItem in videoItems {
-            videoItem.stop()
-        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -137,9 +133,13 @@ class MainFeedViewController: HomeRefreshViewController {
     
     // 停止所有在显示的cell的播放
     fileprivate func stop() {
-        self.currentPlayIndex = -1
+        
         guard let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows else {
             return
+        }
+        if let currentIndex = self.currentPlayIndex {
+            let currentModel = videoItems[currentIndex]
+            currentModel.stop()
         }
         
         indexPathsForVisibleRows.forEach { (indexPath) in
