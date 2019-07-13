@@ -282,7 +282,7 @@ class LoginViewController: UIViewController {
         loginButton.setTitle("登录", for: .normal)
         loginProblemButton.setTitle("登录遇到问题", for: .normal)
         registerButton.setTitle("注册账户", for: .normal)
-        mobileTf.text = "1881081988"
+        mobileTf.text = "18810181988"
         passwordTf.text = "admin123"
         setupNavigationBar()
         updateLoginButtonLayout(animated: false)
