@@ -7,8 +7,11 @@
 
 ### 项目环境
 - iOS
-- Xcode 10+
+- Xcode 10.2.1+
 - Swift 5+
+
+### 测试的api
+https://api.enba.com/docs/
 
 
 ### animated webp 制作 及 展示
