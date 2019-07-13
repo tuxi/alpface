@@ -61,6 +61,7 @@ open class VideoRequest: NSObject {
                     return
                 }
             }
+            print(response.data?.debugDescription)
             guard let fail = failure else { return }
             DispatchQueue.main.async {
                 fail(NSError(domain: NSURLErrorDomain, code: response.statusCode, userInfo: response.data))

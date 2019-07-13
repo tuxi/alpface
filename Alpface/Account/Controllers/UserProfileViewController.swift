@@ -23,7 +23,7 @@ class UserProfileViewController: BaseProfileViewController {
     }
     
     override func segmentTitle(forSegment index: Int) -> String {
-        self.homeModel?.segments?[index].title ?? ""
+       return self.homeModel?.segments?[index].title ?? ""
     }
     
     
