@@ -96,6 +96,9 @@
 		D21A2CD1207D09DC00335A8A /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */; };
 		D21A2CD3207D0BF800335A8A /* EditProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CD2207D0BF800335A8A /* EditProfileHeaderView.swift */; };
 		D21A2CD5207D154400335A8A /* EditUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21A2CD4207D154400335A8A /* EditUserProfileModel.swift */; };
+		D21F527D22D9CE110076B9F9 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21F527B22D9CE110076B9F9 /* MessageViewController.swift */; };
+		D21F527F22D9D1F70076B9F9 /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21F527E22D9D1F70076B9F9 /* MessageModel.swift */; };
+		D21F528122D9D89A0076B9F9 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21F528022D9D89A0076B9F9 /* MessageTableViewCell.swift */; };
 		D22FD054207A6586003E08B9 /* XYEmptyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD053207A6586003E08B9 /* XYEmptyData.swift */; };
 		D22FD056207A65A2003E08B9 /* RuntimeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */; };
 		D234D31E22D196500091912C /* MyHomeDragLeftInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D234D31B22D1964F0091912C /* MyHomeDragLeftInteractiveTransition.swift */; };
@@ -109,7 +112,6 @@
 		D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41020668F130047DC15 /* StoryCameraViewController.swift */; };
 		D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41120668F130047DC15 /* StoryCreationViewController.swift */; };
 		D26AD43420668F140047DC15 /* MedulaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */; };
-		D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41920668F140047DC15 /* MessageViewController.swift */; };
 		D26AD43820668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41B20668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift */; };
 		D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41C20668F140047DC15 /* UIColor+HexColor.swift */; };
 		D26AD43A20668F140047DC15 /* UINavigationBar+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26AD41D20668F140047DC15 /* UINavigationBar+Attributes.swift */; };
@@ -326,6 +328,9 @@
 		D21A2CD0207D09DC00335A8A /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
 		D21A2CD2207D0BF800335A8A /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
 		D21A2CD4207D154400335A8A /* EditUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileModel.swift; sourceTree = "<group>"; };
+		D21F527B22D9CE110076B9F9 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		D21F527E22D9D1F70076B9F9 /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
+		D21F528022D9D89A0076B9F9 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		D22FD053207A6586003E08B9 /* XYEmptyData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XYEmptyData.swift; sourceTree = "<group>"; };
 		D22FD055207A65A1003E08B9 /* RuntimeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuntimeExtensions.swift; sourceTree = "<group>"; };
 		D234D31B22D1964F0091912C /* MyHomeDragLeftInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeDragLeftInteractiveTransition.swift; sourceTree = "<group>"; };
@@ -341,7 +346,6 @@
 		D26AD41020668F130047DC15 /* StoryCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCameraViewController.swift; sourceTree = "<group>"; };
 		D26AD41120668F130047DC15 /* StoryCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCreationViewController.swift; sourceTree = "<group>"; };
 		D26AD41420668F130047DC15 /* MedulaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MedulaOne-Regular.ttf"; sourceTree = "<group>"; };
-		D26AD41920668F140047DC15 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		D26AD41B20668F140047DC15 /* UIApplication+StatusBarAppearanceUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+StatusBarAppearanceUpdate.swift"; sourceTree = "<group>"; };
 		D26AD41C20668F140047DC15 /* UIColor+HexColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColor.swift"; sourceTree = "<group>"; };
 		D26AD41D20668F140047DC15 /* UINavigationBar+Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Attributes.swift"; sourceTree = "<group>"; };
@@ -685,6 +689,30 @@
 			path = Segments;
 			sourceTree = "<group>";
 		};
+		D21F527922D9CE110076B9F9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D21F528022D9D89A0076B9F9 /* MessageTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D21F527A22D9CE110076B9F9 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D21F527B22D9CE110076B9F9 /* MessageViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D21F527C22D9CE110076B9F9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D21F527E22D9D1F70076B9F9 /* MessageModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		D22FD052207A6586003E08B9 /* XYEmptyData */ = {
 			isa = PBXGroup;
 			children = (
@@ -859,7 +887,9 @@
 		D26AD41820668F140047DC15 /* Message */ = {
 			isa = PBXGroup;
 			children = (
-				D26AD41920668F140047DC15 /* MessageViewController.swift */,
+				D21F527A22D9CE110076B9F9 /* Controllers */,
+				D21F527C22D9CE110076B9F9 /* Models */,
+				D21F527922D9CE110076B9F9 /* Views */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -1328,6 +1358,7 @@
 				D28953642076A4EE0029CE92 /* ProfileHeaderView.swift in Sources */,
 				D26AD43920668F140047DC15 /* UIColor+HexColor.swift in Sources */,
 				D26AD44020668F140047DC15 /* MainTabBarController.swift in Sources */,
+				D21F527D22D9CE110076B9F9 /* MessageViewController.swift in Sources */,
 				D20093342078EEC50079AD8B /* CameraViewControllerConstraint.swift in Sources */,
 				D2BCBA49206F33F2008409B3 /* GestureCoordinatingCollectionView.swift in Sources */,
 				D08D1D0D21707816006C47D6 /* XYLocationManager.m in Sources */,
@@ -1412,6 +1443,7 @@
 				D27615B721568F96008A9AD4 /* LocationItem.swift in Sources */,
 				D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D08D1D0121707815006C47D6 /* AlpEditVideoViewController.m in Sources */,
+				D21F528122D9D89A0076B9F9 /* MessageTableViewCell.swift in Sources */,
 				D2BCBA46206F33F2008409B3 /* PlayVideoViewController.swift in Sources */,
 				D08D1D0821707815006C47D6 /* LocationConverter.m in Sources */,
 				D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */,
@@ -1442,7 +1474,6 @@
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,
 				D200933C2078EEC50079AD8B /* ImageCell.swift in Sources */,
 				D20093372078EEC50079AD8B /* CameraViewController.swift in Sources */,
-				D26AD43720668F140047DC15 /* MessageViewController.swift in Sources */,
 				D08D1CF021707815006C47D6 /* AlpVideoCameraViewController.m in Sources */,
 				D08D1D1321707816006C47D6 /* XYCutVideoView.m in Sources */,
 				D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */,
@@ -1458,6 +1489,7 @@
 				D28953662076A4EE0029CE92 /* HitTestContainerViewController.swift in Sources */,
 				D2DC574A206FB7EA00458F54 /* AccountLogin.swift in Sources */,
 				D08D1CFD21707815006C47D6 /* OSProgressView.m in Sources */,
+				D21F527F22D9D1F70076B9F9 /* MessageModel.swift in Sources */,
 				D21A2CD3207D0BF800335A8A /* EditProfileHeaderView.swift in Sources */,
 				D21A2CCB207CF5C600335A8A /* EditUserProfileViewController.swift in Sources */,
 				D08D1D1021707816006C47D6 /* ICGVideoTrimmerView.m in Sources */,
