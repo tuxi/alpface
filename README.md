@@ -49,9 +49,6 @@ fatal: unable to access 'https://chromium.googlesource.com/webm/libwebp/': Faile
 swaedeMacBook-Pro:alpface swae$ pod repo
 ``` 
 ```
-swaedeMacBook-Pro:alpface swae$ pod repo
-```
-```
 /Users/swae/.rbenv/versions/2.5.0/lib/ruby/gems/2.5.0/gems/cocoapods-1.4.0/lib/cocoapods/executable.rb:89: warning: Insecure world writable dir /opt in PATH, mode 040777
 
 master
