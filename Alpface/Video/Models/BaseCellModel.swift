@@ -10,14 +10,14 @@ import UIKit
 
 @objc(ALPCellModelProtocol)
 protocol CellModelProtocol: NSObjectProtocol {
-    var model: AnyObject? { set get }
+    var model: NSObject? { set get }
     var size: CGSize { set get }
     var indexPath: IndexPath? { set get }
 }
 
 @objc(ALPBaseCellModel)
 public class BaseCellModel: NSObject, CellModelProtocol {
-    open var model: AnyObject?
+    open var model: NSObject?
     
     open var size: CGSize = .zero
     

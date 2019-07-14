@@ -106,6 +106,12 @@
 		D234D32022D196500091912C /* MyHomeDismissScaleAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D234D31D22D1964F0091912C /* MyHomeDismissScaleAnimation.swift */; };
 		D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D902084F73B00588BEC /* PublishViewController.swift */; };
 		D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D932084FD7F00588BEC /* VideoFile.swift */; };
+		D2503A3A22DB2912002A10E8 /* ChatRoomTextParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2503A3922DB2912002A10E8 /* ChatRoomTextParser.swift */; };
+		D2503A3D22DB2A2C002A10E8 /* Expression.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D2503A3B22DB2A2C002A10E8 /* Expression.bundle */; };
+		D2503A3E22DB2A2C002A10E8 /* Expression.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2503A3C22DB2A2C002A10E8 /* Expression.plist */; };
+		D2503A4022DB2AB9002A10E8 /* EmojiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2503A3F22DB2AB9002A10E8 /* EmojiDictionary.swift */; };
+		D2503A4222DB2D83002A10E8 /* CustomYYTextLinePositionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2503A4122DB2D83002A10E8 /* CustomYYTextLinePositionModifier.swift */; };
+		D2503A4422DB47D8002A10E8 /* ChatRoomTextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2503A4322DB47D8002A10E8 /* ChatRoomTextLabel.swift */; };
 		D25188562054D3C8000147CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25188552054D3C8000147CC /* Assets.xcassets */; };
 		D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25188572054D3C8000147CC /* LaunchScreen.storyboard */; };
 		D25DDB38216701BE00530F21 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25DDB37216701BE00530F21 /* UIViewController+Extension.swift */; };
@@ -159,6 +165,17 @@
 		D289537320771A8B0029CE92 /* MyStoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289537220771A8B0029CE92 /* MyStoryViewController.swift */; };
 		D289537D20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D289537C20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift */; };
 		D28B2295207732BA00680970 /* VideoGifCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28B2294207732BA00680970 /* VideoGifCollectionViewCell.swift */; };
+		D2A1E68F22D9F5D800F69A76 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E68E22D9F5D800F69A76 /* ChatRoomViewController.swift */; };
+		D2A1E69122D9FE6100F69A76 /* ChatRoomTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E69022D9FE6100F69A76 /* ChatRoomTextTableViewCell.swift */; };
+		D2A1E69322D9FE7900F69A76 /* ChatRoomImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E69222D9FE7900F69A76 /* ChatRoomImageTableViewCell.swift */; };
+		D2A1E69522D9FE8600F69A76 /* ChatRoomVideoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E69422D9FE8600F69A76 /* ChatRoomVideoTableViewCell.swift */; };
+		D2A1E69722D9FE9300F69A76 /* ChatRoomFileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E69622D9FE9300F69A76 /* ChatRoomFileTableViewCell.swift */; };
+		D2A1E69922D9FEC000F69A76 /* ChatRoomVoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E69822D9FEC000F69A76 /* ChatRoomVoiceTableViewCell.swift */; };
+		D2A1E69B22D9FF9200F69A76 /* ChatRoomBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E69A22D9FF9200F69A76 /* ChatRoomBaseCellModel.swift */; };
+		D2A1E69D22DA0AB700F69A76 /* ChatRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E69C22DA0AB700F69A76 /* ChatRoomModel.swift */; };
+		D2A1E69F22DA18A300F69A76 /* ChatRoomBaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E69E22DA18A300F69A76 /* ChatRoomBaseTableViewCell.swift */; };
+		D2A1E6A122DA1A0200F69A76 /* ChatRoomAdminTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E6A022DA1A0200F69A76 /* ChatRoomAdminTableViewCell.swift */; };
+		D2A1E6A322DA1A5F00F69A76 /* ChatRoomDateTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A1E6A222DA1A5F00F69A76 /* ChatRoomDateTimeTableViewCell.swift */; };
 		D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BC720710F6200CB0DC2 /* OSProgressView.swift */; };
 		D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BC820710F6200CB0DC2 /* UINavigationController+OSProgressBar.swift */; };
 		D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */; };
@@ -338,6 +355,12 @@
 		D234D31D22D1964F0091912C /* MyHomeDismissScaleAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeDismissScaleAnimation.swift; sourceTree = "<group>"; };
 		D2371D902084F73B00588BEC /* PublishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishViewController.swift; sourceTree = "<group>"; };
 		D2371D932084FD7F00588BEC /* VideoFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFile.swift; sourceTree = "<group>"; };
+		D2503A3922DB2912002A10E8 /* ChatRoomTextParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTextParser.swift; sourceTree = "<group>"; };
+		D2503A3B22DB2A2C002A10E8 /* Expression.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Expression.bundle; sourceTree = "<group>"; };
+		D2503A3C22DB2A2C002A10E8 /* Expression.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expression.plist; sourceTree = "<group>"; };
+		D2503A3F22DB2AB9002A10E8 /* EmojiDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiDictionary.swift; sourceTree = "<group>"; };
+		D2503A4122DB2D83002A10E8 /* CustomYYTextLinePositionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomYYTextLinePositionModifier.swift; sourceTree = "<group>"; };
+		D2503A4322DB47D8002A10E8 /* ChatRoomTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTextLabel.swift; sourceTree = "<group>"; };
 		D251884B2054D3C8000147CC /* Alpface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alpface.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D25188552054D3C8000147CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D25188582054D3C8000147CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -397,6 +420,17 @@
 		D289537220771A8B0029CE92 /* MyStoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoryViewController.swift; sourceTree = "<group>"; };
 		D289537C20772BE60029CE92 /* ETCollectionViewWaterFallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ETCollectionViewWaterFallLayout.swift; sourceTree = "<group>"; };
 		D28B2294207732BA00680970 /* VideoGifCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoGifCollectionViewCell.swift; sourceTree = "<group>"; };
+		D2A1E68E22D9F5D800F69A76 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
+		D2A1E69022D9FE6100F69A76 /* ChatRoomTextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTextTableViewCell.swift; sourceTree = "<group>"; };
+		D2A1E69222D9FE7900F69A76 /* ChatRoomImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomImageTableViewCell.swift; sourceTree = "<group>"; };
+		D2A1E69422D9FE8600F69A76 /* ChatRoomVideoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomVideoTableViewCell.swift; sourceTree = "<group>"; };
+		D2A1E69622D9FE9300F69A76 /* ChatRoomFileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomFileTableViewCell.swift; sourceTree = "<group>"; };
+		D2A1E69822D9FEC000F69A76 /* ChatRoomVoiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomVoiceTableViewCell.swift; sourceTree = "<group>"; };
+		D2A1E69A22D9FF9200F69A76 /* ChatRoomBaseCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomBaseCellModel.swift; sourceTree = "<group>"; };
+		D2A1E69C22DA0AB700F69A76 /* ChatRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomModel.swift; sourceTree = "<group>"; };
+		D2A1E69E22DA18A300F69A76 /* ChatRoomBaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomBaseTableViewCell.swift; sourceTree = "<group>"; };
+		D2A1E6A022DA1A0200F69A76 /* ChatRoomAdminTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomAdminTableViewCell.swift; sourceTree = "<group>"; };
+		D2A1E6A222DA1A5F00F69A76 /* ChatRoomDateTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDateTimeTableViewCell.swift; sourceTree = "<group>"; };
 		D2A59BC720710F6200CB0DC2 /* OSProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSProgressView.swift; sourceTree = "<group>"; };
 		D2A59BC820710F6200CB0DC2 /* UINavigationController+OSProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+OSProgressBar.swift"; sourceTree = "<group>"; };
 		D2A59BCB20711CD200CB0DC2 /* FeedVideoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVideoDetailView.swift; sourceTree = "<group>"; };
@@ -799,6 +833,7 @@
 				D26AD41E20668F140047DC15 /* App */,
 				D26AD41A20668F140047DC15 /* Category */,
 				D26AD41820668F140047DC15 /* Message */,
+				D2A1E68A22D9F58B00F69A76 /* Chat */,
 				D26AD41220668F130047DC15 /* Resource */,
 				D26AD40F20668F130047DC15 /* Story */,
 				D26AD40220668F130047DC15 /* Video */,
@@ -860,6 +895,8 @@
 		D26AD41220668F130047DC15 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				D2503A3B22DB2A2C002A10E8 /* Expression.bundle */,
+				D2503A3C22DB2A2C002A10E8 /* Expression.plist */,
 				D26AD41320668F130047DC15 /* font */,
 			);
 			path = Resource;
@@ -1095,6 +1132,52 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		D2A1E68A22D9F58B00F69A76 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				D2A1E68B22D9F58B00F69A76 /* Models */,
+				D2A1E68C22D9F58B00F69A76 /* Controllers */,
+				D2A1E68D22D9F58B00F69A76 /* Views */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		D2A1E68B22D9F58B00F69A76 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D2A1E69A22D9FF9200F69A76 /* ChatRoomBaseCellModel.swift */,
+				D2A1E69C22DA0AB700F69A76 /* ChatRoomModel.swift */,
+				D2503A3922DB2912002A10E8 /* ChatRoomTextParser.swift */,
+				D2503A3F22DB2AB9002A10E8 /* EmojiDictionary.swift */,
+				D2503A4122DB2D83002A10E8 /* CustomYYTextLinePositionModifier.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D2A1E68C22D9F58B00F69A76 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D2A1E68E22D9F5D800F69A76 /* ChatRoomViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D2A1E68D22D9F58B00F69A76 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D2A1E69022D9FE6100F69A76 /* ChatRoomTextTableViewCell.swift */,
+				D2A1E69222D9FE7900F69A76 /* ChatRoomImageTableViewCell.swift */,
+				D2A1E69422D9FE8600F69A76 /* ChatRoomVideoTableViewCell.swift */,
+				D2A1E69622D9FE9300F69A76 /* ChatRoomFileTableViewCell.swift */,
+				D2A1E69822D9FEC000F69A76 /* ChatRoomVoiceTableViewCell.swift */,
+				D2A1E69E22DA18A300F69A76 /* ChatRoomBaseTableViewCell.swift */,
+				D2A1E6A022DA1A0200F69A76 /* ChatRoomAdminTableViewCell.swift */,
+				D2A1E6A222DA1A5F00F69A76 /* ChatRoomDateTimeTableViewCell.swift */,
+				D2503A4322DB47D8002A10E8 /* ChatRoomTextLabel.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D2A59BC620710F6200CB0DC2 /* ProgreeBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -1249,6 +1332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */,
+				D2503A3D22DB2A2C002A10E8 /* Expression.bundle in Resources */,
 				D25188592054D3C8000147CC /* LaunchScreen.storyboard in Resources */,
 				D2D663302082E83C0044E2A7 /* README.md in Resources */,
 				D08D1D1421707816006C47D6 /* ALPVideoCameraAssets.bundle in Resources */,
@@ -1259,6 +1343,7 @@
 				D26AD450206690E60047DC15 /* .gitkeep in Resources */,
 				D20093332078EEC50079AD8B /* CameraView.strings in Resources */,
 				D20093382078EEC50079AD8B /* ConfirmViewController.xib in Resources */,
+				D2503A3E22DB2A2C002A10E8 /* Expression.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1295,6 +1380,7 @@
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
+				"${BUILT_PRODUCTS_DIR}/YYText/YYText.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1304,6 +1390,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TZImagePickerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1322,6 +1409,7 @@
 				D2B16622208CC3B800FA5F05 /* UIView+XYExtension.swift in Sources */,
 				D2B165EE208C4D8500FA5F05 /* CommentListViewController.swift in Sources */,
 				D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */,
+				D2503A4422DB47D8002A10E8 /* ChatRoomTextLabel.swift in Sources */,
 				D26AD489206735CD0047DC15 /* UIView+Attributes.swift in Sources */,
 				D2A59BCC20711CD200CB0DC2 /* FeedVideoDetailView.swift in Sources */,
 				D08D1CF321707815006C47D6 /* AlpEditCoverViewController.m in Sources */,
@@ -1365,6 +1453,7 @@
 				D200933B2078EEC50079AD8B /* PermissionsView.swift in Sources */,
 				D08D1D0C21707816006C47D6 /* XYLocationSearchViewController.m in Sources */,
 				D26AD4652066BB180047DC15 /* User.swift in Sources */,
+				D2A1E69122D9FE6100F69A76 /* ChatRoomTextTableViewCell.swift in Sources */,
 				D2BCBA4F206F6D02008409B3 /* VideoItem.swift in Sources */,
 				D28B2295207732BA00680970 /* VideoGifCollectionViewCell.swift in Sources */,
 				D289537120771A6B0029CE92 /* MyFavoriteViewController.swift in Sources */,
@@ -1387,6 +1476,7 @@
 				D26AD454206690E60047DC15 /* PastelPoint.swift in Sources */,
 				D234D32022D196500091912C /* MyHomeDismissScaleAnimation.swift in Sources */,
 				D0DB45AA2085B7C6000C291A /* AdaptiveTextView.swift in Sources */,
+				D2503A3A22DB2912002A10E8 /* ChatRoomTextParser.swift in Sources */,
 				D08D1D0A21707815006C47D6 /* XYLocationSearchTopView.m in Sources */,
 				D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */,
 				D2B165F6208C68A800FA5F05 /* PresentTransition.swift in Sources */,
@@ -1398,9 +1488,11 @@
 				D26AD43E20668F140047DC15 /* MainAppViewController.swift in Sources */,
 				D200932A2078EEC50079AD8B /* CameraGlobals.swift in Sources */,
 				D20093362078EEC50079AD8B /* ConfirmViewController.swift in Sources */,
+				D2A1E68F22D9F5D800F69A76 /* ChatRoomViewController.swift in Sources */,
 				D08D1CF221707815006C47D6 /* SDAVAssetExportSession.m in Sources */,
 				D203F54622D0941600D79CC1 /* Options.swift in Sources */,
 				D200933A2078EEC50079AD8B /* CropOverlay.swift in Sources */,
+				D2A1E6A322DA1A5F00F69A76 /* ChatRoomDateTimeTableViewCell.swift in Sources */,
 				D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */,
 				D20093312078EEC50079AD8B /* UIButtonExtensions.swift in Sources */,
 				D2B165F0208C4F4F00FA5F05 /* CornerBarNaviController.swift in Sources */,
@@ -1414,13 +1506,16 @@
 				D26AD4952067779F0047DC15 /* HttpRequestHelper.swift in Sources */,
 				D21A2CCD207CFA0600335A8A /* StickyHeaderContainerView.swift in Sources */,
 				D2DC574C20706D7C00458F54 /* PlayVideoModel.swift in Sources */,
+				D2A1E69922D9FEC000F69A76 /* ChatRoomVoiceTableViewCell.swift in Sources */,
 				D27E4003209737C300776EB0 /* ZFModalTransitionAnimator.m in Sources */,
 				D08D1CFE21707815006C47D6 /* AlpEditVideoBottomView.m in Sources */,
 				D2BCBA4B206F33F2008409B3 /* MainFeedViewCell.swift in Sources */,
 				D08D1D0621707815006C47D6 /* LFGPUImageEmptyFilter.m in Sources */,
 				D26AD453206690E60047DC15 /* PastelLabel.swift in Sources */,
 				D08D1D1221707816006C47D6 /* XYCutVideoController.m in Sources */,
+				D2A1E69522D9FE8600F69A76 /* ChatRoomVideoTableViewCell.swift in Sources */,
 				D2A59BCA20710F6300CB0DC2 /* UINavigationController+OSProgressBar.swift in Sources */,
+				D2A1E69722D9FE9300F69A76 /* ChatRoomFileTableViewCell.swift in Sources */,
 				D2B38C53208B1A1200CA3908 /* MyProfileViewController.swift in Sources */,
 				D25DDB38216701BE00530F21 /* UIViewController+Extension.swift in Sources */,
 				D08D1CF921707815006C47D6 /* AlpEditPublishVideoModel.m in Sources */,
@@ -1432,6 +1527,7 @@
 				D08D1CF721707815006C47D6 /* AlpEditPublishViewController.m in Sources */,
 				D20093302078EEC50079AD8B /* UIViewExtensions.swift in Sources */,
 				D08D1CEF21707815006C47D6 /* AlpEditVideoParameter.m in Sources */,
+				D2503A4022DB2AB9002A10E8 /* EmojiDictionary.swift in Sources */,
 				D08D1D0421707815006C47D6 /* AlpEditPublishLocationListTableViewCellModel.m in Sources */,
 				D26AD45D2066A9C30047DC15 /* ExploreViewController.swift in Sources */,
 				D26AD4622066BAF40047DC15 /* LoginViewController.swift in Sources */,
@@ -1443,8 +1539,11 @@
 				D27615B721568F96008A9AD4 /* LocationItem.swift in Sources */,
 				D26AD43D20668F140047DC15 /* MainAppScrollingContainerViewController.swift in Sources */,
 				D08D1D0121707815006C47D6 /* AlpEditVideoViewController.m in Sources */,
+				D2503A4222DB2D83002A10E8 /* CustomYYTextLinePositionModifier.swift in Sources */,
 				D21F528122D9D89A0076B9F9 /* MessageTableViewCell.swift in Sources */,
 				D2BCBA46206F33F2008409B3 /* PlayVideoViewController.swift in Sources */,
+				D2A1E6A122DA1A0200F69A76 /* ChatRoomAdminTableViewCell.swift in Sources */,
+				D2A1E69D22DA0AB700F69A76 /* ChatRoomModel.swift in Sources */,
 				D08D1D0821707815006C47D6 /* LocationConverter.m in Sources */,
 				D2A59BCE20711D3700CB0DC2 /* FeedVideoButton.swift in Sources */,
 				D2A59BC920710F6300CB0DC2 /* OSProgressView.swift in Sources */,
@@ -1459,6 +1558,7 @@
 				D08D1CF621707815006C47D6 /* AlpEditPublishTableViewCellModel.m in Sources */,
 				D08D1D0E21707816006C47D6 /* XYVideoPlayerView.m in Sources */,
 				D26AD48120672E120047DC15 /* TransitionButton.swift in Sources */,
+				D2A1E69B22D9FF9200F69A76 /* ChatRoomBaseCellModel.swift in Sources */,
 				D08D1D0021707815006C47D6 /* AlpVideoCameraPermissionView.m in Sources */,
 				D08D1CF421707815006C47D6 /* ALPVideoCameraView.m in Sources */,
 				D08D1CF821707815006C47D6 /* AlpVideoCameraUtils.m in Sources */,
@@ -1474,6 +1574,7 @@
 				D26AD43220668F140047DC15 /* StoryCameraViewController.swift in Sources */,
 				D200933C2078EEC50079AD8B /* ImageCell.swift in Sources */,
 				D20093372078EEC50079AD8B /* CameraViewController.swift in Sources */,
+				D2A1E69322D9FE7900F69A76 /* ChatRoomImageTableViewCell.swift in Sources */,
 				D08D1CF021707815006C47D6 /* AlpVideoCameraViewController.m in Sources */,
 				D08D1D1321707816006C47D6 /* XYCutVideoView.m in Sources */,
 				D26AD43F20668F140047DC15 /* MainNavigationController.swift in Sources */,
@@ -1491,6 +1592,7 @@
 				D08D1CFD21707815006C47D6 /* OSProgressView.m in Sources */,
 				D21F527F22D9D1F70076B9F9 /* MessageModel.swift in Sources */,
 				D21A2CD3207D0BF800335A8A /* EditProfileHeaderView.swift in Sources */,
+				D2A1E69F22DA18A300F69A76 /* ChatRoomBaseTableViewCell.swift in Sources */,
 				D21A2CCB207CF5C600335A8A /* EditUserProfileViewController.swift in Sources */,
 				D08D1D1021707816006C47D6 /* ICGVideoTrimmerView.m in Sources */,
 				D203F54922D0941600D79CC1 /* IconSegment.swift in Sources */,

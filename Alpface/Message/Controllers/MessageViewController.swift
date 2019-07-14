@@ -87,8 +87,14 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
         return 80
     }
     
-    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return false
+//    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+//        return false
+//    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let room = ChatRoomViewController()
+        room.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(room, animated: true)
     }
     
 }

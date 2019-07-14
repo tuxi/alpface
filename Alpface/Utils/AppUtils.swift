@@ -10,6 +10,10 @@ import UIKit
 import UserNotifications
 class AppUtils: NSObject {
     
+    static let ExpressionBundle = Bundle(url: Bundle.main.url(forResource: "Expression", withExtension: "bundle")!)
+    static let ExpressionBundleName = "Expression.bundle"
+    static let ExpressionPlist = Bundle.main.path(forResource: "Expression", ofType: "plist")
+    
     // 禁止实例化
     private override init(){
     }
