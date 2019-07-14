@@ -14,4 +14,5 @@ target 'Alpface' do
   pod 'SDWebImage/WebP' # libwebp (0.6.1)
   pod 'TZImagePickerController', '3.0.7'
   pod 'GPUImage', ' 0.1.7'
+  pod 'YYText', '1.0.7'
 end
