@@ -8,6 +8,15 @@
 
 import UIKit
 
+fileprivate func CGRectCenterRectForResizableImage(_ image: UIImage) -> CGRect {
+    return CGRect(
+        x: image.capInsets.left / image.size.width,
+        y: image.capInsets.top / image.size.height,
+        width: (image.size.width - image.capInsets.right - image.capInsets.left) / image.size.width,
+        height: (image.size.height - image.capInsets.bottom - image.capInsets.top) / image.size.height
+    )
+}
+
 class ChatRoomImageTableViewCell: ChatRoomBaseTableViewCell {
 
     fileprivate lazy var contentImageView: UIImageView = {
@@ -28,6 +37,17 @@ class ChatRoomImageTableViewCell: ChatRoomBaseTableViewCell {
     fileprivate var contentImageViewWidth: NSLayoutConstraint?
     fileprivate var contentImageViewHeight: NSLayoutConstraint?
     
+    
+    public lazy var imageContentMaskLayer: CALayer = {
+        let layer = CALayer()
+        // 设置比例
+        layer.contentsScale = UIScreen.main.scale
+        // 设置不透明度
+        layer.opacity = 1
+        return layer
+    }()
+    
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupUI()
@@ -40,6 +60,7 @@ class ChatRoomImageTableViewCell: ChatRoomBaseTableViewCell {
     fileprivate func setupUI() {
         contentView.addSubview(contentImageView)
         contentView.addSubview(bubbleImageView)
+        contentImageView.layer.mask = self.imageContentMaskLayer
         
         contentImageView.translatesAutoresizingMaskIntoConstraints = false
         bubbleImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -77,7 +98,11 @@ class ChatRoomImageTableViewCell: ChatRoomBaseTableViewCell {
             contentImageViewRight?.isActive = false
         }
         
-        self.contentImageView.layer.mask = cellModel.imageContentMaskLayer
+        // 设置图层显示的内容为拉伸过的MaskImgae
+        self.imageContentMaskLayer.contents = cellModel.imageContentBubbleImage.cgImage
+        // 设置拉伸范围(注意：这里contentsCenter的CGRect是比例（不是绝对坐标）
+        self.imageContentMaskLayer.contentsCenter = CGRectCenterRectForResizableImage(cellModel.imageContentBubbleImage)
+        
         
         self.bubbleImageView.image = cellModel.imageContentBubbleImage
         
@@ -86,6 +111,15 @@ class ChatRoomImageTableViewCell: ChatRoomBaseTableViewCell {
         } else {
             self.contentImageView.sd_setImage(with: URL(string: cellModel.model!.imageModel!.thumbURL!))
         }
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // 设置图层大小与imageView 布局的宽和高相同
+        let maskFrame = CGRect(x: 0, y: 0, width:  self.contentImageView.frame.size.width, height: self.contentImageView.frame.size.height)
+        self.imageContentMaskLayer.frame = maskFrame
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -156,11 +156,10 @@ typedef NS_ENUM(NSInteger, AlpCameraFlashMode) {
     _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
     _videoCamera.horizontallyMirrorFrontFacingCamera = YES;
     _videoCamera.horizontallyMirrorRearFacingCamera = NO;
-    
+
     _filter = [[LFGPUImageEmptyFilter alloc] init];
     [_videoCamera addTarget:_filter];
     [_filter addTarget:self.filteredVideoView];
-    [_videoCamera startCameraCapture];
     AVAuthorizationStatus audioStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
     if (audioStatus == AVAuthorizationStatusAuthorized) {
         // 音频状态允许时，才添加视频的输入和输出

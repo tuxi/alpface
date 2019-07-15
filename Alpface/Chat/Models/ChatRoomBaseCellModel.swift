@@ -19,15 +19,6 @@ public let kChatRoomImageMinWidth: CGFloat = 50
 public let kChatRoomImageMaxHeight: CGFloat = 150
 public let kChatRoomImageMinHeight: CGFloat = 50
 
-fileprivate func CGRectCenterRectForResizableImage(_ image: UIImage) -> CGRect {
-    return CGRect(
-        x: image.capInsets.left / image.size.width,
-        y: image.capInsets.top / image.size.height,
-        width: (image.size.width - image.capInsets.right - image.capInsets.left) / image.size.width,
-        height: (image.size.height - image.capInsets.bottom - image.capInsets.top) / image.size.height
-    )
-}
-
 class ChatRoomBaseCellModel {
     public var model: ChatRoomModel?
     public var indexPath: IndexPath?
@@ -55,23 +46,16 @@ class ChatRoomBaseCellModel {
     }()
     
     // 2 图片内容的ui相关
+    
+    // 设置拉伸范围
     public let imageContentStretchInsets = UIEdgeInsets.init(top: 30, left: 28, bottom: 23, right: 28)
     // 图片内容的气泡图片
     public lazy var imageContentBubbleImage: UIImage = {
+        // 待拉伸的图片
         let image = isFromSelf ? UIImage(named: "icon_chat_senderImageNodeBorder")! : UIImage(named: "icon_chat_receiverImageNodeBorder")!
-        // 拉伸图片区域
+        // 进行拉伸
         let bubbleImage = image.resizableImage(withCapInsets: imageContentStretchInsets, resizingMode: .stretch)
         return bubbleImage
-    }()
-    
-    public lazy var imageContentMaskLayer: CALayer = {
-        let layer = CALayer()
-        layer.contents = imageContentBubbleImage.cgImage
-        layer.contentsCenter = CGRectCenterRectForResizableImage(imageContentBubbleImage)
-        layer.frame = CGRect(x: 0, y: 0, width:  model!.imageModel!.imageWidth, height: model!.imageModel!.imageHeight)
-        layer.contentsScale = UIScreen.main.scale
-        layer.opacity = 1
-        return layer
     }()
     
     init(model: ChatRoomModel, cellId: String, contentTextFont: UIFont = UIFont.systemFont(ofSize: 16)) {

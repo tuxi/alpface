@@ -28,6 +28,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publishVideoNotification:) name:AlpDidClickPublushVideoNotification object:nil];
+    
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

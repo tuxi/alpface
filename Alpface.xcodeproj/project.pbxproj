@@ -107,6 +107,7 @@
 		D234D32022D196500091912C /* MyHomeDismissScaleAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D234D31D22D1964F0091912C /* MyHomeDismissScaleAnimation.swift */; };
 		D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D902084F73B00588BEC /* PublishViewController.swift */; };
 		D2371D942084FD7F00588BEC /* VideoFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2371D932084FD7F00588BEC /* VideoFile.swift */; };
+		D249C4A722DCBC6500015876 /* ChatRoomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D249C4A622DCBC6500015876 /* ChatRoomImageView.swift */; };
 		D2503A3A22DB2912002A10E8 /* ChatRoomTextParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2503A3922DB2912002A10E8 /* ChatRoomTextParser.swift */; };
 		D2503A3D22DB2A2C002A10E8 /* Expression.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D2503A3B22DB2A2C002A10E8 /* Expression.bundle */; };
 		D2503A3E22DB2A2C002A10E8 /* Expression.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2503A3C22DB2A2C002A10E8 /* Expression.plist */; };
@@ -357,6 +358,7 @@
 		D234D31D22D1964F0091912C /* MyHomeDismissScaleAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeDismissScaleAnimation.swift; sourceTree = "<group>"; };
 		D2371D902084F73B00588BEC /* PublishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishViewController.swift; sourceTree = "<group>"; };
 		D2371D932084FD7F00588BEC /* VideoFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFile.swift; sourceTree = "<group>"; };
+		D249C4A622DCBC6500015876 /* ChatRoomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomImageView.swift; sourceTree = "<group>"; };
 		D2503A3922DB2912002A10E8 /* ChatRoomTextParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTextParser.swift; sourceTree = "<group>"; };
 		D2503A3B22DB2A2C002A10E8 /* Expression.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Expression.bundle; sourceTree = "<group>"; };
 		D2503A3C22DB2A2C002A10E8 /* Expression.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expression.plist; sourceTree = "<group>"; };
@@ -1177,6 +1179,7 @@
 				D2A1E6A022DA1A0200F69A76 /* ChatRoomAdminTableViewCell.swift */,
 				D2A1E6A222DA1A5F00F69A76 /* ChatRoomDateTimeTableViewCell.swift */,
 				D2503A4322DB47D8002A10E8 /* ChatRoomTextLabel.swift */,
+				D249C4A622DCBC6500015876 /* ChatRoomImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1556,6 +1559,7 @@
 				D2BCBA4A206F33F2008409B3 /* ListCollectionView.swift in Sources */,
 				D05711D0216E109D0041D4F3 /* HomeRefreshNavigitionView.swift in Sources */,
 				D27D6CE420839E520095425A /* SettingsTableViewCellModel.swift in Sources */,
+				D249C4A722DCBC6500015876 /* ChatRoomImageView.swift in Sources */,
 				D26AD467206729D60047DC15 /* AuthenticationManager.swift in Sources */,
 				D26AD47E20672E120047DC15 /* CustomTransitionViewController.swift in Sources */,
 				D08D1D1121707816006C47D6 /* ICGThumbView.m in Sources */,
