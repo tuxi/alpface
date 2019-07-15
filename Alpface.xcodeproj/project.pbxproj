@@ -54,6 +54,7 @@
 		D08D1D1221707816006C47D6 /* XYCutVideoController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D1CE721707814006C47D6 /* XYCutVideoController.m */; };
 		D08D1D1321707816006C47D6 /* XYCutVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D1CE921707814006C47D6 /* XYCutVideoView.m */; };
 		D08D1D1421707816006C47D6 /* ALPVideoCameraAssets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D1CEB21707815006C47D6 /* ALPVideoCameraAssets.bundle */; };
+		D0C1796F22DC84E4002D5473 /* UIImage+ChatExtersions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1796E22DC84E4002D5473 /* UIImage+ChatExtersions.swift */; };
 		D0C1E3502086E7BB0013F98B /* MainNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */; };
 		D0C1E3522086EDFC0013F98B /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */; };
 		D0DB45A42085B4F0000C291A /* PublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0DB45A32085B4F0000C291A /* PublishViewController.xib */; };
@@ -303,6 +304,7 @@
 		D08D1CE821707814006C47D6 /* XYVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYVideoPlayerView.h; sourceTree = "<group>"; };
 		D08D1CE921707814006C47D6 /* XYCutVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYCutVideoView.m; sourceTree = "<group>"; };
 		D08D1CEB21707815006C47D6 /* ALPVideoCameraAssets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ALPVideoCameraAssets.bundle; sourceTree = "<group>"; };
+		D0C1796E22DC84E4002D5473 /* UIImage+ChatExtersions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ChatExtersions.swift"; sourceTree = "<group>"; };
 		D0C1E34F2086E7BB0013F98B /* MainNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationBar.swift; sourceTree = "<group>"; };
 		D0C1E3512086EDFC0013F98B /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		D0DB45A32085B4F0000C291A /* PublishViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PublishViewController.xib; sourceTree = "<group>"; };
@@ -1138,6 +1140,7 @@
 				D2A1E68B22D9F58B00F69A76 /* Models */,
 				D2A1E68C22D9F58B00F69A76 /* Controllers */,
 				D2A1E68D22D9F58B00F69A76 /* Views */,
+				D0C1796E22DC84E4002D5473 /* UIImage+ChatExtersions.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1492,6 +1495,7 @@
 				D08D1CF221707815006C47D6 /* SDAVAssetExportSession.m in Sources */,
 				D203F54622D0941600D79CC1 /* Options.swift in Sources */,
 				D200933A2078EEC50079AD8B /* CropOverlay.swift in Sources */,
+				D0C1796F22DC84E4002D5473 /* UIImage+ChatExtersions.swift in Sources */,
 				D2A1E6A322DA1A5F00F69A76 /* ChatRoomDateTimeTableViewCell.swift in Sources */,
 				D2B38C55208B24B700CA3908 /* HomeFeedViewController.swift in Sources */,
 				D20093312078EEC50079AD8B /* UIButtonExtensions.swift in Sources */,

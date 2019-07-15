@@ -77,7 +77,7 @@ class ChatRoomTextTableViewCell: ChatRoomBaseTableViewCell {
         }
         
         
-        self.bubbleImageView.image = cellModel.bubbleImage;
+        self.bubbleImageView.image = cellModel.textContentBubbleImage;
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

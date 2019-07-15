@@ -60,8 +60,8 @@ class ChatAudioModel : NSObject {
 
 @objc(ALPChatImageModel)
 class ChatImageModel : NSObject {
-    var imageHeight : CGFloat?
-    var imageWidth : CGFloat?
+    var imageHeight : CGFloat = kChatRoomImageMinHeight
+    var imageWidth : CGFloat = kChatRoomImageMinWidth
     var imageId : Int64 = 0
     var originalURL : String?
     var thumbURL : String?
@@ -77,7 +77,7 @@ class ChatImageModel : NSObject {
         }
     }
    
-    init(dict: [String: AnyObject]) {
+    init(dict: [String: Any]) {
         if let imageHeight = dict["height"] as? CGFloat {
             self.imageHeight = imageHeight
         }
