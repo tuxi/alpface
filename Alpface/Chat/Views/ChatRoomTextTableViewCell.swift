@@ -64,16 +64,16 @@ class ChatRoomTextTableViewCell: ChatRoomBaseTableViewCell {
             contentLabelRight1?.isActive = true
         }
         
-        if let richTextLinePositionModifier = cellModel.attributedTextLinePositionModifier {
-            self.contentLabel.linePositionModifier = richTextLinePositionModifier
+        if let textLinePositionModifier = cellModel.attributedTextLinePositionModifier {
+            self.contentLabel.linePositionModifier = textLinePositionModifier
         }
         
-        if let richTextLayout = cellModel.attributedTextLayout {
-            self.contentLabel.textLayout = richTextLayout
+        if let textLayout = cellModel.attributedTextLayout {
+            self.contentLabel.textLayout = textLayout
         }
         
-        if let richTextAttributedString = cellModel.attributedText {
-            self.contentLabel.attributedText = richTextAttributedString
+        if let textAttributedString = cellModel.attributedText {
+            self.contentLabel.attributedText = textAttributedString
         }
         
         

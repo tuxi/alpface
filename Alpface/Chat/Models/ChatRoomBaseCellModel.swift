@@ -26,7 +26,7 @@ class ChatRoomBaseCellModel {
     public var cellId: String
     
     // 以下是为了配合 UI 来使用
-    // 1 文本内容的ui相关
+    // 文本内容的ui相关
     public var isFromSelf : Bool {
         get {        
             return self.model?.sendId == AuthenticationManager.shared.loginUser?.id
@@ -42,19 +42,6 @@ class ChatRoomBaseCellModel {
         let image = isFromSelf ? UIImage(named: "icon_chat_senderTextNodeBkg")! : UIImage(named: "icon_chat_receiverTextNodeBkg")!
         // 拉伸图片区域
         let bubbleImage = image.resizableImage(withCapInsets: UIEdgeInsets.init(top: 30, left: 28, bottom: 85, right: 28), resizingMode: .stretch)
-        return bubbleImage
-    }()
-    
-    // 2 图片内容的ui相关
-    
-    // 设置拉伸范围
-    public let imageContentStretchInsets = UIEdgeInsets.init(top: 30, left: 28, bottom: 23, right: 28)
-    // 图片内容的气泡图片
-    public lazy var imageContentBubbleImage: UIImage = {
-        // 待拉伸的图片
-        let image = isFromSelf ? UIImage(named: "icon_chat_senderImageNodeBorder")! : UIImage(named: "icon_chat_receiverImageNodeBorder")!
-        // 进行拉伸
-        let bubbleImage = image.resizableImage(withCapInsets: imageContentStretchInsets, resizingMode: .stretch)
         return bubbleImage
     }()
     
