@@ -115,7 +115,7 @@ class ChatRoomModel: NSObject {
     var messageId : Int64 = 0
     // 消息内容的类型
     var messageContentType : MessageContentType = .Text
-    var timestamp : String? //同 publishTimestamp
+    var timestamp : String? 
     var messageFromType : MessageFromType = MessageFromType.Group
 
     

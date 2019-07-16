@@ -27,6 +27,8 @@ class ChatRoomBaseTableViewCell: UITableViewCell {
     public lazy var avatarImageView: UIImageView = {
        let imageView  = UIImageView()
         imageView.backgroundColor = UIColor.clear
+        imageView.layer.cornerRadius = 5.0
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     

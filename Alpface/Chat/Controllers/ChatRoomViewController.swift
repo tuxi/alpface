@@ -19,7 +19,7 @@ class ChatRoomViewController: UIViewController {
         tableView.backgroundColor = UIColor.clear
         tableView.separatorStyle = .none
         let view = UIView()
-        view.backgroundColor = UIColor.gray
+        view.backgroundColor = UIColor.white
         tableView.backgroundView = view
         return tableView
     }()
@@ -36,9 +36,15 @@ class ChatRoomViewController: UIViewController {
     fileprivate func getData() {
         for i in 0...10 {
             let sendId: Int64 = i % 2 == 0 ? AuthenticationManager.shared.loginUser!.id : Int64(0)
-            if i < 6 {
+            if i < 4 {
                 let textModel = ChatRoomModel(text: "今天我好开心啊，我在家啊，今天休息了，😝😸我的电话是18810181988，，我的网站：https://objc.com，ajdhakjdhajsdhakjdhakjdhkghghghkghgjkgjkgsfsdfsdfsfdsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfs", sendId: sendId, receiveId: Int64(i))
                 let cellModel = ChatRoomBaseCellModel(model: textModel, cellId: "textcell")
+                self.cellModels.append(cellModel)
+            }
+            else if i == 6 {
+                
+                let timeModel = ChatRoomModel(timestamp: String(format: "%f", Date.milliseconds))
+                let cellModel = ChatRoomBaseCellModel(model: timeModel, cellId: "timecell")
                 self.cellModels.append(cellModel)
             }
             else if i < 8 {
@@ -105,6 +111,10 @@ extension ChatRoomViewController: UITableViewDataSource, UITableViewDelegate {
         if let c = cell as? ChatRoomBaseTableViewCell {
             c.cellModel = cellModel
             return c
+        }
+        if let timeCell = cell as? ChatRoomDateTimeTableViewCell {
+            timeCell.cellModel = cellModel
+            return timeCell
         }
         
         return cell!

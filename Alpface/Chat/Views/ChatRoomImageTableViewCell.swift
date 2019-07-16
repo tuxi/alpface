@@ -14,7 +14,8 @@ class ChatRoomImageTableViewCell: ChatRoomBaseTableViewCell {
         let imageView = UIImageView()
         imageView.isOpaque = true
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 6.0
+        imageView.layer.cornerRadius = 10.0
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         return imageView
     }()
     
