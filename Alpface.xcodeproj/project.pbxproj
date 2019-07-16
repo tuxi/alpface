@@ -13,6 +13,9 @@
 		D05711D1216E109D0041D4F3 /* HomeRefreshViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05711CD216E109D0041D4F3 /* HomeRefreshViewController.swift */; };
 		D06F868B213E80E30009682C /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868A213E80E20009682C /* SwiftyTimer.swift */; };
 		D06F868E213E83000009682C /* MCGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F868D213E83000009682C /* MCGCDTimer.swift */; };
+		D078998122DDC936001315C5 /* ChatRoomBottomToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078998022DDC936001315C5 /* ChatRoomBottomToolBar.swift */; };
+		D078998322DDCA05001315C5 /* ChatRoomInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078998222DDCA05001315C5 /* ChatRoomInputView.swift */; };
+		D078998522DDCB00001315C5 /* ChatRoomRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078998422DDCB00001315C5 /* ChatRoomRefreshView.swift */; };
 		D08D1CEC21707815006C47D6 /* AlpEditVideoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D1C9621707811006C47D6 /* AlpEditVideoBar.m */; };
 		D08D1CED21707815006C47D6 /* AlpVideoCameraCoverSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D1C9721707811006C47D6 /* AlpVideoCameraCoverSlider.m */; };
 		D08D1CEE21707815006C47D6 /* AlpMusicItemCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D1C9821707811006C47D6 /* AlpMusicItemCollectionViewCell.m */; };
@@ -223,6 +226,9 @@
 		D05711CD216E109D0041D4F3 /* HomeRefreshViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRefreshViewController.swift; sourceTree = "<group>"; };
 		D06F868A213E80E20009682C /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
 		D06F868D213E83000009682C /* MCGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCGCDTimer.swift; sourceTree = "<group>"; };
+		D078998022DDC936001315C5 /* ChatRoomBottomToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomBottomToolBar.swift; sourceTree = "<group>"; };
+		D078998222DDCA05001315C5 /* ChatRoomInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomInputView.swift; sourceTree = "<group>"; };
+		D078998422DDCB00001315C5 /* ChatRoomRefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomRefreshView.swift; sourceTree = "<group>"; };
 		D08D1C9621707811006C47D6 /* AlpEditVideoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpEditVideoBar.m; sourceTree = "<group>"; };
 		D08D1C9721707811006C47D6 /* AlpVideoCameraCoverSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpVideoCameraCoverSlider.m; sourceTree = "<group>"; };
 		D08D1C9821707811006C47D6 /* AlpMusicItemCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlpMusicItemCollectionViewCell.m; sourceTree = "<group>"; };
@@ -1168,6 +1174,7 @@
 		D2A1E68D22D9F58B00F69A76 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D078998222DDCA05001315C5 /* ChatRoomInputView.swift */,
 				D2A1E69022D9FE6100F69A76 /* ChatRoomTextTableViewCell.swift */,
 				D2A1E69222D9FE7900F69A76 /* ChatRoomImageTableViewCell.swift */,
 				D2A1E69422D9FE8600F69A76 /* ChatRoomVideoTableViewCell.swift */,
@@ -1177,6 +1184,8 @@
 				D2A1E6A022DA1A0200F69A76 /* ChatRoomAdminTableViewCell.swift */,
 				D2A1E6A222DA1A5F00F69A76 /* ChatRoomDateTimeTableViewCell.swift */,
 				D2503A4322DB47D8002A10E8 /* ChatRoomTextLabel.swift */,
+				D078998022DDC936001315C5 /* ChatRoomBottomToolBar.swift */,
+				D078998422DDCB00001315C5 /* ChatRoomRefreshView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1442,6 +1451,7 @@
 				D08D1CFB21707815006C47D6 /* UIViewController+XYExtensions.m in Sources */,
 				D2371D912084F73B00588BEC /* PublishViewController.swift in Sources */,
 				D20093472078F16E0079AD8B /* PCLBlurEffectAlert+Controller.swift in Sources */,
+				D078998322DDCA05001315C5 /* ChatRoomInputView.swift in Sources */,
 				D234D31E22D196500091912C /* MyHomeDragLeftInteractiveTransition.swift in Sources */,
 				D208F3FD22CFA5B100C2140B /* UserHomeModel.swift in Sources */,
 				D2B165F8208C720B00FA5F05 /* TabbarPlaceholderViewController.swift in Sources */,
@@ -1456,10 +1466,12 @@
 				D200933B2078EEC50079AD8B /* PermissionsView.swift in Sources */,
 				D08D1D0C21707816006C47D6 /* XYLocationSearchViewController.m in Sources */,
 				D26AD4652066BB180047DC15 /* User.swift in Sources */,
+				D078998522DDCB00001315C5 /* ChatRoomRefreshView.swift in Sources */,
 				D2A1E69122D9FE6100F69A76 /* ChatRoomTextTableViewCell.swift in Sources */,
 				D2BCBA4F206F6D02008409B3 /* VideoItem.swift in Sources */,
 				D28B2295207732BA00680970 /* VideoGifCollectionViewCell.swift in Sources */,
 				D289537120771A6B0029CE92 /* MyFavoriteViewController.swift in Sources */,
+				D078998122DDC936001315C5 /* ChatRoomBottomToolBar.swift in Sources */,
 				D28953672076A4EE0029CE92 /* HitTestScrollViewCell.swift in Sources */,
 				D21A2CD5207D154400335A8A /* EditUserProfileModel.swift in Sources */,
 				D26AD43320668F140047DC15 /* StoryCreationViewController.swift in Sources */,

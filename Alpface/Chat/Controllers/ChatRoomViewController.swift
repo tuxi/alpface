@@ -24,6 +24,21 @@ class ChatRoomViewController: UIViewController {
         return tableView
     }()
     
+    fileprivate lazy var toolBar: ChatRoomBottomToolBar = {
+        let toolView = ChatRoomBottomToolBar()
+        return toolView
+    }()
+    
+    fileprivate lazy var actionInputView: ChatRoomInputView = {
+        let inputView = ChatRoomInputView()
+        return inputView
+    }()
+    
+    fileprivate lazy var refreshView: ChatRoomRefreshView = {
+       let view = ChatRoomRefreshView()
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
