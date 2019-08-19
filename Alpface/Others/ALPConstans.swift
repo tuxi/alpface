@@ -8,6 +8,11 @@
 
 import Foundation
 
+/*
+ 文档
+ https://api.enba.com/api/docs/
+ */
+
 
 struct ALPConstans {
     static var animationDuration: Double {
@@ -29,12 +34,14 @@ struct ALPConstans {
     
     struct HttpRequestURL {
 //        static let ALPSiteURLString = "http://10.211.55.4"
-        static let ALPSiteURLString = "https://api.enba.com"
+        static let ALPSiteURLString = "https://api.enba.com/api"
         
         // 登录
         static let login = "\(ALPSiteURLString)" + "/login/"
         // 注册 必须是post方法 成功返回 201
         static let register = "\(ALPSiteURLString)" + "/users/"
+        // 心跳包
+        static let heartbeat = "\(ALPSiteURLString)" + "/heartbeat/"
         // 根据用户id修改用户部分信息，后面拼上用户id，必须是PATCH方法 200 成功
         static let updateProfile = "\(ALPSiteURLString)" + "/users/"
         // get 方法 获取视频系列

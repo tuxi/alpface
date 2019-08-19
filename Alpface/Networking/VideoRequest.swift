@@ -20,7 +20,8 @@ open class VideoRequest: NSObject {
         let url = ALPConstans.HttpRequestURL.getAllVideos
         // 按照上传时间排序
         let parameters = ["ordering": "-upload_time"]
-        HttpRequestHelper.request(method: .get, url: url, parameters: parameters as NSDictionary) { (response, error) in
+        // needsToken 不需要传token， 不然因为token无效而抛出异常，导致无法获取到视频列表
+        HttpRequestHelper.request(method: .get, url: url, parameters: parameters as NSDictionary, needsToken: false) { (response, error) in
             
             if let error = error {
                 guard let fail = failure else { return }
@@ -39,7 +40,8 @@ open class VideoRequest: NSObject {
             }
             
             // get 方法的200 为请求成功
-            if response.statusCode == 200  {
+            let statusCode = response.statusCode;
+            if statusCode == 200  {
                 guard let data = response.data else {
                     DispatchQueue.main.async {
                         guard let fail = failure else { return }
@@ -61,7 +63,10 @@ open class VideoRequest: NSObject {
                     return
                 }
             }
-            print(response.data?.debugDescription)
+            print(response.data?.debugDescription ?? "未知错误")
+            // response.data == ["detail": Signature has expired.]
+            // statusCode 401
+            // jwt token 已经过期，解决方法是，已经过期的token 不应该添加到headers中
             guard let fail = failure else { return }
             DispatchQueue.main.async {
                 fail(NSError(domain: NSURLErrorDomain, code: response.statusCode, userInfo: response.data))
