@@ -38,16 +38,17 @@ final class HttpRequestHelper: NSObject {
     ///   - url: 请求的url，可以是String，也可以是URL
     ///   - parameters: 请求参数
     ///   - finishedCallBack: 完成请求的回调
-    class func request(method: HTTPMethod, url: String, parameters: NSDictionary?, finishedCallBack: @escaping (_ result: HttpRequestResponse?, _ _error: Error?) -> ()) {
+    class func request(method: HTTPMethod, url: String, parameters: NSDictionary?, needsToken: Bool = true, finishedCallBack: @escaping (_ result: HttpRequestResponse?, _ _error: Error?) -> ()) {
         
-        let config:URLSessionConfiguration = URLSessionConfiguration.default
+        // ephemeral 忽略缓存
+        let config:URLSessionConfiguration = URLSessionConfiguration.ephemeral
         config.timeoutIntervalForRequest = NetworkTimeoutInterval
         sessionManager = SessionManager(configuration: config)
         setCookie()
         
         // 将jwt传递给服务端，用于身份验证
         var headers: HTTPHeaders = [:]
-        if let token = AuthenticationManager.shared.authToken {
+        if let token = AuthenticationManager.shared.authToken, needsToken == true {
             headers["Authorization"] = "JWT \(token)"
         }
         

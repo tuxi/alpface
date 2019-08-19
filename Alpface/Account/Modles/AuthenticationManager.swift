@@ -18,6 +18,7 @@ extension NSNotification.Name {
 final class AuthenticationManager: NSObject {
     static public let shared = AuthenticationManager()
     public let accountLogin = AccountLogin()
+    private var timer: Timer?
     
     public var authToken : String? {
         get {
@@ -43,7 +44,9 @@ final class AuthenticationManager: NSObject {
     
     private override init() {
         super.init()
-        self.startHeartbeat()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5.0) {
+            self.startHeartBeatLoop()
+        }
     }
     
     private var _loginUser: User?
@@ -58,8 +61,15 @@ final class AuthenticationManager: NSObject {
 //            else {
 //                stopHeartBeat()
 //            }
-            let data = NSKeyedArchiver.archivedData(withRootObject: newValue as Any)
-            UserDefaults.standard.setValue(data, forKey: ALPConstans.AuthKeys.ALPLoginUserInfoKey)
+            
+            if newValue != nil {
+               let data = NSKeyedArchiver.archivedData(withRootObject: newValue as Any)
+                UserDefaults.standard.setValue(data, forKey: ALPConstans.AuthKeys.ALPLoginUserInfoKey)
+            }
+            else {
+                UserDefaults.standard.setValue(nil, forKey: ALPConstans.AuthKeys.ALPLoginUserInfoKey)
+            }
+            
             UserDefaults.standard.synchronize()
         }
         get {
@@ -78,49 +88,46 @@ final class AuthenticationManager: NSObject {
         }
     }
     
-    private lazy var timerQueue : DispatchQueue = {
-       let queue = DispatchQueue(label: "HeartBeat")
-        return queue
-    }()
+    // 让登陆状态无效，退出登陆时需要调用此方法
+    public func invalidate() {
+        loginUser = nil
+        authToken = nil
+    }
     
     public func logout() {
         self.loginUser = nil
         self.authToken = nil
         HttpRequestHelper.clearCookies()
-        stopHeartBeat()
+        stopHeartBeatLoop()
     }
     
-    private func startHeartbeat() {
-//        if self.timer == nil {
-            // note: Timer 事件不执行
-//            self.timer = Timer.init(timeInterval: 2.0, target: self, selector:  #selector(AuthenticationManager.checkToken), userInfo: nil, repeats: true)
-//            RunLoop.current.add(self.timer!, forMode: RunLoopMode.commonModes)
-//            self.timer = Timer.every(2.seconds) {[weak self](timer: Timer) in
-//                self?.checkToken()
-////                if finished {
-////                    timer.invalidate()
-////                }
-//            }
+    private func startHeartBeatLoop() {
+        if self.timer == nil {
+            self.timer = Timer(timeInterval: 10.0, target: self, selector: #selector(AuthenticationManager.checkToken), userInfo: nil, repeats: true)
             
-//        }
-      
-//        _ = MCGCDTimer.shared.scheduledDispatchTimer(WithTimerName: "HeartBeat", timeInterval: 20, queue: self.timerQueue, repeats: true) {
-//            self.checkToken()
-//        }
+            RunLoop.current.add(self.timer!, forMode: .common)
+            
+        }
     }
-    private func stopHeartBeat() {
-        MCGCDTimer.shared.cancleTimer(WithTimerName: "HeartBeat")
+    private func stopHeartBeatLoop() {
+        if self.timer != nil {
+             self.timer?.invalidate()
+            self.timer = nil
+        }
     }
     @objc private func checkToken() {
-        guard let loginUser = self.loginUser else {
-            // 未登录
-            print("用户未登录，停止心跳包")
-            self .stopHeartBeat()
-            DispatchQueue.main.async {
-                MBProgressHUD.xy_show("您未登录, 请登录")
+        self.accountLogin.heartbeat(success: {(response) in
+            
+        }) {[weak self]  (error) in
+            if let error = error {
+                // 未登录
+                print(error.localizedDescription)
+                self?.invalidate()
+                self?.stopHeartBeatLoop()
+                DispatchQueue.main.async {
+                    MBProgressHUD.xy_show("登录已失效，停止心跳包！")
+                }
             }
-            return
         }
-        
     }
 }
