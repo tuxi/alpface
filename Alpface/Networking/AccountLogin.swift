@@ -56,7 +56,7 @@ public class AccountLoginResult: NSObject {
 public class AccountLogin: NSObject {
     
     /// 登录解决，会先获取一个新的csrftoken，再进行登录操作
-    public func heartbeat(success: ALPHttpResponseBlock?, failure: ALPErrorHandler?){
+    public func heartbeat(failure: ALPErrorHandler?){
         
         guard let token = AuthenticationManager.shared.authToken else {
             if let failure = failure {
@@ -73,38 +73,13 @@ public class AccountLogin: NSObject {
         ]
         Alamofire.request(urlString, method: .post, parameters: parameters as Parameters, encoding: URLEncoding.default, headers: nil).responseJSON(queue: DispatchQueue.global(), options: .mutableContainers, completionHandler: { (response) in
             let data = response.result.value
-            let error = response.result.error
             
             let res = HttpRequestResponse(statusCode: response.response?.statusCode ?? 500, data: data as? [String : Any])
-            
-            
-            if let error = error {
-                guard let fail = failure else { return }
-                DispatchQueue.main.async {
-                    fail(error)
-                }
-                return
-            }
-            
+
             
             let statusCode = res.statusCode
-            if statusCode == 200  {
-                guard let data = res.data else {
-                    DispatchQueue.main.async {
-                        guard let fail = failure else { return }
-                        fail(NSError(domain: NSURLErrorDomain, code: 500, userInfo:nil))
-                    }
-                    return
-                }
-                if let userDict = data["user"] as? [String : Any], let token = data["token"] as? String {
-                    guard let succ = success else { return }
-                    DispatchQueue.main.async {
-                        succ(userDict)
-                    }
-                    return
-                }
-            }
-            else if statusCode == 400 {
+            // 400 为django jwt 定义的验证失败code
+            if let responseData = res.data, statusCode == 400 {
                 // 鉴权失败
                 guard let fail = failure else { return }
                 DispatchQueue.main.async {
@@ -148,14 +123,14 @@ public class AccountLogin: NSObject {
                 }
                 if let userDict = data["user"] as? [String : Any], let token = data["token"] as? String {
                     print(userDict)
-                    AuthenticationManager.shared.authToken = token
-                    let user = User(dict: userDict)
-                    let result = AccountLoginResult(status: 200, user: user)
-                    
-                    // 记录当前登录的用户
-                    AuthenticationManager.shared.loginUser = user
-                    guard let succ = success else { return }
                     DispatchQueue.main.async {
+                        AuthenticationManager.shared.authToken = token
+                        let user = User(dict: userDict)
+                        let result = AccountLoginResult(status: 200, user: user)
+                        
+                        // 记录当前登录的用户
+                        AuthenticationManager.shared.loginUser = user
+                        guard let succ = success else { return }
                         succ(result)
                     }
                     return
@@ -228,13 +203,14 @@ public class AccountLogin: NSObject {
                         if let data = response.result.value as? NSDictionary {
                             if let token = data["token"] as? String, let  user_dict = data["user"] as? [String : Any] {
                                 guard let succ = success else { return }
-                                AuthenticationManager.shared.authToken = token
+
                                 let user = User(dict: user_dict)
                                 let result = AccountLoginResult(status: 200, user: user)
                                 
-                                // 记录当前登录的用户
-                                AuthenticationManager.shared.loginUser = user
                                 DispatchQueue.main.async {
+                                    // 记录当前登录的用户
+                                    AuthenticationManager.shared.authToken = token
+                                    AuthenticationManager.shared.loginUser = user
                                     succ(result)
                                 }
                                 return

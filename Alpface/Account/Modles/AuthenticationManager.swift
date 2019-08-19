@@ -54,13 +54,12 @@ final class AuthenticationManager: NSObject {
     public var loginUser: User? {
         set {
             _loginUser = newValue
-//            if newValue != nil {
-//                // 登录成功开启心跳包，监测token是否过期，或者用户是否被挤下线
-//                startHeartbeat()
-//            }
-//            else {
-//                stopHeartBeat()
-//            }
+            if newValue != nil {
+                startHeartBeatLoop()
+            }
+            else {
+                stopHeartBeatLoop()
+            }
             
             if newValue != nil {
                let data = NSKeyedArchiver.archivedData(withRootObject: newValue as Any)
@@ -92,16 +91,12 @@ final class AuthenticationManager: NSObject {
     public func invalidate() {
         loginUser = nil
         authToken = nil
-    }
-    
-    public func logout() {
-        self.loginUser = nil
-        self.authToken = nil
         HttpRequestHelper.clearCookies()
-        stopHeartBeatLoop()
     }
+
     
     private func startHeartBeatLoop() {
+        self.stopHeartBeatLoop()
         if self.timer == nil {
             self.timer = Timer(timeInterval: 10.0, target: self, selector: #selector(AuthenticationManager.checkToken), userInfo: nil, repeats: true)
             
@@ -111,14 +106,12 @@ final class AuthenticationManager: NSObject {
     }
     private func stopHeartBeatLoop() {
         if self.timer != nil {
-             self.timer?.invalidate()
+            self.timer?.invalidate()
             self.timer = nil
         }
     }
     @objc private func checkToken() {
-        self.accountLogin.heartbeat(success: {(response) in
-            
-        }) {[weak self]  (error) in
+        self.accountLogin.heartbeat { [weak self] (error) in
             if let error = error {
                 // 未登录
                 print(error.localizedDescription)
